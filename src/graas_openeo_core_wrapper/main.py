@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from openeo_core.app import flask_app
-from openeo_core.endpoints import create_endpoints
+from graas_openeo_core_wrapper.endpoints import create_endpoints
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 20186, Sören Gebbert"

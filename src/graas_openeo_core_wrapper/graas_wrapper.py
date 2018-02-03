@@ -35,13 +35,7 @@ class GRaaSInterface(object):
 
         return False
 
-    def send_request(self):
-        pass
-
-    def list_raster(self):
-        url = "%(base)s/locations/%(loc)s/mapsets/%(map)s/raster_layers"%{"base":self.base_url,
-                                                                          "loc":self.location,
-                                                                          "map":self.mapset}
+    def _send_get_request(self, url):
         r = requests.get(url=url, auth=self.auth)
         print(r)
         data = None
@@ -51,3 +45,21 @@ class GRaaSInterface(object):
             data = ret["process_results"]
 
         return r.status_code, data
+
+    def list_raster(self):
+        url = "%(base)s/locations/%(loc)s/mapsets/%(map)s/raster_layers"%{"base":self.base_url,
+                                                                          "loc":self.location,
+                                                                          "map":self.mapset}
+        return self._send_get_request(url)
+
+    def list_vector(self):
+        url = "%(base)s/locations/%(loc)s/mapsets/%(map)s/vector_layers"%{"base":self.base_url,
+                                                                          "loc":self.location,
+                                                                          "map":self.mapset}
+        return self._send_get_request(url)
+
+    def list_strds(self):
+        url = "%(base)s/locations/%(loc)s/mapsets/%(map)s/strds"%{"base":self.base_url,
+                                                                          "loc":self.location,
+                                                                          "map":self.mapset}
+        return self._send_get_request(url)

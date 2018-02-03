@@ -42,6 +42,18 @@ class AllTestCase(unittest.TestCase):
         raster = iface.list_raster()
         print(raster)
 
+    def test_list_vector(self):
+
+        iface = GRaaSInterface(self.gconf)
+        raster = iface.list_vector()
+        print(raster)
+
+    def test_list_strds(self):
+
+        iface = GRaaSInterface(self.gconf)
+        raster = iface.list_strds()
+        print(raster)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -2,7 +2,7 @@
 
 class Config(object):
     HOST="http://localhost"
-    PORT=5000
+    PORT=8080
     LOCATION="ECAD"
     MAPSET="PERMANENT"
     USER="user"

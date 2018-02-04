@@ -18,26 +18,26 @@ class DataTestCase(TestBase):
 
         self.assertEqual(len(data), 2)
 
-        dsets = ["precipitation_1950_2013_yearly_mm",
-                 "temperature_mean_1950_2013_yearly_celsius"]
+        dsets = ["precipitation_1950_2013_yearly_mm@PERMANENT",
+                 "temperature_mean_1950_2013_yearly_celsius@PERMANENT"]
 
         for entry in data:
             print(entry["product_id"])
             self.assertTrue(entry["product_id"] in dsets)
 
     def test_data_product_id_1(self):
-        response = self.app.get('/data/precipitation_1950_2013_yearly_mm')
+        response = self.app.get('/data/precipitation_1950_2013_yearly_mm@PERMANENT')
         data = json.loads(response.data.decode())
         print(data)
 
-        self.assertEqual(data["product_id"], "precipitation_1950_2013_yearly_mm")
+        self.assertEqual(data["product_id"], "precipitation_1950_2013_yearly_mm@PERMANENT")
 
     def test_data_product_id_2(self):
-        response = self.app.get('/data/temperature_mean_1950_2013_yearly_celsius')
+        response = self.app.get('/data/temperature_mean_1950_2013_yearly_celsius@PERMANENT')
         data = json.loads(response.data.decode())
         print(data)
 
-        self.assertEqual(data["product_id"], "temperature_mean_1950_2013_yearly_celsius")
+        self.assertEqual(data["product_id"], "temperature_mean_1950_2013_yearly_celsius@PERMANENT")
 
 
 if __name__ == "__main__":

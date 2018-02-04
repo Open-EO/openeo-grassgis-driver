@@ -19,32 +19,38 @@ class GRaaSInterfaceTestCase(TestBase):
     def test_list_raster(self):
 
         iface = GRaaSInterface(self.gconf)
-        layer = iface.list_raster()
+        layer = iface.list_raster(mapset="PERMANENT")
         print(layer)
 
     def test_list_vector(self):
 
         iface = GRaaSInterface(self.gconf)
-        layer = iface.list_vector()
+        layer = iface.list_vector(mapset="PERMANENT")
         print(layer)
 
     def test_list_strds(self):
 
         iface = GRaaSInterface(self.gconf)
-        layer = iface.list_strds()
+        layer = iface.list_strds(mapset="PERMANENT")
         print(layer)
 
     def test_strds_info(self):
 
         iface = GRaaSInterface(self.gconf)
-        info = iface.strds_info("precipitation_1950_2013_yearly_mm")
+        info = iface.strds_info(mapset="PERMANENT", strds_name="precipitation_1950_2013_yearly_mm")
         print(info)
 
     def test_mapset_info(self):
 
         iface = GRaaSInterface(self.gconf)
-        info = iface.mapset_info()
+        info = iface.mapset_info(mapset="PERMANENT")
         print(info)
+
+    def test_list_mapsets(self):
+
+        iface = GRaaSInterface(self.gconf)
+        layer = iface.list_mapsets()
+        print(layer)
 
 
 if __name__ == "__main__":

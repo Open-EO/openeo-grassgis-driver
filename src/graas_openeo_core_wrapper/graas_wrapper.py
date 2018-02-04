@@ -22,7 +22,6 @@ class GRaaSInterface(object):
         self.base_url = "%(host)s:%(port)s" % {"host": self.host, "port": self.port}
         self.auth = (config.USER, config.PASSWORD)
         self.location = config.LOCATION
-        self.mapset = config.MAPSET
 
     def check_health(self):
 
@@ -46,33 +45,38 @@ class GRaaSInterface(object):
 
         return r.status_code, data
 
-    def mapset_info(self):
+    def list_mapsets(self):
+        url = "%(base)s/locations/%(location)s/mapsets" % {"base": self.base_url,
+                                                           "location": self.location}
+        return self._send_get_request(url)
+
+    def mapset_info(self, mapset):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/info" % {"base": self.base_url,
                                                                 "location": self.location,
-                                                                "mapset": self.mapset}
+                                                                "mapset": mapset}
         return self._send_get_request(url)
 
-    def list_raster(self):
+    def list_raster(self, mapset):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/raster_layers" % {"base": self.base_url,
                                                                                     "location": self.location,
-                                                                                    "mapset": self.mapset}
+                                                                                    "mapset": mapset}
         return self._send_get_request(url)
 
-    def list_vector(self):
+    def list_vector(self, mapset):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/vector_layers" % {"base": self.base_url,
                                                                                     "location": self.location,
-                                                                                    "mapset": self.mapset}
+                                                                                    "mapset": mapset}
         return self._send_get_request(url)
 
-    def list_strds(self):
+    def list_strds(self, mapset):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/strds" % {"base": self.base_url,
                                                                             "location": self.location,
-                                                                            "mapset": self.mapset}
+                                                                            "mapset": mapset}
         return self._send_get_request(url)
 
-    def strds_info(self, strds_name):
+    def strds_info(self, mapset, strds_name):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/strds/%(layer)s" % {"base": self.base_url,
                                                                                       "location": self.location,
-                                                                                      "mapset": self.mapset,
+                                                                                      "mapset": mapset,
                                                                                       "layer": strds_name}
         return self._send_get_request(url)

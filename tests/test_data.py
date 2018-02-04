@@ -25,6 +25,20 @@ class DataTestCase(TestBase):
             print(entry["product_id"])
             self.assertTrue(entry["product_id"] in dsets)
 
+    def test_data_product_id_1(self):
+        response = self.app.get('/data/precipitation_1950_2013_yearly_mm')
+        data = json.loads(response.data.decode())
+        print(data)
+
+        self.assertEqual(data["product_id"], "precipitation_1950_2013_yearly_mm")
+
+    def test_data_product_id_2(self):
+        response = self.app.get('/data/temperature_mean_1950_2013_yearly_celsius')
+        data = json.loads(response.data.decode())
+        print(data)
+
+        self.assertEqual(data["product_id"], "temperature_mean_1950_2013_yearly_celsius")
+
 
 if __name__ == "__main__":
     unittest.main()

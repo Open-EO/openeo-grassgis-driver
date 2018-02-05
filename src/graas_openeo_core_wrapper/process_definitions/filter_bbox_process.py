@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from graas_openeo_core_wrapper import processes
+from graas_openeo_core_wrapper import process_definitions
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert"
@@ -35,9 +35,8 @@ class FilterBBoxProcess(object):
             }
         }
     }
-    print("Add entry to PROCESS_DICT", PROCESS_NAME)
 
-    processes.PROCESS_DICT[PROCESS_NAME] = DOC
+    process_definitions.PROCESS_DICT[PROCESS_NAME] = DOC
 
-    def create(self, arguments):
+    def create(self, process_description):
         pass

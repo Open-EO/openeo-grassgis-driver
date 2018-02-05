@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from graas_openeo_core_wrapper import processes
+from graas_openeo_core_wrapper import process_definitions
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert"
@@ -13,7 +13,8 @@ class FilterDataRangeProcess(object):
 
     DOC = {
         "process_id": "filter_daterange",
-        "description": "Drops observations from a collection that have been captured before a start or after a given end date.",
+        "description": "Drops observations from a collection that have been captured before"
+                       " a start or after a given end date.",
         "args": {
             "collections": {
                 "description": "array of input collections with one element"
@@ -27,7 +28,7 @@ class FilterDataRangeProcess(object):
         }
     }
 
-    processes.PROCESS_DICT[PROCESS_NAME] = DOC
+    process_definitions.PROCESS_DICT[PROCESS_NAME] = DOC
 
-    def create(self, arguments):
+    def create(self, process_description):
         pass

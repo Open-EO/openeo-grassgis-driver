@@ -20,7 +20,6 @@ def create_endpoints():
     flask_api.add_resource(GRaaSCapabilities, '/capabilities')
 
     flask_api.add_resource(GRaaSData, '/data')
-
     flask_api.add_resource(GRaaSDataProductId, '/data/<string:product_id>')
 
     flask_api.add_resource(GRaaSProcesses, '/processes')

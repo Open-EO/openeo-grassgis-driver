@@ -8,6 +8,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 
 class SimpleNDVIProcess(object):
+
     PROCESS_NAME = "NDVI"
 
     DOC = {

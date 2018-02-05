@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+# This is the process dictionary that is used to store all processes of the GRaaS wrapper
 PROCESS_DICT = {}
 
 # Import the process_definitions to fill the process.PROCESS_DICT with process_definitions

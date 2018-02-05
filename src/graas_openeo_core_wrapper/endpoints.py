@@ -23,5 +23,5 @@ def create_endpoints():
 
     flask_api.add_resource(GRaaSDataProductId, '/data/<string:product_id>')
 
-    flask_api.add_resource(GRaaSProcesses, '/process_definitions')
-    flask_api.add_resource(GRaaSProcessesProcessId, '/process_definitions/<string:process_id>')
+    flask_api.add_resource(GRaaSProcesses, '/processes')
+    flask_api.add_resource(GRaaSProcessesProcessId, '/processes/<string:process_id>')

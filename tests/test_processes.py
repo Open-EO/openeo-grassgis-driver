@@ -12,7 +12,7 @@ __email__ = "soerengebbert@googlemail.com"
 class ProcessesTestCase(TestBase):
 
     def test_processes(self):
-        response = self.app.get('/process_definitions')
+        response = self.app.get('/processes')
         data = json.loads(response.data.decode())
         print(data)
 
@@ -26,21 +26,21 @@ class ProcessesTestCase(TestBase):
             self.assertTrue(entry in dsets)
 
     def test_process_id_1(self):
-        response = self.app.get('/process_definitions/filter_bbox')
+        response = self.app.get('/processes/filter_bbox')
         data = json.loads(response.data.decode())
         print(data)
 
         self.assertEqual(data["process_id"], "filter_bbox")
 
     def test_process_id_2(self):
-        response = self.app.get('/process_definitions/filter_daterange')
+        response = self.app.get('/processes/filter_daterange')
         data = json.loads(response.data.decode())
         print(data)
 
         self.assertEqual(data["process_id"], "filter_daterange")
 
     def test_process_id_3(self):
-        response = self.app.get('/process_definitions/NDVI')
+        response = self.app.get('/processes/NDVI')
         data = json.loads(response.data.decode())
         print(data)
 

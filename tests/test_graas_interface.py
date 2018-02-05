@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
-from graas_openeo_core_wrapper.graas_wrapper import GRaaSInterface
+from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
 from graas_openeo_core_wrapper.test_base import TestBase
 
 __author__ = "Sören Gebbert"
@@ -37,7 +37,8 @@ class GRaaSInterfaceTestCase(TestBase):
     def test_strds_info(self):
 
         iface = GRaaSInterface(self.gconf)
-        info = iface.strds_info(mapset="PERMANENT", strds_name="precipitation_1950_2013_yearly_mm")
+        info = iface.strds_info(mapset="PERMANENT",
+                                strds_name="precipitation_1950_2013_yearly_mm")
         print(info)
 
     def test_mapset_info(self):

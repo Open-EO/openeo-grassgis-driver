@@ -5,7 +5,9 @@ from flask_restful_swagger_2 import swagger
 
 GRAAS_CAPABILITIES=["/capabilities",
                     "/data",
-                    "/data/{product_id}"]
+                    "/data/{product_id}",
+                    '/processes',
+                    '/processes/{process_id}']
 
 
 class GRaaSCapabilities(Capabilities):

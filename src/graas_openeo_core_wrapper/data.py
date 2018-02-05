@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from openeo_core.data import Data, GET_DATA_DOC
 from openeo_core.definitions import DataSetListEntry, DataSetInfo
-from graas_openeo_core_wrapper.graas_wrapper import GRaaSInterface
+from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
 from flask import make_response, jsonify
 from flask_restful_swagger_2 import swagger
 

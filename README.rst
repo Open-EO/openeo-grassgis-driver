@@ -2,26 +2,25 @@
 GRaaS openEO Core API wrapper
 =============================
 
-This is the GRaaS openEO Core API wrapper that uses the oopenEO reference implementation Python package to
-implement the openEO API functionality.
-
+This is the GRaaS openEO Core API wrapper.
 
 Description
 ===========
 
-This software implements the openEO core API definition and uses the GRaaS functionality
-as backend. It is a wrapper around GRaaS and requires a running GRaaS infrastructure
-to run.
+This software implements the openEO core API definition and uses GRASS GIS as a Service (GRaaS)
+as backend. It is a wrapper around GRaaS REST API and requires a running GRaaS infrastructure.
 
 
 Installation
 ============
 
-The openEO Core API reference implementation and a running GRaaS infrastructure is required to run this wrapper.
+The openEO Core API reference implementation must be installed to run the wrapper.
 
-It is preferred to run the GRaaS openEO Core API wrapper in a virtual python environment.
+It is preferred to run the openEO Core API and the GRaaS openEO Core API wrapper together
+in a virtual python environment.
 
-Create directory that contains the code and the virtual environment and switch the environment:
+Create directory that contains the code and the virtual environment of booth frameworks
+and switch the environment:
 
     .. code-block:: bash
 

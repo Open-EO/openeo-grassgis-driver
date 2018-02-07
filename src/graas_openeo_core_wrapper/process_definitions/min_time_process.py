@@ -7,30 +7,15 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-PROCESS_NAME = "filter_bbox"
+PROCESS_NAME = "min_time"
 
 DOC = {
-    "process_id": "filter_bbox",
-    "description": "Drops observations from a collection that are located outside of a given bounding box.",
+    "process_id": PROCESS_NAME,
+    "description": "Finds the minimum value of time series for all bands of the input dataset.",
     "args": {
         "collections": {
             "description": "array of input collections with one element"
         },
-        "left": {
-            "description": "left boundary (longitude / easting)"
-        },
-        "right": {
-            "description": "right boundary (longitude / easting)"
-        },
-        "top": {
-            "description": "top boundary (latitude / northing)"
-        },
-        "bottom": {
-            "description": "bottom boundary (latitude / northing)"
-        },
-        "srs": {
-            "description": "spatial reference system of boundaries as proj4 or EPSG:12345 like string"
-        }
     }
 }
 

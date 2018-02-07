@@ -9,4 +9,4 @@ class GRaaSProcesses(Processes):
 
     @swagger.doc(GET_PROCESSES_DOC)
     def get(self):
-        return make_response(jsonify(list(process_definitions.PROCESS_DICT.keys())), 200)
+        return make_response(jsonify(list(process_definitions.PROCESS_DESCRIPTION_DICT.keys())), 200)

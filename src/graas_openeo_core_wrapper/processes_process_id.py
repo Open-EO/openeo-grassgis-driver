@@ -10,7 +10,7 @@ class GRaaSProcessesProcessId(ProcessesProcessId):
     @swagger.doc(GET_PROCESSES_PROCESS_ID_DOC)
     def get(self, process_id):
 
-        if process_id not in process_definitions.PROCESS_DICT:
+        if process_id not in process_definitions.PROCESS_DESCRIPTION_DICT:
             return make_response(jsonify({"description": "This process does not exists!"}), 400)
 
-        return make_response(jsonify(process_definitions.PROCESS_DICT[process_id]), 200)
+        return make_response(jsonify(process_definitions.PROCESS_DESCRIPTION_DICT[process_id]), 200)

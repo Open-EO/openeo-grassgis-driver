@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from flask import json
 import unittest
-from graas_openeo_core_wrapper.capabilities import GRAAS_CAPABILITIES
+from pprint import pprint
 from graas_openeo_core_wrapper.test_base import TestBase
-import graas_openeo_core_wrapper.process_definitions.min_time_process as min_time
+from graas_openeo_core_wrapper.process_definitions import analyse_process_graph
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert"
@@ -11,10 +10,10 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class CapabilitiesTestCase(TestBase):
+class ProcessDefinitionTestCase(TestBase):
 
     def test_min_time(self):
-        leaf = {
+        graph = {
             "process_graph": {
                 "process_id": "min_time",
                 "args": {
@@ -40,8 +39,39 @@ class CapabilitiesTestCase(TestBase):
             }
         }
 
-        name, pc = min_time.get_process_list(leaf)
-        print(name, pc)
+        name, pc = analyse_process_graph(graph)
+        pprint(name)
+        pprint(pc)
+
+        self.assertEqual(len(pc), 4)
+
+        for entry in pc:
+            self.assertTrue(entry["module"] == "t.rast.series")
+
+    def test_filter_bbox(self):
+        graph = {
+            "process_graph": {
+                "process_id": "filter_bbox",
+                "args": {
+                    "collections": [{
+                        "product_id": "temperature_mean_1950_2013_yearly_celsius@PERMANENT"
+                    }],
+                    "left": -40.5,
+                    "right": 75.5,
+                    "top": 75.5,
+                    "bottom": 25.25
+                }
+            }
+        }
+
+        name, pc = analyse_process_graph(graph)
+        pprint(name)
+        pprint(pc)
+
+        self.assertEqual(len(pc), 1)
+
+        for entry in pc:
+            self.assertTrue(entry["module"] == "g.region")
 
 
 if __name__ == "__main__":

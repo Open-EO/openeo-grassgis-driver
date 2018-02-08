@@ -11,26 +11,26 @@ import graas_openeo_core_wrapper.process_definitions.ndvi_process
 import graas_openeo_core_wrapper.process_definitions.min_time_process
 
 
-def check_leaf(leaf):
-    """Check a process description and call the required subprocess analysis
+def analyse_process_graph(args):
+    """Analyse a process process graph and call the required subprocess analysis
 
-    :param leaf: The process description
+    :param args: The process description
     :return: (output_name, pc)
     """
 
-    if "collections" not in leaf and "process_graph" not in leaf:
+    if "collections" not in args and "process_graph" not in args:
         raise Exception("process_graph or collection not found on process description")
 
     process_list = []
     input_name = ""
 
-    if "collections" in leaf:
-        if len(leaf["collections"]) != 1:
+    if "collections" in args:
+        if len(args["collections"]) != 1:
             raise Exception("A single entry is expected in the collection of the process description")
-        entry = leaf["collections"][0]
+        entry = args["collections"][0]
 
-    if "process_graph" in leaf:
-        entry = leaf["process_graph"]
+    if "process_graph" in args:
+        entry = args["process_graph"]
 
     if "process_id" in entry:
         input_name, process_list = PROCESS_DICT[entry["process_id"]](entry["args"])

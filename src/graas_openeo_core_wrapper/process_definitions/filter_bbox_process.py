@@ -12,7 +12,7 @@ __email__ = "soerengebbert@googlemail.com"
 PROCESS_NAME = "filter_bbox"
 
 DOC = {
-    "process_id": "filter_bbox",
+    "process_id": PROCESS_NAME,
     "description": "Drops observations from a collection that are located outside of a given bounding box.",
     "args": {
         "collections": {
@@ -56,7 +56,7 @@ def create_graas_process_chain_entry(strds_name, left=None, right=None, top=None
 
     mapset = "PERMANENT"
     if "@" in strds_name:
-        input_time_series, mapset = strds_name.split("@")
+        strds_name, mapset = strds_name.split("@")
 
     # Get region information about the required strds
     status_code, strds_info = iface.strds_info(mapset=mapset, strds_name=strds_name)
@@ -121,7 +121,7 @@ def get_process_list(args):
         bottom = args["bottom"]
 
     if "srs" in args:
-        raise Exception("SRS is currently not supported")
+        print("SRS is currently not supported")
 
     pc = create_graas_process_chain_entry(strds_name=input_name, left=left, right=right, top=top, bottom=bottom)
     process_list.append(pc)

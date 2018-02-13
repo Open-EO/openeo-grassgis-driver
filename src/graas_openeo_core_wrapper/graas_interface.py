@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from flask import json
-from openeo_core.app import flask_app
 from graas_openeo_core_wrapper.config import Config as GRaaSConfig
 import requests
 
@@ -80,3 +79,22 @@ class GRaaSInterface(object):
                                                                                       "mapset": mapset,
                                                                                       "layer": strds_name}
         return self._send_get_request(url)
+
+    def check_strds_exists(self, strds_name):
+        """Return True if the strds exists, False otherwise
+
+        :param strds_name: The name of the strds
+        :return: True if the strds exists, False otherwise
+        """
+
+        mapset = "PERMANENT"
+        if "@" in strds_name:
+            strds_name, mapset = strds_name.split("@")
+
+        # Get region information about the required strds and check if it exists
+        status_code, strds_info = self.strds_info(mapset=mapset, strds_name=strds_name)
+
+        if status_code != 200:
+            return False
+
+        return True

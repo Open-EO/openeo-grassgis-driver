@@ -72,6 +72,19 @@ class GRaaSInterfaceTestCase(TestBase):
         self.assertEqual(status, 200)
         self.assertEqual(len(mapsets), 1)
 
+    def test_strds_exists(self):
+        iface = GRaaSInterface(self.gconf)
+        status = iface.check_strds_exists(strds_name="precipitation_1950_2013_yearly_mm@PERMANENT")
+        self.assertTrue(status)
+
+        iface = GRaaSInterface(self.gconf)
+        status = iface.check_strds_exists(strds_name="precipitation_1950_2013_yearly_mm")
+        self.assertTrue(status)
+
+        iface = GRaaSInterface(self.gconf)
+        status = iface.check_strds_exists(strds_name="precipitation_1950_2013_yearly_mm_nope")
+        self.assertFalse(status)
+
 
 if __name__ == "__main__":
     unittest.main()

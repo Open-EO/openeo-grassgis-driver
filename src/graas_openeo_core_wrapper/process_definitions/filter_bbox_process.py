@@ -62,7 +62,7 @@ def create_graas_process_chain_entry(strds_name, left=None, right=None, top=None
     status_code, strds_info = iface.strds_info(mapset=mapset, strds_name=strds_name)
 
     if status_code != 200:
-        raise Exception("Unable to get strds info for %s"%strds_name)
+        raise Exception("Unable to get strds info for %s. Response: %s"%(strds_name, strds_info))
 
     ewres = strds_info["ewres_min"]
     nsres = strds_info["nsres_min"]

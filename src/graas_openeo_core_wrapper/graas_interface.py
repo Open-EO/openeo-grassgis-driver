@@ -36,7 +36,7 @@ class GRaaSInterface(object):
     def _send_get_request(self, url):
         r = requests.get(url=url, auth=self.auth)
         print(r)
-        data = None
+        data = r.text
 
         if r.status_code == 200:
             ret = json.loads(r.text)

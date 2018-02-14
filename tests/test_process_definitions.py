@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from pprint import pprint
+from graas_openeo_core_wrapper import config
 from graas_openeo_core_wrapper.test_base import TestBase
 from graas_openeo_core_wrapper.process_definitions import analyse_process_graph
 
@@ -37,6 +38,7 @@ class ProcessDefinitionTestCase(TestBase):
             }
         }
 
+        config.Config.LOCATION="ECAD"
         name, pc = analyse_process_graph(graph)
         pprint(name)
         pprint(pc)
@@ -60,6 +62,7 @@ class ProcessDefinitionTestCase(TestBase):
             }
         }
 
+        config.Config.LOCATION="ECAD"
         name, pc = analyse_process_graph(graph)
         pprint(name)
         pprint(pc)
@@ -81,6 +84,7 @@ class ProcessDefinitionTestCase(TestBase):
             }
         }
 
+        config.Config.LOCATION="ECAD"
         name, pc = analyse_process_graph(graph)
         pprint(name)
         pprint(pc)
@@ -95,12 +99,14 @@ class ProcessDefinitionTestCase(TestBase):
             "process_graph": {
                 "process_id": "NDVI",
                 "args": {
-                    "collections": [{"product_id": "temperature_mean_1950_2013_yearly_celsius@PERMANENT"}],
-                    "nir": "temperature_mean_1950_2013_yearly_celsius@PERMANENT",
-                    "red": "temperature_mean_1950_2013_yearly_celsius@PERMANENT"
+                    "collections": [{"product_id": "S2A_B04@sentinel2A_openeo_subset"}],
+                    "red": "S2A_B04@sentinel2A_openeo_subset",
+                    "nir": "S2A_B08@sentinel2A_openeo_subset"
                 }
             }
         }
+
+        config.Config.LOCATION = "LL"
 
         name, pc = analyse_process_graph(graph)
         pprint(name)
@@ -124,26 +130,28 @@ class ProcessDefinitionTestCase(TestBase):
                                         "process_id": "filter_bbox",
                                         "args": {
                                             "collections": [{
-                                                "product_id": "temperature_mean_1950_2013_yearly_celsius@PERMANENT"
+                                                "product_id": "S2A_B04@sentinel2A_openeo_subset"
                                             }],
-                                            "left": 652000,
-                                            "right": 672000,
-                                            "top": 5161000,
-                                            "bottom": 5181000,
-                                            "srs": "EPSG:32632"
+                                            "left": -5.0,
+                                            "right": -4.7,
+                                            "top": 39.3,
+                                            "bottom": 39.0,
+                                            "srs": "EPSG:4326"
                                         }
                                     }],
-                                    "from": "2017-01-01",
-                                    "to": "2017-01-31"
+                                    "from": "2017-04-12 11:17:08",
+                                    "to": "2017-09-04 11:18:26"
                                 }
                             }],
-                            "red": "B04",
-                            "nir": "B8A"
+                            "red": "S2A_B04@sentinel2A_openeo_subset",
+                            "nir": "S2A_B08@sentinel2A_openeo_subset"
                         }
                     }]
                 }
             }
         }
+
+        config.Config.LOCATION = "LL"
 
         name, pc = analyse_process_graph(graph)
         pprint(name)

@@ -32,9 +32,10 @@ def create_graas_process_chain_entry(nir_time_series, red_time_series, output_ti
     """Create a GRaaS process description that uses t.rast.series to create the minimum
     value of the time series.
 
-    :param input_time_series: The input time series name
-    :param output_map: The name of the output map
-    :return: A GRaaS process chain description
+    :param nir_time_series: The NIR band time series name
+    :param red_time_series: The RED band time series name
+    :param output_time_series: The name of the output time series
+    :return: A list of GRaaS process chain descriptions
     """
     rn = randint(0, 1000000)
 
@@ -69,18 +70,24 @@ def get_process_list(args):
     :param args: The process description arguments
     :return: (output_time_series, pc)
     """
-    input_name, process_list = process_definitions.analyse_process_graph(args)
+
+    input_names, process_list = process_definitions.analyse_process_graph(args)
+
+    # Two input names are required
+    if len(input_names) != 2:
+        raise Exception("Two input time series are required")
 
     # Create the output name based on the input name and method
-    output_time_series = input_name + "_" + PROCESS_NAME
+    output_time_series = input_names[0].split("@")[0] + "_" + PROCESS_NAME
 
     nir_time_series = None
     red_time_series = None
 
-    if "nir" in args:
-        nir_time_series = args["nir"]
-    if "red" in args:
-        red_time_series = args["red"]
+    for input_name in input_names:
+        if "nir" in args and args["nir"] in input_name:
+            nir_time_series = input_name
+        if "red" in args and args["red"] in input_name:
+            red_time_series = input_name
 
     if nir_time_series is None or red_time_series is None:
         raise Exception("Band information is missing from process description")
@@ -88,7 +95,7 @@ def get_process_list(args):
     pc = create_graas_process_chain_entry(nir_time_series, red_time_series, output_time_series)
     process_list.extend(pc)
 
-    return output_time_series, process_list
+    return [output_time_series,], process_list
 
 
 process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list

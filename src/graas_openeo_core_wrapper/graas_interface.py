@@ -20,6 +20,7 @@ class GRaaSInterface(object):
         self.port = config.PORT
         self.base_url = "%(host)s:%(port)s" % {"host": self.host, "port": self.port}
         self.auth = (config.USER, config.PASSWORD)
+        self.user = config.USER
         self.location = config.LOCATION
 
     def check_health(self):
@@ -39,8 +40,57 @@ class GRaaSInterface(object):
         data = r.text
 
         if r.status_code == 200:
-            ret = json.loads(r.text)
+            ret = r.json()
             data = ret["process_results"]
+
+        return r.status_code, data
+
+    def _send_post_request(self, url, process_chain):
+        r = requests.post(url=url, auth=self.auth,
+                          json=process_chain)
+        print(r)
+        data = r.text
+
+        if r.status_code == 200:
+            ret = r.json()
+            data = ret["resource_id"]
+
+        return r.status_code, data
+
+    def resource_info(self, resource_id):
+        url = "%(base)s/status/%(user)s/%(rid)s" % {"base": self.base_url, "user": self.user, "rid": resource_id}
+        r = requests.get(url=url, auth=self.auth)
+        print(r)
+        data = r.text
+
+        if r.status_code == 200:
+            data = r.json()
+
+        return r.status_code, data
+
+    def create_mapset(self, mapset):
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {"base": self.base_url,
+                                                                      "location": self.location,
+                                                                      "mapset": mapset}
+        r = requests.post(url=url, auth=self.auth)
+        print(r)
+        data = r.text
+
+        if r.status_code == 200:
+            data = r.json()
+
+        return r.status_code, data
+
+    def delete_mapset(self, mapset):
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {"base": self.base_url,
+                                                                      "location": self.location,
+                                                                      "mapset": mapset}
+        r = requests.delete(url=url, auth=self.auth)
+        print(r)
+        data = r.text
+
+        if r.status_code == 200:
+            data = r.json()
 
         return r.status_code, data
 
@@ -51,8 +101,8 @@ class GRaaSInterface(object):
 
     def mapset_info(self, mapset):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/info" % {"base": self.base_url,
-                                                                "location": self.location,
-                                                                "mapset": mapset}
+                                                                           "location": self.location,
+                                                                           "mapset": mapset}
         return self._send_get_request(url)
 
     def list_raster(self, mapset):
@@ -98,3 +148,16 @@ class GRaaSInterface(object):
             return False
 
         return True
+
+    def async_persistent_processing(self, mapset, process_chain):
+        """Send a process chain to the graas backend to be run asynchronously in a persistent database
+
+        :param mapset: The new mapset to generate
+        :param process_chain: The process chain that must be executed
+        :return: Status code and process id
+        """
+
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/processing_async" % {"base": self.base_url,
+                                                                                       "location": self.location,
+                                                                                       "mapset": mapset}
+        return self._send_post_request(url=url, process_chain=process_chain)

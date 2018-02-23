@@ -14,27 +14,40 @@ import graas_openeo_core_wrapper.process_definitions.min_time_process
 def analyse_process_graph(args):
     """Analyse a process process graph and call the required subprocess analysis
 
+    This function return the list of input names for the next process and the
+    GRaaS process chain that was build before.
+
     :param args: The process description
-    :return: (output_name, pc)
+    :return: (output_name_list, pc)
     """
 
     if "collections" not in args and "process_graph" not in args:
         raise Exception("process_graph or collection not found on process description")
 
     process_list = []
-    input_name = ""
-
-    if "collections" in args:
-        if len(args["collections"]) != 1:
-            raise Exception("A single entry is expected in the collection of the process description")
-        entry = args["collections"][0]
+    input_list = []
 
     if "process_graph" in args:
         entry = args["process_graph"]
 
-    if "process_id" in entry:
-        input_name, process_list = PROCESS_DICT[entry["process_id"]](entry["args"])
-    if "product_id" in entry:
-        input_name = entry["product_id"]
+        if "process_id" in entry:
+            inputs, processes = PROCESS_DICT[entry["process_id"]](entry["args"])
+            process_list.extend(processes)
+            input_list.extend(inputs)
+        if "product_id" in entry:
+            input = entry["product_id"]
+            input_list.append(input)
 
-    return input_name, process_list
+    elif "collections" in args:
+        entry_list = args["collections"]
+        for entry in entry_list:
+
+            if "process_id" in entry:
+                inputs, processes = PROCESS_DICT[entry["process_id"]](entry["args"])
+                process_list.extend(processes)
+                input_list.extend(inputs)
+            if "product_id" in entry:
+                inputs = entry["product_id"]
+                input_list.append(inputs)
+
+    return input_list, process_list

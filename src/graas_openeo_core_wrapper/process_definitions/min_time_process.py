@@ -53,12 +53,12 @@ def get_process_list(args):
     input_name, process_list = process_definitions.analyse_process_graph(args)
 
     # Create the output name based on the input name and method
-    output_name = input_name + "_" + PROCESS_NAME
+    output_name = input_name[0] + "_" + PROCESS_NAME
 
     pc = create_graas_process_chain_entry(input_name, output_name)
     process_list.append(pc)
 
-    return (output_name, process_list)
+    return [output_name,], process_list
 
 
 process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list

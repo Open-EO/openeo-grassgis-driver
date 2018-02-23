@@ -38,7 +38,7 @@ class ProcessDefinitionTestCase(TestBase):
             }
         }
 
-        config.Config.LOCATION="ECAD"
+        config.Config.LOCATION = "ECAD"
         name, pc = analyse_process_graph(graph)
         pprint(name)
         pprint(pc)
@@ -62,7 +62,7 @@ class ProcessDefinitionTestCase(TestBase):
             }
         }
 
-        config.Config.LOCATION="ECAD"
+        config.Config.LOCATION = "ECAD"
         name, pc = analyse_process_graph(graph)
         pprint(name)
         pprint(pc)
@@ -84,7 +84,7 @@ class ProcessDefinitionTestCase(TestBase):
             }
         }
 
-        config.Config.LOCATION="ECAD"
+        config.Config.LOCATION = "ECAD"
         name, pc = analyse_process_graph(graph)
         pprint(name)
         pprint(pc)
@@ -99,24 +99,27 @@ class ProcessDefinitionTestCase(TestBase):
             "process_graph": {
                 "process_id": "NDVI",
                 "args": {
-                    "collections": [{"product_id": "S2A_B04@sentinel2A_openeo_subset"}],
-                    "red": "S2A_B04@sentinel2A_openeo_subset",
-                    "nir": "S2A_B08@sentinel2A_openeo_subset"
+                    "collections": [{"product_id": "S2A_B04@sentinel2A_openeo_subset"},
+                                    {"product_id": "S2A_B08@sentinel2A_openeo_subset"}],
+                    "red": "S2A_B04",
+                    "nir": "S2A_B08"
                 }
             }
         }
 
         config.Config.LOCATION = "LL"
 
-        name, pc = analyse_process_graph(graph)
-        pprint(name)
+        names, pc = analyse_process_graph(graph)
+        pprint(names)
         pprint(pc)
 
+        self.assertEqual(names[0], "S2A_B04_NDVI")
         self.assertEqual(len(pc), 2)
 
     def test_openeo_usecase_1(self):
 
-        graph = {
+        graph = \
+        {
             "process_graph": {
                 "process_id": "min_time",
                 "args": {
@@ -142,9 +145,29 @@ class ProcessDefinitionTestCase(TestBase):
                                     "from": "2017-04-12 11:17:08",
                                     "to": "2017-09-04 11:18:26"
                                 }
-                            }],
-                            "red": "S2A_B04@sentinel2A_openeo_subset",
-                            "nir": "S2A_B08@sentinel2A_openeo_subset"
+                            },
+                                {
+                                    "process_id": "filter_daterange",
+                                    "args": {
+                                        "collections": [{
+                                            "process_id": "filter_bbox",
+                                            "args": {
+                                                "collections": [{
+                                                    "product_id": "S2A_B08@sentinel2A_openeo_subset"
+                                                }],
+                                                "left": -5.0,
+                                                "right": -4.7,
+                                                "top": 39.3,
+                                                "bottom": 39.0,
+                                                "srs": "EPSG:4326"
+                                            }
+                                        }],
+                                        "from": "2017-04-12 11:17:08",
+                                        "to": "2017-09-04 11:18:26"
+                                    }
+                                }],
+                            "red": "S2A_B04",
+                            "nir": "S2A_B08"
                         }
                     }]
                 }
@@ -157,7 +180,7 @@ class ProcessDefinitionTestCase(TestBase):
         pprint(name)
         pprint(pc)
 
-        self.assertEqual(len(pc), 1)
+        self.assertEqual(len(pc), 7)
 
 
 if __name__ == "__main__":

@@ -101,10 +101,10 @@ def get_process_list(args):
     """
 
     # Get the input description and the process chain to attach this process
-    input_name, process_list = process_definitions.analyse_process_graph(args)
+    input_names, process_list = process_definitions.analyse_process_graph(args)
 
     # Pipe the input name to the output
-    output_name = input_name
+    output_name = input_names[0]
 
     left = None
     right = None
@@ -123,10 +123,10 @@ def get_process_list(args):
     if "srs" in args:
         print("SRS is currently not supported")
 
-    pc = create_graas_process_chain_entry(strds_name=input_name, left=left, right=right, top=top, bottom=bottom)
+    pc = create_graas_process_chain_entry(strds_name=input_names[0], left=left, right=right, top=top, bottom=bottom)
     process_list.append(pc)
 
-    return output_name, process_list
+    return [output_name,], process_list
 
 
 process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list

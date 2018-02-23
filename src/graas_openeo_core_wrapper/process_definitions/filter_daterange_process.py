@@ -64,7 +64,7 @@ def get_process_list(args):
     strds_name, process_list = process_definitions.analyse_process_graph(args)
 
     # Pipe the input name to the output
-    output_strds_name = strds_name.split("@")[0] + "_" + PROCESS_NAME
+    output_strds_name = strds_name[0].split("@")[0] + "_" + PROCESS_NAME
 
     start_time = None
     end_time = None
@@ -78,7 +78,7 @@ def get_process_list(args):
                                           end_time=end_time, output_strds_name=output_strds_name)
     process_list.append(pc)
 
-    return output_strds_name, process_list
+    return [output_strds_name,], process_list
 
 
 process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list

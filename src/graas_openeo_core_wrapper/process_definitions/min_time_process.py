@@ -55,7 +55,8 @@ def get_process_list(args):
     # Create the output name based on the input name and method
     output_name = input_name[0] + "_" + PROCESS_NAME
 
-    pc = create_graas_process_chain_entry(input_name, output_name)
+    pc = create_graas_process_chain_entry(input_name[0],
+                                          output_name)
     process_list.append(pc)
 
     return [output_name,], process_list

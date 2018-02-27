@@ -26,7 +26,6 @@ class GRaaSInterface(object):
     def check_health(self):
 
         url = self.base_url + "/health_check"
-        print(url)
         r = requests.get(url=url)
 
         if r.status_code == 200:
@@ -46,21 +45,24 @@ class GRaaSInterface(object):
         return r.status_code, data
 
     def _send_post_request(self, url, process_chain):
+        """Send a post request adn return the return status and the GRaaS response
+
+        :param url:
+        :param process_chain:
+        :return:
+        """
         r = requests.post(url=url, auth=self.auth,
                           json=process_chain)
-        print(r)
         data = r.text
 
         if r.status_code == 200:
-            ret = r.json()
-            data = ret["resource_id"]
+            data = r.json()
 
         return r.status_code, data
 
     def resource_info(self, resource_id):
         url = "%(base)s/status/%(user)s/%(rid)s" % {"base": self.base_url, "user": self.user, "rid": resource_id}
         r = requests.get(url=url, auth=self.auth)
-        print(r)
         data = r.text
 
         if r.status_code == 200:
@@ -73,7 +75,6 @@ class GRaaSInterface(object):
                                                                       "location": self.location,
                                                                       "mapset": mapset}
         r = requests.post(url=url, auth=self.auth)
-        print(r)
         data = r.text
 
         if r.status_code == 200:
@@ -86,7 +87,6 @@ class GRaaSInterface(object):
                                                                       "location": self.location,
                                                                       "mapset": mapset}
         r = requests.delete(url=url, auth=self.auth)
-        print(r)
         data = r.text
 
         if r.status_code == 200:
@@ -154,7 +154,7 @@ class GRaaSInterface(object):
 
         :param mapset: The new mapset to generate
         :param process_chain: The process chain that must be executed
-        :return: Status code and process id
+        :return: Status code and the json data (status, json)
         """
 
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/processing_async" % {"base": self.base_url,

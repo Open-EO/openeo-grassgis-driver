@@ -21,7 +21,7 @@ def analyse_process_graph(args):
     :return: (output_name_list, pc)
     """
 
-    if "collections" not in args and "process_graph" not in args:
+    if not args or ("collections" not in args and "process_graph" not in args):
         raise Exception("process_graph or collection not found on process description")
 
     process_list = []

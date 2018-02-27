@@ -42,12 +42,17 @@ def create_graas_process_chain_entry(strds_name, start_time, end_time, output_st
     # Get info about the time series to extract its resolution settings and bbox
     rn = randint(0, 1000000)
 
+    output_name = "%s_extract"%strds_name.split("@")[0]
+
     pc = {"id": "t_rast_extract_%i"%rn,
           "module": "t.rast.extract",
           "inputs": [{"param": "input", "value": strds_name},
                      {"param": "where", "value": "start_time >= '%(start)s' "
                                                  "AND end_time <= '%(end)s'"%{"start":start_time, "end":end_time}},
-                     {"param": "output", "value": output_strds_name}]}
+                     {"param": "output", "value": output_strds_name},
+                     {"param": "expression", "value": "1.0 * %s"%strds_name},
+                     {"param": "basename", "value": output_name},
+                     {"param": "suffix", "value": "num"}]}
 
     return pc
 
@@ -74,8 +79,10 @@ def get_process_list(args):
     if "to" in args:
         end_time = args["to"]
 
-    pc = create_graas_process_chain_entry(strds_name=strds_name, start_time=start_time,
-                                          end_time=end_time, output_strds_name=output_strds_name)
+    pc = create_graas_process_chain_entry(strds_name=strds_name[0],
+                                          start_time=start_time,
+                                          end_time=end_time,
+                                          output_strds_name=output_strds_name)
     process_list.append(pc)
 
     return [output_strds_name,], process_list

@@ -5,6 +5,7 @@ from graas_openeo_core_wrapper.data import GRaaSData
 from graas_openeo_core_wrapper.data_product_id import GRaaSDataProductId
 from graas_openeo_core_wrapper.processes_process_id import GRaaSProcessesProcessId
 from graas_openeo_core_wrapper.processes import GRaaSProcesses
+from graas_openeo_core_wrapper.jobs import GRaaSJobs
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert"
@@ -24,3 +25,5 @@ def create_endpoints():
 
     flask_api.add_resource(GRaaSProcesses, '/processes')
     flask_api.add_resource(GRaaSProcessesProcessId, '/processes/<string:process_id>')
+
+    flask_api.add_resource(GRaaSJobs, '/jobs')

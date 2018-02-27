@@ -82,12 +82,12 @@ def create_graas_process_chain_entry(strds_name, left=None, right=None, top=None
 
     pc = {"id": "g_region_%i"%rn,
           "module": "g.region",
-          "inputs": [{"param": "n", "value": top},
-                     {"param": "s", "value": bottom},
-                     {"param": "e", "value": right},
-                     {"param": "w", "value": left},
-                     {"param": "ewres", "value": ewres},
-                     {"param": "nsres", "value": nsres}]}
+          "inputs": [{"param": "n", "value": str(top)},
+                     {"param": "s", "value": str(bottom)},
+                     {"param": "e", "value": str(right)},
+                     {"param": "w", "value": str(left)},
+                     {"param": "ewres", "value": str(ewres)},
+                     {"param": "nsres", "value": str(nsres)}]}
 
     return pc
 

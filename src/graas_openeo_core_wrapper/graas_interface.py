@@ -70,6 +70,16 @@ class GRaaSInterface(object):
 
         return r.status_code, data
 
+    def delete_resource(self, resource_id):
+        url = "%(base)s/status/%(user)s/%(rid)s" % {"base": self.base_url, "user": self.user, "rid": resource_id}
+        r = requests.delete(url=url, auth=self.auth)
+        data = r.text
+
+        if r.status_code == 200:
+            data = r.json()
+
+        return r.status_code, data
+
     def create_mapset(self, mapset):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {"base": self.base_url,
                                                                       "location": self.location,

@@ -180,7 +180,7 @@ class ProcessDefinitionTestCase(TestBase):
         pprint(name)
         pprint(pc)
 
-        self.assertEqual(len(pc), 6)
+        self.assertEqual(len(pc), 7)
 
 
 if __name__ == "__main__":

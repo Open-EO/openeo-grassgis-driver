@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
 import pprint
-from openeo_core.jobs import Jobs, POST_JOBS_DOC
-from openeo_core.definitions import DataSetListEntry, DataSetInfo
+from openeo_core.jobs import POST_JOBS_DOC
+from openeo_core.jobs import Jobs
 from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
-from flask import make_response, jsonify, request, g
+from flask import make_response, jsonify, request
 from flask_restful_swagger_2 import swagger
 from graas_openeo_core_wrapper.process_definitions import analyse_process_graph
+from graas_openeo_core_wrapper.graph_db import GraphDB
 
 
 class GRaaSJobs(Jobs):
 
     def __init__(self):
         self.iface = GRaaSInterface()
+        self.db = GraphDB()
 
     @swagger.doc(POST_JOBS_DOC)
-    def post(self, ):
+    def post(self):
 
         try:
             status_code, mapsets = self.iface.list_mapsets()
@@ -44,10 +46,13 @@ class GRaaSJobs(Jobs):
                                                                       process_chain=process_chain)
             pprint.pprint(response)
 
+            # Save the process graph into the graph db
+            self.db[response["resource_id"]] = process_graph
+
             if status == 200:
                 return make_response(jsonify({"job_id":response["resource_id"],
                                               "job_info":response}), status)
             else:
                 return make_response(jsonify(response), status)
         except Exception as e:
-                return make_response(jsonify(str(e)), 500)
+                return make_response(jsonify({"error": str(e)}), 500)

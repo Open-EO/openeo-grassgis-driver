@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
+import time
+import pprint
 from flask import json
 from graas_openeo_core_wrapper.test_base import TestBase
 from graas_openeo_core_wrapper import config
@@ -26,9 +28,9 @@ use_case_1_graph = {
                                         "product_id": "S2A_B04@sentinel2A_openeo_subset"
                                     }],
                                     "left": -5.0,
-                                    "right": -4.7,
-                                    "top": 39.3,
-                                    "bottom": 39.0,
+                                    "right": -4.98,
+                                    "top": 39.12,
+                                    "bottom": 39.1,
                                     "srs": "EPSG:4326"
                                 }
                             }],
@@ -95,18 +97,59 @@ class JobsTestCase(TestBase):
         response = self.app.post('/jobs', data=json.dumps(use_case_1_graph), content_type="application/json")
 
         data = json.loads(response.data.decode())
-        print(data)
+        pprint.pprint(data)
 
         self.assertEqual(response.status_code, 200)
+
+        self.waitUntilFinished(response)
 
     def test_post_data_range_filter_job(self):
         config.Config.LOCATION = "LL"
         response = self.app.post('/jobs', data=json.dumps(date_range_filter), content_type="application/json")
 
         data = json.loads(response.data.decode())
-        print(data)
+        pprint.pprint(data)
 
         self.assertEqual(response.status_code, 200)
+
+        self.waitUntilFinished(response)
+
+    def waitUntilFinished(self, response, http_status=200, status="finished"):
+        """Poll the status of a resource and assert its finished HTTP status
+
+        The response will be checked if the resource was accepted. Hence it must always be HTTP 200 status.
+
+        The status URL from the response is then polled until status: finished, error or terminated.
+        The result of the poll can be checked against its HTTP status and its GRaaS status message.
+
+        Args:
+            response: The accept response
+            http_status (int): The HTTP status that should be checked
+            status (str): The return status of the response
+
+        Returns: response
+
+        """
+        # Check if the resource was accepted
+        self.assertEqual(response.status_code, 200, "HTML status code is wrong %i"%response.status_code)
+        self.assertEqual(response.mimetype, "application/json", "Wrong mimetype %s"%response.mimetype)
+
+        resp_data = json.loads(response.data.decode())
+
+        while True:
+
+            response = self.app.get('/jobs/%s' % resp_data["job_id"])
+            resp_data = json.loads(response.data.decode())
+            pprint.pprint(resp_data)
+            if resp_data["status"] == "finished" or resp_data["status"] == "error" or resp_data["status"] == "terminated":
+                break
+            time.sleep(0.2)
+
+        self.assertEquals(resp_data["status"], status)
+        self.assertEqual(response.status_code, http_status, "HTML status code is wrong %i"%response.status_code)
+
+        time.sleep(0.4)
+        return resp_data
 
 
 if __name__ == "__main__":

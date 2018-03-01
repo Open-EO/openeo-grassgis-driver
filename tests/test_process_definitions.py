@@ -116,6 +116,29 @@ class ProcessDefinitionTestCase(TestBase):
         self.assertEqual(names[0], "S2A_B04_NDVI")
         self.assertEqual(len(pc), 2)
 
+    def test_ndvi_error(self):
+        graph = {
+            "process_graph": {
+                "process_id": "NDVI_nope",
+                "args": {
+                    "collections": [{"product_id": "S2A_B04@sentinel2A_openeo_subset"},
+                                    {"product_id": "S2A_B08@sentinel2A_openeo_subset"}],
+                    "red": "S2A_B04",
+                    "nir": "S2A_B08"
+                }
+            }
+        }
+
+        config.Config.LOCATION = "LL"
+
+        try:
+            names, pc = analyse_process_graph(graph)
+            pprint(names)
+            pprint(pc)
+            self.assertTrue(False)
+        except:
+            pass
+
     def test_openeo_usecase_1(self):
 
         graph = \

@@ -31,6 +31,10 @@ def analyse_process_graph(args):
         entry = args["process_graph"]
 
         if "process_id" in entry:
+
+            if entry["process_id"] not in PROCESS_DICT:
+                raise Exception("Unsupported process id")
+
             inputs, processes = PROCESS_DICT[entry["process_id"]](entry["args"])
             process_list.extend(processes)
             input_list.extend(inputs)
@@ -44,6 +48,10 @@ def analyse_process_graph(args):
 
             if "process_id" in entry:
                 inputs, processes = PROCESS_DICT[entry["process_id"]](entry["args"])
+
+                if entry["process_id"] not in PROCESS_DICT:
+                    raise Exception("Unsupported process id")
+
                 process_list.extend(processes)
                 input_list.extend(inputs)
             if "product_id" in entry:

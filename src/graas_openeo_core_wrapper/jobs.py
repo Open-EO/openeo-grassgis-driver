@@ -55,4 +55,4 @@ class GRaaSJobs(Jobs):
             else:
                 return make_response(jsonify(response), status)
         except Exception as e:
-                return make_response(jsonify({"error": str(e)}), 500)
+                return make_response(jsonify({"error": str(e)}), 400)

@@ -90,7 +90,7 @@ date_range_filter = {
 }
 
 
-date_range_filter_large = {
+date_range_filter_long_run = {
     "process_graph": {
         "process_id": "filter_daterange",
         "args": {
@@ -104,6 +104,30 @@ date_range_filter_large = {
                     "right": -4.5,
                     "top": 39.5,
                     "bottom": 38.5,
+                    "srs": "EPSG:4326"
+                }
+            }],
+            "from": "2017-06-21 11:12:22",
+            "to": "2017-08-20 11:12:21"
+        }
+    }
+}
+
+
+date_range_filter_error_no_strds = {
+    "process_graph": {
+        "process_id": "filter_daterange",
+        "args": {
+            "collections": [{
+                "process_id": "filter_bbox",
+                "args": {
+                    "collections": [{
+                        "product_id": "S2A_B04_nope@sentinel2A_openeo_subset"
+                    }],
+                    "left": -5.0,
+                    "right": -4.99,
+                    "top": 39.0,
+                    "bottom": 38.99,
                     "srs": "EPSG:4326"
                 }
             }],
@@ -140,7 +164,7 @@ class JobsTestCase(TestBase):
 
     def test_3_post_use_case_1_job_delete(self):
         config.Config.LOCATION = "LL"
-        response = self.app.post('/jobs', data=json.dumps(date_range_filter_large), content_type="application/json")
+        response = self.app.post('/jobs', data=json.dumps(date_range_filter_long_run), content_type="application/json")
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -151,6 +175,16 @@ class JobsTestCase(TestBase):
         pprint.pprint(data)
 
         self.wait_until_finished(response=response, status="terminated")
+
+    def test_4_error_no_strds(self):
+        config.Config.LOCATION = "LL"
+        response = self.app.post('/jobs', data=json.dumps(date_range_filter_error_no_strds),
+                                 content_type="application/json")
+
+        data = json.loads(response.data.decode())
+        pprint.pprint(data)
+
+        self.assertEqual(response.status_code, 400)
 
     def wait_until_finished(self, response, http_status=200, status="finished"):
         """Poll the status of a resource and assert its finished HTTP status

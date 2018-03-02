@@ -93,40 +93,42 @@ def create_graas_process_chain_entry(strds_name, left=None, right=None, top=None
 
 
 def get_process_list(args):
-    """Analyse the process description and return the GRaaS process chain and the name of the processing result layer
-    which is a single raster layer
+    """Analyse the process description and return the GRaaS process chain and the name of the processing result
 
     :param args: The process description
     :return: (output_name, pc)
     """
 
-    # Get the input description and the process chain to attach this process
     input_names, process_list = process_definitions.analyse_process_graph(args)
+    output_names = []
 
-    # Pipe the input name to the output
-    output_name = input_names[0]
+    for input_name in input_names:
 
-    left = None
-    right = None
-    top = None
-    bottom = None
+        # Create the output name based on the input name and method
+        output_name = input_name
+        output_names.append(output_name)
 
-    if "left" in args:
-        left = args["left"]
-    if "right" in args:
-        right = args["right"]
-    if "top" in args:
-        top = args["top"]
-    if "bottom" in args:
-        bottom = args["bottom"]
+        left = None
+        right = None
+        top = None
+        bottom = None
 
-    if "srs" in args:
-        print("SRS is currently not supported")
+        if "left" in args:
+            left = args["left"]
+        if "right" in args:
+            right = args["right"]
+        if "top" in args:
+            top = args["top"]
+        if "bottom" in args:
+            bottom = args["bottom"]
 
-    pc = create_graas_process_chain_entry(strds_name=input_names[0], left=left, right=right, top=top, bottom=bottom)
-    process_list.append(pc)
+        if "srs" in args:
+            print("SRS is currently not supported")
 
-    return [output_name,], process_list
+        pc = create_graas_process_chain_entry(strds_name=input_name, left=left, right=right, top=top, bottom=bottom)
+        process_list.append(pc)
+
+    return output_names, process_list
 
 
 process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list

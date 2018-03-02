@@ -9,6 +9,7 @@ import graas_openeo_core_wrapper.process_definitions.filter_bbox_process
 import graas_openeo_core_wrapper.process_definitions.filter_daterange_process
 import graas_openeo_core_wrapper.process_definitions.ndvi_process
 import graas_openeo_core_wrapper.process_definitions.min_time_process
+import graas_openeo_core_wrapper.process_definitions.udf_reduce_time
 
 
 def analyse_process_graph(args):

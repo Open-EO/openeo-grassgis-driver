@@ -72,30 +72,36 @@ def get_process_list(args):
     """
 
     input_names, process_list = process_definitions.analyse_process_graph(args)
+    output_names = []
 
     # Two input names are required
     if len(input_names) != 2:
-        raise Exception("Two input time series are required")
+        raise Exception("At least two input time series are required")
 
-    # Create the output name based on the input name and method
-    output_time_series = input_names[0].split("@")[0] + "_" + PROCESS_NAME
+    for i in range(0, len(input_names), 2):
 
-    nir_time_series = None
-    red_time_series = None
+        input_tuple = (input_names[i], input_names[i + 1])
 
-    for input_name in input_names:
-        if "nir" in args and args["nir"] in input_name:
-            nir_time_series = input_name
-        if "red" in args and args["red"] in input_name:
-            red_time_series = input_name
+        nir_time_series = None
+        red_time_series = None
 
-    if nir_time_series is None or red_time_series is None:
-        raise Exception("Band information is missing from process description")
+        for input_name in input_tuple:
+            if "nir" in args and args["nir"] in input_name:
+                nir_time_series = input_name
+            if "red" in args and args["red"] in input_name:
+                red_time_series = input_name
 
-    pc = create_graas_process_chain_entry(nir_time_series, red_time_series, output_time_series)
-    process_list.extend(pc)
+        if nir_time_series is None or red_time_series is None:
+            raise Exception("Band information is missing from process description")
 
-    return [output_time_series,], process_list
+        # Create the output name based on the input name and method
+        output_time_series = red_time_series.split("@")[0] + "_" + PROCESS_NAME
+        output_names.append(output_time_series)
+
+        pc = create_graas_process_chain_entry(nir_time_series, red_time_series, output_time_series)
+        process_list.extend(pc)
+
+    return output_names, process_list
 
 
 process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list

@@ -66,26 +66,30 @@ def get_process_list(args):
     """
 
     # Get the input description and the process chain to attach this process
-    strds_name, process_list = process_definitions.analyse_process_graph(args)
+    input_names, process_list = process_definitions.analyse_process_graph(args)
+    output_names = []
 
-    # Pipe the input name to the output
-    output_strds_name = strds_name[0].split("@")[0] + "_" + PROCESS_NAME
+    for input_name in input_names:
 
-    start_time = None
-    end_time = None
+        # Create the output name based on the input name and method
+        output_name = input_name.split("@")[0] + "_" + PROCESS_NAME
+        output_names.append(output_name)
 
-    if "from" in args:
-        start_time = args["from"]
-    if "to" in args:
-        end_time = args["to"]
+        start_time = None
+        end_time = None
 
-    pc = create_graas_process_chain_entry(strds_name=strds_name[0],
-                                          start_time=start_time,
-                                          end_time=end_time,
-                                          output_strds_name=output_strds_name)
-    process_list.append(pc)
+        if "from" in args:
+            start_time = args["from"]
+        if "to" in args:
+            end_time = args["to"]
 
-    return [output_strds_name,], process_list
+        pc = create_graas_process_chain_entry(strds_name=input_name,
+                                              start_time=start_time,
+                                              end_time=end_time,
+                                              output_strds_name=output_name)
+        process_list.append(pc)
+
+    return output_names, process_list
 
 
 process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list

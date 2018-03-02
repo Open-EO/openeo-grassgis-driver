@@ -2,15 +2,17 @@
 The GRaaS openEO wrapper
 ========================
 
-This software implements the openEO Core API interface above the GRASS GIS as a Service (GRaaS) solution.
-GRaaS is a REST interface to process geodata with the GRASS GIS.
-
+This software implements the openEO Core API interface for the GRASS GIS as a Service (GRaaS) solution.
+GRaaS is an open source REST interface to process geodata with the GRASS GIS in a distributed environment.
 
 Installation
 ============
 
-Make sure to deploy the GRASS GIS locations that are required for the GRaaS openEO wrapper test suite
-in the required GRaaS installation. Otherwise most if the tests will fail. The location data can be accessed here:
+
+1. Deploy the GRaaS installation using docker.
+
+2. Make sure to deploy the GRASS GIS locations that are required for the GRaaS openEO wrapper test suite
+   in the required GRaaS installation. Otherwise most if the tests will fail. The location data can be accessed here:
 
    .. code-block:: bash
 
@@ -27,11 +29,10 @@ in the required GRaaS installation. Otherwise most if the tests will fail. The l
            tar xzvf LL.tar.gz && \
            rm -f LL.tar.gz
 
-Deploy the GRaaS installation using docker.
 
-It is preferred to run the openEO GRaaS wrapper in a virtual python environment.
 
-Create directory that should contain the code and the virtual environment and switch the environment:
+3. Create directory that should contain the code and the virtual environment and switch the environment.
+It is preferred to run the openEO GRaaS wrapper in a virtual python environment:
 
    .. code-block:: bash
 
@@ -40,8 +41,7 @@ Create directory that should contain the code and the virtual environment and sw
       virtualenv -p python3.5 venv
       source venv/bin/activate
 
-Clone the official openEO reference implementation
-repository and install the required Python packages into the virtual environment:
+4. Clone the official openEO reference implementation repository and install the required Python packages into the virtual environment:
 
    .. code-block:: bash
 
@@ -50,8 +50,7 @@ repository and install the required Python packages into the virtual environment
       pip install -r requirements.txt
       python setup.py install
 
-After installing the official openEO reference implementation
-the GRaaS openEO wrapper must be installed, since it is based on the reference implementation.
+5. After installing the official openEO reference implementation the GRaaS openEO wrapper must be installed, since it is based on the reference implementation.
 
    .. code-block:: bash
 
@@ -60,38 +59,43 @@ the GRaaS openEO wrapper must be installed, since it is based on the reference i
       pip install -r requirements.txt
       python setup.py install
 
-Run the GRaaS openEO Core API test suite:
+6. Run the GRaaS openEO Core API test suite:
 
    .. code-block:: bash
 
       python setup.py test
 
-Run the test server:
+7. Run the server:
 
    .. code-block:: bash
 
       python -m graas_openeo_core_wrapper.main
 
-Get the swagger.json API description using curl:
+8. Get the swagger.json API description using curl:
 
    .. code-block:: bash
 
       curl -X GET http://localhost:5000/api/v0/swagger.json
 
-    style.
-
-Perform the openEO use cases:
-
-   .. code-block:: bash
 
 
-List available data
+================
+openEO use cases
+================
+
+openEO use case 1
+=================
+
+The following commands show how the openEO use case 1, that was performed using the openEO GRaaS wrapper.
+The command line tool *curl* was used ot perform the REST API calls.
+
+First list all available data in the GRaaS database:
 
    .. code-block:: bash
 
       curl http://127.0.0.1:5000/data
 
-      # Result
+   .. code-block:: json
 
       [
         {
@@ -107,13 +111,13 @@ List available data
       ]
 
 
-Get information about band 04 of the sentinel2a  time series
+Get information about band 04 of the sentinel2a  time series:
 
    .. code-block:: bash
 
       curl http://127.0.0.1:5000/data/S2A_B04@sentinel2A_openeo_subset
 
-      # Result
+   .. code-block:: json
 
       {
         "aggregation_type": "None",
@@ -148,13 +152,13 @@ Get information about band 04 of the sentinel2a  time series
       }
 
 
-Get information about band 08 of the sentinel2a  time series
+Get information about band 08 of the sentinel2a  time series:
 
    .. code-block:: bash
 
       curl http://127.0.0.1:5000/data/S2A_B08@sentinel2A_openeo_subset
 
-      # Result
+   .. code-block:: json
 
       {
         "aggregation_type": "None",
@@ -189,11 +193,13 @@ Get information about band 08 of the sentinel2a  time series
       }
 
 
-List process information about all processes that are available for computation
+List process information about all processes that are available for computation:
 
    .. code-block:: bash
 
       curl http://127.0.0.1:5000/processes
+
+   .. code-block:: json
 
       [
         "udf_reduce_time",
@@ -204,11 +210,13 @@ List process information about all processes that are available for computation
       ]
 
 
-Get information about each available process
+Get information about each available process:
 
    .. code-block:: bash
 
       curl http://127.0.0.1:5000/processes/udf_reduce_time
+
+   .. code-block:: json
 
       {
         "args": {
@@ -223,7 +231,11 @@ Get information about each available process
         "process_id": "udf_reduce_time"
       }
 
+   .. code-block:: bash
+
       curl http://127.0.0.1:5000/processes/min_time
+
+   .. code-block:: json
 
       {
         "args": {
@@ -235,7 +247,11 @@ Get information about each available process
         "process_id": "min_time"
       }
 
+   .. code-block:: bash
+
       curl http://127.0.0.1:5000/processes/NDVI
+
+   .. code-block:: json
 
       {
         "args": {
@@ -253,7 +269,11 @@ Get information about each available process
         "process_id": "NDVI"
       }
 
+   .. code-block:: bash
+
       curl http://127.0.0.1:5000/processes/filter_daterange
+
+   .. code-block:: json
 
       {
         "args": {
@@ -271,8 +291,11 @@ Get information about each available process
         "process_id": "filter_daterange"
       }
 
+   .. code-block:: bash
 
       curl http://127.0.0.1:5000/processes/filter_bbox
+
+   .. code-block:: json
 
       {
         "args": {
@@ -299,8 +322,7 @@ Get information about each available process
         "process_id": "filter_bbox"
       }
 
-Create the use case 1 job
-
+Create the process gaph as JSON code and send it via **curl** to the backend as a processing job:
 
    .. code-block:: bash
 
@@ -359,7 +381,11 @@ Create the use case 1 job
           }
       }'
 
+   .. code-block:: bash
+
       curl -H "Content-Type: application/json" -X POST -d "${JSON}" http://127.0.0.1:5000/jobs
+
+   .. code-block:: json
 
       {
         "job_id": "resource_id-ca37a2ca-95ff-42c2-b6bd-15aa5ee7b5f0",
@@ -388,13 +414,13 @@ Create the use case 1 job
         }
       }
 
-We need to poll for the final result, since the request is asynchronous using the job id:
+We need to poll for the final result using the job id, since the request is asynchronous:
 
    .. code-block:: bash
 
       curl -X GET http://127.0.0.1:5000/jobs/resource_id-ca37a2ca-95ff-42c2-b6bd-15aa5ee7b5f0
 
-      # Result
+   .. code-block:: json
 
       {
         "consumed_credits": 4.009669065475464,
@@ -639,7 +665,7 @@ Several raster time series datasets were produced in the process, that are now a
 
       curl http://127.0.0.1:5000/data
 
-      # Result
+   .. code-block:: json
 
       [
         {
@@ -669,13 +695,13 @@ Several raster time series datasets were produced in the process, that are now a
         }
       ]
 
-We inspect the new time series
+We inspect the new NDVI time series:
 
    .. code-block:: bash
 
       curl http://127.0.0.1:5000/data/S2A_B04_filter_daterange_NDVI@openeo_mapset_0
 
-      # Result
+   .. code-block:: json
 
       {
         "aggregation_type": "None",

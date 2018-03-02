@@ -32,10 +32,8 @@ def create_graas_process_chain_entry(strds_name, python_file_url, output_name):
     for the provide input strds
 
     :param strds_name: The name of the strds
-    :param left:
-    :param right:
-    :param top:
-    :param bottom:
+    :param python_file_url: The URL to the python file that defines the UDF
+    :param output_name: The name of the output raster layer
     :return: A GRaaS process chain description
     """
 

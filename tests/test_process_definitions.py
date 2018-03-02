@@ -142,41 +142,21 @@ class ProcessDefinitionTestCase(TestBase):
     def test_openeo_usecase_1(self):
 
         graph = \
-        {
-            "process_graph": {
-                "process_id": "min_time",
-                "args": {
-                    "collections": [{
-                        "process_id": "NDVI",
-                        "args": {
-                            "collections": [{
-                                "process_id": "filter_daterange",
-                                "args": {
-                                    "collections": [{
-                                        "process_id": "filter_bbox",
-                                        "args": {
-                                            "collections": [{
-                                                "product_id": "S2A_B04@sentinel2A_openeo_subset"
-                                            }],
-                                            "left": -5.0,
-                                            "right": -4.7,
-                                            "top": 39.3,
-                                            "bottom": 39.0,
-                                            "srs": "EPSG:4326"
-                                        }
-                                    }],
-                                    "from": "2017-04-12 11:17:08",
-                                    "to": "2017-09-04 11:18:26"
-                                }
-                            },
-                                {
+            {
+                "process_graph": {
+                    "process_id": "min_time",
+                    "args": {
+                        "collections": [{
+                            "process_id": "NDVI",
+                            "args": {
+                                "collections": [{
                                     "process_id": "filter_daterange",
                                     "args": {
                                         "collections": [{
                                             "process_id": "filter_bbox",
                                             "args": {
                                                 "collections": [{
-                                                    "product_id": "S2A_B08@sentinel2A_openeo_subset"
+                                                    "product_id": "S2A_B04@sentinel2A_openeo_subset"
                                                 }],
                                                 "left": -5.0,
                                                 "right": -4.7,
@@ -188,14 +168,34 @@ class ProcessDefinitionTestCase(TestBase):
                                         "from": "2017-04-12 11:17:08",
                                         "to": "2017-09-04 11:18:26"
                                     }
-                                }],
-                            "red": "S2A_B04",
-                            "nir": "S2A_B08"
-                        }
-                    }]
+                                },
+                                    {
+                                        "process_id": "filter_daterange",
+                                        "args": {
+                                            "collections": [{
+                                                "process_id": "filter_bbox",
+                                                "args": {
+                                                    "collections": [{
+                                                        "product_id": "S2A_B08@sentinel2A_openeo_subset"
+                                                    }],
+                                                    "left": -5.0,
+                                                    "right": -4.7,
+                                                    "top": 39.3,
+                                                    "bottom": 39.0,
+                                                    "srs": "EPSG:4326"
+                                                }
+                                            }],
+                                            "from": "2017-04-12 11:17:08",
+                                            "to": "2017-09-04 11:18:26"
+                                        }
+                                    }],
+                                "red": "S2A_B04",
+                                "nir": "S2A_B08"
+                            }
+                        }]
+                    }
                 }
             }
-        }
 
         config.Config.LOCATION = "LL"
 
@@ -204,6 +204,91 @@ class ProcessDefinitionTestCase(TestBase):
         pprint(pc)
 
         self.assertEqual(len(pc), 7)
+
+    def test_openeo_usecase_1a(self):
+
+        graph = \
+            {
+                "process_graph": {
+                    "process_id": "min_time",
+                    "args": {
+                        "collections": [{
+                            "process_id": "NDVI",
+                            "args": {
+                                "collections": [{
+                                    "process_id": "filter_daterange",
+                                    "args": {
+                                        "collections": [{
+                                            "process_id": "filter_bbox",
+                                            "args": {
+                                                "collections": [{"product_id": "S2A_B04@sentinel2A_openeo_subset"},
+                                                                {"product_id": "S2A_B08@sentinel2A_openeo_subset"}],
+                                                "left": -5.0,
+                                                "right": -4.7,
+                                                "top": 39.3,
+                                                "bottom": 39.0,
+                                                "srs": "EPSG:4326"
+                                            }
+                                        }],
+                                        "from": "2017-04-12 11:17:08",
+                                        "to": "2017-09-04 11:18:26"
+                                    }
+                                }],
+                                "red": "S2A_B04",
+                                "nir": "S2A_B08"
+                            }
+                        }]
+                    }
+                }
+            }
+
+        config.Config.LOCATION = "LL"
+
+        name, pc = analyse_process_graph(graph)
+        pprint(name)
+        pprint(pc)
+
+        self.assertEqual(len(pc), 7)
+
+    def test_openeo_usecase_2(self):
+
+        graph = \
+            {
+                "process_graph": {
+                    "process_id": "udf_reduce_time",
+                    "args": {
+                        "collections": [{
+                            "process_id": "filter_daterange",
+                            "args": {
+                                "collections": [{
+                                    "process_id": "filter_bbox",
+                                    "args": {
+                                        "collections": [
+                                            {"product_id": "temperature_mean_1950_2013_yearly_celsius@PERMANENT"},
+                                            {"product_id": "precipitation_1950_2013_yearly_mm@PERMANENT"}],
+                                        "left": -5.0,
+                                        "right": -4.7,
+                                        "top": 39.3,
+                                        "bottom": 39.0,
+                                        "srs": "EPSG:4326"
+                                    }
+                                }],
+                                "from": "1980-01-01 00:00:00",
+                                "to": "2010-01-01 00:00:00"
+                            }
+                        }],
+                        "python_file_url": "https://storage.googleapis.com/datentransfer/aggr_func.py"
+                    }
+                }
+            }
+
+        config.Config.LOCATION = "ECAD"
+
+        name, pc = analyse_process_graph(graph)
+        pprint(name)
+        pprint(pc)
+
+        self.assertEqual(len(pc), 6)
 
 
 if __name__ == "__main__":

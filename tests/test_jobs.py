@@ -66,6 +66,35 @@ use_case_1_graph = {
     }
 }
 
+use_case_2_graph = {
+    "process_graph": {
+        "process_id": "udf_reduce_time",
+        "args": {
+            "collections": [{
+                "process_id": "filter_daterange",
+                "args": {
+                    "collections": [{
+                        "process_id": "filter_bbox",
+                        "args": {
+                            "collections": [
+                                {"product_id": "temperature_mean_1950_2013_yearly_celsius@PERMANENT"},
+                                {"product_id": "precipitation_1950_2013_yearly_mm@PERMANENT"}],
+                            "left": -5.0,
+                            "right": -4.7,
+                            "top": 39.3,
+                            "bottom": 39.0,
+                            "srs": "EPSG:4326"
+                        }
+                    }],
+                    "from": "1980-01-01 00:00:00",
+                    "to": "2010-01-01 00:00:00"
+                }
+            }],
+            "python_file_url": "https://storage.googleapis.com/datentransfer/aggr_func.py"
+        }
+    }
+}
+
 date_range_filter = {
     "process_graph": {
         "process_id": "filter_daterange",
@@ -89,7 +118,6 @@ date_range_filter = {
     }
 }
 
-
 date_range_filter_long_run = {
     "process_graph": {
         "process_id": "filter_daterange",
@@ -112,7 +140,6 @@ date_range_filter_long_run = {
         }
     }
 }
-
 
 date_range_filter_error_no_strds = {
     "process_graph": {
@@ -151,7 +178,18 @@ class JobsTestCase(TestBase):
 
         self.wait_until_finished(response)
 
-    def test_2_post_data_range_filter_job(self):
+    def test_2_post_use_case_2_job(self):
+        config.Config.LOCATION = "ECAD"
+        response = self.app.post('/jobs', data=json.dumps(use_case_2_graph), content_type="application/json")
+
+        data = json.loads(response.data.decode())
+        pprint.pprint(data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.wait_until_finished(response)
+
+    def test_3_post_data_range_filter_job(self):
         config.Config.LOCATION = "LL"
         response = self.app.post('/jobs', data=json.dumps(date_range_filter), content_type="application/json")
 
@@ -162,7 +200,7 @@ class JobsTestCase(TestBase):
 
         self.wait_until_finished(response)
 
-    def test_3_post_use_case_1_job_delete(self):
+    def test_4_post_use_case_1_job_delete(self):
         config.Config.LOCATION = "LL"
         response = self.app.post('/jobs', data=json.dumps(date_range_filter_long_run), content_type="application/json")
 
@@ -203,8 +241,8 @@ class JobsTestCase(TestBase):
 
         """
         # Check if the resource was accepted
-        self.assertEqual(response.status_code, 200, "HTML status code is wrong %i"%response.status_code)
-        self.assertEqual(response.mimetype, "application/json", "Wrong mimetype %s"%response.mimetype)
+        self.assertEqual(response.status_code, 200, "HTML status code is wrong %i" % response.status_code)
+        self.assertEqual(response.mimetype, "application/json", "Wrong mimetype %s" % response.mimetype)
 
         resp_data = json.loads(response.data.decode())
 
@@ -219,7 +257,7 @@ class JobsTestCase(TestBase):
             time.sleep(0.2)
 
         self.assertEquals(resp_data["status"], status)
-        self.assertEqual(response.status_code, http_status, "HTML status code is wrong %i"%response.status_code)
+        self.assertEqual(response.status_code, http_status, "HTML status code is wrong %i" % response.status_code)
 
         time.sleep(0.4)
         pprint.pprint(resp_data)

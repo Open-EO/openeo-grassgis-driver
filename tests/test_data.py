@@ -16,7 +16,7 @@ class DataTestCase(TestBase):
         data = json.loads(response.data.decode())
         print(data)
 
-        self.assertEqual(len(data), 2)
+        self.assertTrue(len(data), 2)
 
         dsets = ["precipitation_1950_2013_yearly_mm@PERMANENT",
                  "temperature_mean_1950_2013_yearly_celsius@PERMANENT"]

@@ -16,12 +16,13 @@ class ProcessesTestCase(TestBase):
         data = json.loads(response.data.decode())
         print(data)
 
-        self.assertEqual(len(data), 4)
+        self.assertEqual(len(data), 5)
 
         dsets = ["filter_bbox",
                  "filter_daterange",
                  "min_time",
-                 "NDVI"]
+                 "NDVI",
+                 "udf_reduce_time"]
 
         for entry in data:
             self.assertTrue(entry in dsets)
@@ -53,6 +54,13 @@ class ProcessesTestCase(TestBase):
         print(data)
 
         self.assertEqual(data["process_id"], "min_time")
+
+    def test_process_id_5(self):
+        response = self.app.get('/processes/udf_reduce_time')
+        data = json.loads(response.data.decode())
+        print(data)
+
+        self.assertEqual(data["process_id"], "udf_reduce_time")
 
 
 if __name__ == "__main__":

@@ -4,8 +4,8 @@ import os
 class Config(object):
     HOST="http://localhost"
     PORT=8080
-    # LOCATION="ECAD"
-    LOCATION="LL"
+    LOCATION="ECAD"
+    # LOCATION="LL"
     USER="user"
     PASSWORD="abcdefgh"
     # The database file that stores the graphs

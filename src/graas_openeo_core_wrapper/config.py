@@ -2,7 +2,7 @@
 import os
 
 class Config(object):
-    HOST="http://127.0.0.1"
+    HOST="http://graas"
     PORT=8080
     LOCATION="ECAD"
     # LOCATION="LL"

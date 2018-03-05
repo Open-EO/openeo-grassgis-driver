@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from random import randint
 from graas_openeo_core_wrapper import process_definitions
+from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert"
@@ -37,6 +38,18 @@ def create_graas_process_chain_entry(nir_time_series, red_time_series, output_ti
     :param output_time_series: The name of the output time series
     :return: A list of GRaaS process chain descriptions
     """
+    location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(nir_time_series)
+    nir_time_series = layer_name
+    if mapset is not None:
+        nir_time_series = layer_name + "@" + mapset
+
+    location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(red_time_series)
+    red_time_series = layer_name
+    if mapset is not None:
+        red_time_series = layer_name + "@" + mapset
+
+    location, mapset, datatype, output_name = GRaaSInterface.layer_def_to_components(output_time_series)
+
     rn = randint(0, 1000000)
 
     pc = [
@@ -44,7 +57,7 @@ def create_graas_process_chain_entry(nir_time_series, red_time_series, output_ti
          "module": "t.rast.mapcalc",
          "inputs": [{"param": "expression",
                      "value": "%(result)s = float((%(nir)s - %(red)s)/"
-                              "(%(nir)s + %(red)s))" % {"result": output_time_series,
+                              "(%(nir)s + %(red)s))" % {"result": output_name,
                                                         "nir": nir_time_series,
                                                         "red": red_time_series}},
                     {"param": "inputs",
@@ -53,11 +66,11 @@ def create_graas_process_chain_entry(nir_time_series, red_time_series, output_ti
                     {"param": "basename",
                      "value": "ndvi"},
                     {"param": "output",
-                     "value": output_time_series}]},
+                     "value": output_name}]},
         {"id": "t_rast_color_%i" % rn,
          "module": "t.rast.colors",
          "inputs": [{"param": "input",
-                     "value": output_time_series},
+                     "value": output_name},
                     {"param": "color",
                      "value": "ndvi"}]}]
 
@@ -94,11 +107,11 @@ def get_process_list(args):
         if nir_time_series is None or red_time_series is None:
             raise Exception("Band information is missing from process description")
 
-        # Create the output name based on the input name and method
-        output_time_series = red_time_series.split("@")[0] + "_" + PROCESS_NAME
-        output_names.append(output_time_series)
+        location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(nir_time_series)
+        output_name = "%s_%s" % (layer_name, PROCESS_NAME)
+        output_names.append(output_name)
 
-        pc = create_graas_process_chain_entry(nir_time_series, red_time_series, output_time_series)
+        pc = create_graas_process_chain_entry(nir_time_series, red_time_series, output_name)
         process_list.extend(pc)
 
     return output_names, process_list

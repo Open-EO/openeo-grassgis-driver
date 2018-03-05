@@ -19,16 +19,28 @@ DOC = {
             "description": "array of input collections with one element"
         },
         "left": {
-            "description": "left boundary (longitude / easting)"
+            "description": "left boundary (longitude / easting)",
+            "required":True
         },
         "right": {
-            "description": "right boundary (longitude / easting)"
+            "description": "right boundary (longitude / easting)",
+            "required":True
         },
         "top": {
-            "description": "top boundary (latitude / northing)"
+            "description": "top boundary (latitude / northing)",
+            "required":True
         },
         "bottom": {
-            "description": "bottom boundary (latitude / northing)"
+            "description": "bottom boundary (latitude / northing)",
+            "required":True
+        },
+        "ewres": {
+            "description": "East-west resolution in mapset units",
+            "required":True
+        },
+        "nsres": {
+            "description": "North-south resolution in mapset units",
+            "required":True
         },
         "srs": {
             "description": "spatial reference system of boundaries as proj4 or EPSG:12345 like string"
@@ -39,44 +51,21 @@ DOC = {
 process_definitions.PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
-def create_graas_process_chain_entry(strds_name, left=None, right=None, top=None, bottom=None):
+def create_graas_process_chain_entry(left, right, top, bottom, ewres, nsres):
     """Create a GRaaS command of the process chain that uses g.region to create a valid computational region
     for the provide input strds
 
-    :param strds_name: The name of the strds
+    TODO: This approach is a hack, the g.region command should accept a STRDS as input to set the
+          resolution accordingly, or this function must have the resolution option set by the user.
+
     :param left:
     :param right:
     :param top:
     :param bottom:
+    :param ewres:
+    :param nsres:
     :return: A GRaaS process chain description
     """
-    iface = GRaaSInterface()
-
-    # Check for mapset definition, default is PERMANENT
-
-    mapset = "PERMANENT"
-    if "@" in strds_name:
-        strds_name, mapset = strds_name.split("@")
-
-    # Get region information about the required strds
-    status_code, strds_info = iface.strds_info(mapset=mapset, strds_name=strds_name)
-
-    if status_code != 200:
-        raise Exception("Unable to get strds info for %s. Response: %s"%(strds_name, strds_info))
-
-    ewres = strds_info["ewres_min"]
-    nsres = strds_info["nsres_min"]
-
-    if left is None:
-        left = strds_info["west"]
-    if right is None:
-        right = strds_info["east"]
-    if top is None:
-        top = strds_info["north"]
-    if bottom is None:
-        bottom = strds_info["south"]
-
-    # Get info about the time series to extract its resolution settings and bbox
 
     rn = randint(0, 1000000)
 
@@ -108,24 +97,17 @@ def get_process_list(args):
         output_name = input_name
         output_names.append(output_name)
 
-        left = None
-        right = None
-        top = None
-        bottom = None
-
-        if "left" in args:
-            left = args["left"]
-        if "right" in args:
-            right = args["right"]
-        if "top" in args:
-            top = args["top"]
-        if "bottom" in args:
-            bottom = args["bottom"]
+        left = args["left"]
+        right = args["right"]
+        top = args["top"]
+        bottom = args["bottom"]
+        ewres = args["ewres"]
+        nsres = args["nsres"]
 
         if "srs" in args:
             print("SRS is currently not supported")
 
-        pc = create_graas_process_chain_entry(strds_name=input_name, left=left, right=right, top=top, bottom=bottom)
+        pc = create_graas_process_chain_entry(left=left, right=right, top=top, bottom=bottom, ewres=ewres, nsres=nsres)
         process_list.append(pc)
 
     return output_names, process_list

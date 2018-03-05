@@ -31,7 +31,7 @@ DOC = {
 process_definitions.PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
-def create_graas_process_chain_entry(strds_name, start_time, end_time, output_strds_name):
+def create_graas_process_chain_entry(input_name, start_time, end_time, output_name):
     """Create a GRaaS command of the process chain that uses t.rast.extract to create a subset of a strds
 
     :param strds_name: The name of the strds
@@ -39,19 +39,24 @@ def create_graas_process_chain_entry(strds_name, start_time, end_time, output_st
     :param end_time:
     :return: A GRaaS process chain description
     """
+    location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(input_name)
+    input_name = layer_name
+    if mapset is not None:
+        input_name = layer_name + "@" + mapset
+    base_name = "%s_extract"%layer_name
+
     # Get info about the time series to extract its resolution settings and bbox
     rn = randint(0, 1000000)
 
-    output_name = "%s_extract"%strds_name.split("@")[0]
 
     pc = {"id": "t_rast_extract_%i"%rn,
           "module": "t.rast.extract",
-          "inputs": [{"param": "input", "value": strds_name},
+          "inputs": [{"param": "input", "value": input_name},
                      {"param": "where", "value": "start_time >= '%(start)s' "
                                                  "AND end_time <= '%(end)s'"%{"start":start_time, "end":end_time}},
-                     {"param": "output", "value": output_strds_name},
-                     {"param": "expression", "value": "1.0 * %s"%strds_name},
-                     {"param": "basename", "value": output_name},
+                     {"param": "output", "value": output_name},
+                     {"param": "expression", "value": "1.0 * %s"%input_name},
+                     {"param": "basename", "value": base_name},
                      {"param": "suffix", "value": "num"}]}
 
     return pc
@@ -71,8 +76,8 @@ def get_process_list(args):
 
     for input_name in input_names:
 
-        # Create the output name based on the input name and method
-        output_name = input_name.split("@")[0] + "_" + PROCESS_NAME
+        location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(input_name)
+        output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)
 
         start_time = None
@@ -83,10 +88,10 @@ def get_process_list(args):
         if "to" in args:
             end_time = args["to"]
 
-        pc = create_graas_process_chain_entry(strds_name=input_name,
+        pc = create_graas_process_chain_entry(input_name=input_name,
                                               start_time=start_time,
                                               end_time=end_time,
-                                              output_strds_name=output_name)
+                                              output_name=output_name)
         process_list.append(pc)
 
     return output_names, process_list

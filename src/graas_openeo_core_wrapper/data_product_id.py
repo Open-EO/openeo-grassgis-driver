@@ -16,53 +16,70 @@ class GRaaSDataProductId(DataProductId):
 
         # List strds maps from the GRASS location
 
-        mapset = "PERMANENT"
-        if "@" in product_id:
-            product_id, mapset = product_id.split("@", 1)
+        location, mapset, datatype, layer = self.iface.layer_def_to_components(product_id)
 
-        status_code, strds_data = self.iface.strds_info(mapset=mapset, strds_name=product_id)
+        status_code, layer_data = self.iface.layer_info(layer_name=product_id)
         if status_code != 200:
             return make_response(jsonify({"description": "An internal error occurred "
-                                                         "while catching strds layers!"}, 400))
+                                                         "while catching GRASS GIS layer information "
+                                                         "for layer <%s>!\n Error: %s"
+                                                         ""%(product_id, str(layer_data))}, 400))
 
         # Get the projection from the GRASS mapset
-        status_code, mapset_info = self.iface.mapset_info(mapset=mapset)
+        status_code, mapset_info = self.iface.mapset_info(location=location, mapset=mapset)
         if status_code != 200:
             return make_response(jsonify({"description": "An internal error occurred "
-                                                         "while catching mapset info!"}, 400))
+                                                         "while catching mapset info "
+                                                         "for mapset <%s>!"%mapset}, 400))
 
-        description = "Space time raster dataset"
-        source = "GRASS GIS location/mapset path: /%s/%s" % (self.iface.location, mapset)
+        description = "Raster dataset"
+        if datatype.lower() == "strds":
+            description = "Space time raster dataset"
+        if datatype.lower() == "vector":
+            description = "Vector dataset"
+
+        source = "GRASS GIS location/mapset path: /%s/%s" % (location, mapset)
         srs = mapset_info["projection"]
-        extent = SpatialExtent(left=float(strds_data["west"]),
-                               right=float(strds_data["east"]),
-                               top=float(strds_data["north"]),
-                               bottom=float(strds_data["south"]),
+        extent = SpatialExtent(left=float(layer_data["west"]),
+                               right=float(layer_data["east"]),
+                               top=float(layer_data["north"]),
+                               bottom=float(layer_data["south"]),
                                srs=srs)
 
-        time = DateTime()
-        time["from"] = strds_data["start_time"]
-        time["to"] = strds_data["end_time"]
+        print(layer_data)
 
-        bands = BandDescription(band_id=strds_data["id"])
+        if datatype.lower() == "strds":
+            time = DateTime()
+            time["from"] = layer_data["start_time"]
+            time["to"] = layer_data["end_time"]
 
-        info = dict(product_id=strds_data["id"],
-                    extent=extent,
-                    source=source,
-                    description=description,
-                    time=time,
-                    bands=bands,
-                    temporal_type=strds_data["start_time"],
-                    number_of_maps=strds_data["number_of_maps"],
-                    min_min=strds_data["min_min"],
-                    min_max=strds_data["min_max"],
-                    max_min=strds_data["max_min"],
-                    max_max=strds_data["max_max"],
-                    map_time=strds_data["map_time"],
-                    granularity=strds_data["granularity"],
-                    aggregation_type=strds_data["aggregation_type"],
-                    creation_time=strds_data["creation_time"],
-                    modification_time=strds_data["modification_time"],
-                    mapset=strds_data["mapset"])
+            bands = BandDescription(band_id=product_id)
+
+            info = dict(product_id=product_id,
+                        extent=extent,
+                        source=source,
+                        description=description,
+                        time=time,
+                        bands=bands,
+                        temporal_type=layer_data["start_time"],
+                        number_of_maps=layer_data["number_of_maps"],
+                        min_min=layer_data["min_min"],
+                        min_max=layer_data["min_max"],
+                        max_min=layer_data["max_min"],
+                        max_max=layer_data["max_max"],
+                        map_time=layer_data["map_time"],
+                        granularity=layer_data["granularity"],
+                        aggregation_type=layer_data["aggregation_type"],
+                        creation_time=layer_data["creation_time"],
+                        modification_time=layer_data["modification_time"],
+                        mapset=mapset,
+                        location=location)
+        else:
+            info = dict(product_id=product_id,
+                        extent=extent,
+                        source=source,
+                        description=description,
+                        mapset=mapset,
+                        location=location)
 
         return make_response(jsonify(info), 200)

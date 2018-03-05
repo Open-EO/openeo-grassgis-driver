@@ -2,10 +2,13 @@
 import os
 
 class Config(object):
-    HOST="http://graas"
+    # Settings for docker swarm image
+    # HOST="http://graas"
+    HOST="http://localhost"
     PORT=8080
     LOCATION="ECAD"
     # LOCATION="LL"
+    LOCATIONS=["LL", "ECAD"]
     USER="user"
     PASSWORD="abcdefgh"
     # The database file that stores the graphs

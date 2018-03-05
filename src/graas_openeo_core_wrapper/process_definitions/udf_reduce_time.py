@@ -27,7 +27,7 @@ DOC = {
 process_definitions.PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
-def create_graas_process_chain_entry(strds_name, python_file_url, output_name):
+def create_graas_process_chain_entry(input_name, python_file_url, output_name):
     """Create a GRaaS command of the process chain that uses g.region to create a valid computational region
     for the provide input strds
 
@@ -37,6 +37,11 @@ def create_graas_process_chain_entry(strds_name, python_file_url, output_name):
     :return: A GRaaS process chain description
     """
 
+    location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(input_name)
+    input_name = layer_name
+    if mapset is not None:
+        input_name = layer_name + "@" + mapset
+
     pc = {"id": "t_rast_aggr_func",
           "module": "t.rast.aggr_func",
           "inputs": [{"import_descr": {"source": python_file_url,
@@ -44,7 +49,7 @@ def create_graas_process_chain_entry(strds_name, python_file_url, output_name):
                       "param": "pyfile",
                       "value": "$file::my_py_func"},
                      {"param": "input",
-                      "value": strds_name},
+                      "value": input_name},
                      {"param": "output",
                       "value": output_name}]}
 
@@ -65,8 +70,8 @@ def get_process_list(args):
 
     for input_name in input_names:
 
-        # Create the output name based on the input name and method
-        output_name = input_name.split("@")[0] + "_" + PROCESS_NAME
+        location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(input_name)
+        output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)
 
         if "python_file_url" in args:
@@ -74,7 +79,8 @@ def get_process_list(args):
         else:
             raise Exception("Python fle is missing in the process description")
 
-        pc = create_graas_process_chain_entry(strds_name=input_name, python_file_url=python_file_url,
+        pc = create_graas_process_chain_entry(input_name=input_name,
+                                              python_file_url=python_file_url,
                                               output_name=output_name)
         process_list.append(pc)
 

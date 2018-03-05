@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from random import randint
 from graas_openeo_core_wrapper import process_definitions
+from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert"
@@ -23,7 +24,7 @@ DOC = {
 process_definitions.PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
-def create_graas_process_chain_entry(input_time_series, output_map):
+def create_graas_process_chain_entry(input_name, output_name):
     """Create a GRaaS process description that uses t.rast.series to create the minimum
     value of the time series.
 
@@ -31,13 +32,19 @@ def create_graas_process_chain_entry(input_time_series, output_map):
     :param output_map: The name of the output map
     :return: A GRaaS process chain description
     """
+
+    location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(input_name)
+    input_name = layer_name
+    if mapset is not None:
+        input_name = layer_name + "@" + mapset
+
     rn = randint(0, 1000000)
 
     pc = {"id": "t_rast_series_%i"%rn,
           "module": "t.rast.series",
-          "inputs": [{"param": "input", "value": input_time_series},
+          "inputs": [{"param": "input", "value": input_name},
                      {"param": "method", "value": "minimum"},
-                     {"param": "output", "value": output_map}],
+                     {"param": "output", "value": output_name}],
           "flags": "t"}
 
     return pc
@@ -54,9 +61,8 @@ def get_process_list(args):
     output_names = []
 
     for input_name in input_names:
-
-        # Create the output name based on the input name and method
-        output_name = input_name.split("@")[0] + "_" + PROCESS_NAME
+        location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(input_name)
+        output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)
 
         pc = create_graas_process_chain_entry(input_name,

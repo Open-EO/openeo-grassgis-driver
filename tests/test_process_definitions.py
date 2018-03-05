@@ -27,7 +27,7 @@ class ProcessDefinitionTestCase(TestBase):
                                     "collections": [{
                                         "process_id": "min_time",
                                         "args": {
-                                            "collections": [{"product_id": "time_series"}]
+                                            "collections": [{"product_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"}]
                                         }
                                     }],
                                 }
@@ -38,8 +38,7 @@ class ProcessDefinitionTestCase(TestBase):
             }
         }
 
-        config.Config.LOCATION = "ECAD"
-        name, pc = analyse_process_graph(graph)
+        name, pc = analyse_process_graph(graph=graph)
         pprint(name)
         pprint(pc)
 
@@ -53,17 +52,18 @@ class ProcessDefinitionTestCase(TestBase):
             "process_graph": {
                 "process_id": "filter_bbox",
                 "args": {
-                    "collections": [{"product_id": "temperature_mean_1950_2013_yearly_celsius@PERMANENT"}],
+                    "collections": [{"product_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"}],
                     "left": -40.5,
                     "right": 75.5,
                     "top": 75.5,
-                    "bottom": 25.25
+                    "bottom": 25.25,
+                    "ewres": 0.1,
+                    "nsres": 0.1,
                 }
             }
         }
 
-        config.Config.LOCATION = "ECAD"
-        name, pc = analyse_process_graph(graph)
+        name, pc = analyse_process_graph(graph=graph)
         pprint(name)
         pprint(pc)
 
@@ -77,15 +77,14 @@ class ProcessDefinitionTestCase(TestBase):
             "process_graph": {
                 "process_id": "filter_daterange",
                 "args": {
-                    "collections": [{"product_id": "temperature_mean_1950_2013_yearly_celsius@PERMANENT"}],
+                    "collections": [{"product_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"}],
                     "from": "2001-01-01",
                     "to": "2005-01-01"
                 }
             }
         }
 
-        config.Config.LOCATION = "ECAD"
-        name, pc = analyse_process_graph(graph)
+        name, pc = analyse_process_graph(graph=graph)
         pprint(name)
         pprint(pc)
 
@@ -99,21 +98,19 @@ class ProcessDefinitionTestCase(TestBase):
             "process_graph": {
                 "process_id": "NDVI",
                 "args": {
-                    "collections": [{"product_id": "S2A_B04@sentinel2A_openeo_subset"},
-                                    {"product_id": "S2A_B08@sentinel2A_openeo_subset"}],
+                    "collections": [{"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"},
+                                    {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"}],
                     "red": "S2A_B04",
                     "nir": "S2A_B08"
                 }
             }
         }
 
-        config.Config.LOCATION = "LL"
-
-        names, pc = analyse_process_graph(graph)
+        names, pc = analyse_process_graph(graph=graph)
         pprint(names)
         pprint(pc)
 
-        self.assertEqual(names[0], "S2A_B04_NDVI")
+        self.assertEqual(names[0], "S2A_B08_NDVI")
         self.assertEqual(len(pc), 2)
 
     def test_ndvi_error(self):
@@ -121,18 +118,16 @@ class ProcessDefinitionTestCase(TestBase):
             "process_graph": {
                 "process_id": "NDVI_nope",
                 "args": {
-                    "collections": [{"product_id": "S2A_B04@sentinel2A_openeo_subset"},
-                                    {"product_id": "S2A_B08@sentinel2A_openeo_subset"}],
+                    "collections": [{"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"},
+                                    {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"}],
                     "red": "S2A_B04",
                     "nir": "S2A_B08"
                 }
             }
         }
 
-        config.Config.LOCATION = "LL"
-
         try:
-            names, pc = analyse_process_graph(graph)
+            names, pc = analyse_process_graph(graph=graph)
             pprint(names)
             pprint(pc)
             self.assertTrue(False)
@@ -156,12 +151,14 @@ class ProcessDefinitionTestCase(TestBase):
                                             "process_id": "filter_bbox",
                                             "args": {
                                                 "collections": [{
-                                                    "product_id": "S2A_B04@sentinel2A_openeo_subset"
+                                                    "product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"
                                                 }],
                                                 "left": -5.0,
                                                 "right": -4.7,
                                                 "top": 39.3,
                                                 "bottom": 39.0,
+                                                "ewres": 0.1,
+                                                "nsres": 0.1,
                                                 "srs": "EPSG:4326"
                                             }
                                         }],
@@ -176,12 +173,14 @@ class ProcessDefinitionTestCase(TestBase):
                                                 "process_id": "filter_bbox",
                                                 "args": {
                                                     "collections": [{
-                                                        "product_id": "S2A_B08@sentinel2A_openeo_subset"
+                                                        "product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"
                                                     }],
                                                     "left": -5.0,
                                                     "right": -4.7,
                                                     "top": 39.3,
                                                     "bottom": 39.0,
+                                                    "ewres": 0.1,
+                                                    "nsres": 0.1,
                                                     "srs": "EPSG:4326"
                                                 }
                                             }],
@@ -197,9 +196,7 @@ class ProcessDefinitionTestCase(TestBase):
                 }
             }
 
-        config.Config.LOCATION = "LL"
-
-        name, pc = analyse_process_graph(graph)
+        name, pc = analyse_process_graph(graph=graph)
         pprint(name)
         pprint(pc)
 
@@ -221,12 +218,15 @@ class ProcessDefinitionTestCase(TestBase):
                                         "collections": [{
                                             "process_id": "filter_bbox",
                                             "args": {
-                                                "collections": [{"product_id": "S2A_B04@sentinel2A_openeo_subset"},
-                                                                {"product_id": "S2A_B08@sentinel2A_openeo_subset"}],
+                                                "collections": [
+                                                    {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"},
+                                                    {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"}],
                                                 "left": -5.0,
                                                 "right": -4.7,
                                                 "top": 39.3,
                                                 "bottom": 39.0,
+                                                "ewres": 0.1,
+                                                "nsres": 0.1,
                                                 "srs": "EPSG:4326"
                                             }
                                         }],
@@ -242,9 +242,7 @@ class ProcessDefinitionTestCase(TestBase):
                 }
             }
 
-        config.Config.LOCATION = "LL"
-
-        name, pc = analyse_process_graph(graph)
+        name, pc = analyse_process_graph(graph=graph)
         pprint(name)
         pprint(pc)
 
@@ -263,13 +261,14 @@ class ProcessDefinitionTestCase(TestBase):
                                 "collections": [{
                                     "process_id": "filter_bbox",
                                     "args": {
-                                        "collections": [
-                                            {"product_id": "temperature_mean_1950_2013_yearly_celsius@PERMANENT"},
-                                            {"product_id": "precipitation_1950_2013_yearly_mm@PERMANENT"}],
+                                        "collections": [{"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"},
+                                                        {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"}],
                                         "left": -5.0,
                                         "right": -4.7,
                                         "top": 39.3,
                                         "bottom": 39.0,
+                                        "ewres": 0.1,
+                                        "nsres": 0.1,
                                         "srs": "EPSG:4326"
                                     }
                                 }],
@@ -282,9 +281,7 @@ class ProcessDefinitionTestCase(TestBase):
                 }
             }
 
-        config.Config.LOCATION = "ECAD"
-
-        name, pc = analyse_process_graph(graph)
+        name, pc = analyse_process_graph(graph=graph)
         pprint(name)
         pprint(pc)
 

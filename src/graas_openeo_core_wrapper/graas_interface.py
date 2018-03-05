@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import json
 from graas_openeo_core_wrapper.config import Config as GRaaSConfig
+import graas_openeo_core_wrapper
 import requests
 
 __author__ = "Sören Gebbert"
@@ -21,7 +22,28 @@ class GRaaSInterface(object):
         self.base_url = "%(host)s:%(port)s" % {"host": self.host, "port": self.port}
         self.auth = (config.USER, config.PASSWORD)
         self.user = config.USER
-        self.location = config.LOCATION
+
+    @staticmethod
+    def layer_def_to_components(layer):
+        """Convert the name of a layer in the openeo framework into GRASS GIS definitions
+
+        location.mapset.datatype.layer -> (location, mapset, datatype, layer)
+
+        Return (None, None, None, layer) if no location/mapset information was found
+
+        :param layer: The name of the layer in the form location.mapset.layer
+        :return: (location, mapset, datatype, layer) or (None, None, None, layer)
+        """
+
+        if layer.count(".") < 3:
+            return None, None, None, layer
+
+        location, mapset, datatype, layer = layer.split(".", 3)
+
+        # Store the location in the global location dict
+        graas_openeo_core_wrapper.PROCESS_LOCATION[location] = location
+
+        return location, mapset, datatype, layer
 
     def check_health(self):
 
@@ -80,9 +102,9 @@ class GRaaSInterface(object):
 
         return r.status_code, data
 
-    def create_mapset(self, mapset):
+    def create_mapset(self, location, mapset="PERMANENT"):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {"base": self.base_url,
-                                                                      "location": self.location,
+                                                                      "location": location,
                                                                       "mapset": mapset}
         r = requests.post(url=url, auth=self.auth)
         data = r.text
@@ -92,9 +114,9 @@ class GRaaSInterface(object):
 
         return r.status_code, data
 
-    def delete_mapset(self, mapset):
+    def delete_mapset(self, location, mapset="PERMANENT"):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {"base": self.base_url,
-                                                                      "location": self.location,
+                                                                      "location": location,
                                                                       "mapset": mapset}
         r = requests.delete(url=url, auth=self.auth)
         data = r.text
@@ -104,62 +126,68 @@ class GRaaSInterface(object):
 
         return r.status_code, data
 
-    def list_mapsets(self):
+    def list_mapsets(self, location):
         url = "%(base)s/locations/%(location)s/mapsets" % {"base": self.base_url,
-                                                           "location": self.location}
+                                                           "location": location}
         return self._send_get_request(url)
 
-    def mapset_info(self, mapset):
+    def mapset_info(self, location, mapset):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/info" % {"base": self.base_url,
-                                                                           "location": self.location,
+                                                                           "location": location,
                                                                            "mapset": mapset}
         return self._send_get_request(url)
 
-    def list_raster(self, mapset):
+    def list_raster(self, location, mapset):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/raster_layers" % {"base": self.base_url,
-                                                                                    "location": self.location,
+                                                                                    "location": location,
                                                                                     "mapset": mapset}
         return self._send_get_request(url)
 
-    def list_vector(self, mapset):
+    def list_vector(self, location, mapset):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/vector_layers" % {"base": self.base_url,
-                                                                                    "location": self.location,
+                                                                                    "location": location,
                                                                                     "mapset": mapset}
         return self._send_get_request(url)
 
-    def list_strds(self, mapset):
+    def list_strds(self, location, mapset):
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/strds" % {"base": self.base_url,
-                                                                            "location": self.location,
+                                                                            "location": location,
                                                                             "mapset": mapset}
         return self._send_get_request(url)
 
-    def strds_info(self, mapset, strds_name):
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/strds/%(layer)s" % {"base": self.base_url,
-                                                                                      "location": self.location,
-                                                                                      "mapset": mapset,
-                                                                                      "layer": strds_name}
+    def layer_info(self, layer_name):
+        """Return informations about the requested layer, that can be of type raster, vector or strds
+
+        :param layer_name:
+        :return:
+        """
+        location, mapset, datatype, layer = GRaaSInterface.layer_def_to_components(layer_name)
+        if datatype == "raster":
+            datatype = "raster_layers"
+        if datatype == "vector":
+            datatype = "vector_layers"
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/%(dtype)s/%(layer)s" % {"base": self.base_url,
+                                                                                          "location": location,
+                                                                                          "mapset": mapset,
+                                                                                          "dtype": datatype,
+                                                                                          "layer": layer}
         return self._send_get_request(url)
 
-    def check_strds_exists(self, strds_name):
+    def check_layer_exists(self, layer_name):
         """Return True if the strds exists, False otherwise
 
         :param strds_name: The name of the strds
         :return: True if the strds exists, False otherwise
         """
-
-        mapset = "PERMANENT"
-        if "@" in strds_name:
-            strds_name, mapset = strds_name.split("@")
-
         # Get region information about the required strds and check if it exists
-        status_code, strds_info = self.strds_info(mapset=mapset, strds_name=strds_name)
+        status_code, layer_info = self.layer_info(layer_name=layer_name)
 
         if status_code != 200:
             return False
 
         return True
 
-    def async_persistent_processing(self, mapset, process_chain):
+    def async_persistent_processing(self, location, mapset, process_chain):
         """Send a process chain to the graas backend to be run asynchronously in a persistent database
 
         :param mapset: The new mapset to generate
@@ -168,6 +196,6 @@ class GRaaSInterface(object):
         """
 
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/processing_async" % {"base": self.base_url,
-                                                                                       "location": self.location,
+                                                                                       "location": location,
                                                                                        "mapset": mapset}
         return self._send_post_request(url=url, process_chain=process_chain)

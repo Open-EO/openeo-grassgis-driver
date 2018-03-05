@@ -19,23 +19,27 @@ class GRaaSJobsJobId(JobsJobId):
 
         try:
             status, response = self.iface.resource_info(job_id)
-            # pprint.pprint(response)
-
-            process_graph = self.db[job_id]
-
-            info = dict(job_id=job_id,
-                        user_id=response["user_id"],
-                        status=response["status"],
-                        process_graph=process_graph,
-                        submitted=response["accept_datetime"],
-                        last_update=response["datetime"],
-                        consumed_credits=response["time_delta"],
-                        job_info=response)
-
             if status == 200:
+                process_graph = self.db[job_id]
+
+                info = dict(job_id=job_id,
+                            user_id=response["user_id"],
+                            status=response["status"],
+                            process_graph=process_graph,
+                            submitted=response["accept_datetime"],
+                            last_update=response["datetime"],
+                            consumed_credits=response["time_delta"],
+                            job_info=response)
+
                 return make_response(jsonify(info), 200)
             else:
-                return make_response(jsonify(response), status)
+                process_graph = self.db[job_id]
+                info = dict(job_id=job_id,
+                            status="error",
+                            process_graph=process_graph,
+                            job_info=response)
+
+                return make_response(jsonify(info), status)
         except Exception as e:
                 return make_response(jsonify({"error": str(e)}), 500)
 
@@ -44,23 +48,34 @@ class GRaaSJobsJobId(JobsJobId):
 
         try:
             status, response = self.iface.resource_info(job_id)
-            process_graph = self.db[job_id]
-
-            info = dict(job_id=job_id,
-                        user_id="scheduled",
-                        status="submitted",
-                        process_graph=process_graph,
-                        submitted=response["accept_datetime"],
-                        last_update=response["datetime"],
-                        consumed_credits=response["time_delta"],
-                        job_info=response)
-
-            status, response = self.iface.delete_resource(job_id)
-            #pprint.pprint(response)
 
             if status == 200:
-                return make_response(jsonify(info), 200)
+
+                process_graph = self.db[job_id]
+                info = dict(job_id=job_id,
+                            user_id="scheduled",
+                            status="submitted",
+                            process_graph=process_graph,
+                            submitted=response["accept_datetime"],
+                            last_update=response["datetime"],
+                            consumed_credits=response["time_delta"],
+                            job_info=response)
+
+                status, response = self.iface.delete_resource(job_id)
+                if status != 200:
+                    process_graph = self.db[job_id]
+                    info = dict(job_id=job_id,
+                                status="error",
+                                process_graph=process_graph,
+                                job_info=response)
+                return make_response(jsonify(info), status)
             else:
-                return make_response(jsonify(response), status)
+                process_graph = self.db[job_id]
+                info = dict(job_id=job_id,
+                            status="error",
+                            process_graph=process_graph,
+                            job_info=response)
+
+                return make_response(jsonify(info), status)
         except Exception as e:
                 return make_response(jsonify({"error": str(e)}), 500)

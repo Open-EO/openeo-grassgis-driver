@@ -19,7 +19,7 @@ class GRaaSInterfaceTestCase(TestBase):
 
     def test_list_raster(self):
         iface = GRaaSInterface(self.gconf)
-        status, layers = iface.list_raster(mapset="PERMANENT")
+        status, layers = iface.list_raster(location="ECAD", mapset="PERMANENT")
         pprint(layers)
 
         self.assertEqual(status, 200)
@@ -27,7 +27,7 @@ class GRaaSInterfaceTestCase(TestBase):
 
     def test_list_vector(self):
         iface = GRaaSInterface(self.gconf)
-        status, layers = iface.list_vector(mapset="PERMANENT")
+        status, layers = iface.list_vector(location="ECAD", mapset="PERMANENT")
         pprint(layers)
 
         self.assertEqual(status, 200)
@@ -35,7 +35,7 @@ class GRaaSInterfaceTestCase(TestBase):
 
     def test_list_strds(self):
         iface = GRaaSInterface(self.gconf)
-        status, layers = iface.list_strds(mapset="PERMANENT")
+        status, layers = iface.list_strds(location="ECAD", mapset="PERMANENT")
         pprint(layers)
 
         self.assertEqual(status, 200)
@@ -43,8 +43,7 @@ class GRaaSInterfaceTestCase(TestBase):
 
     def test_strds_info(self):
         iface = GRaaSInterface(self.gconf)
-        status, info = iface.strds_info(mapset="PERMANENT",
-                                        strds_name="precipitation_1950_2013_yearly_mm")
+        status, info = iface.layer_info(layer_name="ECAD.PERMANENT.strds.precipitation_1950_2013_yearly_mm")
         pprint(info)
 
         self.assertEqual(status, 200)
@@ -58,7 +57,7 @@ class GRaaSInterfaceTestCase(TestBase):
 
     def test_mapset_info(self):
         iface = GRaaSInterface(self.gconf)
-        status, info = iface.mapset_info(mapset="PERMANENT")
+        status, info = iface.mapset_info(location="ECAD", mapset="PERMANENT")
         pprint(info)
 
         self.assertEqual(status, 200)
@@ -67,30 +66,34 @@ class GRaaSInterfaceTestCase(TestBase):
 
     def test_list_mapsets(self):
         iface = GRaaSInterface(self.gconf)
-        status, mapsets = iface.list_mapsets()
+        status, mapsets = iface.list_mapsets(location="ECAD")
         pprint(mapsets)
 
         self.assertEqual(status, 200)
-        self.assertEqual(len(mapsets), 1)
 
-    def test_strds_exists(self):
+    def test_layer_exists_1(self):
         iface = GRaaSInterface(self.gconf)
-        status = iface.check_strds_exists(strds_name="precipitation_1950_2013_yearly_mm@PERMANENT")
+        status = iface.check_layer_exists(layer_name="ECAD.PERMANENT.strds.precipitation_1950_2013_yearly_mm")
         self.assertTrue(status)
 
+    def test_layer_exists_2(self):
         iface = GRaaSInterface(self.gconf)
-        status = iface.check_strds_exists(strds_name="precipitation_1950_2013_yearly_mm")
+        status = iface.check_layer_exists(layer_name="ECAD.PERMANENT.strds.precipitation_1950_2013_yearly_mm")
         self.assertTrue(status)
 
+    def test_layer_exists_2_error(self):
         iface = GRaaSInterface(self.gconf)
-        status = iface.check_strds_exists(strds_name="precipitation_1950_2013_yearly_mm_nope")
+        status = iface.check_layer_exists(layer_name="ECAD.PERMANENT.strds.precipitation_1950_2013_yearly_mm_nope")
         self.assertFalse(status)
+
+    def test_layer_exists_4(self):
+        iface = GRaaSInterface(self.gconf)
+        status = iface.check_layer_exists(layer_name="ECAD.PERMANENT.raster.precipitation_yearly_mm_0")
+        self.assertTrue(status)
 
     def test_async_persistent_processing(self):
 
-        config = self.gconf
-        config.LOCATION = "LL"
-        iface = GRaaSInterface(config)
+        iface = GRaaSInterface(self.gconf)
         process_chain = {
             "version": "1",
             "list": [
@@ -98,7 +101,8 @@ class GRaaSInterfaceTestCase(TestBase):
                  "module": "g.region",
                  "flags": "g"}]}
 
-        status, resource_id = iface.async_persistent_processing(mapset="new_user_mapset",
+        status, resource_id = iface.async_persistent_processing(location="LL",
+                                                                mapset="new_user_mapset",
                                                                 process_chain=process_chain)
         print(status)
         print(resource_id)
@@ -114,13 +118,18 @@ class GRaaSInterfaceTestCase(TestBase):
         print(status)
         print(info)
 
-    def otest_mapset_creation_deletion(self):
+    def test_mapset_creation_deletion(self):
 
         config = self.gconf
-        config.LOCATION = "LL"
+        config.USER = "admin"
         iface = GRaaSInterface(config)
-        status, resource_id = iface.create_mapset("new_mapset")
+        status, resource_id = iface.create_mapset(location="LL", mapset="new_mapset")
         print(status)
+        self.assertEqual(status, 200)
+        print(resource_id)
+        status, resource_id = iface.delete_mapset(location="LL", mapset="new_mapset")
+        print(status)
+        self.assertEqual(status, 200)
         print(resource_id)
 
 

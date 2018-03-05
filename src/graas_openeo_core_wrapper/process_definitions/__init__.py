@@ -11,6 +11,8 @@ import graas_openeo_core_wrapper.process_definitions.filter_daterange_process
 import graas_openeo_core_wrapper.process_definitions.ndvi_process
 import graas_openeo_core_wrapper.process_definitions.min_time_process
 import graas_openeo_core_wrapper.process_definitions.udf_reduce_time
+import graas_openeo_core_wrapper.process_definitions.raster_exporter
+import graas_openeo_core_wrapper.process_definitions.zonal_statistics
 
 
 def analyse_process_graph(graph):

@@ -16,13 +16,15 @@ class ProcessesTestCase(TestBase):
         data = json.loads(response.data.decode())
         print(data)
 
-        self.assertEqual(len(data), 5)
+        self.assertEqual(len(data), 7)
 
         dsets = ["filter_bbox",
                  "filter_daterange",
                  "min_time",
                  "NDVI",
-                 "udf_reduce_time"]
+                 "udf_reduce_time",
+                 "zonal_statistics",
+                 "raster_exporter"]
 
         for entry in data:
             self.assertTrue(entry in dsets)

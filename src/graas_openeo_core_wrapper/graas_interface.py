@@ -190,6 +190,7 @@ class GRaaSInterface(object):
     def async_persistent_processing(self, location, mapset, process_chain):
         """Send a process chain to the graas backend to be run asynchronously in a persistent database
 
+        :param location: The location in which to process
         :param mapset: The new mapset to generate
         :param process_chain: The process chain that must be executed
         :return: Status code and the json data (status, json)
@@ -203,11 +204,24 @@ class GRaaSInterface(object):
     def async_ephemeral_processing(self, location, process_chain):
         """Send a process chain to the graas backend to be run asynchronously in a ephemeral database
 
-        :param mapset: The new mapset to generate
+        :param location: The location in which to process
         :param process_chain: The process chain that must be executed
         :return: Status code and the json data (status, json)
         """
 
         url = "%(base)s/locations/%(location)s/processing_async" % {"base": self.base_url,
-                                                                                       "location": location}
+                                                                    "location": location}
+        return self._send_post_request(url=url, process_chain=process_chain)
+
+    def async_ephemeral_processing_export(self, location, process_chain):
+        """Send a process chain to the graas backend to be run asynchronously in a ephemeral database
+        with export capabilities
+
+        :param location: The location in which to process
+        :param process_chain: The process chain that must be executed
+        :return: Status code and the json data (status, json)
+        """
+
+        url = "%(base)s/locations/%(location)s/processing_async_export_gcs" % {"base": self.base_url,
+                                                                           "location": location}
         return self._send_post_request(url=url, process_chain=process_chain)

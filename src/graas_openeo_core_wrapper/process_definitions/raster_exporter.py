@@ -69,7 +69,10 @@ def get_process_list(args):
         output_names.append(output_name)
 
         pc = create_graas_process_chain_entry(input_name=input_name)
-        process_list.append(pc)
+        process_list.extend(pc)
+
+    import pprint
+    pprint.pprint(process_list)
 
     return output_names, process_list
 

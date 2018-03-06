@@ -13,7 +13,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 class ProcessDefinitionTestCase(TestBase):
 
-    def otest_min_time(self):
+    def test_min_time(self):
         graph = {
             "process_graph": {
                 "process_id": "min_time",
@@ -47,7 +47,7 @@ class ProcessDefinitionTestCase(TestBase):
         for entry in pc:
             self.assertTrue(entry["module"] == "t.rast.series")
 
-    def otest_filter_bbox(self):
+    def test_filter_bbox(self):
         graph = {
             "process_graph": {
                 "process_id": "filter_bbox",
@@ -72,7 +72,7 @@ class ProcessDefinitionTestCase(TestBase):
         for entry in pc:
             self.assertTrue(entry["module"] == "g.region")
 
-    def otest_daterange(self):
+    def test_daterange(self):
         graph = {
             "process_graph": {
                 "process_id": "filter_daterange",
@@ -93,7 +93,7 @@ class ProcessDefinitionTestCase(TestBase):
         for entry in pc:
             self.assertTrue(entry["module"] == "t.rast.extract")
 
-    def otest_ndvi(self):
+    def test_ndvi(self):
         graph = {
             "process_graph": {
                 "process_id": "NDVI",
@@ -150,9 +150,9 @@ class ProcessDefinitionTestCase(TestBase):
 
         self.assertEqual(names[0], "LL.sentinel2A_openeo_subset.strds.S2A_B04")
         self.assertEqual(names[1], "LL.sentinel2A_openeo_subset.strds.S2A_B08")
-        self.assertEqual(len(pc), 2)
+        self.assertEqual(len(pc), 14)
 
-    def otest_ndvi_error(self):
+    def test_ndvi_error(self):
         graph = {
             "process_graph": {
                 "process_id": "NDVI_nope",
@@ -173,7 +173,7 @@ class ProcessDefinitionTestCase(TestBase):
         except:
             pass
 
-    def otest_openeo_usecase_1(self):
+    def test_openeo_usecase_1(self):
 
         graph = \
             {
@@ -241,7 +241,7 @@ class ProcessDefinitionTestCase(TestBase):
 
         self.assertEqual(len(pc), 7)
 
-    def otest_openeo_usecase_1a(self):
+    def test_openeo_usecase_1a(self):
 
         graph = \
             {
@@ -287,7 +287,7 @@ class ProcessDefinitionTestCase(TestBase):
 
         self.assertEqual(len(pc), 7)
 
-    def otest_openeo_usecase_2(self):
+    def test_openeo_usecase_2(self):
 
         graph = \
             {

@@ -31,6 +31,9 @@ class GRaaSJobsJobId(JobsJobId):
                             consumed_credits=response["time_delta"],
                             job_info=response)
 
+                if "urls" in response and "resources" in response["urls"]:
+                    info["resources"] = response["urls"]["resources"]
+
                 return make_response(jsonify(info), 200)
             else:
                 process_graph = self.db[job_id]

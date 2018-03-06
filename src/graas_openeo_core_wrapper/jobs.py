@@ -99,8 +99,8 @@ class GRaaSJobs(Jobs):
 
             # pprint.pprint(process_chain)
 
-            status, response = self.iface.async_ephemeral_processing(location=location,
-                                                                     process_chain=process_chain)
+            status, response = self.iface.async_ephemeral_processing_export(location=location,
+                                                                            process_chain=process_chain)
             # pprint.pprint(response)
 
             # Save the process graph into the graph db

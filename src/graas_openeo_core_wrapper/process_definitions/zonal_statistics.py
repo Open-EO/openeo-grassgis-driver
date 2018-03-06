@@ -12,13 +12,15 @@ PROCESS_NAME = "zonal_statistics"
 
 DOC = {
     "process_id": PROCESS_NAME,
-    "description": "Runs a Python script for each time series of the input dataset.",
+    "description": "Compute the zonal statistics of a time series using a vector polygon. "
+                   "The following parameters are computed: "
+                   "mean, min, max, mean_of_abs, stddev, variance, coeff_var, sum, null_cells, cells",
     "args": {
         "imagery": {
-            "description": "array of input collections with one element"
+            "description": "array of input collections with at least one element that must be of type time series"
         },
         "regions": {
-            "description": "URL to a publicly downloadable Polygon file readable by OGR"
+            "description": "URL to a publicly accessible polygon file readable by OGR"
         }
     }
 }
@@ -29,6 +31,9 @@ process_definitions.PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 def create_graas_process_chain_entry(input_name, regions):
     """Create a GRaaS command of the process chain that computes the regional statistics based on a
     strds and a polygon.
+
+    The computational region will be set to the vector map, the previous region will be saved and after processing
+    restored. A mask will be set that uses the vector file as input. This mask will be removed in the end.
 
     :param input_name: The name of the strds
     :param regions: The URL to the vector file that defines the regions of interest
@@ -56,14 +61,21 @@ def create_graas_process_chain_entry(input_name, regions):
         }]
     }
 
-    g_region = {
+    g_region_1 = {
+        "id": "g_region_%i" % rn,
+        "module": "g.region",
+        "inputs": [{"param": "save",
+                    "value": "previous_region"}],
+        "flags": "g"}
+
+    g_region_2 = {
         "id": "g_region_%i" % rn,
         "module": "g.region",
         "inputs": [{"param": "vector",
                     "value": "polygon"}],
         "flags": "g"}
 
-    r_mask = {
+    r_mask_1 = {
         "id": "r_mask_%i" % rn,
         "module": "r.mask",
         "inputs": [{"param": "vector",
@@ -77,10 +89,26 @@ def create_graas_process_chain_entry(input_name, regions):
                     "value": input_name}]
     }
 
+    r_mask_2 = {
+        "id": "r_mask_%i" % rn,
+        "module": "r.mask",
+        "flags": "r"
+    }
+
+    g_region_3 = {
+        "id": "g_region_%i" % rn,
+        "module": "g.region",
+        "inputs": [{"param": "region",
+                    "value": "previous_region"}],
+        "flags": "g"}
+
     pc.append(importer)
-    pc.append(g_region)
-    pc.append(r_mask)
+    pc.append(g_region_1)
+    pc.append(g_region_2)
+    pc.append(r_mask_1)
     pc.append(t_rast_univar)
+    pc.append(r_mask_2)
+    pc.append(g_region_3)
 
     return pc
 
@@ -109,7 +137,7 @@ def get_process_list(args):
 
         pc = create_graas_process_chain_entry(input_name=input_name,
                                               regions=regions)
-        process_list.append(pc)
+        process_list.extend(pc)
 
     return output_names, process_list
 

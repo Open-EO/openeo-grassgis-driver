@@ -139,7 +139,7 @@ class ProcessDefinitionTestCase(TestBase):
                 "args": {
                     "collections": [{"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"},
                                     {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"}],
-                    "regions": "https://storage.googleapis.com/graas-geodata/rio.json"
+                    "regions": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"
                 }
             }
         }

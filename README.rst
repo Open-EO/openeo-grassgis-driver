@@ -2,8 +2,9 @@
 The GRaaS openEO wrapper
 ========================
 
-This software implements the openEO Core API interface for the GRASS GIS as a Service (GRaaS) solution.
-GRaaS is an open source REST interface to process geodata with the GRASS GIS in a distributed environment.
+This software implements the openEO Core API interface for the GRASS GIS as a Service (GRaaS) software solution
+for parallel, large scale geodata processing.
+GRaaS is a highly scalable open source REST interface to process geodata with the GRASS GIS in a distributed environment.
 
 Installation
 ============

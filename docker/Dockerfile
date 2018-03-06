@@ -32,7 +32,7 @@ RUN pip3 install --upgrade pip &&  \
     pip3 install -r requirements.txt && \
     python3.5 setup.py install
 
-WORKDIR /tmp/blaupause
+WORKDIR /tmp/blauclause
 
 WORKDIR /src
 

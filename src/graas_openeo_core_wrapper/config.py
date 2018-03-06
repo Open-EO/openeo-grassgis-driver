@@ -3,8 +3,8 @@ import os
 
 class Config(object):
     # Settings for docker swarm image
-    # HOST="http://graas"
-    HOST="http://localhost"
+    HOST="http://graas"
+    # HOST="http://localhost"
     PORT=8080
     LOCATION="ECAD"
     # LOCATION="LL"

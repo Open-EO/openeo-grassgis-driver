@@ -1,0 +1,141 @@
+graas\_openeo\_core\_wrapper package
+====================================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    graas_openeo_core_wrapper.process_definitions
+
+Submodules
+----------
+
+graas\_openeo\_core\_wrapper\.capabilities module
+-------------------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.capabilities
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.config module
+-------------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.config
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.data module
+-----------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.data
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.data\_product\_id module
+------------------------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.data_product_id
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.endpoints module
+----------------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.endpoints
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.graas\_interface module
+-----------------------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.graas_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.graph\_db module
+----------------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.graph_db
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.jobs module
+-----------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.jobs
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.jobs\_job\_id module
+--------------------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.jobs_job_id
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.main module
+-----------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.main
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.processes module
+----------------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.processes
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.processes\_process\_id module
+-----------------------------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.processes_process_id
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.test\_base module
+-----------------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.test_base
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.udf module
+----------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.udf
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+graas\_openeo\_core\_wrapper\.udf\_lang\_udf\_type module
+---------------------------------------------------------
+
+.. automodule:: graas_openeo_core_wrapper.udf_lang_udf_type
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: graas_openeo_core_wrapper
+    :members:
+    :undoc-members:
+    :show-inheritance:

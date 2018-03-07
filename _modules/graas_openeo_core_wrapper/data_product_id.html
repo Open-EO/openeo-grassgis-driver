@@ -1,0 +1,254 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>graas_openeo_core_wrapper.data_product_id &#8212; graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</title>
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.post0.dev33+gf5e1646.dirty',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for graas_openeo_core_wrapper.data_product_id</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">openeo_core.data_product_id</span> <span class="k">import</span> <span class="n">DataProductId</span><span class="p">,</span> <span class="n">GET_DATA_PRODUCT_ID_DOC</span>
+<span class="kn">from</span> <span class="nn">openeo_core.definitions</span> <span class="k">import</span> <span class="n">SpatialExtent</span><span class="p">,</span> <span class="n">DateTime</span><span class="p">,</span> <span class="n">BandDescription</span>
+<span class="kn">from</span> <span class="nn">graas_openeo_core_wrapper.graas_interface</span> <span class="k">import</span> <span class="n">GRaaSInterface</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">make_response</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span> <span class="nn">flask_restful_swagger_2</span> <span class="k">import</span> <span class="n">swagger</span>
+
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;Apache License, Version 2.0&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Sören Gebbert&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright 2018, Sören Gebbert&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s2">&quot;Soeren Gebbert&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;soerengebbert@googlemail.com&quot;</span>
+
+
+<span class="n">strds_example</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;aggregation_type&quot;</span><span class="p">:</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;creation_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-11 16:44:29.756411&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;creator&quot;</span><span class="p">:</span> <span class="s2">&quot;soeren&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;east&quot;</span><span class="p">:</span> <span class="s2">&quot;75.5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;end_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2013-07-01 00:00:00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ewres_max&quot;</span><span class="p">:</span> <span class="s2">&quot;0.25&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ewres_min&quot;</span><span class="p">:</span> <span class="s2">&quot;0.25&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;granularity&quot;</span><span class="p">:</span> <span class="s2">&quot;1 month&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;precipitation_1950_2013_monthly_mm@PERMANENT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;map_time&quot;</span><span class="p">:</span> <span class="s2">&quot;interval&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mapset&quot;</span><span class="p">:</span> <span class="s2">&quot;PERMANENT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;max_max&quot;</span><span class="p">:</span> <span class="s2">&quot;1076.9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;max_min&quot;</span><span class="p">:</span> <span class="s2">&quot;168.9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min_max&quot;</span><span class="p">:</span> <span class="s2">&quot;3.2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min_min&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;modification_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-11 16:45:14.032432&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;precipitation_1950_2013_monthly_mm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;north&quot;</span><span class="p">:</span> <span class="s2">&quot;75.5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nsres_max&quot;</span><span class="p">:</span> <span class="s2">&quot;0.25&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nsres_min&quot;</span><span class="p">:</span> <span class="s2">&quot;0.25&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;number_of_maps&quot;</span><span class="p">:</span> <span class="s2">&quot;762&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;raster_register&quot;</span><span class="p">:</span> <span class="s2">&quot;raster_map_register_934719ed2b4841818386a6f9c5f11b09&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;semantic_type&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;south&quot;</span><span class="p">:</span> <span class="s2">&quot;25.25&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="s2">&quot;1950-01-01 00:00:00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;temporal_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absolute&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;west&quot;</span><span class="p">:</span> <span class="s2">&quot;-40.5&quot;</span>
+<span class="p">}</span>
+
+
+<span class="n">raster_example</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;cells&quot;</span><span class="p">:</span> <span class="s2">&quot;2025000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cols&quot;</span><span class="p">:</span> <span class="s2">&quot;1500&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">r.proj input=</span><span class="se">\&quot;</span><span class="s2">ned03arcsec</span><span class="se">\&quot;</span><span class="s2"> location=</span><span class="se">\&quot;</span><span class="s2">northcarolina_latlong</span><span class="se">\&quot;</span><span class="s2"> mapset=</span><span class="se">\&quot;\\</span><span class="s2">helena</span><span class="se">\&quot;</span><span class="s2"> output=</span><span class="se">\&quot;</span><span class="s2">elev_ned10m</span><span class="se">\&quot;</span><span class="s2"> method=</span><span class="se">\&quot;</span><span class="s2">cubic</span><span class="se">\&quot;</span><span class="s2"> resolution=10</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;creator&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">helena</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;/tmp/gisdbase_75bc0828&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;datatype&quot;</span><span class="p">:</span> <span class="s2">&quot;FCELL&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">Tue Nov  7 01:09:51 2006</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">generated by r.proj</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;east&quot;</span><span class="p">:</span> <span class="s2">&quot;645000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ewres&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="s2">&quot;nc_spm_08&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;map&quot;</span><span class="p">:</span> <span class="s2">&quot;elevation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mapset&quot;</span><span class="p">:</span> <span class="s2">&quot;PERMANENT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="s2">&quot;156.3299&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="s2">&quot;55.57879&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ncats&quot;</span><span class="p">:</span> <span class="s2">&quot;255&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;north&quot;</span><span class="p">:</span> <span class="s2">&quot;228500&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nsres&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="s2">&quot;1350&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source1&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source2&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;south&quot;</span><span class="p">:</span> <span class="s2">&quot;215000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">none</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">South-West Wake county: Elevation NED 10m</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">none</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;vdatum&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">none</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;west&quot;</span><span class="p">:</span> <span class="s2">&quot;630000&quot;</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="GRaaSDataProductId"><a class="viewcode-back" href="../../api/graas_openeo_core_wrapper.html#graas_openeo_core_wrapper.data_product_id.GRaaSDataProductId">[docs]</a><span class="k">class</span> <span class="nc">GRaaSDataProductId</span><span class="p">(</span><span class="n">DataProductId</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iface</span> <span class="o">=</span> <span class="n">GRaaSInterface</span><span class="p">()</span>
+
+<div class="viewcode-block" id="GRaaSDataProductId.get"><a class="viewcode-back" href="../../api/graas_openeo_core_wrapper.html#graas_openeo_core_wrapper.data_product_id.GRaaSDataProductId.get">[docs]</a>    <span class="nd">@swagger</span><span class="o">.</span><span class="n">doc</span><span class="p">(</span><span class="n">GET_DATA_PRODUCT_ID_DOC</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span>
+
+        <span class="c1"># List strds maps from the GRASS location</span>
+
+        <span class="n">location</span><span class="p">,</span> <span class="n">mapset</span><span class="p">,</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iface</span><span class="o">.</span><span class="n">layer_def_to_components</span><span class="p">(</span><span class="n">product_id</span><span class="p">)</span>
+
+        <span class="n">status_code</span><span class="p">,</span> <span class="n">layer_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iface</span><span class="o">.</span><span class="n">layer_info</span><span class="p">(</span><span class="n">layer_name</span><span class="o">=</span><span class="n">product_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An internal error occurred &quot;</span>
+                                                         <span class="s2">&quot;while catching GRASS GIS layer information &quot;</span>
+                                                         <span class="s2">&quot;for layer &lt;</span><span class="si">%s</span><span class="s2">&gt;!</span><span class="se">\n</span><span class="s2"> Error: </span><span class="si">%s</span><span class="s2">&quot;</span>
+                                                         <span class="s2">&quot;&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">product_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">layer_data</span><span class="p">))},</span> <span class="mi">400</span><span class="p">))</span>
+
+        <span class="c1"># Get the projection from the GRASS mapset</span>
+        <span class="n">status_code</span><span class="p">,</span> <span class="n">mapset_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iface</span><span class="o">.</span><span class="n">mapset_info</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span> <span class="n">mapset</span><span class="o">=</span><span class="n">mapset</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An internal error occurred &quot;</span>
+                                                         <span class="s2">&quot;while catching mapset info &quot;</span>
+                                                         <span class="s2">&quot;for mapset &lt;</span><span class="si">%s</span><span class="s2">&gt;!&quot;</span><span class="o">%</span><span class="n">mapset</span><span class="p">},</span> <span class="mi">400</span><span class="p">))</span>
+
+        <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Raster dataset&quot;</span>
+        <span class="k">if</span> <span class="n">datatype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;strds&quot;</span><span class="p">:</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Space time raster dataset&quot;</span>
+        <span class="k">if</span> <span class="n">datatype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;vector&quot;</span><span class="p">:</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Vector dataset&quot;</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;GRASS GIS location/mapset path: /</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">mapset</span><span class="p">)</span>
+        <span class="n">srs</span> <span class="o">=</span> <span class="n">mapset_info</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">]</span>
+        <span class="n">extent</span> <span class="o">=</span> <span class="n">SpatialExtent</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;west&quot;</span><span class="p">]),</span>
+                               <span class="n">right</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;east&quot;</span><span class="p">]),</span>
+                               <span class="n">top</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;north&quot;</span><span class="p">]),</span>
+                               <span class="n">bottom</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;south&quot;</span><span class="p">]),</span>
+                               <span class="n">srs</span><span class="o">=</span><span class="n">srs</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">layer_data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">datatype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;strds&quot;</span><span class="p">:</span>
+            <span class="n">time</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">()</span>
+            <span class="n">time</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;start_time&quot;</span><span class="p">]</span>
+            <span class="n">time</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;end_time&quot;</span><span class="p">]</span>
+
+            <span class="n">bands</span> <span class="o">=</span> <span class="n">BandDescription</span><span class="p">(</span><span class="n">band_id</span><span class="o">=</span><span class="n">product_id</span><span class="p">)</span>
+
+            <span class="n">info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">product_id</span><span class="o">=</span><span class="n">product_id</span><span class="p">,</span>
+                        <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
+                        <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+                        <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+                        <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span>
+                        <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span>
+                        <span class="n">temporal_type</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;start_time&quot;</span><span class="p">],</span>
+                        <span class="n">number_of_maps</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;number_of_maps&quot;</span><span class="p">],</span>
+                        <span class="n">min_min</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;min_min&quot;</span><span class="p">],</span>
+                        <span class="n">min_max</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;min_max&quot;</span><span class="p">],</span>
+                        <span class="n">max_min</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;max_min&quot;</span><span class="p">],</span>
+                        <span class="n">max_max</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;max_max&quot;</span><span class="p">],</span>
+                        <span class="n">ewres_max</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;ewres_max&quot;</span><span class="p">],</span>
+                        <span class="n">ewres_min</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;ewres_min&quot;</span><span class="p">],</span>
+                        <span class="n">nsres_max</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;nsres_max&quot;</span><span class="p">],</span>
+                        <span class="n">nsres_min</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;nsres_min&quot;</span><span class="p">],</span>
+                        <span class="n">map_time</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;map_time&quot;</span><span class="p">],</span>
+                        <span class="n">granularity</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;granularity&quot;</span><span class="p">],</span>
+                        <span class="n">aggregation_type</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;aggregation_type&quot;</span><span class="p">],</span>
+                        <span class="n">creation_time</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;creation_time&quot;</span><span class="p">],</span>
+                        <span class="n">modification_time</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;modification_time&quot;</span><span class="p">],</span>
+                        <span class="n">mapset</span><span class="o">=</span><span class="n">mapset</span><span class="p">,</span>
+                        <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">product_id</span><span class="o">=</span><span class="n">product_id</span><span class="p">,</span>
+                        <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
+                        <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+                        <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+                        <span class="n">mapset</span><span class="o">=</span><span class="n">mapset</span><span class="p">,</span>
+                        <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+                        <span class="n">title</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span>
+                        <span class="n">comments</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">],</span>
+                        <span class="n">datatype</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;datatype&quot;</span><span class="p">],</span>
+                        <span class="n">cells</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;cells&quot;</span><span class="p">],</span>
+                        <span class="n">cols</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+                        <span class="n">rows</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;rows&quot;</span><span class="p">],</span>
+                        <span class="n">ewres</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;ewres&quot;</span><span class="p">],</span>
+                        <span class="n">nsres</span><span class="o">=</span><span class="n">layer_data</span><span class="p">[</span><span class="s2">&quot;nsres&quot;</span><span class="p">],)</span>
+
+        <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">(</span><span class="n">info</span><span class="p">),</span> <span class="mi">200</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Soeren Gebbert.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

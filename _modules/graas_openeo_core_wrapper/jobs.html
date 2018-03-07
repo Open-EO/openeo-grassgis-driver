@@ -1,0 +1,209 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>graas_openeo_core_wrapper.jobs &#8212; graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</title>
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.post0.dev33+gf5e1646.dirty',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for graas_openeo_core_wrapper.jobs</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">from</span> <span class="nn">openeo_core.jobs</span> <span class="k">import</span> <span class="n">POST_JOBS_DOC</span>
+<span class="kn">from</span> <span class="nn">openeo_core.jobs</span> <span class="k">import</span> <span class="n">Jobs</span>
+<span class="kn">from</span> <span class="nn">graas_openeo_core_wrapper.graas_interface</span> <span class="k">import</span> <span class="n">GRaaSInterface</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">make_response</span><span class="p">,</span> <span class="n">jsonify</span><span class="p">,</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">flask_restful_swagger_2</span> <span class="k">import</span> <span class="n">swagger</span>
+<span class="kn">from</span> <span class="nn">graas_openeo_core_wrapper.process_definitions</span> <span class="k">import</span> <span class="n">analyse_process_graph</span>
+<span class="kn">import</span> <span class="nn">graas_openeo_core_wrapper</span>
+<span class="kn">from</span> <span class="nn">graas_openeo_core_wrapper.graph_db</span> <span class="k">import</span> <span class="n">GraphDB</span>
+
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;Apache License, Version 2.0&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Sören Gebbert&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright 20186, Sören Gebbert&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s2">&quot;Soeren Gebbert&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;soerengebbert@googlemail.com&quot;</span>
+
+
+<div class="viewcode-block" id="GRaaSJobs"><a class="viewcode-back" href="../../api/graas_openeo_core_wrapper.html#graas_openeo_core_wrapper.jobs.GRaaSJobs">[docs]</a><span class="k">class</span> <span class="nc">GRaaSJobs</span><span class="p">(</span><span class="n">Jobs</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iface</span> <span class="o">=</span> <span class="n">GRaaSInterface</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">GraphDB</span><span class="p">()</span>
+
+<div class="viewcode-block" id="GRaaSJobs.put"><a class="viewcode-back" href="../../api/graas_openeo_core_wrapper.html#graas_openeo_core_wrapper.jobs.GRaaSJobs.put">[docs]</a>    <span class="nd">@swagger</span><span class="o">.</span><span class="n">doc</span><span class="p">(</span><span class="n">POST_JOBS_DOC</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Modify the existing database by running the job in a persistent mapset</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="c1"># Empty the process location</span>
+            <span class="n">graas_openeo_core_wrapper</span><span class="o">.</span><span class="n">PROCESS_LOCATION</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">process_graph</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+            <span class="c1"># Transform the process graph into a process chain and store the input location</span>
+            <span class="c1"># Check all locations in the process graph</span>
+            <span class="n">result_name</span><span class="p">,</span> <span class="n">process_list</span> <span class="o">=</span> <span class="n">analyse_process_graph</span><span class="p">(</span><span class="n">process_graph</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">graas_openeo_core_wrapper</span><span class="o">.</span><span class="n">PROCESS_LOCATION</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">graas_openeo_core_wrapper</span><span class="o">.</span><span class="n">PROCESS_LOCATION</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;Processes can only be defined for a single location!&quot;</span><span class="p">},</span>
+                                             <span class="mi">400</span><span class="p">))</span>
+
+            <span class="n">location</span> <span class="o">=</span> <span class="n">graas_openeo_core_wrapper</span><span class="o">.</span><span class="n">PROCESS_LOCATION</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">location</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">status_code</span><span class="p">,</span> <span class="n">mapsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iface</span><span class="o">.</span><span class="n">list_mapsets</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;An internal error occurred &quot;</span>
+                                                            <span class="s2">&quot;while catching mapsets!&quot;</span><span class="p">},</span> <span class="mi">400</span><span class="p">))</span>
+
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;openeo_mapset&quot;</span>
+            <span class="n">new_mapset</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%i</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">new_mapset</span> <span class="ow">in</span> <span class="n">mapsets</span><span class="p">:</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">new_mapset</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%i</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+
+            <span class="n">process_chain</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">list</span><span class="o">=</span><span class="n">process_list</span><span class="p">,</span>
+                                 <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
+
+            <span class="c1"># pprint.pprint(process_chain)</span>
+
+            <span class="n">status</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iface</span><span class="o">.</span><span class="n">async_persistent_processing</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+                                                                      <span class="n">mapset</span><span class="o">=</span><span class="n">new_mapset</span><span class="p">,</span>
+                                                                      <span class="n">process_chain</span><span class="o">=</span><span class="n">process_chain</span><span class="p">)</span>
+            <span class="c1"># pprint.pprint(response)</span>
+
+            <span class="c1"># Save the process graph into the graph db</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;resource_id&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">process_graph</span>
+
+            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;resource_id&quot;</span><span class="p">],</span>
+                                              <span class="s2">&quot;job_info&quot;</span><span class="p">:</span><span class="n">response</span><span class="p">}),</span> <span class="n">status</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">(</span><span class="n">response</span><span class="p">),</span> <span class="n">status</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">400</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GRaaSJobs.post"><a class="viewcode-back" href="../../api/graas_openeo_core_wrapper.html#graas_openeo_core_wrapper.jobs.GRaaSJobs.post">[docs]</a>    <span class="nd">@swagger</span><span class="o">.</span><span class="n">doc</span><span class="p">(</span><span class="n">POST_JOBS_DOC</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the job in an ephemeral mapset</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Empty the process location</span>
+            <span class="n">graas_openeo_core_wrapper</span><span class="o">.</span><span class="n">PROCESS_LOCATION</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">process_graph</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+            <span class="c1"># Transform the process graph into a process chain and store the input location</span>
+            <span class="c1"># Check all locations in the process graph</span>
+            <span class="n">result_name</span><span class="p">,</span> <span class="n">process_list</span> <span class="o">=</span> <span class="n">analyse_process_graph</span><span class="p">(</span><span class="n">process_graph</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">graas_openeo_core_wrapper</span><span class="o">.</span><span class="n">PROCESS_LOCATION</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">graas_openeo_core_wrapper</span><span class="o">.</span><span class="n">PROCESS_LOCATION</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;Processes can only be defined for a single location!&quot;</span><span class="p">},</span>
+                                             <span class="mi">400</span><span class="p">))</span>
+
+            <span class="n">location</span> <span class="o">=</span> <span class="n">graas_openeo_core_wrapper</span><span class="o">.</span><span class="n">PROCESS_LOCATION</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">location</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">process_chain</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">list</span><span class="o">=</span><span class="n">process_list</span><span class="p">,</span>
+                                 <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
+
+            <span class="c1"># pprint.pprint(process_chain)</span>
+
+            <span class="n">status</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iface</span><span class="o">.</span><span class="n">async_ephemeral_processing_export</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+                                                                            <span class="n">process_chain</span><span class="o">=</span><span class="n">process_chain</span><span class="p">)</span>
+            <span class="c1"># pprint.pprint(response)</span>
+
+            <span class="c1"># Save the process graph into the graph db</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;resource_id&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">process_graph</span>
+
+            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;resource_id&quot;</span><span class="p">],</span>
+                                              <span class="s2">&quot;job_info&quot;</span><span class="p">:</span><span class="n">response</span><span class="p">}),</span> <span class="n">status</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">(</span><span class="n">response</span><span class="p">),</span> <span class="n">status</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">400</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Soeren Gebbert.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,171 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>graas_openeo_core_wrapper.process_definitions.raster_exporter &#8212; graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</title>
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.post0.dev33+gf5e1646.dirty',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../process_definitions.html" accesskey="U">graas_openeo_core_wrapper.process_definitions</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for graas_openeo_core_wrapper.process_definitions.raster_exporter</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">graas_openeo_core_wrapper</span> <span class="k">import</span> <span class="n">process_definitions</span>
+<span class="kn">from</span> <span class="nn">graas_openeo_core_wrapper.graas_interface</span> <span class="k">import</span> <span class="n">GRaaSInterface</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
+
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;Apache License, Version 2.0&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Sören Gebbert&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright 2018, Sören Gebbert&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s2">&quot;Soeren Gebbert&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;soerengebbert@googlemail.com&quot;</span>
+
+<span class="n">PROCESS_NAME</span> <span class="o">=</span> <span class="s2">&quot;raster_exporter&quot;</span>
+
+<span class="n">DOC</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;process_id&quot;</span><span class="p">:</span> <span class="n">PROCESS_NAME</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;This process exports an arbitrary number of raster map layers using the region specified upstream.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;array of input collections with one element that must be a raster layer&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">process_definitions</span><span class="o">.</span><span class="n">PROCESS_DESCRIPTION_DICT</span><span class="p">[</span><span class="n">PROCESS_NAME</span><span class="p">]</span> <span class="o">=</span> <span class="n">DOC</span>
+
+
+<div class="viewcode-block" id="create_graas_process_chain_entry"><a class="viewcode-back" href="../../../api/graas_openeo_core_wrapper.process_definitions.html#graas_openeo_core_wrapper.process_definitions.raster_exporter.create_graas_process_chain_entry">[docs]</a><span class="k">def</span> <span class="nf">create_graas_process_chain_entry</span><span class="p">(</span><span class="n">input_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a GRaaS command of the process chain that computes the regional statistics based on a</span>
+<span class="sd">    strds and a polygon.</span>
+
+<span class="sd">    :param input_name: The name of the raster layer</span>
+<span class="sd">    :return: A GRaaS process chain description</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">location</span><span class="p">,</span> <span class="n">mapset</span><span class="p">,</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">layer_name</span> <span class="o">=</span> <span class="n">GRaaSInterface</span><span class="o">.</span><span class="n">layer_def_to_components</span><span class="p">(</span><span class="n">input_name</span><span class="p">)</span>
+    <span class="n">input_name</span> <span class="o">=</span> <span class="n">layer_name</span>
+    <span class="k">if</span> <span class="n">mapset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">input_name</span> <span class="o">=</span> <span class="n">layer_name</span> <span class="o">+</span> <span class="s2">&quot;@&quot;</span> <span class="o">+</span> <span class="n">mapset</span>
+
+    <span class="n">rn</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">)</span>
+    <span class="n">pc</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">exporter</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;exporter_</span><span class="si">%i</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">rn</span><span class="p">,</span>
+          <span class="s2">&quot;module&quot;</span><span class="p">:</span> <span class="s2">&quot;exporter&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;export&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;raster&quot;</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;GTiff&quot;</span><span class="p">},</span>
+                       <span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="s2">&quot;map&quot;</span><span class="p">,</span>
+                       <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">input_name</span><span class="p">}]}</span>
+
+    <span class="n">pc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">exporter</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pc</span></div>
+
+
+<div class="viewcode-block" id="get_process_list"><a class="viewcode-back" href="../../../api/graas_openeo_core_wrapper.process_definitions.html#graas_openeo_core_wrapper.process_definitions.raster_exporter.get_process_list">[docs]</a><span class="k">def</span> <span class="nf">get_process_list</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Analyse the process description and return the GRaaS process chain and the name of the processing result layer</span>
+<span class="sd">    which is a single raster layer</span>
+
+<span class="sd">    :param args: The process description</span>
+<span class="sd">    :return: (output_names, pc)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Get the input description and the process chain to attach this process</span>
+    <span class="n">input_names</span><span class="p">,</span> <span class="n">process_list</span> <span class="o">=</span> <span class="n">process_definitions</span><span class="o">.</span><span class="n">analyse_process_graph</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">output_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">input_name</span> <span class="ow">in</span> <span class="n">input_names</span><span class="p">:</span>
+
+        <span class="n">output_name</span> <span class="o">=</span> <span class="n">input_name</span>
+        <span class="n">output_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output_name</span><span class="p">)</span>
+
+        <span class="n">pc</span> <span class="o">=</span> <span class="n">create_graas_process_chain_entry</span><span class="p">(</span><span class="n">input_name</span><span class="o">=</span><span class="n">input_name</span><span class="p">)</span>
+        <span class="n">process_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
+
+    <span class="kn">import</span> <span class="nn">pprint</span>
+    <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">process_list</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output_names</span><span class="p">,</span> <span class="n">process_list</span></div>
+
+
+<span class="n">process_definitions</span><span class="o">.</span><span class="n">PROCESS_DICT</span><span class="p">[</span><span class="n">PROCESS_NAME</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_process_list</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../process_definitions.html" >graas_openeo_core_wrapper.process_definitions</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Soeren Gebbert.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

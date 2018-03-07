@@ -9,6 +9,12 @@ from graas_openeo_core_wrapper.process_definitions import analyse_process_graph
 import graas_openeo_core_wrapper
 from graas_openeo_core_wrapper.graph_db import GraphDB
 
+__license__ = "Apache License, Version 2.0"
+__author__ = "Sören Gebbert"
+__copyright__ = "Copyright 20186, Sören Gebbert"
+__maintainer__ = "Soeren Gebbert"
+__email__ = "soerengebbert@googlemail.com"
+
 
 class GRaaSJobs(Jobs):
 

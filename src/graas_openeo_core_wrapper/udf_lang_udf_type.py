@@ -8,6 +8,13 @@ from flask_restful_swagger_2 import swagger
 from graas_openeo_core_wrapper.graph_db import GraphDB
 from graas_openeo_core_wrapper.process_definitions import udf_reduce_time
 
+__license__ = "Apache License, Version 2.0"
+__author__ = "Sören Gebbert"
+__copyright__ = "Copyright 20186, Sören Gebbert"
+__maintainer__ = "Soeren Gebbert"
+__email__ = "soerengebbert@googlemail.com"
+
+
 python_udfs = dict(python={})
 python_udfs["python"][udf_reduce_time.PROCESS_NAME] = udf_reduce_time.DOC
 

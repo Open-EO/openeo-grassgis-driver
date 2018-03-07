@@ -6,6 +6,12 @@ from flask import make_response, jsonify
 from flask_restful_swagger_2 import swagger
 from graas_openeo_core_wrapper.config import Config
 
+__license__ = "Apache License, Version 2.0"
+__author__ = "Sören Gebbert"
+__copyright__ = "Copyright 2018, Sören Gebbert"
+__maintainer__ = "Soeren Gebbert"
+__email__ = "soerengebbert@googlemail.com"
+
 
 class GRaaSData(Data):
 

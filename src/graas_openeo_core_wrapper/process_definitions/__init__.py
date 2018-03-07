@@ -3,8 +3,6 @@
 # This is the process dictionary that is used to store all processes of the GRaaS wrapper
 PROCESS_DESCRIPTION_DICT = {}
 PROCESS_DICT = {}
-from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
-
 # Import the process_definitions to fill the process.PROCESS_DICT with process_definitions
 import graas_openeo_core_wrapper.process_definitions.filter_bbox_process
 import graas_openeo_core_wrapper.process_definitions.filter_daterange_process
@@ -13,6 +11,12 @@ import graas_openeo_core_wrapper.process_definitions.min_time_process
 import graas_openeo_core_wrapper.process_definitions.udf_reduce_time
 import graas_openeo_core_wrapper.process_definitions.raster_exporter
 import graas_openeo_core_wrapper.process_definitions.zonal_statistics
+
+__license__ = "Apache License, Version 2.0"
+__author__ = "Sören Gebbert"
+__copyright__ = "Copyright 2018, Sören Gebbert"
+__maintainer__ = "Soeren Gebbert"
+__email__ = "soerengebbert@googlemail.com"
 
 
 def analyse_process_graph(graph):

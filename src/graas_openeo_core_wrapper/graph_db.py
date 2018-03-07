@@ -4,6 +4,7 @@ from graas_openeo_core_wrapper.config import Config as GRaaSConfig
 import requests
 from sqlitedict import SqliteDict
 
+__license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 20186, Sören Gebbert"
 __maintainer__ = "Soeren Gebbert"

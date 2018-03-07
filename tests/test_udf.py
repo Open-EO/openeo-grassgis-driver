@@ -5,8 +5,9 @@ from graas_openeo_core_wrapper.test_base import TestBase
 from graas_openeo_core_wrapper.udf import SUPPORTED_UDF
 from graas_openeo_core_wrapper.udf_lang_udf_type import python_udfs
 
+__license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
-__copyright__ = "Copyright 2018, Sören Gebbert"
+__copyright__ = "Copyright 20186, Sören Gebbert"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 

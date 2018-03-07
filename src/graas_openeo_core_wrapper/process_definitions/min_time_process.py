@@ -3,6 +3,7 @@ from random import randint
 from graas_openeo_core_wrapper import process_definitions
 from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
 
+__license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert"
 __maintainer__ = "Soeren Gebbert"

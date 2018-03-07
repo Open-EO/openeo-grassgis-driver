@@ -10,6 +10,7 @@ from graas_openeo_core_wrapper.jobs_job_id import GRaaSJobsJobId
 from graas_openeo_core_wrapper.udf import GRaaSUdf
 from graas_openeo_core_wrapper.udf_lang_udf_type import GRaaSUdfType
 
+__license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert"
 __maintainer__ = "Soeren Gebbert"

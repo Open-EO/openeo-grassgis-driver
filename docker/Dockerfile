@@ -36,7 +36,7 @@ WORKDIR /tmp/blaubrause
 
 WORKDIR /src
 
-RUN git clone https://bitbucket.org/huhabla/graas_openeo_core_wrapper.git graas_openeo_core_wrapper
+RUN git clone https://github.com/Open-EO/openeo-grassgis-driver.git graas_openeo_core_wrapper
 
 WORKDIR /src/graas_openeo_core_wrapper
 RUN pip3 install -r requirements.txt && \

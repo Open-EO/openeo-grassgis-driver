@@ -73,7 +73,7 @@ Installation
 
        .. code-block:: bash
 
-          git clone https://bitbucket.org/huhabla/graas_openeo_core_wrapper.git graas_openeo_core_wrapper
+          git clone https://github.com/Open-EO/openeo-grassgis-driver.git graas_openeo_core_wrapper
           cd graas_openeo_core_wrapper
           pip install -r requirements.txt
           python setup.py install

@@ -110,12 +110,12 @@ Installation
 
    .. code-block:: bash
 
-      curl -X GET http://localhost:5000/api/v0/swagger.json
+      curl -X GET http://openeo.mundialis.de:5000/api/v0/swagger.json
 
 10. Explore the capabilities, data and processes that are available:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/capabilities
-      curl http://127.0.0.1:5000/data
-      curl http://127.0.0.1:5000/processes
+      curl http://openeo.mundialis.de:5000/capabilities
+      curl http://openeo.mundialis.de:5000/data
+      curl http://openeo.mundialis.de:5000/processes

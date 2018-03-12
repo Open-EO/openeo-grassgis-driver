@@ -114,15 +114,15 @@ Installation
 
    .. code-block:: bash
 
-      curl -X GET http://localhost:5000/api/v0/swagger.json
+      curl -X GET http://openeo.mundialis.de:5000/api/v0/swagger.json
 
 10. Explore the capabilities, data and processes that are available:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/capabilities
-      curl http://127.0.0.1:5000/data
-      curl http://127.0.0.1:5000/processes
+      curl http://openeo.mundialis.de:5000/capabilities
+      curl http://openeo.mundialis.de:5000/data
+      curl http://openeo.mundialis.de:5000/processes
 
 
 ====================
@@ -134,7 +134,7 @@ in the database:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/data
+      curl http://openeo.mundialis.de:5000/data
 
    .. code-block:: json
 
@@ -196,7 +196,7 @@ Get information about band 04 of the sentinel2a  time series:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/data/LL.sentinel2A_openeo_subset.strds.S2A_B04
+      curl http://openeo.mundialis.de:5000/data/LL.sentinel2A_openeo_subset.strds.S2A_B04
 
    .. code-block:: json
 
@@ -241,7 +241,7 @@ Get information about band 08 of the sentinel2a  time series:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/data/LL.sentinel2A_openeo_subset.strds.S2A_B08
+      curl http://openeo.mundialis.de:5000/data/LL.sentinel2A_openeo_subset.strds.S2A_B08
 
    .. code-block:: json
 
@@ -286,7 +286,7 @@ List process information about all processes that are available for computation:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/processes
+      curl http://openeo.mundialis.de:5000/processes
 
    .. code-block:: json
 
@@ -304,7 +304,7 @@ Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/processes/raster_exporter
+      curl http://openeo.mundialis.de:5000/processes/raster_exporter
 
    .. code-block:: json
 
@@ -320,7 +320,7 @@ Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/processes/udf_reduce_time
+      curl http://openeo.mundialis.de:5000/processes/udf_reduce_time
 
    .. code-block:: json
 
@@ -339,7 +339,7 @@ Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/processes/min_time
+      curl http://openeo.mundialis.de:5000/processes/min_time
 
    .. code-block:: json
 
@@ -355,7 +355,7 @@ Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/processes/NDVI
+      curl http://openeo.mundialis.de:5000/processes/NDVI
 
    .. code-block:: json
 
@@ -377,7 +377,7 @@ Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/processes/filter_daterange
+      curl http://openeo.mundialis.de:5000/processes/filter_daterange
 
    .. code-block:: json
 
@@ -399,7 +399,7 @@ Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/processes/filter_bbox
+      curl http://openeo.mundialis.de:5000/processes/filter_bbox
 
    .. code-block:: json
 
@@ -442,7 +442,7 @@ Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/processes/zonal_statistics
+      curl http://openeo.mundialis.de:5000/processes/zonal_statistics
 
    .. code-block:: json
 
@@ -542,7 +542,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
 
       JSON='{...}'
 
-      curl -H "Content-Type: application/json" -X PUT -d "${JSON}" http://127.0.0.1:5000/jobs
+      curl -H "Content-Type: application/json" -X PUT -d "${JSON}" http://openeo.mundialis.de:5000/jobs
 
    .. code-block:: json
 
@@ -555,7 +555,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
               "endpoint": "asyncpersistentresource",
               "method": "POST",
               "path": "/locations/LL/mapsets/openeo_mapset_0/processing_async",
-              "request_url": "http://localhost:8080/locations/LL/mapsets/openeo_mapset_0/processing_async"
+              "request_url": "http://openeo.mundialis.de:8080/locations/LL/mapsets/openeo_mapset_0/processing_async"
             },
             "datetime": "2018-03-06 12:43:24.788535",
             "http_code": 200,
@@ -567,7 +567,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
             "timestamp": 1520340204.788534,
             "urls": {
               "resources": [],
-              "status": "http://localhost:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2"
+              "status": "http://openeo.mundialis.de:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2"
             },
             "user_id": "user"
           }
@@ -577,7 +577,7 @@ We need to poll for the final result using the job id, since the request is asyn
 
    .. code-block:: bash
 
-      curl -X GET http://127.0.0.1:5000/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
+      curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
 
    .. code-block:: json
 
@@ -591,7 +591,7 @@ We need to poll for the final result using the job id, since the request is asyn
               "endpoint": "asyncpersistentresource",
               "method": "POST",
               "path": "/locations/LL/mapsets/openeo_mapset_0/processing_async",
-              "request_url": "http://localhost:8080/locations/LL/mapsets/openeo_mapset_0/processing_async"
+              "request_url": "http://openeo.mundialis.de:8080/locations/LL/mapsets/openeo_mapset_0/processing_async"
             },
             "datetime": "2018-03-06 12:43:30.601449",
             "http_code": 200,
@@ -606,7 +606,7 @@ We need to poll for the final result using the job id, since the request is asyn
             "timestamp": 1520340210.601438,
             "urls": {
               "resources": [],
-              "status": "http://localhost:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2"
+              "status": "http://openeo.mundialis.de:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2"
             },
             "user_id": "user"
           },
@@ -692,7 +692,7 @@ The final response will look like this:
 
    .. code-block:: bash
 
-      curl -X GET http://127.0.0.1:5000/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
+      curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
 
    .. code-block:: json
 
@@ -706,7 +706,7 @@ The final response will look like this:
               "endpoint": "asyncpersistentresource",
               "method": "POST",
               "path": "/locations/LL/mapsets/openeo_mapset_0/processing_async",
-              "request_url": "http://localhost:8080/locations/LL/mapsets/openeo_mapset_0/processing_async"
+              "request_url": "http://openeo.mundialis.de:8080/locations/LL/mapsets/openeo_mapset_0/processing_async"
             },
             "datetime": "2018-03-06 12:43:51.238708",
             "http_code": 200,
@@ -857,7 +857,7 @@ The final response will look like this:
             "timestamp": 1520340231.238706,
             "urls": {
               "resources": [],
-              "status": "http://localhost:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2"
+              "status": "http://openeo.mundialis.de:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2"
             },
             "user_id": "user"
           },
@@ -943,7 +943,7 @@ rime series and the resulting NDVI raster layer:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/data
+      curl http://openeo.mundialis.de:5000/data
 
    .. code-block:: json
 
@@ -974,7 +974,7 @@ We inspect the new NDVI time series:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/data/LL.openeo_mapset_0.strds.S2A_B08_filter_daterange_NDVI
+      curl http://openeo.mundialis.de:5000/data/LL.openeo_mapset_0.strds.S2A_B08_filter_daterange_NDVI
 
    .. code-block:: json
 
@@ -1020,7 +1020,7 @@ Information about the time reduced NDVI raster layer:
 
    .. code-block:: bash
 
-      curl http://127.0.0.1:5000/data/LL.openeo_mapset_0.raster.S2A_B08_filter_daterange_NDVI_min_time
+      curl http://openeo.mundialis.de:5000/data/LL.openeo_mapset_0.raster.S2A_B08_filter_daterange_NDVI_min_time
 
    .. code-block:: json
 
@@ -1106,7 +1106,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
 
       JSON='{...}'
 
-      curl -H "Content-Type: application/json" -X POST -d "${JSON}" http://127.0.0.1:5000/jobs
+      curl -H "Content-Type: application/json" -X POST -d "${JSON}" http://openeo.mundialis.de:5000/jobs
 
    .. code-block:: json
 
@@ -1119,7 +1119,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
               "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://localhost:8080/locations/LL/processing_async_export_gcs"
+              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 12:46:16.940197",
             "http_code": 200,
@@ -1131,7 +1131,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
             "timestamp": 1520340376.940196,
             "urls": {
               "resources": [],
-              "status": "http://localhost:8080/status/user/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4"
+              "status": "http://openeo.mundialis.de:8080/status/user/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4"
             },
             "user_id": "user"
           }
@@ -1141,7 +1141,7 @@ We need to poll for the final result using the job id, since the request is asyn
 
    .. code-block:: bash
 
-      curl -X GET http://127.0.0.1:5000/jobs/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4
+      curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4
 
    .. code-block:: json
 
@@ -1155,7 +1155,7 @@ We need to poll for the final result using the job id, since the request is asyn
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
               "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://localhost:8080/locations/LL/processing_async_export_gcs"
+              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 12:47:10.480688",
             "http_code": 200,
@@ -1331,7 +1331,7 @@ We need to poll for the final result using the job id, since the request is asyn
               "resources": [
                 "https://storage.googleapis.com/graas-test-resources/user%2Fresource_id-1d10265d-e435-4463-a913-e65e1a2cafe4%2FS2A_B08_filter_daterange_NDVI_min_time.tiff?Expires=1521204430&GoogleAccessId=cloud-storage-admin%40eloquent-victor-483.iam.gserviceaccount.com&Signature=RcqtuaXW9a48wzuMt0Vj93dnj9CDCGJaIhtxCYj%2B0CkK2uZ4cS%2BI9yAA50HpG5hbWFd0If9BvIfvNYjvzEm8MaHFDXOVSqN8gxSOkcA7HpNN0lWvAdkL6OoOjeBiHO1MXjZy6lMxW7X8OGg8OaiEmCXt%2FJQwlSlazt5et8cfLeJ10K%2Ba6AZH3ngZm8yrBxgW%2BggT440h914i4kuTaR9j2ez1yHEovpOs%2BemN%2FGuQHZoGYid3z82MM3b8WhgZsuNO0nwcC2ttlZ4UL7iVZL2wW8nnlzfub1vS1eC4feO86YLsVwJqTo8%2BuzDPf%2BnljHN8WKYYK8p05IIXCkgs0p0naQ%3D%3D"
               ],
-              "status": "http://localhost:8080/status/user/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4"
+              "status": "http://openeo.mundialis.de:8080/status/user/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4"
             },
             "user_id": "user"
           },
@@ -1469,7 +1469,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
 
       JSON='{...}'
 
-      curl -H "Content-Type: application/json" -X POST -d "${JSON}" http://127.0.0.1:5000/jobs
+      curl -H "Content-Type: application/json" -X POST -d "${JSON}" http://openeo.mundialis.de:5000/jobs
 
    .. code-block:: JSON
 
@@ -1482,7 +1482,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
               "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://localhost:8080/locations/LL/processing_async_export_gcs"
+              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 13:06:38.039900",
             "http_code": 200,
@@ -1494,7 +1494,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
             "timestamp": 1520341598.039899,
             "urls": {
               "resources": [],
-              "status": "http://localhost:8080/status/user/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74"
+              "status": "http://openeo.mundialis.de:8080/status/user/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74"
             },
             "user_id": "user"
           }
@@ -1503,7 +1503,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
 
    .. code-block:: bash
 
-      curl -X GET http://127.0.0.1:5000/jobs/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74
+      curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74
 
    .. code-block:: JSON
 
@@ -1517,7 +1517,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
               "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://localhost:8080/locations/LL/processing_async_export_gcs"
+              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 13:07:21.924437",
             "http_code": 200,
@@ -1646,7 +1646,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
               "resources": [
                 "https://storage.googleapis.com/graas-test-resources/user%2Fresource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74%2FS2A_B08_filter_daterange_NDVI_filter_daterange_udf_reduce_time.tiff?Expires=1521205641&GoogleAccessId=cloud-storage-admin%40eloquent-victor-483.iam.gserviceaccount.com&Signature=H9bk0yQyawKl5SNVB0cRXFgG7dKE8K%2F5wxlwjZB%2FjIRWYS4%2BzUfqH9LWQpmRJXTqrTvy%2F3m%2B3xkFz5LUyIUvQYTOePl5Sq3c%2B4J210LFCLiWW%2B17or7vZ0NMsD96xXzG7yzxs3GwjnFBYu%2FPdKBv8qBK0LtYzqyzMjEHMzOaquGEWP1eiOcMfWH%2B1xpEQ2sCz3SRS8gv6FEQ67vh19%2Fs22eewXvfhNpcYlHyP03iH0P814Sr8T8kMAAGEIqntMbHIMtetmqICfn%2FlRJ4m5nbHyg7DGddyVAQx8AzaA0cu1QMBXBmstQOHczVpQebG6%2FS7sdiDRDnHZVJbjG6lX%2Bpkg%3D%3D"
               ],
-              "status": "http://localhost:8080/status/user/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74"
+              "status": "http://openeo.mundialis.de:8080/status/user/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74"
             },
             "user_id": "user"
           },
@@ -1751,7 +1751,7 @@ The process graph has the following form:
 
       JSON='{...}'
 
-      curl -H "Content-Type: application/json" -X POST -d "${JSON}" http://127.0.0.1:5000/jobs
+      curl -H "Content-Type: application/json" -X POST -d "${JSON}" http://openeo.mundialis.de:5000/jobs
 
    .. code-block:: JSON
 
@@ -1764,7 +1764,7 @@ The process graph has the following form:
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
               "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://localhost:8080/locations/LL/processing_async_export_gcs"
+              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 13:32:48.580963",
             "http_code": 200,
@@ -1776,7 +1776,7 @@ The process graph has the following form:
             "timestamp": 1520343168.580963,
             "urls": {
               "resources": [],
-              "status": "http://localhost:8080/status/user/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e"
+              "status": "http://openeo.mundialis.de:8080/status/user/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e"
             },
             "user_id": "user"
           }
@@ -1784,7 +1784,7 @@ The process graph has the following form:
 
    .. code-block:: bash
 
-      curl -X GET http://127.0.0.1:5000/jobs/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e
+      curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e
 
    .. code-block:: JSON
 
@@ -1798,7 +1798,7 @@ The process graph has the following form:
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
               "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://localhost:8080/locations/LL/processing_async_export_gcs"
+              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 13:32:57.976511",
             "http_code": 200,
@@ -1970,7 +1970,7 @@ The process graph has the following form:
             "timestamp": 1520343177.976506,
             "urls": {
               "resources": [],
-              "status": "http://localhost:8080/status/user/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e"
+              "status": "http://openeo.mundialis.de:8080/status/user/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e"
             },
             "user_id": "user"
           },

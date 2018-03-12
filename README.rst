@@ -14,7 +14,7 @@ What is openEO?
     and Front-End Applications is an H2020 project funded under call EO-2-2017:
     EO Big Data Shift, under grant number 776242. The project runs from Oct 2017 to Sept 2020.
 
-    https://openeo.org/
+    http://openeo.org/
 
 This document demonstrates the application of the openEO GRaaS wrapper to solve the three use cases
 that were defined by the development group for the first prototype.

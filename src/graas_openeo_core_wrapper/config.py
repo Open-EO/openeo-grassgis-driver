@@ -9,8 +9,8 @@ __email__ = "soerengebbert@googlemail.com"
 
 class Config(object):
     # Settings for docker swarm image
-    HOST="http://graas"
-    # HOST="http://openeo.mundialis.de"
+    # HOST="http://graas"
+    HOST="http://openeo.mundialis.de"
     PORT=8080
     LOCATION="ECAD"
     # LOCATION="LL"

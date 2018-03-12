@@ -1,10 +1,12 @@
-========================
-The GRaaS openEO wrapper
-========================
+===========================
+The OpenEO GRASS GIS driver
+===========================
 
 This software implements the openEO Core API interface for the GRASS GIS as a Service (GRaaS) software solution
 for parallel, large scale geodata processing.
 GRaaS is a highly scalable open source REST interface to process geodata with the GRASS GIS in a distributed environment.
+It is deployed on **openeo.mundialis.de** and will be used for processing all openEO API calls taht are send to
+the te OpenEO GRASS GIS driver.
 
 What is openEO?
 
@@ -23,30 +25,11 @@ that were defined by the development group for the first prototype.
 Installation
 ============
 
-1. Deploy the GRaaS installation using docker.
+An active internet connection is required. All requests to the openEO GRASS GIS driver will be send and processed on the **openeo.mundialis.de** server.
 
-2. Deploy the openEO GRaaS wrapper locally:
+1. Deploy the openEO GRASS GIS driver locally:
 
-    1. Make sure to deploy the GRASS GIS locations that are required for the GRaaS openEO wrapper test suite
-       in the required GRaaS installation. Otherwise most if the tests will fail. The location data can be accessed here:
-
-       .. code-block:: bash
-
-          mkdir /$HOME/graas/grassdb
-          cd /$HOME/graas/grassdb
-          wget https://grass.osgeo.org/sampledata/north_carolina/nc_spm_08_grass7.tar.gz && \
-               tar xzvf nc_spm_08_grass7.tar.gz && \
-               rm -f nc_spm_08_grass7.tar.gz && \
-               mv nc_spm_08_grass7 nc_spm_08
-          wget https://storage.googleapis.com/datentransfer/ECAD.tar.gz && \
-               tar xzvf ECAD.tar.gz && \
-               rm -f ECAD.tar.gz
-          wget https://storage.googleapis.com/datentransfer/LL.tar.gz && \
-               tar xzvf LL.tar.gz && \
-               rm -f LL.tar.gz
-       ..
-
-    2. Create directory that should contain the code and the virtual environment and switch the environment.
+    1. Create directory that should contain the code and the virtual environment and switch the environment.
        It is preferred to run the openEO GRaaS wrapper in a virtual python environment:
 
        .. code-block:: bash
@@ -57,7 +40,7 @@ Installation
           source venv/bin/activate
        ..
 
-    3. Clone the official openEO reference implementation repository and install
+    2. Clone the official python based openEO reference implementation repository and install
        the required Python packages into the virtual environment:
 
        .. code-block:: bash
@@ -69,8 +52,8 @@ Installation
           cd ..
        ..
 
-    4. After installing the official openEO reference implementation, the GRaaS
-       openEO wrapper must be installed, since it is based on the reference implementation.
+    3. After installing the official python based openEO reference implementation, the openEO GRASS GIS driver
+       must be installed, since it is based on the openEO reference implementation.
 
        .. code-block:: bash
 
@@ -80,23 +63,27 @@ Installation
           python setup.py install
        ..
 
-    5. Run the GRaaS openEO Core API test suite (openEO wrapper test):
+    4. Run the openEO GRASS GIS driver test suite (openEO wrapper test):
 
        .. code-block:: bash
 
           python setup.py test
        ..
 
-    6. Run the server locally:
+       The test result should look like this:
+
+          .. image:: OpenEO_GRaaS_Wrapper_Testsuite.png
+
+    5. Run the server locally:
 
        .. code-block:: bash
 
           python -m graas_openeo_core_wrapper.main
        ..
 
-8. Alternatively use the docker deployment located in the **docker** directory of this repository
+2. Alternatively use the docker deployment located in the **docker** directory of this repository
 
-    1. Make sure the GRaaS deployment is reachable by the openEO GRaaS wrapper container
+    1. Make sure the GRaaS deployment is reachable by the openEO GRASS GIS driver container
     2. use the **build.sh** in the **docker** directory to build the image
     3. Deploy the openEO GRaaS docker container
 
@@ -107,13 +94,13 @@ Installation
             docker run --name=graas_wrapper -p 5000:5000 graas_openeo_core_wrapper
         ..
 
-9. Get the swagger.json API description using curl:
+3. Get the swagger.json API description using curl:
 
    .. code-block:: bash
 
       curl -X GET http://openeo.mundialis.de:5000/api/v0/swagger.json
 
-10. Explore the capabilities, data and processes that are available:
+4. Explore the capabilities, data and processes that are available:
 
    .. code-block:: bash
 

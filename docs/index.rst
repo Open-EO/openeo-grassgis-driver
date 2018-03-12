@@ -66,6 +66,7 @@ Installation
           cd openeo_core
           pip install -r requirements.txt
           python setup.py install
+          cd ..
        ..
 
     4. After installing the official openEO reference implementation, the GRaaS
@@ -79,7 +80,7 @@ Installation
           python setup.py install
        ..
 
-    5. Run the GRaaS openEO Core API test suite:
+    5. Run the GRaaS openEO Core API test suite (openEO wrapper test):
 
        .. code-block:: bash
 

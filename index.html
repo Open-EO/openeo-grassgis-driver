@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>The GRaaS openEO wrapper &#8212; graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</title>
+    <title>The OpenEO GRASS GIS driver &#8212; graas_openeo_core_wrapper unknown documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.post0.dev33+gf5e1646.dirty',
+        VERSION:     'unknown',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -39,14 +39,14 @@
         <li class="right" >
           <a href="license.html" title="License"
              accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">graas_openeo_core_wrapper unknown documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">The GRaaS openEO wrapper</a><ul>
+<li><a class="reference internal" href="#">The OpenEO GRASS GIS driver</a><ul>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 </ul>
 </li>
@@ -92,17 +92,19 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="the-graas-openeo-wrapper">
-<h1>The GRaaS openEO wrapper<a class="headerlink" href="#the-graas-openeo-wrapper" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="the-openeo-grass-gis-driver">
+<h1>The OpenEO GRASS GIS driver<a class="headerlink" href="#the-openeo-grass-gis-driver" title="Permalink to this headline">¶</a></h1>
 <p>This software implements the openEO Core API interface for the GRASS GIS as a Service (GRaaS) software solution
 for parallel, large scale geodata processing.
-GRaaS is a highly scalable open source REST interface to process geodata with the GRASS GIS in a distributed environment.</p>
+GRaaS is a highly scalable open source REST interface to process geodata with the GRASS GIS in a distributed environment.
+It is deployed on <strong>openeo.mundialis.de</strong> and will be used for processing all openEO API calls taht are send to
+the te OpenEO GRASS GIS driver.</p>
 <p>What is openEO?</p>
 <blockquote>
 <div><p>openEO - A Common, Open Source Interface between Earth Observation Data Infrastructures
 and Front-End Applications is an H2020 project funded under call EO-2-2017:
 EO Big Data Shift, under grant number 776242. The project runs from Oct 2017 to Sept 2020.</p>
-<p><a class="reference external" href="https://openeo.org/">https://openeo.org/</a></p>
+<p><a class="reference external" href="http://openeo.org/">http://openeo.org/</a></p>
 </div></blockquote>
 <p>This document demonstrates the application of the openEO GRaaS wrapper to solve the three use cases
 that were defined by the development group for the first prototype.</p>
@@ -110,29 +112,11 @@ that were defined by the development group for the first prototype.</p>
 <div><a class="reference external" href="https://open-eo.github.io/openeo-api-poc/poc/index.html#proof-of-concept">https://open-eo.github.io/openeo-api-poc/poc/index.html#proof-of-concept</a></div></blockquote>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>An active internet connection is required. All requests to the openEO GRASS GIS driver will be send and processed on the <strong>openeo.mundialis.de</strong> server.</p>
 <ol class="arabic">
-<li><p class="first">Deploy the GRaaS installation using docker.</p>
-</li>
-<li><p class="first">Deploy the openEO GRaaS wrapper locally:</p>
+<li><p class="first">Deploy the openEO GRASS GIS driver locally:</p>
 <blockquote>
 <div><ol class="arabic">
-<li><p class="first">Make sure to deploy the GRASS GIS locations that are required for the GRaaS openEO wrapper test suite
-in the required GRaaS installation. Otherwise most if the tests will fail. The location data can be accessed here:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>mkdir /<span class="nv">$HOME</span>/graas/grassdb
-<span class="nb">cd</span> /<span class="nv">$HOME</span>/graas/grassdb
-wget https://grass.osgeo.org/sampledata/north_carolina/nc_spm_08_grass7.tar.gz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-     tar xzvf nc_spm_08_grass7.tar.gz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-     rm -f nc_spm_08_grass7.tar.gz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-     mv nc_spm_08_grass7 nc_spm_08
-wget https://storage.googleapis.com/datentransfer/ECAD.tar.gz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-     tar xzvf ECAD.tar.gz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-     rm -f ECAD.tar.gz
-wget https://storage.googleapis.com/datentransfer/LL.tar.gz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-     tar xzvf LL.tar.gz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-     rm -f LL.tar.gz
-</pre></div>
-</div>
-</li>
 <li><p class="first">Create directory that should contain the code and the virtual environment and switch the environment.
 It is preferred to run the openEO GRaaS wrapper in a virtual python environment:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>mkdir openEO
@@ -142,25 +126,26 @@ virtualenv -p python3.5 venv
 </pre></div>
 </div>
 </li>
-<li><p class="first">Clone the official openEO reference implementation repository and install
+<li><p class="first">Clone the official python based openEO reference implementation repository and install
 the required Python packages into the virtual environment:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>git clone https://bitbucket.org/huhabla/openeo_core.git openeo_core
 <span class="nb">cd</span> openeo_core
 pip install -r requirements.txt
 python setup.py install
+<span class="nb">cd</span> ..
 </pre></div>
 </div>
 </li>
-<li><p class="first">After installing the official openEO reference implementation, the GRaaS
-openEO wrapper must be installed, since it is based on the reference implementation.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>git clone https://bitbucket.org/huhabla/graas_openeo_core_wrapper.git graas_openeo_core_wrapper
+<li><p class="first">After installing the official python based openEO reference implementation, the openEO GRASS GIS driver
+must be installed, since it is based on the openEO reference implementation.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>git clone https://github.com/Open-EO/openeo-grassgis-driver.git graas_openeo_core_wrapper
 <span class="nb">cd</span> graas_openeo_core_wrapper
 pip install -r requirements.txt
 python setup.py install
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the GRaaS openEO Core API test suite:</p>
+<li><p class="first">Run the openEO GRASS GIS driver test suite (openEO wrapper test):</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>python setup.py <span class="nb">test</span>
 </pre></div>
 </div>
@@ -177,12 +162,10 @@ python setup.py install
 </ol>
 </div></blockquote>
 </li>
-</ol>
-<ol class="arabic" start="8">
 <li><p class="first">Alternatively use the docker deployment located in the <strong>docker</strong> directory of this repository</p>
 <blockquote>
 <div><ol class="arabic">
-<li><p class="first">Make sure the GRaaS deployment is reachable by the openEO GRaaS wrapper container</p>
+<li><p class="first">Make sure the GRaaS deployment is reachable by the openEO GRASS GIS driver container</p>
 </li>
 <li><p class="first">use the <strong>build.sh</strong> in the <strong>docker</strong> directory to build the image</p>
 </li>
@@ -190,7 +173,7 @@ python setup.py install
 <blockquote>
 <div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> graas_openeo_core_wrapper/docker
 docker build -t graas_openeo_core_wrapper .
-docker run --name<span class="o">=</span>graas_wrapper -p <span class="m">5000</span>:5000 graas_openeo_core_wrapper
+docker run --name<span class="o">=</span>graas_wrapper -p 5000:5000 graas_openeo_core_wrapper
 </pre></div>
 </div>
 </div></blockquote>
@@ -199,20 +182,18 @@ docker run --name<span class="o">=</span>graas_wrapper -p <span class="m">5000</
 </div></blockquote>
 </li>
 <li><p class="first">Get the swagger.json API description using curl:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://localhost:5000/api/v0/swagger.json
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://openeo.mundialis.de:5000/api/v0/swagger.json
 </pre></div>
 </div>
 </li>
 <li><p class="first">Explore the capabilities, data and processes that are available:</p>
-</li>
-</ol>
-<blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/capabilities
-curl http://127.0.0.1:5000/data
-curl http://127.0.0.1:5000/processes
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/capabilities
+curl http://openeo.mundialis.de:5000/data
+curl http://openeo.mundialis.de:5000/processes
 </pre></div>
 </div>
-</div></blockquote>
+</li>
+</ol>
 </div>
 </div>
 <div class="section" id="the-openeo-use-cases">
@@ -220,7 +201,7 @@ curl http://127.0.0.1:5000/processes
 <p>First list all available data in the GRaaS database, the list was shortened, since aver 120 raster layer are
 in the database:</p>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/data
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/data
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">[</span>
@@ -280,7 +261,7 @@ in the database:</p>
 </div></blockquote>
 <p>Get information about band 04 of the sentinel2a  time series:</p>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/data/LL.sentinel2A_openeo_subset.strds.S2A_B04
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/data/LL.sentinel2A_openeo_subset.strds.S2A_B04
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -324,7 +305,7 @@ in the database:</p>
 </div></blockquote>
 <p>Get information about band 08 of the sentinel2a  time series:</p>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/data/LL.sentinel2A_openeo_subset.strds.S2A_B08
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/data/LL.sentinel2A_openeo_subset.strds.S2A_B08
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -368,7 +349,7 @@ in the database:</p>
 </div></blockquote>
 <p>List process information about all processes that are available for computation:</p>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/processes
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/processes
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">[</span>
@@ -385,7 +366,7 @@ in the database:</p>
 </div></blockquote>
 <p>Get information about each available process:</p>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/processes/raster_exporter
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/processes/raster_exporter
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -399,7 +380,7 @@ in the database:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/processes/udf_reduce_time
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/processes/udf_reduce_time
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -416,7 +397,7 @@ in the database:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/processes/min_time
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/processes/min_time
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -430,7 +411,7 @@ in the database:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/processes/NDVI
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/processes/NDVI
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -450,7 +431,7 @@ in the database:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/processes/filter_daterange
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/processes/filter_daterange
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -470,7 +451,7 @@ in the database:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/processes/filter_bbox
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/processes/filter_bbox
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -511,7 +492,7 @@ in the database:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/processes/zonal_statistics
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/processes/zonal_statistics
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -604,7 +585,7 @@ The command line tool <em>curl</em> was used ot perform the REST API calls.</p>
 <blockquote>
 <div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">JSON</span><span class="o">=</span><span class="s1">&#39;{...}&#39;</span>
 
-curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PUT -d <span class="s2">&quot;</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">&quot;</span> http://127.0.0.1:5000/jobs
+curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PUT -d <span class="s2">&quot;</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">&quot;</span> http://openeo.mundialis.de:5000/jobs
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -616,7 +597,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PU
       <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;asyncpersistentresource&quot;</span><span class="p">,</span>
       <span class="nt">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
       <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/locations/LL/mapsets/openeo_mapset_0/processing_async&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/locations/LL/mapsets/openeo_mapset_0/processing_async&quot;</span>
+      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/locations/LL/mapsets/openeo_mapset_0/processing_async&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-03-06 12:43:24.788535&quot;</span><span class="p">,</span>
     <span class="nt">&quot;http_code&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
@@ -628,7 +609,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PU
     <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1520340204.788534</span><span class="p">,</span>
     <span class="nt">&quot;urls&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[],</span>
-      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2&quot;</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span>
   <span class="p">}</span>
@@ -638,7 +619,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PU
 </div></blockquote>
 <p>We need to poll for the final result using the job id, since the request is asynchronous:</p>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://127.0.0.1:5000/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -651,7 +632,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PU
       <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;asyncpersistentresource&quot;</span><span class="p">,</span>
       <span class="nt">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
       <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/locations/LL/mapsets/openeo_mapset_0/processing_async&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/locations/LL/mapsets/openeo_mapset_0/processing_async&quot;</span>
+      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/locations/LL/mapsets/openeo_mapset_0/processing_async&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-03-06 12:43:30.601449&quot;</span><span class="p">,</span>
     <span class="nt">&quot;http_code&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
@@ -666,7 +647,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PU
     <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1520340210.601438</span><span class="p">,</span>
     <span class="nt">&quot;urls&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[],</span>
-      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2&quot;</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span>
   <span class="p">},</span>
@@ -751,7 +732,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PU
 </div></blockquote>
 <p>The final response will look like this:</p>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://127.0.0.1:5000/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -764,7 +745,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PU
       <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;asyncpersistentresource&quot;</span><span class="p">,</span>
       <span class="nt">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
       <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/locations/LL/mapsets/openeo_mapset_0/processing_async&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/locations/LL/mapsets/openeo_mapset_0/processing_async&quot;</span>
+      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/locations/LL/mapsets/openeo_mapset_0/processing_async&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-03-06 12:43:51.238708&quot;</span><span class="p">,</span>
     <span class="nt">&quot;http_code&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
@@ -915,7 +896,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PU
     <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1520340231.238706</span><span class="p">,</span>
     <span class="nt">&quot;urls&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[],</span>
-      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2&quot;</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/status/user/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span>
   <span class="p">},</span>
@@ -1001,7 +982,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PU
 <p>Several raster time series datasets were produced in the process, that are now available. We show only the new generated
 rime series and the resulting NDVI raster layer:</p>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/data
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/data
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">[</span>
@@ -1031,7 +1012,7 @@ rime series and the resulting NDVI raster layer:</p>
 </div></blockquote>
 <p>We inspect the new NDVI time series:</p>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/data/LL.openeo_mapset_0.strds.S2A_B08_filter_daterange_NDVI
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/data/LL.openeo_mapset_0.strds.S2A_B08_filter_daterange_NDVI
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1075,7 +1056,7 @@ rime series and the resulting NDVI raster layer:</p>
 </div></blockquote>
 <p>Information about the time reduced NDVI raster layer:</p>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://127.0.0.1:5000/data/LL.openeo_mapset_0.raster.S2A_B08_filter_daterange_NDVI_min_time
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl http://openeo.mundialis.de:5000/data/LL.openeo_mapset_0.raster.S2A_B08_filter_daterange_NDVI_min_time
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1158,7 +1139,7 @@ as JSON code and send a POST API call via <strong>curl</strong> to the backend a
 <blockquote>
 <div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">JSON</span><span class="o">=</span><span class="s1">&#39;{...}&#39;</span>
 
-curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s2">&quot;</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">&quot;</span> http://127.0.0.1:5000/jobs
+curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s2">&quot;</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">&quot;</span> http://openeo.mundialis.de:5000/jobs
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1170,7 +1151,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
       <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;asyncephemeralexportgcsresource&quot;</span><span class="p">,</span>
       <span class="nt">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
       <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/locations/LL/processing_async_export_gcs&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/locations/LL/processing_async_export_gcs&quot;</span>
+      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-03-06 12:46:16.940197&quot;</span><span class="p">,</span>
     <span class="nt">&quot;http_code&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
@@ -1182,7 +1163,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
     <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1520340376.940196</span><span class="p">,</span>
     <span class="nt">&quot;urls&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[],</span>
-      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/status/user/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4&quot;</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/status/user/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span>
   <span class="p">}</span>
@@ -1192,7 +1173,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
 </div></blockquote>
 <p>We need to poll for the final result using the job id, since the request is asynchronous:</p>
 <blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://127.0.0.1:5000/jobs/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4
 </pre></div>
 </div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1205,7 +1186,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
       <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;asyncephemeralexportgcsresource&quot;</span><span class="p">,</span>
       <span class="nt">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
       <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/locations/LL/processing_async_export_gcs&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/locations/LL/processing_async_export_gcs&quot;</span>
+      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-03-06 12:47:10.480688&quot;</span><span class="p">,</span>
     <span class="nt">&quot;http_code&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
@@ -1381,7 +1362,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
       <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s2">&quot;https://storage.googleapis.com/graas-test-resources/user%2Fresource_id-1d10265d-e435-4463-a913-e65e1a2cafe4%2FS2A_B08_filter_daterange_NDVI_min_time.tiff?Expires=1521204430&amp;GoogleAccessId=cloud-storage-admin%40eloquent-victor-483.iam.gserviceaccount.com&amp;Signature=RcqtuaXW9a48wzuMt0Vj93dnj9CDCGJaIhtxCYj%2B0CkK2uZ4cS%2BI9yAA50HpG5hbWFd0If9BvIfvNYjvzEm8MaHFDXOVSqN8gxSOkcA7HpNN0lWvAdkL6OoOjeBiHO1MXjZy6lMxW7X8OGg8OaiEmCXt%2FJQwlSlazt5et8cfLeJ10K%2Ba6AZH3ngZm8yrBxgW%2BggT440h914i4kuTaR9j2ez1yHEovpOs%2BemN%2FGuQHZoGYid3z82MM3b8WhgZsuNO0nwcC2ttlZ4UL7iVZL2wW8nnlzfub1vS1eC4feO86YLsVwJqTo8%2BuzDPf%2BnljHN8WKYYK8p05IIXCkgs0p0naQ%3D%3D&quot;</span>
       <span class="p">],</span>
-      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/status/user/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4&quot;</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/status/user/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span>
   <span class="p">},</span>
@@ -1516,7 +1497,7 @@ The processing is run in an ephemeral database and the result will be exported b
 <blockquote>
 <div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">JSON</span><span class="o">=</span><span class="s1">&#39;{...}&#39;</span>
 
-curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s2">&quot;</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">&quot;</span> http://127.0.0.1:5000/jobs
+curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s2">&quot;</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">&quot;</span> http://openeo.mundialis.de:5000/jobs
 </pre></div>
 </div>
 <div class="highlight-JSON"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1528,7 +1509,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
       <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;asyncephemeralexportgcsresource&quot;</span><span class="p">,</span>
       <span class="nt">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
       <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/locations/LL/processing_async_export_gcs&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/locations/LL/processing_async_export_gcs&quot;</span>
+      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-03-06 13:06:38.039900&quot;</span><span class="p">,</span>
     <span class="nt">&quot;http_code&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
@@ -1540,14 +1521,14 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
     <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1520341598.039899</span><span class="p">,</span>
     <span class="nt">&quot;urls&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[],</span>
-      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/status/user/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74&quot;</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/status/user/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://127.0.0.1:5000/jobs/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74
 </pre></div>
 </div>
 <div class="highlight-JSON"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1560,7 +1541,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
       <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;asyncephemeralexportgcsresource&quot;</span><span class="p">,</span>
       <span class="nt">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
       <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/locations/LL/processing_async_export_gcs&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/locations/LL/processing_async_export_gcs&quot;</span>
+      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-03-06 13:07:21.924437&quot;</span><span class="p">,</span>
     <span class="nt">&quot;http_code&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
@@ -1689,7 +1670,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
       <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s2">&quot;https://storage.googleapis.com/graas-test-resources/user%2Fresource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74%2FS2A_B08_filter_daterange_NDVI_filter_daterange_udf_reduce_time.tiff?Expires=1521205641&amp;GoogleAccessId=cloud-storage-admin%40eloquent-victor-483.iam.gserviceaccount.com&amp;Signature=H9bk0yQyawKl5SNVB0cRXFgG7dKE8K%2F5wxlwjZB%2FjIRWYS4%2BzUfqH9LWQpmRJXTqrTvy%2F3m%2B3xkFz5LUyIUvQYTOePl5Sq3c%2B4J210LFCLiWW%2B17or7vZ0NMsD96xXzG7yzxs3GwjnFBYu%2FPdKBv8qBK0LtYzqyzMjEHMzOaquGEWP1eiOcMfWH%2B1xpEQ2sCz3SRS8gv6FEQ67vh19%2Fs22eewXvfhNpcYlHyP03iH0P814Sr8T8kMAAGEIqntMbHIMtetmqICfn%2FlRJ4m5nbHyg7DGddyVAQx8AzaA0cu1QMBXBmstQOHczVpQebG6%2FS7sdiDRDnHZVJbjG6lX%2Bpkg%3D%3D&quot;</span>
       <span class="p">],</span>
-      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/status/user/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74&quot;</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/status/user/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span>
   <span class="p">},</span>
@@ -1791,7 +1772,7 @@ that is publicly available as GeoJSON file in the google cloud storage.</p>
 </div>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">JSON</span><span class="o">=</span><span class="s1">&#39;{...}&#39;</span>
 
-curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s2">&quot;</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">&quot;</span> http://127.0.0.1:5000/jobs
+curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s2">&quot;</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">&quot;</span> http://openeo.mundialis.de:5000/jobs
 </pre></div>
 </div>
 <div class="highlight-JSON"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1803,7 +1784,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
       <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;asyncephemeralexportgcsresource&quot;</span><span class="p">,</span>
       <span class="nt">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
       <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/locations/LL/processing_async_export_gcs&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/locations/LL/processing_async_export_gcs&quot;</span>
+      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-03-06 13:32:48.580963&quot;</span><span class="p">,</span>
     <span class="nt">&quot;http_code&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
@@ -1815,14 +1796,14 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
     <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1520343168.580963</span><span class="p">,</span>
     <span class="nt">&quot;urls&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[],</span>
-      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/status/user/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e&quot;</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/status/user/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://127.0.0.1:5000/jobs/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e
 </pre></div>
 </div>
 <div class="highlight-JSON"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1835,7 +1816,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
       <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;asyncephemeralexportgcsresource&quot;</span><span class="p">,</span>
       <span class="nt">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
       <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/locations/LL/processing_async_export_gcs&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/locations/LL/processing_async_export_gcs&quot;</span>
+      <span class="nt">&quot;request_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-03-06 13:32:57.976511&quot;</span><span class="p">,</span>
     <span class="nt">&quot;http_code&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
@@ -2007,7 +1988,7 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
     <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1520343177.976506</span><span class="p">,</span>
     <span class="nt">&quot;urls&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[],</span>
-      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost:8080/status/user/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e&quot;</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;http://openeo.mundialis.de:8080/status/user/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span>
   <span class="p">},</span>
@@ -2230,7 +2211,7 @@ S2A_B08_filter_daterange_NDVI_extract_00007</td>
         <li class="right" >
           <a href="license.html" title="License"
              >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">graas_openeo_core_wrapper 0.0.post0.dev33+gf5e1646.dirty documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">graas_openeo_core_wrapper unknown documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

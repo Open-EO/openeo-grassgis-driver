@@ -19,7 +19,7 @@ What is openEO?
 This document demonstrates the application of the openEO GRaaS wrapper to solve the three use cases
 that were defined by the development group for the first prototype.
 
-    https://open-eo.github.io/openeo-api-poc/poc/index.html#proof-of-concept
+    https://open-eo.github.io/openeo-api/poc/index.html#proof-of-concept
 
 
 Installation

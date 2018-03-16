@@ -2,11 +2,16 @@
 The OpenEO GRASS GIS driver
 ===========================
 
-This software implements the openEO Core API interface for the GRASS GIS as a Service (GRaaS) software solution
-for parallel, large scale geodata processing.
-GRaaS is a highly scalable open source REST interface to process geodata with the GRASS GIS in a distributed environment.
-It is deployed on **openeo.mundialis.de** and will be used for processing all openEO API calls taht are send to
-the te OpenEO GRASS GIS driver.
+The OpenEO GRASS GIS driver implements the openEO Core API interface for the GRASS GIS as a Service
+(Actinia Core; available from https://github.com/mundialis/actinia_core) software solution for parallel,
+large scale geodata processing.
+
+It is a highly scalable REST interface to process geodata with the GRASS GIS in a distributed environment.
+GRASS GIS is a free and open source software package providing geospatial processing engines in a single
+integrated environment for raster, vector, and 3D-voxel processing as well as image processing capabilities.
+
+It is deployed on **openeo.mundialis.de** and will be used for processing all openEO API calls that are send to
+the the OpenEO GRASS GIS driver.
 
 What is openEO?
 
@@ -16,11 +21,15 @@ What is openEO?
 
     http://openeo.org/
 
-This document demonstrates the application of the openEO GRaaS wrapper to solve the three use cases
-that were defined by the development group for the first prototype.
+Purpose of this document
+
+    This document demonstrates the application of the openEO Actinia Core wrapper to solve the three use cases
+    that were defined by the development group for the first prototype:
 
     https://open-eo.github.io/openeo-api/poc/index.html#proof-of-concept
 
+
+    Documentation reference page: https://open-eo.github.io/openeo-grassgis-driver/
 
 Installation
 ============
@@ -447,7 +456,7 @@ Get information about each available process:
 openEO use case 1
 =================
 
-Use case one can be addressed in different ways using the eopenEO GRaaS wrapper. There are **POST** and **PUT**
+Use case one can be addressed in different ways using the openEO GRaaS wrapper. There are **POST** and **PUT**
 calls for job creation that reflects the concept of persistent and ephemeral processing in GRaaS databases.
 
 Persistent database approach

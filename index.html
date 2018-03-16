@@ -94,11 +94,11 @@
             
   <div class="section" id="the-openeo-grass-gis-driver">
 <h1>The OpenEO GRASS GIS driver<a class="headerlink" href="#the-openeo-grass-gis-driver" title="Permalink to this headline">¶</a></h1>
-<p>This software implements the openEO Core API interface for the GRASS GIS as a Service (GRaaS) software solution
-for parallel, large scale geodata processing.
-GRaaS is a highly scalable open source REST interface to process geodata with the GRASS GIS in a distributed environment.
-It is deployed on <strong>openeo.mundialis.de</strong> and will be used for processing all openEO API calls taht are send to
-the te OpenEO GRASS GIS driver.</p>
+<p>The OpenEO GRASS GIS driver implements the openEO Core API interface for the GRASS GIS as a Service (Actinia Core; available from <a href="https://github.com/mundialis/actinia_core">https://github.com/mundialis/actinia_core</a>) software solution for parallel, large scale geodata processing.
+<br>
+It is a highly scalable open source REST interface to process geodata with the GRASS GIS in a distributed environment. GRASS GIS is a free and open source software package providing geospatial processing engines in a single integrated environment for raster, vector, and 3D-voxel processing as well as image processing capabilities.
+<br>
+It is deployed on <strong>openeo.mundialis.de</strong> and will be used for processing all openEO API calls that are send to the the OpenEO GRASS GIS driver.</p>
 <p>What is openEO?</p>
 <blockquote>
 <div><p>openEO - A Common, Open Source Interface between Earth Observation Data Infrastructures
@@ -106,7 +106,7 @@ and Front-End Applications is an H2020 project funded under call EO-2-2017:
 EO Big Data Shift, under grant number 776242. The project runs from Oct 2017 to Sept 2020.</p>
 <p><a class="reference external" href="http://openeo.org/">http://openeo.org/</a></p>
 </div></blockquote>
-<p>This document demonstrates the application of the openEO GRaaS wrapper to solve the three use cases
+<p>This document demonstrates the application of the openEO Actinia Core wrapper to solve the three use cases
 that were defined by the development group for the first prototype.</p>
 <blockquote>
 <div><a class="reference external" href="https://open-eo.github.io/openeo-api-poc/poc/index.html#proof-of-concept">https://open-eo.github.io/openeo-api-poc/poc/index.html#proof-of-concept</a></div></blockquote>
@@ -118,7 +118,7 @@ that were defined by the development group for the first prototype.</p>
 <blockquote>
 <div><ol class="arabic">
 <li><p class="first">Create directory that should contain the code and the virtual environment and switch the environment.
-It is preferred to run the openEO GRaaS wrapper in a virtual python environment:</p>
+It is preferred to run the openEO Actinia Core wrapper in a virtual python environment:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>mkdir openEO
 <span class="nb">cd</span> openEO
 virtualenv -p python3.5 venv
@@ -512,7 +512,7 @@ in the database:</p>
 </div></blockquote>
 <div class="section" id="openeo-use-case-1">
 <h2>openEO use case 1<a class="headerlink" href="#openeo-use-case-1" title="Permalink to this headline">¶</a></h2>
-<p>Use case one can be addressed in different ways using the eopenEO GRaaS wrapper. There are <strong>POST</strong> and <strong>PUT</strong>
+<p>Use case one can be addressed in different ways using the openEO GRaaS wrapper. There are <strong>POST</strong> and <strong>PUT</strong>
 calls for job creation that reflects the concept of persistent and ephemeral processing in GRaaS databases.</p>
 <div class="section" id="persistent-database-approach">
 <h3>Persistent database approach<a class="headerlink" href="#persistent-database-approach" title="Permalink to this headline">¶</a></h3>

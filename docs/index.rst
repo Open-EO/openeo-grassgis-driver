@@ -39,7 +39,7 @@ An active internet connection is required. All requests to the openEO GRASS GIS 
 1. Deploy the openEO GRASS GIS driver locally:
 
     1. Create directory that should contain the code and the virtual environment and switch the environment.
-       It is preferred to run the openEO GRaaS wrapper in a virtual python environment:
+       It is preferred to run the openEO Actinia Core wrapper in a virtual python environment:
 
        .. code-block:: bash
 

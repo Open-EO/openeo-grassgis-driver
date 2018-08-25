@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import json
-from graas_openeo_core_wrapper.config import Config as GRaaSConfig
-import graas_openeo_core_wrapper
+from .config import Config as ActiniaConfig
 import requests
 
 __license__ = "Apache License, Version 2.0"
@@ -11,12 +9,14 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class GRaaSInterface(object):
+class ActiniaInterface(object):
+
+    PROCESS_LOCATION = {}
 
     def __init__(self, config=None):
 
         if config is None:
-            config = GRaaSConfig
+            config = ActiniaConfig
 
         self.host = config.HOST
         self.port = config.PORT
@@ -42,7 +42,7 @@ class GRaaSInterface(object):
         location, mapset, datatype, layer = layer.split(".", 3)
 
         # Store the location in the global location dict
-        graas_openeo_core_wrapper.PROCESS_LOCATION[location] = location
+        ActiniaInterface.PROCESS_LOCATION[location] = location
 
         return location, mapset, datatype, layer
 
@@ -162,7 +162,7 @@ class GRaaSInterface(object):
         :param layer_name:
         :return:
         """
-        location, mapset, datatype, layer = GRaaSInterface.layer_def_to_components(layer_name)
+        location, mapset, datatype, layer = ActiniaInterface.layer_def_to_components(layer_name)
         if datatype == "raster":
             datatype = "raster_layers"
         if datatype == "vector":

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from openeo_core.data_product_id import DataProductId, GET_DATA_PRODUCT_ID_DOC
-from openeo_core.definitions import SpatialExtent, DateTime, BandDescription
-from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
 from flask import make_response, jsonify
-from flask_restful_swagger_2 import swagger
+from flask_restful import Resource
+from .definitions import SpatialExtent, DateTime, BandDescription
+from .actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -75,12 +74,188 @@ raster_example = {
     "west": "630000"
 }
 
-class GRaaSDataProductId(DataProductId):
+GET_DATA_PRODUCT_ID_EXAMPLE = {
+    "product_id": "Sentinel-2A-L1C",
+    "description": "Sentinel 2 Level-1C: Top-of-atmosphere reflectances in cartographic geometry",
+    "source": "European Space Agency (ESA)",
+    "extent": {
+        "srs": "EPSG:4326",
+        "left": -34,
+        "right": 35,
+        "bottom": 39,
+        "top": 71
+    },
+    "time": {"from": "2016-01-01", "to": "2017-10-01"},
+    "bands": [
+        {
+            "band_id": "1",
+            "wavelength_nm": 443.9,
+            "res_m": 60,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "2",
+            "name": "blue",
+            "wavelength_nm": 496.6,
+            "res_m": 10,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "3",
+            "name": "green",
+            "wavelength_nm": 560,
+            "res_m": 10,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "4",
+            "name": "red",
+            "wavelength_nm": 664.5,
+            "res_m": 10,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "5",
+            "wavelength_nm": 703.9,
+            "res_m": 20,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "6",
+            "wavelength_nm": 740.2,
+            "res_m": 20,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "7",
+            "wavelength_nm": 782.5,
+            "res_m": 20,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "8",
+            "name": "nir",
+            "wavelength_nm": 835.1,
+            "res_m": 10,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "8a",
+            "wavelength_nm": 864.8,
+            "res_m": 20,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "9",
+            "wavelength_nm": 945,
+            "res_m": 60,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "10",
+            "wavelength_nm": 1373.5,
+            "res_m": 60,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "11",
+            "wavelength_nm": 1613.7,
+            "res_m": 20,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        },
+        {
+            "band_id": "12",
+            "wavelength_nm": 2202.4,
+            "res_m": 20,
+            "scale": 0.0001,
+            "offset": 0,
+            "type": "int16",
+            "unit": "1"
+        }
+    ]
+}
+
+GET_DATA_PRODUCT_ID_DOC = {
+    "summary": "Returns further information on a given EO product available at the back-end.",
+    "description": "The request will ask the back-end for further details about a product "
+                   "specified by the identifier `product_id`.",
+    "tags": ["EO Data Discovery"],
+    "parameters": [
+        {
+            "name": "product_id",
+            "in": "path",
+            "type": "string",
+            "description": "product identifier string such as `MOD18Q1`",
+            "required": True
+        }
+    ],
+    "responses": {
+        "200": {
+            "description": "JSON object with metadata of the EO dataset.",
+            "schema": {
+                "type": "object",
+                "required": ["product_id", "description", "extent", "bands"],
+                "properties": {
+                    "product_id": {"type": "string"},
+                    "description": {"type": "string"},
+                    "source": {"type": "string"},
+                    "extent": SpatialExtent,
+                    "time": DateTime,
+                    "bands": {"type": "array", "items": BandDataTypes}
+                },
+                "additionalProperties": True
+            },
+            "examples": {"application/json": GET_DATA_PRODUCT_ID_EXAMPLE}
+        },
+        "401": {"$ref": "#/responses/auth_required"},
+        "404": {"description": "EO dataset with specified identifier is not available"},
+        "501": {"$ref": "#/responses/not_implemented"},
+        "503": {"$ref": "#/responses/unavailable"}
+    }
+}
+
+
+class DataProductId(Resource):
 
     def __init__(self):
-        self.iface = GRaaSInterface()
+        self.iface = ActiniaInterface()
 
-    @swagger.doc(GET_DATA_PRODUCT_ID_DOC)
     def get(self, product_id):
 
         # List strds maps from the GRASS location

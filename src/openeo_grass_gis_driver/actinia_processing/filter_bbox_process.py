@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from graas_openeo_core_wrapper import process_definitions
-from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
 from random import randint
+from . import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -49,10 +48,10 @@ DOC = {
     }
 }
 
-process_definitions.PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
-def create_graas_process_chain_entry(left, right, top, bottom, ewres, nsres):
+def create_process_chain_entry(left, right, top, bottom, ewres, nsres):
     """Create a GRaaS command of the process chain that uses g.region to create a valid computational region
     for the provide input strds
 
@@ -89,7 +88,7 @@ def get_process_list(args):
     :return: (output_name, pc)
     """
 
-    input_names, process_list = process_definitions.analyse_process_graph(args)
+    input_names, process_list = analyse_process_graph(args)
     output_names = []
 
     for input_name in input_names:
@@ -108,10 +107,10 @@ def get_process_list(args):
         if "srs" in args:
             print("SRS is currently not supported")
 
-        pc = create_graas_process_chain_entry(left=left, right=right, top=top, bottom=bottom, ewres=ewres, nsres=nsres)
+        pc = create_process_chain_entry(left=left, right=right, top=top, bottom=bottom, ewres=ewres, nsres=nsres)
         process_list.append(pc)
 
     return output_names, process_list
 
 
-process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list
+PROCESS_DICT[PROCESS_NAME] = get_process_list

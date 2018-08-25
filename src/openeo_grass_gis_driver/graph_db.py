@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import json
-from graas_openeo_core_wrapper.config import Config as GRaaSConfig
-import requests
+from .actinia_processing.config import Config as ActiniaConfig
 from sqlitedict import SqliteDict
 
 __license__ = "Apache License, Version 2.0"
@@ -16,4 +14,4 @@ class GraphDB(SqliteDict):
 
     """
     def __init__(self):
-        SqliteDict.__init__(self, filename=GRaaSConfig.GRAPH_DB, autocommit=True)
+        SqliteDict.__init__(self, filename=ActiniaConfig.GRAPH_DB, autocommit=True)

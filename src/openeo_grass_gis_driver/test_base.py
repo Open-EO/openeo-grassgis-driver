@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import unittest
-from openeo_core.app import flask_api
-from graas_openeo_core_wrapper.endpoints import create_endpoints
-from graas_openeo_core_wrapper.config import Config as GRaaSConfig
+from .app import flask_api
+from .endpoints import create_endpoints
+from .actinia_processing.config import Config as ActiniaConfig
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -17,5 +17,5 @@ class TestBase(unittest.TestCase):
 
     def setUp(self):
         self.app = flask_api.app.test_client()
-        self.gconf = GRaaSConfig()
+        self.gconf = ActiniaConfig()
         self.gconf.PORT = "8080"

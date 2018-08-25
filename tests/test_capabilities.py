@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask import json
 import unittest
-from graas_openeo_core_wrapper.capabilities import GRAAS_CAPABILITIES
-from graas_openeo_core_wrapper.test_base import TestBase
+from openeo_grass_gis_driver.capabilities import GRAAS_CAPABILITIES
+from openeo_grass_gis_driver.test_base import TestBase
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

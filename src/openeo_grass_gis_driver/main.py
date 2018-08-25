@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from openeo_core.app import flask_app
-from graas_openeo_core_wrapper.endpoints import create_endpoints
+from .app import flask_app
+from .endpoints import create_endpoints
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

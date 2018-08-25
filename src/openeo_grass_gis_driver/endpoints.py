@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from openeo_core.app import flask_api
-from graas_openeo_core_wrapper.capabilities import GRaaSCapabilities
-from graas_openeo_core_wrapper.data import GRaaSData
-from graas_openeo_core_wrapper.data_product_id import GRaaSDataProductId
-from graas_openeo_core_wrapper.processes_process_id import GRaaSProcessesProcessId
-from graas_openeo_core_wrapper.processes import GRaaSProcesses
-from graas_openeo_core_wrapper.jobs import GRaaSJobs
-from graas_openeo_core_wrapper.jobs_job_id import GRaaSJobsJobId
-from graas_openeo_core_wrapper.udf import GRaaSUdf
-from graas_openeo_core_wrapper.udf_lang_udf_type import GRaaSUdfType
+from .app import flask_api
+from .capabilities import GRaaSCapabilities
+from .data import GRaaSData
+from .data_product_id import GRaaSDataProductId
+from .processes_process_id import GRaaSProcessesProcessId
+from .processes import GRaaSProcesses
+from .jobs import GRaaSJobs
+from .jobs_job_id import GRaaSJobsJobId
+from .udf import GRaaSUdf
+from .udf_lang_udf_type import GRaaSUdfType
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

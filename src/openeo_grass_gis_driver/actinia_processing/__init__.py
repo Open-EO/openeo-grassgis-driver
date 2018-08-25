@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
-# This is the process dictionary that is used to store all processes of the GRaaS wrapper
+# This is the process dictionary that is used to store all processes of the Actinia wrapper
 PROCESS_DESCRIPTION_DICT = {}
 PROCESS_DICT = {}
-# Import the process_definitions to fill the process.PROCESS_DICT with process_definitions
-import graas_openeo_core_wrapper.process_definitions.filter_bbox_process
-import graas_openeo_core_wrapper.process_definitions.filter_daterange_process
-import graas_openeo_core_wrapper.process_definitions.ndvi_process
-import graas_openeo_core_wrapper.process_definitions.min_time_process
-import graas_openeo_core_wrapper.process_definitions.udf_reduce_time
-import graas_openeo_core_wrapper.process_definitions.raster_exporter
-import graas_openeo_core_wrapper.process_definitions.zonal_statistics
+# Import the actinia_processing to fill the process.PROCESS_DICT with actinia_processing
+from . import filter_bbox_process
+from . import filter_daterange_process
+from . import ndvi_process
+from . import min_time_process
+from . import udf_reduce_time
+from . import raster_exporter
+from . import zonal_statistics
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

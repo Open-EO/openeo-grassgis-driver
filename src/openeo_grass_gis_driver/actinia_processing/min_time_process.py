@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
-from graas_openeo_core_wrapper import process_definitions
-from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
+from . import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from .actinia_interface import ActiniaInterface
+
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -22,10 +23,10 @@ DOC = {
     }
 }
 
-process_definitions.PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
-def create_graas_process_chain_entry(input_name, output_name):
+def create_process_chain_entry(input_name, output_name):
     """Create a GRaaS process description that uses t.rast.series to create the minimum
     value of the time series.
 
@@ -34,7 +35,7 @@ def create_graas_process_chain_entry(input_name, output_name):
     :return: A GRaaS process chain description
     """
 
-    location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(input_name)
+    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
     input_name = layer_name
     if mapset is not None:
         input_name = layer_name + "@" + mapset
@@ -58,19 +59,19 @@ def get_process_list(args):
     :param args: The process description arguments
     :return: (output_name, pc)
     """
-    input_names, process_list = process_definitions.analyse_process_graph(args)
+    input_names, process_list = analyse_process_graph(args)
     output_names = []
 
     for input_name in input_names:
-        location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(input_name)
+        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
         output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)
 
-        pc = create_graas_process_chain_entry(input_name,
+        pc = create_process_chain_entry(input_name,
                                               output_name)
         process_list.append(pc)
 
     return output_names, process_list
 
 
-process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list
+PROCESS_DICT[PROCESS_NAME] = get_process_list

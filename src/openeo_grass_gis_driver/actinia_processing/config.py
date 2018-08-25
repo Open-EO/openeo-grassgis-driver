@@ -9,13 +9,12 @@ __email__ = "soerengebbert@googlemail.com"
 
 class Config(object):
     # Settings for docker swarm image
-    # HOST="http://graas"
-    HOST="http://openeo.mundialis.de"
-    PORT=8080
+    HOST="http://actinia.mundialis.de"
+    PORT=433
     LOCATION="ECAD"
     # LOCATION="LL"
     LOCATIONS=["LL", "ECAD"]
-    USER="user"
-    PASSWORD="abcdefgh"
+    USER="demouser"
+    PASSWORD="gu3st!pa55w0rd"
     # The database file that stores the graphs
     GRAPH_DB="%s/.graph_db_file.sqlite"%os.environ["HOME"]

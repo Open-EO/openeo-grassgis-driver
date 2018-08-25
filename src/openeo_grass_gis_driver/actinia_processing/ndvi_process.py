@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from random import randint
-from graas_openeo_core_wrapper import process_definitions
-from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
+from . import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -27,10 +27,10 @@ DOC = {
     }
 }
 
-process_definitions.PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
-def create_graas_process_chain_entry(nir_time_series, red_time_series, output_time_series):
+def create_process_chain_entry(nir_time_series, red_time_series, output_time_series):
     """Create a GRaaS process description that uses t.rast.series to create the minimum
     value of the time series.
 
@@ -39,17 +39,17 @@ def create_graas_process_chain_entry(nir_time_series, red_time_series, output_ti
     :param output_time_series: The name of the output time series
     :return: A list of GRaaS process chain descriptions
     """
-    location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(nir_time_series)
+    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(nir_time_series)
     nir_time_series = layer_name
     if mapset is not None:
         nir_time_series = layer_name + "@" + mapset
 
-    location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(red_time_series)
+    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(red_time_series)
     red_time_series = layer_name
     if mapset is not None:
         red_time_series = layer_name + "@" + mapset
 
-    location, mapset, datatype, output_name = GRaaSInterface.layer_def_to_components(output_time_series)
+    location, mapset, datatype, output_name = ActiniaInterface.layer_def_to_components(output_time_series)
 
     rn = randint(0, 1000000)
 
@@ -85,7 +85,7 @@ def get_process_list(args):
     :return: (output_time_series, pc)
     """
 
-    input_names, process_list = process_definitions.analyse_process_graph(args)
+    input_names, process_list = analyse_process_graph(args)
     output_names = []
 
     # Two input names are required
@@ -108,14 +108,14 @@ def get_process_list(args):
         if nir_time_series is None or red_time_series is None:
             raise Exception("Band information is missing from process description")
 
-        location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(nir_time_series)
+        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(nir_time_series)
         output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)
 
-        pc = create_graas_process_chain_entry(nir_time_series, red_time_series, output_name)
+        pc = create_process_chain_entry(nir_time_series, red_time_series, output_name)
         process_list.extend(pc)
 
     return output_names, process_list
 
 
-process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list
+PROCESS_DICT[PROCESS_NAME] = get_process_list

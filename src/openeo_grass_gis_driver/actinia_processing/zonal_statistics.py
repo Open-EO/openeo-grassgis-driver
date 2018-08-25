@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from graas_openeo_core_wrapper import process_definitions
-from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
 from random import randint
+from . import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -27,10 +27,10 @@ DOC = {
     }
 }
 
-process_definitions.PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
-def create_graas_process_chain_entry(input_name, regions):
+def create_process_chain_entry(input_name, regions):
     """Create a GRaaS command of the process chain that computes the regional statistics based on a
     strds and a polygon.
 
@@ -42,7 +42,7 @@ def create_graas_process_chain_entry(input_name, regions):
     :return: A GRaaS process chain description
     """
 
-    location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(input_name)
+    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
     input_name = layer_name
     if mapset is not None:
         input_name = layer_name + "@" + mapset
@@ -124,7 +124,7 @@ def get_process_list(args):
     """
 
     # Get the input description and the process chain to attach this process
-    input_names, process_list = process_definitions.analyse_process_graph(args)
+    input_names, process_list = analyse_process_graph(args)
     output_names = []
 
     for input_name in input_names:
@@ -137,11 +137,11 @@ def get_process_list(args):
         else:
             raise Exception("The vector polygon is missing in the process description")
 
-        pc = create_graas_process_chain_entry(input_name=input_name,
+        pc = create_process_chain_entry(input_name=input_name,
                                               regions=regions)
         process_list.extend(pc)
 
     return output_names, process_list
 
 
-process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list
+PROCESS_DICT[PROCESS_NAME] = get_process_list

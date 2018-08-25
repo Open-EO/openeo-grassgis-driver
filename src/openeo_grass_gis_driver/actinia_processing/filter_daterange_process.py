@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from random import randint
-from graas_openeo_core_wrapper import process_definitions
-from graas_openeo_core_wrapper.graas_interface import GRaaSInterface
+from . import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -29,10 +29,10 @@ DOC = {
     }
 }
 
-process_definitions.PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
-def create_graas_process_chain_entry(input_name, start_time, end_time, output_name):
+def create__process_chain_entry(input_name, start_time, end_time, output_name):
     """Create a GRaaS command of the process chain that uses t.rast.extract to create a subset of a strds
 
     :param strds_name: The name of the strds
@@ -40,7 +40,7 @@ def create_graas_process_chain_entry(input_name, start_time, end_time, output_na
     :param end_time:
     :return: A GRaaS process chain description
     """
-    location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(input_name)
+    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
     input_name = layer_name
     if mapset is not None:
         input_name = layer_name + "@" + mapset
@@ -72,12 +72,12 @@ def get_process_list(args):
     """
 
     # Get the input description and the process chain to attach this process
-    input_names, process_list = process_definitions.analyse_process_graph(args)
+    input_names, process_list = analyse_process_graph(args)
     output_names = []
 
     for input_name in input_names:
 
-        location, mapset, datatype, layer_name = GRaaSInterface.layer_def_to_components(input_name)
+        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
         output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)
 
@@ -89,13 +89,13 @@ def get_process_list(args):
         if "to" in args:
             end_time = args["to"]
 
-        pc = create_graas_process_chain_entry(input_name=input_name,
-                                              start_time=start_time,
-                                              end_time=end_time,
-                                              output_name=output_name)
+        pc = create__process_chain_entry(input_name=input_name,
+                                         start_time=start_time,
+                                         end_time=end_time,
+                                         output_name=output_name)
         process_list.append(pc)
 
     return output_names, process_list
 
 
-process_definitions.PROCESS_DICT[PROCESS_NAME] = get_process_list
+PROCESS_DICT[PROCESS_NAME] = get_process_list

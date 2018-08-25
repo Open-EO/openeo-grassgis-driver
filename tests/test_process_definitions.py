@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import unittest
 from pprint import pprint
-from graas_openeo_core_wrapper import config
-from graas_openeo_core_wrapper.test_base import TestBase
-from graas_openeo_core_wrapper.process_definitions import analyse_process_graph
+from openeo_grass_gis_driver.actinia_processing import config
+from openeo_grass_gis_driver.test_base import TestBase
+from openeo_grass_gis_driver.actinia_processing.base import analyse_process_graph
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

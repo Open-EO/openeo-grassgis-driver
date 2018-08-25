@@ -3,8 +3,8 @@ import unittest
 import time
 import pprint
 from flask import json
-from graas_openeo_core_wrapper.test_base import TestBase
-from graas_openeo_core_wrapper import config
+from openeo_grass_gis_driver.test_base import TestBase
+from openeo_grass_gis_driver.actinia_processing import config
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

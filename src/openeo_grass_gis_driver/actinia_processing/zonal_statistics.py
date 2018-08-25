@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from random import randint
-from . import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"

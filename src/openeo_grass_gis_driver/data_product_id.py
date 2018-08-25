@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import make_response, jsonify
 from flask_restful import Resource
-from .definitions import SpatialExtent, DateTime, BandDescription
+from .definitions import SpatialExtent, DateTime, BandDescription, BandDataTypes
 from .actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"

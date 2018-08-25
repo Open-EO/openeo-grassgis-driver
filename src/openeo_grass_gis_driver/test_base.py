@@ -18,4 +18,4 @@ class TestBase(unittest.TestCase):
     def setUp(self):
         self.app = flask_api.app.test_client()
         self.gconf = ActiniaConfig()
-        self.gconf.PORT = "8080"
+        self.gconf.PORT = "443"

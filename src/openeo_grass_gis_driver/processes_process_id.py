@@ -2,7 +2,7 @@
 from flask import make_response, jsonify
 from .definitions import ProcessDescription
 from flask_restful import abort, Resource
-from .actinia_processing import PROCESS_DESCRIPTION_DICT
+from .actinia_processing.base import PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

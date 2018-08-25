@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import make_response, jsonify
 from flask_restful import Resource
-from .actinia_processing import PROCESS_DESCRIPTION_DICT
+from .actinia_processing.base import PROCESS_DESCRIPTION_DICT
 from .definitions import ProcessListEntry
 
 __license__ = "Apache License, Version 2.0"

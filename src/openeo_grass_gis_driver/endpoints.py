@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from .app import flask_api
-from .capabilities import GRaaSCapabilities
-from .data import GRaaSData
-from .data_product_id import GRaaSDataProductId
-from .processes_process_id import GRaaSProcessesProcessId
-from .processes import GRaaSProcesses
-from .jobs import GRaaSJobs
-from .jobs_job_id import GRaaSJobsJobId
-from .udf import GRaaSUdf
-from .udf_lang_udf_type import GRaaSUdfType
+from .capabilities import Capabilities
+from .data import Data
+from .data_product_id import DataProductId
+from .processes_process_id import ProcessesProcessId
+from .processes import Processes
+from .jobs import Jobs
+from .jobs_job_id import JobsJobId
+from .udf import Udf
+from .udf_lang_udf_type import UdfType
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -18,20 +18,20 @@ __email__ = "soerengebbert@googlemail.com"
 
 
 def create_endpoints():
-    """Create all endpoints for the openEO Core API GRaaS wrapper
+    """Create all endpoints for the openEO Core API  wrapper
 
     :return:
     """
-    flask_api.add_resource(GRaaSCapabilities, '/capabilities')
+    flask_api.add_resource(Capabilities, '/capabilities')
 
-    flask_api.add_resource(GRaaSData, '/data')
-    flask_api.add_resource(GRaaSDataProductId, '/data/<string:product_id>')
+    flask_api.add_resource(Data, '/data')
+    flask_api.add_resource(DataProductId, '/data/<string:product_id>')
 
-    flask_api.add_resource(GRaaSProcesses, '/processes')
-    flask_api.add_resource(GRaaSProcessesProcessId, '/processes/<string:process_id>')
+    flask_api.add_resource(Processes, '/processes')
+    flask_api.add_resource(ProcessesProcessId, '/processes/<string:process_id>')
 
-    flask_api.add_resource(GRaaSJobs, '/jobs')
-    flask_api.add_resource(GRaaSJobsJobId, '/jobs/<string:job_id>')
+    flask_api.add_resource(Jobs, '/jobs')
+    flask_api.add_resource(JobsJobId, '/jobs/<string:job_id>')
 
-    flask_api.add_resource(GRaaSUdf, '/udf')
-    flask_api.add_resource(GRaaSUdfType, '/udf/<string:lang>/<string:udf_type>')
+    flask_api.add_resource(Udf, '/udf')
+    flask_api.add_resource(UdfType, '/udf/<string:lang>/<string:udf_type>')

@@ -10,6 +10,9 @@ __email__ = "soerengebbert@googlemail.com"
 
 
 class ActiniaInterface(object):
+    """
+    This is the interface class to the actinia REST service that uses GRASS GIS as backend
+    """
 
     PROCESS_LOCATION = {}
 
@@ -20,7 +23,7 @@ class ActiniaInterface(object):
 
         self.host = config.HOST
         self.port = config.PORT
-        self.base_url = "%(host)s:%(port)s" % {"host": self.host, "port": self.port}
+        self.base_url = "%(host)s:%(port)s/latest" % {"host": self.host, "port": self.port}
         self.auth = (config.USER, config.PASSWORD)
         self.user = config.USER
 
@@ -58,7 +61,6 @@ class ActiniaInterface(object):
 
     def _send_get_request(self, url):
         r = requests.get(url=url, auth=self.auth)
-        print(r)
         data = r.text
 
         if r.status_code == 200:
@@ -68,7 +70,7 @@ class ActiniaInterface(object):
         return r.status_code, data
 
     def _send_post_request(self, url, process_chain):
-        """Send a post request adn return the return status and the GRaaS response
+        """Send a post request and return the return status and the Actinia response
 
         :param url:
         :param process_chain:
@@ -84,7 +86,7 @@ class ActiniaInterface(object):
         return r.status_code, data
 
     def resource_info(self, resource_id):
-        url = "%(base)s/status/%(user)s/%(rid)s" % {"base": self.base_url, "user": self.user, "rid": resource_id}
+        url = "%(base)s/resources/%(user)s/%(rid)s" % {"base": self.base_url, "user": self.user, "rid": resource_id}
         r = requests.get(url=url, auth=self.auth)
         data = r.text
 
@@ -94,7 +96,7 @@ class ActiniaInterface(object):
         return r.status_code, data
 
     def delete_resource(self, resource_id):
-        url = "%(base)s/status/%(user)s/%(rid)s" % {"base": self.base_url, "user": self.user, "rid": resource_id}
+        url = "%(base)s/resources/%(user)s/%(rid)s" % {"base": self.base_url, "user": self.user, "rid": resource_id}
         r = requests.delete(url=url, auth=self.auth)
         data = r.text
 
@@ -189,7 +191,7 @@ class ActiniaInterface(object):
         return True
 
     def async_persistent_processing(self, location, mapset, process_chain):
-        """Send a process chain to the graas backend to be run asynchronously in a persistent database
+        """Send a process chain to the Actinia backend to be run asynchronously in a persistent database
 
         :param location: The location in which to process
         :param mapset: The new mapset to generate
@@ -203,7 +205,7 @@ class ActiniaInterface(object):
         return self._send_post_request(url=url, process_chain=process_chain)
 
     def async_ephemeral_processing(self, location, process_chain):
-        """Send a process chain to the graas backend to be run asynchronously in a ephemeral database
+        """Send a process chain to the Actinia backend to be run asynchronously in a ephemeral database
 
         :param location: The location in which to process
         :param process_chain: The process chain that must be executed
@@ -215,7 +217,7 @@ class ActiniaInterface(object):
         return self._send_post_request(url=url, process_chain=process_chain)
 
     def async_ephemeral_processing_export(self, location, process_chain):
-        """Send a process chain to the graas backend to be run asynchronously in a ephemeral database
+        """Send a process chain to the Actinia backend to be run asynchronously in a ephemeral database
         with export capabilities
 
         :param location: The location in which to process

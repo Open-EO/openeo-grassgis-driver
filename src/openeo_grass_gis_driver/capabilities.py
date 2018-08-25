@@ -8,17 +8,17 @@ __copyright__ = "Copyright 2018, Sören Gebbert"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-
-ACTINIA_CAPABILITIES=["/capabilities",
-                    "/data",
-                    "/data/{product_id}",
-                    '/processes',
-                    '/processes/{process_id}',
-                    '/jobs',
-                    '/jobs/job_id',
-                    '/udf',
-                    '/udf/{lang}/{udf_type}']
-
+ACTINIA_CAPABILITIES = {
+    "version": "0.3.0",
+    "endpoints": [
+        {
+            "path": "/capabilities",
+            "methods": [
+                "GET"
+            ]
+        }
+    ]
+}
 
 GET_CAPABILITIES_DOC = {
     "summary": "Returns the capabilities, i.e., which OpenEO API features are supported  by the back-end.",
@@ -37,6 +37,6 @@ GET_CAPABILITIES_DOC = {
 
 
 class Capabilities(Resource):
-    
+
     def get(self, ):
         return make_response(jsonify(ACTINIA_CAPABILITIES), 200)

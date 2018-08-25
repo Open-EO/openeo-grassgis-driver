@@ -9,11 +9,11 @@ __email__ = "soerengebbert@googlemail.com"
 
 class Config(object):
     # Settings for docker swarm image
-    HOST="http://actinia.mundialis.de"
-    PORT=433
-    LOCATION="ECAD"
+    HOST="https://actinia.mundialis.de"
+    PORT=443
+    LOCATION="nc_spm_08"
     # LOCATION="LL"
-    LOCATIONS=["LL", "ECAD"]
+    LOCATIONS=["nc_spm_08", "latlong_wgs84"]
     USER="demouser"
     PASSWORD="gu3st!pa55w0rd"
     # The database file that stores the graphs

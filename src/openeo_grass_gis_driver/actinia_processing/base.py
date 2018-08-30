@@ -16,7 +16,7 @@ def analyse_process_graph(graph):
     """Analyse a process process graph and call the required subprocess analysis
 
     This function return the list of input names for the next process and the
-    GRaaS process chain that was build before.
+    Actinia process chain that was build before.
 
     :param graph: The process description
     :return: (output_name_list, pc)

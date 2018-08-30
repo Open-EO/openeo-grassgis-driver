@@ -28,13 +28,13 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
 def create_process_chain_entry(input_name, python_file_url, output_name):
-    """Create a GRaaS command of the process chain that uses g.region to create a valid computational region
+    """Create a Actinia command of the process chain that uses g.region to create a valid computational region
     for the provide input strds
 
     :param strds_name: The name of the strds
     :param python_file_url: The URL to the python file that defines the UDF
     :param output_name: The name of the output raster layer
-    :return: A GRaaS process chain description
+    :return: A Actinia process chain description
     """
 
     location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
@@ -57,7 +57,7 @@ def create_process_chain_entry(input_name, python_file_url, output_name):
 
 
 def get_process_list(args):
-    """Analyse the process description and return the GRaaS process chain and the name of the processing result layer
+    """Analyse the process description and return the Actinia process chain and the name of the processing result layer
     which is a single raster layer
 
     :param args: The process description

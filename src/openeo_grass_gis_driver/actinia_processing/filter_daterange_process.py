@@ -33,12 +33,12 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
 def create__process_chain_entry(input_name, start_time, end_time, output_name):
-    """Create a GRaaS command of the process chain that uses t.rast.extract to create a subset of a strds
+    """Create a Actinia command of the process chain that uses t.rast.extract to create a subset of a strds
 
     :param strds_name: The name of the strds
     :param start_time:
     :param end_time:
-    :return: A GRaaS process chain description
+    :return: A Actinia process chain description
     """
     location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
     input_name = layer_name
@@ -64,7 +64,7 @@ def create__process_chain_entry(input_name, start_time, end_time, output_name):
 
 
 def get_process_list(args):
-    """Analyse the process description and return the GRaaS process chain and the name of the processing result
+    """Analyse the process description and return the Actinia process chain and the name of the processing result
     strds that was filtered by start and end date
 
     :param args: The process description

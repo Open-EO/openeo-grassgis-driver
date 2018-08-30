@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_restful import Api
 
 __author__ = "Sören Gebbert"
-__copyright__ = "Copyright 2018, Sören Gebbert"
+__copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 

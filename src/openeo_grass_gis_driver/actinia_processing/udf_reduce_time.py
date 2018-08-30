@@ -4,7 +4,7 @@ from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
-__copyright__ = "Copyright 2018, Sören Gebbert"
+__copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
@@ -77,7 +77,7 @@ def get_process_list(args):
         if "python_file_url" in args:
             python_file_url = args["python_file_url"]
         else:
-            raise Exception("Python fle is missing in the process description")
+            raise Exception("Python file is missing in the process description")
 
         pc = create_process_chain_entry(input_name=input_name,
                                         python_file_url=python_file_url,

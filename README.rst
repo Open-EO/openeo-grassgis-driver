@@ -33,4 +33,3 @@ Installation
 ============
 
     Please refer to https://open-eo.github.io/openeo-grassgis-driver/
-

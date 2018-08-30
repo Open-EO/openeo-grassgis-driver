@@ -2,13 +2,13 @@
 from flask_restful_swagger_2 import Schema
 
 __author__ = "Sören Gebbert"
-__copyright__ = "Copyright 2018, Sören Gebbert"
+__copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Sören Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
 class ProcessDescription(Schema):
-    description = "Defines and describes a process including it's expected input arguments."
+    description = "Defines and describes a process including its expected input arguments."
     type = "object"
     required = ["process_id", "description"]
     properties = {
@@ -222,7 +222,7 @@ class UDFDescription(Schema):
         "link": {
             "type": "string",
             "description": "Reference to an external process definition if the process has been "
-                           "defined over different back ends within OpenEO"
+                           "defined over different back-ends within OpenEO"
         },
         "args": {
             "type": "object",
@@ -289,7 +289,7 @@ class FileDescription(Schema):
         },
         "modified": {
             "type": "string",
-            "description": "The creation/modification tim eof the file."
+            "description": "The creation/modification time of the file."
         }
     }
     example = {
@@ -362,7 +362,7 @@ class View(Schema):
             "properties": {
                 "srs": {
                     "type": "string",
-                    "description": "Spatial reference system as proj4 string or epsg code such as `EPSG:3857`"
+                    "description": "Spatial reference system as proj4 string or EPSG code such as `EPSG:3857`"
                 },
                 "window": {
                     "type": "object",
@@ -380,7 +380,7 @@ class View(Schema):
                 "resampling": {
                     "type": "string",
                     "description": "resampling method to use (taken from [GDAL]"
-                                   "(http://www.gdal.org/gdal_translate.html))",
+                                   "(https://www.gdal.org/gdal_translate.html))",
                     "default": "nearest",
                     "enum": ["nearest", "bilinear", "cubic", "cubicspline", "lanczos", "average", "mode"]
                 }
@@ -429,7 +429,7 @@ class View(Schema):
                 "resampling": {
                     "type": "string",
                     "description": "resampling method to use "
-                                   "(taken from [GDAL](http://www.gdal.org/gdal_translate.html))",
+                                   "(taken from [GDAL](https://www.gdal.org/gdal_translate.html))",
                     "default": "nearest",
                     "enum": [
                         "nearest",

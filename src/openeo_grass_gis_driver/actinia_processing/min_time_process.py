@@ -6,7 +6,7 @@ from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
-__copyright__ = "Copyright 2018, Sören Gebbert"
+__copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
@@ -27,12 +27,12 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
 def create_process_chain_entry(input_name, output_name):
-    """Create a GRaaS process description that uses t.rast.series to create the minimum
+    """Create a Actinia process description that uses t.rast.series to create the minimum
     value of the time series.
 
     :param input_time_series: The input time series name
     :param output_map: The name of the output map
-    :return: A GRaaS process chain description
+    :return: A Actinia process chain description
     """
 
     location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
@@ -53,7 +53,7 @@ def create_process_chain_entry(input_name, output_name):
 
 
 def get_process_list(args):
-    """Analyse the process description and return the GRaaS process chain and the name of the processing result layer
+    """Analyse the process description and return the Actinia process chain and the name of the processing result layer
     which is a single raster layer
 
     :param args: The process description arguments

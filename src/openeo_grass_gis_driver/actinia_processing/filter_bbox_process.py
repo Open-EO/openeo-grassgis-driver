@@ -4,7 +4,7 @@ from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
-__copyright__ = "Copyright 2018, Sören Gebbert"
+__copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
@@ -52,7 +52,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
 def create_process_chain_entry(left, right, top, bottom, ewres, nsres):
-    """Create a GRaaS command of the process chain that uses g.region to create a valid computational region
+    """Create a Actinia command of the process chain that uses g.region to create a valid computational region
     for the provide input strds
 
     TODO: This approach is a hack, the g.region command should accept a STRDS as input to set the
@@ -64,7 +64,7 @@ def create_process_chain_entry(left, right, top, bottom, ewres, nsres):
     :param bottom:
     :param ewres:
     :param nsres:
-    :return: A GRaaS process chain description
+    :return: A Actinia process chain description
     """
 
     rn = randint(0, 1000000)
@@ -82,7 +82,7 @@ def create_process_chain_entry(left, right, top, bottom, ewres, nsres):
 
 
 def get_process_list(args):
-    """Analyse the process description and return the GRaaS process chain and the name of the processing result
+    """Analyse the process description and return the Actinia process chain and the name of the processing result
 
     :param args: The process description
     :return: (output_name, pc)

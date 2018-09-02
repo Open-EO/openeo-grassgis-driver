@@ -5,7 +5,7 @@ from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
-__copyright__ = "Copyright 2018, Sören Gebbert"
+__copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
@@ -31,13 +31,13 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
 def create_process_chain_entry(nir_time_series, red_time_series, output_time_series):
-    """Create a GRaaS process description that uses t.rast.mapcalc and t.rast.colors to compute
-    the NDVI based on red and nir raster time series
+    """Create a Actinia process description that uses t.rast.series to create the minimum
+    value of the time series.
 
     :param nir_time_series: The NIR band time series name
     :param red_time_series: The RED band time series name
     :param output_time_series: The name of the output time series
-    :return: A list of GRaaS process chain descriptions
+    :return: A list of Actinia process chain descriptions
     """
     location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(nir_time_series)
     nir_time_series = layer_name
@@ -79,7 +79,7 @@ def create_process_chain_entry(nir_time_series, red_time_series, output_time_ser
 
 
 def get_process_list(args):
-    """Analyse the process description and return the GRaaS process chain and the name of the processing result
+    """Analyse the process description and return the Actinia process chain and the name of the processing result
 
     :param args: The process description arguments
     :return: (output_time_series, pc)

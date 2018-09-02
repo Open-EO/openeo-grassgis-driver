@@ -75,150 +75,165 @@ raster_example = {
 }
 
 GET_DATA_PRODUCT_ID_EXAMPLE = {
-    "product_id": "Sentinel-2A-L1C",
-    "description": "Sentinel 2 Level-1C: Top-of-atmosphere reflectances in cartographic geometry",
-    "source": "European Space Agency (ESA)",
-    "extent": {
-        "srs": "EPSG:4326",
-        "left": -34,
-        "right": 35,
-        "bottom": 39,
-        "top": 71
+  "data_id": "Sentinel-2A-L1C",
+  "description": "Sentinel 2 Level-1C: Top-of-atmosphere reflectances in cartographic geometry",
+  "source": "European Space Agency (ESA)",
+  "spatial_extent": {
+    "crs": "EPSG:4326",
+    "left": -34,
+    "right": 35,
+    "bottom": 39,
+    "top": 71
+  },
+  "temporal_extent": [
+    "2016-01-01T00:00:00Z",
+    "2017-10-01T00:00:00Z"
+  ],
+  "bands": [
+    {
+      "band_id": "1",
+      "wavelength_nm": 443.9,
+      "res_m": 60,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
     },
-    "time": {"from": "2016-01-01", "to": "2017-10-01"},
-    "bands": [
-        {
-            "band_id": "1",
-            "wavelength_nm": 443.9,
-            "res_m": 60,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "2",
-            "name": "blue",
-            "wavelength_nm": 496.6,
-            "res_m": 10,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "3",
-            "name": "green",
-            "wavelength_nm": 560,
-            "res_m": 10,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "4",
-            "name": "red",
-            "wavelength_nm": 664.5,
-            "res_m": 10,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "5",
-            "wavelength_nm": 703.9,
-            "res_m": 20,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "6",
-            "wavelength_nm": 740.2,
-            "res_m": 20,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "7",
-            "wavelength_nm": 782.5,
-            "res_m": 20,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "8",
-            "name": "nir",
-            "wavelength_nm": 835.1,
-            "res_m": 10,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "8a",
-            "wavelength_nm": 864.8,
-            "res_m": 20,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "9",
-            "wavelength_nm": 945,
-            "res_m": 60,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "10",
-            "wavelength_nm": 1373.5,
-            "res_m": 60,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "11",
-            "wavelength_nm": 1613.7,
-            "res_m": 20,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        },
-        {
-            "band_id": "12",
-            "wavelength_nm": 2202.4,
-            "res_m": 20,
-            "scale": 0.0001,
-            "offset": 0,
-            "type": "int16",
-            "unit": "1"
-        }
-    ]
+    {
+      "band_id": "2",
+      "name": "blue",
+      "wavelength_nm": 496.6,
+      "res_m": 10,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    },
+    {
+      "band_id": "3",
+      "name": "green",
+      "wavelength_nm": 560,
+      "res_m": 10,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    },
+    {
+      "band_id": "4",
+      "name": "red",
+      "wavelength_nm": 664.5,
+      "res_m": 10,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    },
+    {
+      "band_id": "5",
+      "wavelength_nm": 703.9,
+      "res_m": 20,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    },
+    {
+      "band_id": "6",
+      "wavelength_nm": 740.2,
+      "res_m": 20,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    },
+    {
+      "band_id": "7",
+      "wavelength_nm": 782.5,
+      "res_m": 20,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    },
+    {
+      "band_id": "8",
+      "name": "nir",
+      "wavelength_nm": 835.1,
+      "res_m": 10,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    },
+    {
+      "band_id": "8a",
+      "wavelength_nm": 864.8,
+      "res_m": 20,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    },
+    {
+      "band_id": "9",
+      "wavelength_nm": 945,
+      "res_m": 60,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    },
+    {
+      "band_id": "10",
+      "wavelength_nm": 1373.5,
+      "res_m": 60,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    },
+    {
+      "band_id": "11",
+      "wavelength_nm": 1613.7,
+      "res_m": 20,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    },
+    {
+      "band_id": "12",
+      "wavelength_nm": 2202.4,
+      "res_m": 20,
+      "scale": 0.0001,
+      "offset": 0,
+      "type": "int16",
+      "unit": "1"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://earth.esa.int/web/sentinel/user-guides/sentinel-2-msi/product-types/level-1c",
+      "title": "ESA Sentinel-2 MSI Level-1C User Guide",
+      "rel": "about"
+    },
+    {
+      "href": "https://earth.esa.int/web/sentinel/technical-guides/sentinel-2-msi/level-1c-processing",
+      "title": "ESA Sentinel-2 MSI Level-1C Processing",
+      "rel": "about"
+    }
+  ]
 }
 
 GET_DATA_PRODUCT_ID_DOC = {
     "summary": "Returns further information on a given EO product available at the back-end.",
     "description": "The request will ask the back-end for further details about a product "
-                   "specified by the identifier `product_id`.",
+                   "specified by the identifier `data_id`.",
     "tags": ["EO Data Discovery"],
     "parameters": [
         {
-            "name": "product_id",
+            "name": "data_id",
             "in": "path",
             "type": "string",
             "description": "product identifier string such as `MOD18Q1`",
@@ -230,9 +245,9 @@ GET_DATA_PRODUCT_ID_DOC = {
             "description": "JSON object with metadata of the EO dataset.",
             "schema": {
                 "type": "object",
-                "required": ["product_id", "description", "extent", "bands"],
+                "required": ["data_id", "description", "extent", "bands"],
                 "properties": {
-                    "product_id": {"type": "string"},
+                    "data_id": {"type": "string"},
                     "description": {"type": "string"},
                     "source": {"type": "string"},
                     "extent": SpatialExtent,
@@ -256,18 +271,18 @@ class DataProductId(Resource):
     def __init__(self):
         self.iface = ActiniaInterface()
 
-    def get(self, product_id):
+    def get(self, data_id):
 
         # List strds maps from the GRASS location
 
-        location, mapset, datatype, layer = self.iface.layer_def_to_components(product_id)
+        location, mapset, datatype, layer = self.iface.layer_def_to_components(data_id)
 
-        status_code, layer_data = self.iface.layer_info(layer_name=product_id)
+        status_code, layer_data = self.iface.layer_info(layer_name=data_id)
         if status_code != 200:
             return make_response(jsonify({"description": "An internal error occurred "
                                                          "while catching GRASS GIS layer information "
                                                          "for layer <%s>!\n Error: %s"
-                                                         ""%(product_id, str(layer_data))}, 400))
+                                                         ""%(data_id, str(layer_data))}, 400))
 
         # Get the projection from the GRASS mapset
         status_code, mapset_info = self.iface.mapset_info(location=location, mapset=mapset)
@@ -297,9 +312,9 @@ class DataProductId(Resource):
             time["from"] = layer_data["start_time"]
             time["to"] = layer_data["end_time"]
 
-            bands = BandDescription(band_id=product_id)
+            bands = BandDescription(band_id=data_id)
 
-            info = dict(product_id=product_id,
+            info = dict(data_id=data_id,
                         extent=extent,
                         source=source,
                         description=description,
@@ -323,7 +338,7 @@ class DataProductId(Resource):
                         mapset=mapset,
                         location=location)
         else:
-            info = dict(product_id=product_id,
+            info = dict(data_id=data_id,
                         extent=extent,
                         source=source,
                         description=description,

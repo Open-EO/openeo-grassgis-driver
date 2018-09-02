@@ -15,49 +15,40 @@ class DataTestCase(TestBase):
     def test_data(self):
         response = self.app.get('/data')
         data = json.loads(response.data.decode())
-        print(data)
 
         self.assertTrue(len(data), 2)
 
-        dsets = ["ECAD.PERMANENT.strds.precipitation_1950_2013_yearly_mm",
-                 "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"]
+        dsets = ["nc_spm_08.landsat.raster.lsat5_1987_10",
+                 "nc_spm_08.PERMANENT.vector.lakes",
+                 "nc_spm_08.PERMANENT.raster.elevation"]
+
+        data_id_list = []
 
         for entry in data:
-            print(entry["product_id"])
-            if "ECAD.PERMANENT.strds" in entry["product_id"]:
-                self.assertTrue(entry["product_id"] in dsets)
+            data_id_list.append(entry["data_id"])
 
-    def test_strds_product_id_1(self):
-        response = self.app.get('/data/ECAD.PERMANENT.strds.precipitation_1950_2013_yearly_mm')
+        found = False
+        for entry in dsets:
+            self.assertTrue(entry in data_id_list)
+            found = True
+
+        self.assertTrue(found)
+
+    def otest_raster_product_id_1(self):
+        response = self.app.get('/data/nc_spm_08.landsat.raster.lsat5_1987_10')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         print(data)
 
-        self.assertEqual(data["product_id"], "ECAD.PERMANENT.strds.precipitation_1950_2013_yearly_mm")
+        self.assertEqual(data["data_id"], "ECAD.PERMANENT.raster.precipitation_yearly_mm_0")
 
-    def test_strds_product_id_2(self):
-        response = self.app.get('/data/ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius')
+    def otest_raster_product_id_2(self):
+        response = self.app.get('/data/nc_spm_08.PERMANENT.raster.elevation')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         print(data)
 
-        self.assertEqual(data["product_id"], "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius")
-
-    def test_raster_product_id_1(self):
-        response = self.app.get('/data/ECAD.PERMANENT.raster.precipitation_yearly_mm_0')
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.data.decode())
-        print(data)
-
-        self.assertEqual(data["product_id"], "ECAD.PERMANENT.raster.precipitation_yearly_mm_0")
-
-    def test_raster_product_id_2(self):
-        response = self.app.get('/data/ECAD.PERMANENT.raster.temperature_mean_yearly_celsius_0')
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.data.decode())
-        print(data)
-
-        self.assertEqual(data["product_id"], "ECAD.PERMANENT.raster.temperature_mean_yearly_celsius_0")
+        self.assertEqual(data["data_id"], "nc_spm_08.PERMANENT.raster.elevation")
 
 
 if __name__ == "__main__":

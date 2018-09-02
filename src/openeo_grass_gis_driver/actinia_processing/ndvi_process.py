@@ -31,8 +31,8 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
 def create_process_chain_entry(nir_time_series, red_time_series, output_time_series):
-    """Create a GRaaS process description that uses t.rast.series to create the minimum
-    value of the time series.
+    """Create a GRaaS process description that uses t.rast.mapcalc and t.rast.colors to compute
+    the NDVI based on red and nir raster time series
 
     :param nir_time_series: The NIR band time series name
     :param red_time_series: The RED band time series name

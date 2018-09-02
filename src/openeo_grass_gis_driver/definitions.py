@@ -87,34 +87,20 @@ class SpatialExtent(Schema):
     type = "object"
     description = "spatial extent of the available imagery"
     properties = {
-        "srs": {
-            "description": "spatial reference system readable by GDAL "
-                           "(e.g. as 'WKT', 'proj4', or 'EPSG:xy')",
-            "type": "string"
+        "crs": {
+            "description": "Coordinate reference system. EPSG codes must be supported. "
+                           "In addition, proj4 strings should be supported by back-ends. "
+                           "Whenever possible, it is recommended to use EPSG codes instead "
+                           "of proj4 strings. Defaults to EPSG:4326 unless the client explicitly "
+                           "requests a different coordinate reference system. Reference systems "
+                           "MUST be accepted case insensitive.",
+            "type": "string",
+            "default": "EPSG:4326"
         },
         "left": {"type": "number"},
         "right": {"type": "number"},
         "top": {"type": "number"},
         "bottom": {"type": "number"}
-    }
-
-
-#####################################################################
-
-class DateTime(Schema):
-    type = "object"
-    description = "Date, Time or datetime in ISO 8601 format"
-    properties = {
-        "from": {
-            "description": "Date/time in ISO 8601 format",
-            "type": "string",
-            "format": "date-time"
-        },
-        "to": {
-            "description": "Date/time in ISO 8601 format",
-            "type": "string",
-            "format": "date-time"
-        }
     }
 
 
@@ -161,6 +147,14 @@ class BandDescription(Schema):
             "description": "specific values representing no data",
             "type": "array",
             "items": {"type": "number"}
+        },
+        "wavelength_nm": {
+            "description": "Wavelength of the band in nanometers.",
+            "type": "number",
+        },
+        "res_m": {
+            "description": "Spatial resolution of the band in meters.",
+            "type": "number",
         }
     }
 
@@ -170,7 +164,7 @@ class BandDescription(Schema):
 class DataSetListEntry(Schema):
     type = "object"
     properties = {
-        "product_id": {"type": "string"},
+        "data_id": {"type": "string"},
         "description": {"type": "string"},
         "source": {"type": "string"}
     }

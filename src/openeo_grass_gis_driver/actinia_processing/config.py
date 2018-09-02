@@ -13,7 +13,7 @@ class Config(object):
     PORT=443
     LOCATION="nc_spm_08"
     # LOCATION="LL"
-    LOCATIONS=["nc_spm_08", "latlong_wgs84"]
+    LOCATIONS=["nc_spm_08"]
     USER="demouser"
     PASSWORD="gu3st!pa55w0rd"
     # The database file that stores the graphs

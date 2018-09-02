@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .app import flask_api
-from .capabilities import Capabilities
+from .capabilities import Capabilities, OutputFormats, ServiceTypes
 from .data import Data
 from .data_product_id import DataProductId
 from .processes_process_id import ProcessesProcessId
@@ -22,7 +22,9 @@ def create_endpoints():
 
     :return:
     """
-    flask_api.add_resource(Capabilities, '/capabilities')
+    flask_api.add_resource(Capabilities, '/')
+    flask_api.add_resource(OutputFormats, '/output_formats')
+    flask_api.add_resource(ServiceTypes, '/service_types')
 
     flask_api.add_resource(Data, '/data')
     flask_api.add_resource(DataProductId, '/data/<string:product_id>')

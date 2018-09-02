@@ -8,7 +8,7 @@ __copyright__ = "Copyright 2018, Sören Gebbert"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-ACTINIA_CAPABILITIES = {
+CAPABILITIES = {
     "version": "0.3.0",
     "endpoints": [
         {
@@ -20,23 +20,40 @@ ACTINIA_CAPABILITIES = {
     ]
 }
 
-GET_CAPABILITIES_DOC = {
-    "summary": "Returns the capabilities, i.e., which OpenEO API features are supported  by the back-end.",
-    "description": "The request will ask the back-end which features of the OpenEO API are supported and "
-                   "return a simple JSON description with available endpoints.",
-    "tags": ["API Information"],
-    "responses": {
-        "200": {
-            "description": "An array of implemented API endpoints",
-            "schema": {
-                "example": ["/data", "/data/{product_id}", "/processes"]
-            }
-        }
-    }
-}
-
 
 class Capabilities(Resource):
 
     def get(self, ):
-        return make_response(jsonify(ACTINIA_CAPABILITIES), 200)
+        return make_response(jsonify(CAPABILITIES), 200)
+
+
+OUTPUT_FORMATS = {
+  "default": "GTiff",
+  "formats": {
+    "GTiff": {
+      "parameters": {
+        "compress": {
+          "type": "string",
+          "description": "Set the compression to use.",
+          "default": "LZW",
+          "enum": ["LZW"]
+        }
+      }
+    }
+  }
+}
+
+
+class OutputFormats(Resource):
+
+    def get(self, ):
+        return make_response(jsonify(OUTPUT_FORMATS), 200)
+
+
+SERVICE_TYPES = {}
+
+
+class ServiceTypes(Resource):
+
+    def get(self, ):
+        return make_response(jsonify(SERVICE_TYPES), 200)

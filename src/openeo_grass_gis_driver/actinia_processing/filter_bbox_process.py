@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from random import randint
+from pprint import pprint
 from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
@@ -12,38 +13,51 @@ __email__ = "soerengebbert@googlemail.com"
 PROCESS_NAME = "filter_bbox"
 
 DOC = {
-    "process_id": PROCESS_NAME,
-    "description": "Drops observations from a collection that are located outside of a given bounding box.",
-    "args": {
-        "collections": {
-            "description": "array of input collections with one element"
+    "name": PROCESS_NAME,
+    "summary": "Filter raster based data by bounding box",
+    "description": "Drops observations from raster data or raster time series data "
+                   "that are located outside of a given bounding box.",
+    "parameters":
+        {
+            "spatial_extent":
+                {
+                    "description": "Filter by spatial extent",
+                    "schema":
+                        {
+                            "type": "object",
+                            "required":
+                                ["left", "right", "top", "bottom", "width_res", "height_res"],
+                            "properties":
+                                {
+                                    "left": {"type": "number"},
+                                    "right": {"type": "number"},
+                                    "top": {"type": "number"},
+                                    "bottom": {"type": "number"},
+                                    "width_res": {"type": "number"},
+                                    "height_res": {"type": "number"}
+                                }
+                        }
+                }
         },
-        "left": {
-            "description": "left boundary (longitude / easting)",
-            "required":True
+    "returns":
+        {
+            "description": "Processed EO data.",
+            "schema":
+                {
+                    "type": "object",
+                    "format": "eodata"
+                }
         },
-        "right": {
-            "description": "right boundary (longitude / easting)",
-            "required":True
-        },
-        "top": {
-            "description": "top boundary (latitude / northing)",
-            "required":True
-        },
-        "bottom": {
-            "description": "bottom boundary (latitude / northing)",
-            "required":True
-        },
-        "ewres": {
-            "description": "East-west resolution in mapset units",
-            "required":True
-        },
-        "nsres": {
-            "description": "North-south resolution in mapset units",
-            "required":True
-        },
-        "srs": {
-            "description": "spatial reference system of boundaries as proj4 or EPSG:12345 like string"
+    "example": {
+        "process_id": PROCESS_NAME,
+        "spatial_extent": {
+            "left": 50,
+            "right": 55,
+            "top": 60,
+            "bottom": 55,
+            "width_res": 1,
+            "height_res": 1
+
         }
     }
 }
@@ -51,7 +65,7 @@ DOC = {
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
-def create_process_chain_entry(left, right, top, bottom, ewres, nsres):
+def create_process_chain_entry(left, right, top, bottom, width_res, height_res):
     """Create a Actinia command of the process chain that uses g.region to create a valid computational region
     for the provide input strds
 
@@ -62,53 +76,65 @@ def create_process_chain_entry(left, right, top, bottom, ewres, nsres):
     :param right:
     :param top:
     :param bottom:
-    :param ewres:
-    :param nsres:
+    :param width_res:
+    :param height_res:
     :return: A Actinia process chain description
     """
 
     rn = randint(0, 1000000)
 
-    pc = {"id": "g_region_%i"%rn,
+    pc = {"id": "g_region_%i" % rn,
           "module": "g.region",
           "inputs": [{"param": "n", "value": str(top)},
                      {"param": "s", "value": str(bottom)},
                      {"param": "e", "value": str(right)},
                      {"param": "w", "value": str(left)},
-                     {"param": "ewres", "value": str(ewres)},
-                     {"param": "nsres", "value": str(nsres)}]}
+                     {"param": "ewres", "value": str(width_res)},
+                     {"param": "nsres", "value": str(height_res)}]}
 
     return pc
 
 
-def get_process_list(args):
+def get_process_list(process):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
 
-    :param args: The process description
-    :return: (output_name, pc)
+    :param process: The process description
+    :return: (output_names, actinia_process_list)
     """
 
-    input_names, process_list = analyse_process_graph(args)
+    pprint(process)
+    input_names, process_list = analyse_process_graph(process)
     output_names = []
+
+    if "spatial_extent" not in process.keys():
+        raise Exception("Process %s requires parameter <spatial_extent>" % PROCESS_NAME)
+
+    if "left" not in process["spatial_extent"] or \
+       "right" not in process["spatial_extent"] or \
+       "top" not in process["spatial_extent"] or \
+       "bottom" not in process["spatial_extent"] or \
+       "width_res" not in process["spatial_extent"] or \
+       "height_res" not in process["spatial_extent"]:
+        raise Exception("Process %s requires parameter left, right, top, bottom, "
+                        "width_res, height_res"%PROCESS_NAME)
+
+    left = process["spatial_extent"]["left"]
+    right = process["spatial_extent"]["right"]
+    top = process["spatial_extent"]["top"]
+    bottom = process["spatial_extent"]["bottom"]
+    width_res = process["spatial_extent"]["width_res"]
+    height_res = process["spatial_extent"]["height_res"]
+
+    pc = create_process_chain_entry(left=left, right=right, top=top,
+                                    bottom=bottom, width_res=width_res,
+                                    height_res=height_res)
+    process_list.append(pc)
 
     for input_name in input_names:
 
         # Create the output name based on the input name and method
         output_name = input_name
         output_names.append(output_name)
-
-        left = args["left"]
-        right = args["right"]
-        top = args["top"]
-        bottom = args["bottom"]
-        ewres = args["ewres"]
-        nsres = args["nsres"]
-
-        if "srs" in args:
-            print("SRS is currently not supported")
-
-        pc = create_process_chain_entry(left=left, right=right, top=top, bottom=bottom, ewres=ewres, nsres=nsres)
-        process_list.append(pc)
 
     return output_names, process_list
 

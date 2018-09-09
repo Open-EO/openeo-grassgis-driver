@@ -39,17 +39,9 @@ def create_process_chain_entry(nir_time_series, red_time_series, output_time_ser
     :param output_time_series: The name of the output time series
     :return: A list of Actinia process chain descriptions
     """
-    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(nir_time_series)
-    nir_time_series = layer_name
-    if mapset is not None:
-        nir_time_series = layer_name + "@" + mapset
-
-    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(red_time_series)
-    red_time_series = layer_name
-    if mapset is not None:
-        red_time_series = layer_name + "@" + mapset
-
-    location, mapset, datatype, output_name = ActiniaInterface.layer_def_to_components(output_time_series)
+    nir_time_series = ActiniaInterface.layer_def_to_grass_map_name(nir_time_series)
+    red_time_series = ActiniaInterface.layer_def_to_grass_map_name(red_time_series)
+    output_name = ActiniaInterface.layer_def_to_grass_map_name(output_time_series)
 
     rn = randint(0, 1000000)
 
@@ -82,7 +74,7 @@ def get_process_list(args):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
 
     :param args: The process description arguments
-    :return: (output_time_series, pc)
+    :return: (output_names, actinia_process_list)
     """
 
     input_names, process_list = analyse_process_graph(args)

@@ -31,23 +31,41 @@ class ActiniaInterface(object):
     def layer_def_to_components(layer):
         """Convert the name of a layer in the openeo framework into GRASS GIS definitions
 
-        location.mapset.datatype.layer -> (location, mapset, datatype, layer)
+        location.mapset.datatype.map_name -> (location, mapset, datatype, layer)
 
-        Return (None, None, None, layer) if no location/mapset information was found
+        Return (None, None, None, map_name) if no location/mapset information was found
 
-        :param layer: The name of the layer in the form location.mapset.layer
-        :return: (location, mapset, datatype, layer) or (None, None, None, layer)
+        :param layer: The name of the map_name in the form location.mapset.map_name
+        :return: (location, mapset, datatype, map_name) or (None, None, None, map_name)
         """
 
         if layer.count(".") < 3:
             return None, None, None, layer
 
-        location, mapset, datatype, layer = layer.split(".", 3)
+        location, mapset, datatype, map_name = layer.split(".", 3)
 
         # Store the location in the global location dict
         ActiniaInterface.PROCESS_LOCATION[location] = location
 
-        return location, mapset, datatype, layer
+        return location, mapset, datatype, map_name
+
+    @staticmethod
+    def layer_def_to_grass_map_name(layer):
+        """Convert the name of a layer in the openeo framework into GRASS GIS map name with optional mapset
+
+        location.mapset.datatype.map_name -> map_name@mapset
+
+        Return layer if no location/mapset information was found
+
+        :param layer: The name of the layer in the form location.mapset.datatype.map_name
+        :return: map_name@mapset or map_name
+        """
+
+        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(layer)
+        if mapset is not None:
+            layer_name = layer_name + "@" + mapset
+
+        return layer_name
 
     def check_health(self):
 

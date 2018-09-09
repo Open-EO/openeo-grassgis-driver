@@ -68,7 +68,7 @@ def get_process_list(args):
     strds that was filtered by start and end date
 
     :param args: The process description
-    :return: (output_name, pc)
+    :return: (output_names, actinia_process_list)
     """
 
     # Get the input description and the process chain to attach this process

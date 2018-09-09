@@ -57,7 +57,7 @@ def get_process_list(args):
     which is a single raster layer
 
     :param args: The process description arguments
-    :return: (output_name, pc)
+    :return: (output_names, actinia_process_list)
     """
     input_names, process_list = analyse_process_graph(args)
     output_names = []

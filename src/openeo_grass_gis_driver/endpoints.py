@@ -27,7 +27,7 @@ def create_endpoints():
     flask_api.add_resource(ServiceTypes, '/service_types')
 
     flask_api.add_resource(Data, '/data')
-    flask_api.add_resource(DataProductId, '/data/<string:product_id>')
+    flask_api.add_resource(DataProductId, '/data/<string:data_id>')
 
     flask_api.add_resource(Processes, '/processes')
     flask_api.add_resource(ProcessesProcessId, '/processes/<string:process_id>')

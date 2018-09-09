@@ -181,7 +181,12 @@ class DataSetInfo(Schema):
         "description": {"type": "string"},
         "source": {"type": "string"},
         "extent": SpatialExtent,
-        "time": DateTime,
+        "time": {"description": "Temporal extent specified by a start and an end time, each formatted as "
+                                "a RFC 3339 date-time. Open date ranges are supported and can be specified "
+                                "by setting one of the times to null. Setting both entries to null is not allowed.",
+                 "type": "array",
+                 "items": {"type": "string"}
+                 },
         "bands": {"type": "array", "items": BandDataTypes}
     }
     additionalProperties = True

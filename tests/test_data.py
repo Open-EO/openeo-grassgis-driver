@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from flask import json
+from pprint import pprint
 from openeo_grass_gis_driver.test_base import TestBase
 
 __license__ = "Apache License, Version 2.0"
@@ -34,19 +35,27 @@ class DataTestCase(TestBase):
 
         self.assertTrue(found)
 
-    def otest_raster_product_id_1(self):
+    def test_raster_data_id_1(self):
         response = self.app.get('/data/nc_spm_08.landsat.raster.lsat5_1987_10')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
-        print(data)
+        pprint(data)
 
-        self.assertEqual(data["data_id"], "ECAD.PERMANENT.raster.precipitation_yearly_mm_0")
+        self.assertEqual(data["data_id"], "nc_spm_08.landsat.raster.lsat5_1987_10")
 
-    def otest_raster_product_id_2(self):
+    def test_raster_data_id_2(self):
         response = self.app.get('/data/nc_spm_08.PERMANENT.raster.elevation')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
-        print(data)
+        pprint(data)
+
+        self.assertEqual(data["data_id"], "nc_spm_08.PERMANENT.raster.elevation")
+
+    def test_vector_data_id_2(self):
+        response = self.app.get('/data/nc_spm_08.PERMANENT.raster.elevation')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data.decode())
+        pprint(data)
 
         self.assertEqual(data["data_id"], "nc_spm_08.PERMANENT.raster.elevation")
 

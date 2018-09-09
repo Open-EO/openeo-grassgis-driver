@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import make_response, jsonify
 from flask_restful import Resource
-from .definitions import SpatialExtent, DateTime, BandDescription, BandDataTypes
+from .definitions import SpatialExtent, BandDescription, BandDataTypes
 from .actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -108,108 +108,6 @@ GET_DATA_PRODUCT_ID_EXAMPLE = {
       "offset": 0,
       "type": "int16",
       "unit": "1"
-    },
-    {
-      "band_id": "3",
-      "name": "green",
-      "wavelength_nm": 560,
-      "res_m": 10,
-      "scale": 0.0001,
-      "offset": 0,
-      "type": "int16",
-      "unit": "1"
-    },
-    {
-      "band_id": "4",
-      "name": "red",
-      "wavelength_nm": 664.5,
-      "res_m": 10,
-      "scale": 0.0001,
-      "offset": 0,
-      "type": "int16",
-      "unit": "1"
-    },
-    {
-      "band_id": "5",
-      "wavelength_nm": 703.9,
-      "res_m": 20,
-      "scale": 0.0001,
-      "offset": 0,
-      "type": "int16",
-      "unit": "1"
-    },
-    {
-      "band_id": "6",
-      "wavelength_nm": 740.2,
-      "res_m": 20,
-      "scale": 0.0001,
-      "offset": 0,
-      "type": "int16",
-      "unit": "1"
-    },
-    {
-      "band_id": "7",
-      "wavelength_nm": 782.5,
-      "res_m": 20,
-      "scale": 0.0001,
-      "offset": 0,
-      "type": "int16",
-      "unit": "1"
-    },
-    {
-      "band_id": "8",
-      "name": "nir",
-      "wavelength_nm": 835.1,
-      "res_m": 10,
-      "scale": 0.0001,
-      "offset": 0,
-      "type": "int16",
-      "unit": "1"
-    },
-    {
-      "band_id": "8a",
-      "wavelength_nm": 864.8,
-      "res_m": 20,
-      "scale": 0.0001,
-      "offset": 0,
-      "type": "int16",
-      "unit": "1"
-    },
-    {
-      "band_id": "9",
-      "wavelength_nm": 945,
-      "res_m": 60,
-      "scale": 0.0001,
-      "offset": 0,
-      "type": "int16",
-      "unit": "1"
-    },
-    {
-      "band_id": "10",
-      "wavelength_nm": 1373.5,
-      "res_m": 60,
-      "scale": 0.0001,
-      "offset": 0,
-      "type": "int16",
-      "unit": "1"
-    },
-    {
-      "band_id": "11",
-      "wavelength_nm": 1613.7,
-      "res_m": 20,
-      "scale": 0.0001,
-      "offset": 0,
-      "type": "int16",
-      "unit": "1"
-    },
-    {
-      "band_id": "12",
-      "wavelength_nm": 2202.4,
-      "res_m": 20,
-      "scale": 0.0001,
-      "offset": 0,
-      "type": "int16",
-      "unit": "1"
     }
   ],
   "links": [
@@ -224,45 +122,6 @@ GET_DATA_PRODUCT_ID_EXAMPLE = {
       "rel": "about"
     }
   ]
-}
-
-GET_DATA_PRODUCT_ID_DOC = {
-    "summary": "Returns further information on a given EO product available at the back-end.",
-    "description": "The request will ask the back-end for further details about a product "
-                   "specified by the identifier `data_id`.",
-    "tags": ["EO Data Discovery"],
-    "parameters": [
-        {
-            "name": "data_id",
-            "in": "path",
-            "type": "string",
-            "description": "product identifier string such as `MOD18Q1`",
-            "required": True
-        }
-    ],
-    "responses": {
-        "200": {
-            "description": "JSON object with metadata of the EO dataset.",
-            "schema": {
-                "type": "object",
-                "required": ["data_id", "description", "extent", "bands"],
-                "properties": {
-                    "data_id": {"type": "string"},
-                    "description": {"type": "string"},
-                    "source": {"type": "string"},
-                    "extent": SpatialExtent,
-                    "time": DateTime,
-                    "bands": {"type": "array", "items": BandDataTypes}
-                },
-                "additionalProperties": True
-            },
-            "examples": {"application/json": GET_DATA_PRODUCT_ID_EXAMPLE}
-        },
-        "401": {"$ref": "#/responses/auth_required"},
-        "404": {"description": "EO dataset with specified identifier is not available"},
-        "501": {"$ref": "#/responses/not_implemented"},
-        "503": {"$ref": "#/responses/unavailable"}
-    }
 }
 
 
@@ -298,26 +157,24 @@ class DataProductId(Resource):
             description = "Vector dataset"
 
         source = "GRASS GIS location/mapset path: /%s/%s" % (location, mapset)
-        srs = mapset_info["projection"]
-        extent = SpatialExtent(left=float(layer_data["west"]),
-                               right=float(layer_data["east"]),
-                               top=float(layer_data["north"]),
-                               bottom=float(layer_data["south"]),
-                               srs=srs)
+        crs = mapset_info["projection"]
+        spatial_extent = SpatialExtent(left=float(layer_data["west"]),
+                                       right=float(layer_data["east"]),
+                                       top=float(layer_data["north"]),
+                                       bottom=float(layer_data["south"]),
+                                       crs=crs)
 
         print(layer_data)
 
         if datatype.lower() == "strds":
-            time = DateTime()
-            time["from"] = layer_data["start_time"]
-            time["to"] = layer_data["end_time"]
+            time = {layer_data["start_time"], layer_data["end_time"]}
 
             bands = BandDescription(band_id=data_id)
 
             info = dict(data_id=data_id,
-                        extent=extent,
-                        source=source,
                         description=description,
+                        spatial_extent=spatial_extent,
+                        source=source,
                         time=time,
                         bands=bands,
                         temporal_type=layer_data["start_time"],
@@ -339,9 +196,9 @@ class DataProductId(Resource):
                         location=location)
         else:
             info = dict(data_id=data_id,
-                        extent=extent,
-                        source=source,
                         description=description,
+                        spatial_extent=spatial_extent,
+                        source=source,
                         mapset=mapset,
                         location=location,
                         title=layer_data["title"],

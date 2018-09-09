@@ -9,7 +9,6 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-
 PROCESS_NAME = "filter_bbox"
 
 DOC = {
@@ -19,6 +18,16 @@ DOC = {
                    "that are located outside of a given bounding box.",
     "parameters":
         {
+            "imagery":
+                {
+                    "description": "Any openEO process object that returns raster datasets "
+                                   "or space-time raster dataset",
+                    "schema":
+                        {
+                            "type": "object",
+                            "format": "eodata"
+                        }
+                },
             "spatial_extent":
                 {
                     "description": "Filter by spatial extent",
@@ -56,8 +65,11 @@ DOC = {
             "top": 60,
             "bottom": 55,
             "width_res": 1,
-            "height_res": 1
-
+            "height_res": 1,
+            "imagery": {
+                "process_id": "get_data",
+                "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
+            }
         }
     }
 }
@@ -110,13 +122,13 @@ def get_process_list(process):
         raise Exception("Process %s requires parameter <spatial_extent>" % PROCESS_NAME)
 
     if "left" not in process["spatial_extent"] or \
-       "right" not in process["spatial_extent"] or \
-       "top" not in process["spatial_extent"] or \
-       "bottom" not in process["spatial_extent"] or \
-       "width_res" not in process["spatial_extent"] or \
-       "height_res" not in process["spatial_extent"]:
+            "right" not in process["spatial_extent"] or \
+            "top" not in process["spatial_extent"] or \
+            "bottom" not in process["spatial_extent"] or \
+            "width_res" not in process["spatial_extent"] or \
+            "height_res" not in process["spatial_extent"]:
         raise Exception("Process %s requires parameter left, right, top, bottom, "
-                        "width_res, height_res"%PROCESS_NAME)
+                        "width_res, height_res" % PROCESS_NAME)
 
     left = process["spatial_extent"]["left"]
     right = process["spatial_extent"]["right"]
@@ -131,7 +143,6 @@ def get_process_list(process):
     process_list.append(pc)
 
     for input_name in input_names:
-
         # Create the output name based on the input name and method
         output_name = input_name
         output_names.append(output_name)

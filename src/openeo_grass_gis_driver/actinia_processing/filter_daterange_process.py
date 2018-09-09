@@ -13,21 +13,61 @@ __email__ = "soerengebbert@googlemail.com"
 PROCESS_NAME = "filter_daterange"
 
 DOC = {
-    "process_id": PROCESS_NAME,
-    "description": "Drops observations from a collection that have been captured before"
-                   " a start or after a given end date.",
-    "args": {
-        "collections": {
-            "description": "array of input collections with one element"
+    "name": PROCESS_NAME,
+    "summary": "Drops observations from a collection",
+    "description": "Drops observations from a collection that have been captured between start and end date.",
+    "parameters":
+        {
+            "imagery":
+                {
+                    "description": "Any openEO process object that returns space-time raster datasets",
+                    "schema":
+                        {
+                            "type": "object",
+                            "format": "eodata"
+                        }
+                },
+            "from":
+                {
+                    "description": "The start date of the filter in YYYY-MM-DD HH:mm:SS format",
+                    "schema":
+                        {
+                            "type": "string",
+                            "examples": ["2018-01-01 00:30:00"]
+                        }
+                },
+            "to":
+                {
+                    "description": "The end date of the filter in YYYY-MM-DD HH:mm:SS format",
+                    "schema":
+                        {
+                            "type": "string",
+                            "examples": ["2018-01-02 00:30:00"]
+                        }
+                }
         },
-        "from": {
-            "description": "start date"
+    "returns":
+        {
+            "description": "Processed EO data.",
+            "schema":
+                {
+                    "type": "object",
+                    "format": "eodata"
+                }
         },
-        "to": {
-            "description": "end date"
+    "examples": [
+        {
+            "process_id": PROCESS_NAME,
+            "from": "2018-01-01 00:30:00",
+            "to": "2018-01-01 00:30:00",
+            "imagery": {
+                "process_id": "get_data",
+                "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
+            }
         }
-    }
+    ]
 }
+
 
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
@@ -49,7 +89,6 @@ def create__process_chain_entry(input_name, start_time, end_time, output_name):
     # Get info about the time series to extract its resolution settings and bbox
     rn = randint(0, 1000000)
 
-
     pc = {"id": "t_rast_extract_%i"%rn,
           "module": "t.rast.extract",
           "inputs": [{"param": "input", "value": input_name},
@@ -63,31 +102,37 @@ def create__process_chain_entry(input_name, start_time, end_time, output_name):
     return pc
 
 
-def get_process_list(args):
+def get_process_list(process):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
     strds that was filtered by start and end date
 
-    :param args: The process description
+    :param process: The process description
     :return: (output_names, actinia_process_list)
     """
 
     # Get the input description and the process chain to attach this process
-    input_names, process_list = analyse_process_graph(args)
+    input_names, process_list = analyse_process_graph(process)
     output_names = []
 
     for input_name in input_names:
 
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
+
+        # Skip if the datatype is not a strds and put the input into the output
+        if datatype and datatype != "strds":
+            output_names.append(input_name)
+            continue
+
         output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)
 
         start_time = None
         end_time = None
 
-        if "from" in args:
-            start_time = args["from"]
-        if "to" in args:
-            end_time = args["to"]
+        if "from" in process:
+            start_time = process["from"]
+        if "to" in process:
+            end_time = process["to"]
 
         pc = create__process_chain_entry(input_name=input_name,
                                          start_time=start_time,

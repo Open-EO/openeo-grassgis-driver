@@ -18,6 +18,16 @@ DOC = {
                    "that is available in the /data endpoint.",
     "parameters":
         {
+            "imagery":
+                {
+                    "description": "Any openEO process object that returns raster datasets, "
+                                   "vector datasets or space-time raster dataset",
+                    "schema":
+                        {
+                            "type": "object",
+                            "format": "eodata"
+                        }
+                },
             "data_id":
                 {
                     "description": "The identifier of a single raster-, vector- or space-time raster dataset",
@@ -42,7 +52,11 @@ DOC = {
     "examples": [
         {
             "process_id": PROCESS_NAME,
-            "data_id": "nc_spm_08.landsat.raster.lsat5_1987_10"
+            "data_id": "nc_spm_08.landsat.raster.lsat5_1987_10",
+            "imagery": {
+                "process_id": "get_data",
+                "data_id": "nc_spm_08.PERMANENT.vector.lakes"
+            }
         },
         {
             "process_id": PROCESS_NAME,
@@ -50,7 +64,11 @@ DOC = {
         },
         {
             "process_id": PROCESS_NAME,
-            "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
+            "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly",
+            "imagery": {
+                "process_id": "get_data",
+                "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
+            }
         }
     ]
 }
@@ -77,19 +95,19 @@ def create_process_chain_entry(input_name):
     pc = {}
 
     if datatype == "raster":
-        pc = {"id": "r_info_%i"%rn,
+        pc = {"id": "r_info_%i" % rn,
               "module": "r.info",
-              "inputs": [{"param": "map", "value": input_name},],
+              "inputs": [{"param": "map", "value": input_name}, ],
               "flags": "g"}
     elif datatype == "vector":
-        pc = {"id": "v_info_%i"%rn,
+        pc = {"id": "v_info_%i" % rn,
               "module": "v.info",
-              "inputs": [{"param": "map", "value": input_name},],
+              "inputs": [{"param": "map", "value": input_name}, ],
               "flags": "g"}
     elif datatype == "strds":
-        pc = {"id": "t_info_%i"%rn,
+        pc = {"id": "t_info_%i" % rn,
               "module": "t.info",
-              "inputs": [{"param": "input", "value": input_name},],
+              "inputs": [{"param": "input", "value": input_name}, ],
               "flags": "g"}
     else:
         raise Exception("Unsupported datatype")
@@ -118,7 +136,6 @@ def get_process_list(process):
 
     # Then add the input to the output
     for input_name in input_names:
-
         # Create the output name based on the input name and method
         output_name = input_name
         output_names.append(output_name)

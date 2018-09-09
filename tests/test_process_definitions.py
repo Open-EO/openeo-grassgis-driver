@@ -33,10 +33,10 @@ class ProcessDefinitionTestCase(TestBase):
             "process_graph": {
                 "process_id": "get_data",
                 "data_id": "nc_spm_08.PERMANENT.raster.elevation",
-                "vector_data": {
+                "imagery": {
                     "process_id": "get_data",
                     "data_id": "nc_spm_08.PERMANENT.vector.lakes",
-                    "strds_data": {
+                    "imagery": {
                         "process_id": "get_data",
                         "data_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
                     }
@@ -76,6 +76,28 @@ class ProcessDefinitionTestCase(TestBase):
         self.assertEqual(len(pc), 2)
         self.assertTrue(pc[1]["module"] == "g.region")
 
+    def test_daterange(self):
+        graph = {
+            "process_graph": {
+                "process_id": "filter_daterange",
+                "from": "2001-01-01",
+                "to": "2005-01-01",
+                "strds_data": {
+                        "process_id": "get_data",
+                        "data_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
+                    }
+
+            }
+        }
+
+        name, pc = analyse_process_graph(graph=graph)
+        pprint(name)
+        pprint(pc)
+
+        self.assertEqual(len(pc), 2)
+
+        self.assertTrue(pc[1]["module"] == "t.rast.extract")
+
     def otest_min_time(self):
         graph = {
             "process_graph": {
@@ -110,27 +132,6 @@ class ProcessDefinitionTestCase(TestBase):
 
         for entry in pc:
             self.assertTrue(entry["module"] == "t.rast.series")
-
-    def otest_daterange(self):
-        graph = {
-            "process_graph": {
-                "process_id": "filter_daterange",
-                "args": {
-                    "collections": [{"product_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"}],
-                    "from": "2001-01-01",
-                    "to": "2005-01-01"
-                }
-            }
-        }
-
-        name, pc = analyse_process_graph(graph=graph)
-        pprint(name)
-        pprint(pc)
-
-        self.assertEqual(len(pc), 1)
-
-        for entry in pc:
-            self.assertTrue(entry["module"] == "t.rast.extract")
 
     def otest_ndvi(self):
         graph = {

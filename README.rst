@@ -11,7 +11,7 @@ GRASS GIS is a free and open source software package providing geospatial proces
 integrated environment for raster, vector, and 3D-voxel processing as well as image processing capabilities.
 
 It is deployed on **openeo.mundialis.de** and will be used for processing all openEO API calls that are send
-to the [OpenEO GRASS GIS driver](https://open-eo.github.io/openeo-grassgis-driver/).
+to the `OpenEO GRASS GIS driver <https://open-eo.github.io/openeo-grassgis-driver/>`_.
 
 What is openEO?
 

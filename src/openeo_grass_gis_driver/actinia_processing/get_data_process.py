@@ -67,7 +67,7 @@ DOC = {
             "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly",
             "imagery": {
                 "process_id": "get_data",
-                "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
+                "data_id": "ECAD.PERMANENT.strds.precipitation_1950_2017_yearly"
             }
         }
     ]

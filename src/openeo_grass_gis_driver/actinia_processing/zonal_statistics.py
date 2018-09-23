@@ -13,24 +13,56 @@ __email__ = "soerengebbert@googlemail.com"
 PROCESS_NAME = "zonal_statistics"
 
 DOC = {
-    "process_id": PROCESS_NAME,
+    "name": PROCESS_NAME,
+    "summary": "Compute the zonal statistics of a time series using a vector polygon.",
     "description": "Compute the zonal statistics of a time series using a vector polygon. "
                    "The following parameters are computed: "
                    "mean, min, max, mean_of_abs, stddev, variance, coeff_var, sum, null_cells, cells",
-    "args": {
-        "imagery": {
-            "description": "array of input collections with at least one element that must be of type time series"
+    "parameters":
+        {
+            "imagery":
+                {
+                    "description": "Any openEO process object that returns a space-time raster dataset",
+                    "schema":
+                        {
+                            "type": "object",
+                            "format": "eodata"
+                        }
+                },
+            "polygons":
+                {
+                    "description": "URL to a publicly accessible polygon file readable by OGR",
+                    "schema":
+                        {
+                            "type": "string"
+                        }
+                }
         },
-        "regions": {
-            "description": "URL to a publicly accessible polygon file readable by OGR"
+    "returns":
+        {
+            "description": "Processed EO data.",
+            "schema":
+                {
+                    "type": "object",
+                    "format": "eodata"
+                }
+        },
+    "examples": [
+        {
+            "process_id": PROCESS_NAME,
+            "imagery": {
+                "process_id": "get_data",
+                "data_id": "nc_spm_08.landsat.strds.lsat5_red"
+            },
+            "polygons": "https://geostorage.com/my_polygon.gml"
         }
-    }
+    ]
 }
 
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
 
 
-def create_process_chain_entry(input_name, regions):
+def create_process_chain_entry(input_name, polygons):
     """Create a Actinia command of the process chain that computes the regional statistics based on a
     strds and a polygon.
 
@@ -38,7 +70,7 @@ def create_process_chain_entry(input_name, regions):
     restored. A mask will be set that uses the vector file as input. This mask will be removed in the end.
 
     :param input_name: The name of the strds
-    :param regions: The URL to the vector file that defines the regions of interest
+    :param polygons: The URL to the vector file that defines the regions of interest
     :return: A Actinia process chain description
     """
 
@@ -55,7 +87,7 @@ def create_process_chain_entry(input_name, regions):
         "module": "importer",
         "inputs": [{
             "import_descr": {
-                "source": regions,
+                "source": polygons,
                 "type": "vector"
             },
             "param": "map",
@@ -115,16 +147,16 @@ def create_process_chain_entry(input_name, regions):
     return pc
 
 
-def get_process_list(args):
+def get_process_list(process):
     """Analyse the process description and return the Actinia process chain and the name of the processing result layer
     which is a single raster layer
 
-    :param args: The process description
+    :param process: The process description
     :return: (output_names, actinia_process_list)
     """
 
     # Get the input description and the process chain to attach this process
-    input_names, process_list = analyse_process_graph(args)
+    input_names, process_list = analyse_process_graph(process)
     output_names = []
 
     for input_name in input_names:
@@ -132,13 +164,13 @@ def get_process_list(args):
         output_name = input_name
         output_names.append(output_name)
 
-        if "regions" in args:
-            regions = args["regions"]
+        if "polygons" in process:
+            polygons = process["polygons"]
         else:
             raise Exception("The vector polygon is missing in the process description")
 
         pc = create_process_chain_entry(input_name=input_name,
-                                              regions=regions)
+                                        polygons=polygons)
         process_list.extend(pc)
 
     return output_names, process_list

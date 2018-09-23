@@ -59,17 +59,17 @@ DOC = {
         },
     "example": {
         "process_id": PROCESS_NAME,
+        "imagery": {
+            "process_id": "get_data",
+            "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
+        },
         "spatial_extent": {
             "left": 50,
             "right": 55,
             "top": 60,
             "bottom": 55,
             "width_res": 1,
-            "height_res": 1,
-            "imagery": {
-                "process_id": "get_data",
-                "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
-            }
+            "height_res": 1
         }
     }
 }

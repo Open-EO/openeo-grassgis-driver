@@ -12,19 +12,54 @@ __email__ = "soerengebbert@googlemail.com"
 PROCESS_NAME = "NDVI"
 
 DOC = {
-    "process_id": PROCESS_NAME,
-    "description": "Compute the NDVI based on the red and nir bands of the input dataset.",
-    "args": {
-        "collections": {
-            "description": "array of input collections with one element"
+    "name": PROCESS_NAME,
+    "summary": "Compute the NDVI based on the red and nir bands of the input datasets.",
+    "description": "Compute the NDVI based on the red and nir bands of the input datasets.",
+    "parameters":
+        {
+            "red":
+                {
+                    "description": "Any openEO process object that returns a single space-time raster datasets "
+                                   "that contains the RED band for NDVI computation.",
+                    "schema":
+                        {
+                            "type": "string",
+                            "examples": ["nc_spm_08.landsat.strds.lsat5_red"]
+                        }
+                },
+            "nir":
+                {
+                    "description": "Any openEO process object that returns a single space-time raster datasets "
+                                   "that contains the NIR band for NDVI computation.",
+                    "schema":
+                        {
+                            "type": "string",
+                            "examples": ["nc_spm_08.landsat.strds.lsat5_nir"]
+                        }
+                },
         },
-        "red": {
-            "description": "reference to the red band"
+    "returns":
+        {
+            "description": "Processed EO data.",
+            "schema":
+                {
+                    "type": "object",
+                    "format": "eodata"
+                }
         },
-        "nir": {
-            "description": "reference to the nir band"
+    "examples": [
+        {
+            "process_id": PROCESS_NAME,
+            "red": {
+                "process_id": "get_data",
+                "data_id": "nc_spm_08.landsat.strds.lsat5_red"
+            },
+            "nir": {
+                "process_id": "get_data",
+                "data_id": "nc_spm_08.landsat.strds.lsat5_nir"
+            }
         }
-    }
+    ]
 }
 
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
@@ -70,44 +105,50 @@ def create_process_chain_entry(nir_time_series, red_time_series, output_time_ser
     return pc
 
 
-def get_process_list(args):
+def get_process_list(process):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
 
     :param args: The process description arguments
     :return: (output_names, actinia_process_list)
     """
-
-    input_names, process_list = analyse_process_graph(args)
     output_names = []
+    process_list = []
 
-    # Two input names are required
-    if len(input_names) != 2:
-        raise Exception("At least two input time series are required")
+    # First analyse the data entries
+    if "red" not in process:
+        raise Exception("Process %s requires parameter <red>" % PROCESS_NAME)
 
-    for i in range(0, len(input_names), 2):
+    if "nir" not in process:
+        raise Exception("Process %s requires parameter <nir>" % PROCESS_NAME)
 
-        input_tuple = (input_names[i], input_names[i + 1])
+    red_input_names, red_process_list = analyse_process_graph(process["red"])
+    process_list.extend(red_process_list)
+    nir_input_names, nir_process_list = analyse_process_graph(process["nir"])
+    process_list.extend(nir_process_list)
 
-        nir_time_series = None
-        red_time_series = None
+    if not red_input_names:
+        raise Exception("Process %s requires an input strds for band <red>" % PROCESS_NAME)
 
-        for input_name in input_tuple:
-            if "nir" in args and args["nir"] in input_name:
-                nir_time_series = input_name
-            if "red" in args and args["red"] in input_name:
-                red_time_series = input_name
+    if not nir_input_names:
+        raise Exception("Process %s requires an input strds for band <nir>" % PROCESS_NAME)
 
-        if nir_time_series is None or red_time_series is None:
-            raise Exception("Band information is missing from process description")
+    red_stds = red_input_names[-1]
+    nir_strds = nir_input_names[-1]
 
-        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(nir_time_series)
-        output_name = "%s_%s" % (layer_name, PROCESS_NAME)
-        output_names.append(output_name)
+    # Take the last entry from the
+    if len(red_input_names) > 1:
+        output_names.extend(red_input_names[0:-1])
 
-        pc = create_process_chain_entry(nir_time_series, red_time_series, output_name)
-        process_list.extend(pc)
+    # Take the last entry from the
+    if len(nir_input_names) > 1:
+        output_names.extend(nir_input_names[0:-1])
 
-    return output_names, process_list
+    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(red_stds)
+    output_name = "%s_%s" % (layer_name, PROCESS_NAME)
+    output_names.append(output_name)
+
+    pc = create_process_chain_entry(nir_strds, red_stds, output_name)
+    process_list.extend(pc)
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

@@ -10,8 +10,8 @@ It is a highly scalable REST interface to process geodata with the GRASS GIS in 
 GRASS GIS is a free and open source software package providing geospatial processing engines in a single
 integrated environment for raster, vector, and 3D-voxel processing as well as image processing capabilities.
 
-It is deployed on **openeo.mundialis.de** and will be used for processing all openEO API calls that are send to
-the the OpenEO GRASS GIS driver.
+It is deployed on **openeo.mundialis.de** and will be used for processing all openEO API calls that are send
+to the `OpenEO GRASS GIS driver <https://open-eo.github.io/openeo-grassgis-driver/>`_.
 
 What is openEO?
 
@@ -26,10 +26,15 @@ Purpose of this document
     This document demonstrates the application of the openEO Actinia Core wrapper to solve the three use cases
     that were defined by the development group for the first prototype:
 
-    https://open-eo.github.io/openeo-api/poc/index.html#proof-of-concept
+    https://open-eo.github.io/openeo-api/examples-poc/
 
 
 Installation
 ============
 
     Please refer to https://open-eo.github.io/openeo-grassgis-driver/
+
+Use cases
+=========
+
+    Please refer to https://open-eo.github.io/openeo-grassgis-driver/#openeo-use-case-1

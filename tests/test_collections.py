@@ -13,11 +13,11 @@ __email__ = "soerengebbert@googlemail.com"
 
 class DataTestCase(TestBase):
 
-    def test_data(self):
-        response = self.app.get('/data')
+    def otest_collections(self):
+        response = self.app.get('/collections')
         data = json.loads(response.data.decode())
 
-        self.assertTrue(len(data), 2)
+        pprint(data)
 
         dsets = ["nc_spm_08.landsat.raster.lsat5_1987_10",
                  "nc_spm_08.PERMANENT.vector.lakes",
@@ -25,8 +25,8 @@ class DataTestCase(TestBase):
 
         data_id_list = []
 
-        for entry in data:
-            data_id_list.append(entry["data_id"])
+        for entry in data["collections"]:
+            data_id_list.append(entry["name"])
 
         found = False
         for entry in dsets:
@@ -35,29 +35,29 @@ class DataTestCase(TestBase):
 
         self.assertTrue(found)
 
-    def test_raster_data_id_1(self):
-        response = self.app.get('/data/nc_spm_08.landsat.raster.lsat5_1987_10')
+    def test_raster_collections_id_1(self):
+        response = self.app.get('/collections/nc_spm_08.landsat.raster.lsat5_1987_10')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         pprint(data)
 
-        self.assertEqual(data["data_id"], "nc_spm_08.landsat.raster.lsat5_1987_10")
+        self.assertEqual(data["name"], "nc_spm_08.landsat.raster.lsat5_1987_10")
 
-    def test_raster_data_id_2(self):
-        response = self.app.get('/data/nc_spm_08.PERMANENT.raster.elevation')
+    def test_raster_collections_id_2(self):
+        response = self.app.get('/collections/nc_spm_08.PERMANENT.raster.elevation')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         pprint(data)
 
-        self.assertEqual(data["data_id"], "nc_spm_08.PERMANENT.raster.elevation")
+        self.assertEqual(data["name"], "nc_spm_08.PERMANENT.raster.elevation")
 
-    def test_vector_data_id_2(self):
-        response = self.app.get('/data/nc_spm_08.PERMANENT.raster.elevation')
+    def test_vector_collections_id_2(self):
+        response = self.app.get('/collections/nc_spm_08.PERMANENT.raster.elevation')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         pprint(data)
 
-        self.assertEqual(data["data_id"], "nc_spm_08.PERMANENT.raster.elevation")
+        self.assertEqual(data["name"], "nc_spm_08.PERMANENT.raster.elevation")
 
 
 if __name__ == "__main__":

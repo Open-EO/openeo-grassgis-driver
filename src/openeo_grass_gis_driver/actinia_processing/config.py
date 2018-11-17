@@ -7,7 +7,8 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-class Config(object):
+
+class Config:
     # Settings for docker swarm image
     HOST="https://actinia.mundialis.de"
     PORT=443

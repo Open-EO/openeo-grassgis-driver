@@ -2,7 +2,7 @@
 from .actinia_processing.actinia_interface import ActiniaInterface
 from flask import make_response, jsonify
 from .graph_db import GraphDB
-from .actinia_processing import udf_reduce_time
+# from .actinia_processing import udf_reduce_time
 from flask_restful import Resource
 from .definitions import UDFDescription
 
@@ -14,7 +14,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 
 python_udfs = dict(python={})
-python_udfs["python"][udf_reduce_time.PROCESS_NAME] = udf_reduce_time.DOC
+# python_udfs["python"][udf_reduce_time.PROCESS_NAME] = udf_reduce_time.DOC
 
 GET_UDF_TYPE_EXAMPLE = UDFDescription.example
 

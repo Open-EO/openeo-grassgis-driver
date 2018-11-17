@@ -161,10 +161,31 @@ class BandDescription(Schema):
 
 #####################################################################
 
-class DataSetListEntry(Schema):
+COLLECTION_ENTRY = {
+    "name": None,
+    "title": None,
+    "description": None,
+    "license": "proprietary",
+    "extent": {
+        "spatial": list(),
+        "temporal": list()
+    },
+    "links": [
+        {
+            "rel": "self",
+            "href": None
+        },
+        {
+            "rel": "license",
+            "href": None
+        }
+    ]
+}
+
+class CollectionEntry(Schema):
     type = "object"
     properties = {
-        "data_id": {"type": "string"},
+        "name": {"type": "string"},
         "description": {"type": "string"},
         "source": {"type": "string"}
     }

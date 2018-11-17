@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from random import randint
+import json
 from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from .actinia_interface import ActiniaInterface
-
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -12,45 +13,38 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "raster_exporter"
 
-DOC = {
-    "name": PROCESS_NAME,
-    "summary": "Exports raster map layers using the region specified upstream.",
-    "description": "This process exports an arbitrary number of raster map layers "
-                   "using the region specified upstream.",
-    "parameters":
-        {
-            "imagery":
-                {
-                    "description": "Any openEO process object that returns raster datasets, "
-                                   "vector datasets or space-time raster dataset",
-                    "schema":
-                        {
-                            "type": "object",
-                            "format": "eodata"
-                        }
-                }
-        },
-    "returns":
-        {
-            "description": "Processed EO data.",
-            "schema":
-                {
-                    "type": "object",
-                    "format": "eodata"
-                }
-        },
-    "examples": [
-        {
-            "process_id": PROCESS_NAME,
-            "imagery": {
-                "process_id": "get_data",
-                "data_id": "nc_spm_08.PERMANENT.vector.lakes"
-            }
-        }
-    ]
-}
 
-PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+def create_process_description():
+    p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
+                                      "or space-time raster dataset",
+                          schema={"type": "object", "format": "eodata"},
+                          required=False)
+
+    rv = ReturnValue(description="Processed EO data.",
+                     schema={"type": "object", "format": "eodata"})
+
+    simple_example = {
+        "process_id": PROCESS_NAME,
+        "imagery": {
+            "process_id": "get_data",
+            "data_id": "nc_spm_08.PERMANENT.vector.lakes"
+        }
+    }
+
+    examples = dict(simple_example=simple_example)
+
+    pd = ProcessDescription(name=PROCESS_NAME,
+                            description="This process exports an arbitrary number of raster map layers "
+                                        "using the region specified upstream.",
+                            summary="Exports raster map layers using the region specified upstream.",
+                            parameters={"imagery": p_imagery},
+                            returns=rv,
+                            examples=examples)
+
+    return json.loads(pd.to_json())
+
+
+PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_name):
@@ -70,11 +64,11 @@ def create_process_chain_entry(input_name):
     pc = []
 
     exporter = {
-        "id": "exporter_%i"%rn,
-          "module": "exporter",
-          "outputs": [{"export": {"type": "raster", "format": "GTiff"},
-                       "param": "map",
-                       "value": input_name}]}
+        "id": "exporter_%i" % rn,
+        "module": "exporter",
+        "outputs": [{"export": {"type": "raster", "format": "GTiff"},
+                     "param": "map",
+                     "value": input_name}]}
 
     pc.append(exporter)
 
@@ -94,7 +88,6 @@ def get_process_list(args):
     output_names = []
 
     for input_name in input_names:
-
         output_name = input_name
         output_names.append(output_name)
 

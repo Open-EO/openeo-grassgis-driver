@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
+import json
 from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -11,57 +13,49 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "reduce_time"
 
-DOC = {
-    "process_id": PROCESS_NAME,
-    "description": "Reduce the time dimension of a space-time raster dataset "
-                   "with different reduce options.",
-    "parameters":
-        {
-            "imagery":
-                {
-                    "description": "Any openEO process object that returns space-time raster datasets",
-                    "schema":
-                        {
-                            "type": "object",
-                            "format": "eodata"
-                        }
-                },
-            "method":
-                {
-                    "description": "The method to reduce the time dimension of a "
-                                   "space-time raster dataset",
-                    "schema":
-                        {
-                            "type": "string"
-                        },
-                    "enum": ["average", "count", "median", "mode", "minimum", "min_raster", "maximum",
-                             "max_raster", "stddev", "range,sum", "variance", "diversity", "slope",
-                             "offset", "detcoeff", "quart1", "quart3", "perc90", "quantile", "skewness",
-                             "kurtosis"]
-                }
-        },
-    "returns":
-        {
-            "description": "Processed EO data.",
-            "schema":
-                {
-                    "type": "object",
-                    "format": "eodata"
-                }
-        },
-    "examples": [
-        {
-            "process_id": PROCESS_NAME,
-            "method": "average",
-            "imagery": {
-                "process_id": "get_data",
-                "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
-            }
-        }
-    ]
-}
 
-PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+def create_process_description():
+    p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
+                                      "or space-time raster dataset",
+                          schema={"type": "object", "format": "eodata"},
+                          required=True)
+
+    p_method = Parameter(description="The method to reduce the time dimension of a "
+                                     "space-time raster dataset",
+                         schema={"type": "string"},
+                         required=True)
+
+    p_method.enum = ["average", "count", "median", "mode", "minimum", "min_raster", "maximum",
+                     "max_raster", "stddev", "range,sum", "variance", "diversity", "slope",
+                     "offset", "detcoeff", "quart1", "quart3", "perc90", "quantile", "skewness",
+                     "kurtosis"]
+
+    rv = ReturnValue(description="Processed EO data.",
+                     schema={"type": "object", "format": "eodata"})
+
+    simple_example = {
+        "process_id": PROCESS_NAME,
+        "method": "average",
+        "imagery": {
+            "process_id": "get_data",
+            "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
+        }
+    }
+
+    examples = dict(simple_example=simple_example)
+
+    pd = ProcessDescription(name=PROCESS_NAME,
+                            description="Reduce the time dimension of a space-time raster dataset "
+                                        "with different reduce options.",
+                            summary="Reduce the time dimension of a space-time raster dataset.",
+                            parameters={"imagery": p_imagery, "method": p_method},
+                            returns=rv,
+                            examples=examples)
+
+    return json.loads(pd.to_json())
+
+
+PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_name, method, output_name):

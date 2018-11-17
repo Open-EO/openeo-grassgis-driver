@@ -22,13 +22,13 @@ class ProcessDefinitionTestCase(TestBase):
             }
         }
 
-        name, pc = analyse_process_graph(graph=graph)
-        pprint(name)
+        output_names, pc = analyse_process_graph(graph=graph)
+        pprint(output_names)
         pprint(pc)
 
         self.assertEqual(len(pc), 1)
 
-    def otest_get_data_2(self):
+    def test_get_data_2(self):
         graph = {
             "process_graph": {
                 "process_id": "get_data",
@@ -44,17 +44,17 @@ class ProcessDefinitionTestCase(TestBase):
             }
         }
 
-        name, pc = analyse_process_graph(graph=graph)
-        pprint(name)
+        output_names, pc = analyse_process_graph(graph=graph)
+        pprint(output_names)
         pprint(pc)
 
         self.assertEqual(len(pc), 3)
 
-    def otest_filter_bbox(self):
+    def test_filter_bbox(self):
         graph = {
             "process_graph": {
                 "process_id": "filter_bbox",
-                "raster_map": {
+                "imagery": {
                     "process_id": "get_data",
                     "data_id": "nc_spm_08.PERMANENT.raster.elevation"
                 },
@@ -69,142 +69,154 @@ class ProcessDefinitionTestCase(TestBase):
             }
         }
 
-        name, pc = analyse_process_graph(graph=graph)
-        pprint(name)
+        output_names, pc = analyse_process_graph(graph=graph)
+        pprint(output_names)
         pprint(pc)
 
         self.assertEqual(len(pc), 2)
         self.assertTrue(pc[1]["module"] == "g.region")
 
-    def otest_daterange(self):
+    def test_daterange(self):
         graph = {
             "process_graph": {
                 "process_id": "filter_daterange",
                 "from": "2001-01-01",
                 "to": "2005-01-01",
                 "strds_data": {
-                        "process_id": "get_data",
-                        "data_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
-                    }
+                    "process_id": "get_data",
+                    "data_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
+                }
 
             }
         }
 
-        name, pc = analyse_process_graph(graph=graph)
-        pprint(name)
+        output_names, pc = analyse_process_graph(graph=graph)
+        pprint(output_names)
         pprint(pc)
 
         self.assertEqual(len(pc), 2)
 
         self.assertTrue(pc[1]["module"] == "t.rast.extract")
 
-    def otest_min_time(self):
+    def test_reduce_time_min(self):
+
         graph = {
             "process_graph": {
-                "process_id": "min_time",
-                "args": {
-                    "collections": [{
-                        "process_id": "min_time",
-                        "args": {
-                            "collections": [{
-                                "process_id": "min_time",
-                                "args": {
-                                    "collections": [{
-                                        "process_id": "min_time",
-                                        "args": {
-                                            "collections": [{
-                                                "product_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"}]
-                                        }
-                                    }],
-                                }
-                            }],
-                        }
-                    }]
+                "process_id": "reduce_time",
+                "method": "minimum",
+                "images": {
+                    "process_id": "get_data",
+                    "data_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
                 }
+
             }
         }
-
         name, pc = analyse_process_graph(graph=graph)
         pprint(name)
         pprint(pc)
 
-        self.assertEqual(len(pc), 4)
+        self.assertEqual(len(pc), 2)
 
-        for entry in pc:
-            self.assertTrue(entry["module"] == "t.rast.series")
+    def test_ndvi(self):
 
-    def otest_ndvi(self):
         graph = {
             "process_graph": {
                 "process_id": "NDVI",
-                "args": {
-                    "collections": [{"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"},
-                                    {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"}],
-                    "red": "S2A_B04",
-                    "nir": "S2A_B08"
+                "red": {
+                    "process_id": "get_data",
+                    "data_id": "nc_spm_08.landsat.strds.lsat5_red"
+                },
+                "nir": {
+                    "process_id": "get_data",
+                    "data_id": "nc_spm_08.landsat.strds.lsat5_nir"
                 }
             }
         }
-
         names, pc = analyse_process_graph(graph=graph)
         pprint(names)
         pprint(pc)
 
-        self.assertEqual(names[0], "S2A_B08_NDVI")
-        self.assertEqual(len(pc), 2)
+        self.assertEqual(names[0], "lsat5_red_NDVI")
+        self.assertEqual(len(pc), 4)
 
-    def otest_ndvi_export(self):
+        graph = {
+            "process_graph": {
+                "process_id": "NDVI",
+                "nir": {
+                    "process_id": "get_data",
+                    "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"
+                },
+                "red": {
+                    "process_id": "get_data",
+                    "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"
+                }
+            }
+        }
+        names, pc = analyse_process_graph(graph=graph)
+        pprint(names)
+        pprint(pc)
+
+        self.assertEqual(names[0], "S2A_B04_NDVI")
+        self.assertEqual(len(pc), 4)
+
+    def test_raster_export(self):
+
         graph = {
             "process_graph": {
                 "process_id": "raster_exporter",
-                "args": {
-                    "collections": [{
-                        "product_id": "LL.sentinel2A_openeo_subset.raster.S2A_MSIL1C_20170412T110621_N0204_R137_T30SUJ_20170412T111708_B04"},
-                        {
-                            "product_id": "LL.sentinel2A_openeo_subset.raster.S2A_MSIL1C_20170412T110621_N0204_R137_T30SUJ_20170412T111708_B08"}]
+                "imagery": {
+                    "process_id": "get_data",
+                    "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08",
+                    "imagery": {
+                        "process_id": "get_data",
+                        "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"
+                    }
                 }
             }
         }
-
         names, pc = analyse_process_graph(graph=graph)
         pprint(names)
         pprint(pc)
 
-        self.assertEqual(names[0],
-                         "LL.sentinel2A_openeo_subset.raster.S2A_MSIL1C_20170412T110621_N0204_R137_T30SUJ_20170412T111708_B04")
-        self.assertEqual(names[1],
-                         "LL.sentinel2A_openeo_subset.raster.S2A_MSIL1C_20170412T110621_N0204_R137_T30SUJ_20170412T111708_B08")
-        self.assertEqual(len(pc), 2)
+        self.assertEqual(names[0], "LL.sentinel2A_openeo_subset.strds.S2A_B08")
+        self.assertEqual(names[1], "LL.sentinel2A_openeo_subset.strds.S2A_B04")
+        self.assertEqual(len(pc), 4)
 
-    def otest_zonal_statistics(self):
+    def test_zonal_statistics(self):
+
         graph = {
             "process_graph": {
                 "process_id": "zonal_statistics",
-                "args": {
-                    "collections": [{"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"},
-                                    {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"}],
-                    "regions": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"
-                }
+                "imagery": {
+                    "process_id": "get_data",
+                    "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08",
+                    "imagery": {
+                        "process_id": "get_data",
+                        "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"
+                    }
+                },
+                "polygons": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"
             }
         }
-
         names, pc = analyse_process_graph(graph=graph)
         pprint(names)
         pprint(pc)
 
-        self.assertEqual(names[0], "LL.sentinel2A_openeo_subset.strds.S2A_B04")
-        self.assertEqual(names[1], "LL.sentinel2A_openeo_subset.strds.S2A_B08")
-        self.assertEqual(len(pc), 14)
+        self.assertEqual(names[0], "LL.sentinel2A_openeo_subset.strds.S2A_B08")
+        self.assertEqual(names[1], "LL.sentinel2A_openeo_subset.strds.S2A_B04")
+        self.assertEqual(len(pc), 16)
 
-    def otest_ndvi_error(self):
+    def test_ndvi_error(self):
         graph = {
             "process_graph": {
                 "process_id": "NDVI_nope",
-                "args": {
-                    "collections": [{"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"},
-                                    {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"}],
-                    "red": "S2A_B04",
-                    "nir": "S2A_B08"
+                "nir": {
+                    "process_id": "get_data",
+                    "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"
+                },
+                "red": {
+                    "process_id": "get_data",
+                    "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"
                 }
             }
         }

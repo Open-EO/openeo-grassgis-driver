@@ -234,10 +234,10 @@ def analyse_process_graph(graph):
         if "process_id" in process:
 
             if process["process_id"] not in PROCESS_DICT:
-                raise Exception("Unsupported process id, available processes: %s"%PROCESS_DICT)
+                raise Exception("Unsupported process id, available processes: %s"%PROCESS_DICT.keys())
 
-            inputs, processes = PROCESS_DICT[process["process_id"]](process)
+            outputs, processes = PROCESS_DICT[process["process_id"]](process)
             process_list.extend(processes)
-            output_name_list.extend(inputs)
+            output_name_list.extend(outputs)
 
     return output_name_list, process_list

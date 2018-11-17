@@ -112,9 +112,13 @@ def get_process_list(process):
     if "nir" not in process:
         raise Exception("Process %s requires parameter <nir>" % PROCESS_NAME)
 
-    red_input_names, red_process_list = analyse_process_graph(process["red"])
+    # Get the red and ir data separately
+    red_process = dict(myproc="myproc", red=process["red"])
+    nir_process = dict(myproc="myproc", red=process["nir"])
+
+    red_input_names, red_process_list = analyse_process_graph(red_process)
     process_list.extend(red_process_list)
-    nir_input_names, nir_process_list = analyse_process_graph(process["nir"])
+    nir_input_names, nir_process_list = analyse_process_graph(nir_process)
     process_list.extend(nir_process_list)
 
     if not red_input_names:
@@ -140,6 +144,8 @@ def get_process_list(process):
 
     pc = create_process_chain_entry(nir_strds, red_stds, output_name)
     process_list.extend(pc)
+
+    return output_names, process_list
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

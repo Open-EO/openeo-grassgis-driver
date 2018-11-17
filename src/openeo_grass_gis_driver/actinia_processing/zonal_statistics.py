@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
+import json
 from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -9,57 +11,47 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-
 PROCESS_NAME = "zonal_statistics"
 
-DOC = {
-    "name": PROCESS_NAME,
-    "summary": "Compute the zonal statistics of a time series using a vector polygon.",
-    "description": "Compute the zonal statistics of a time series using a vector polygon. "
-                   "The following parameters are computed: "
-                   "mean, min, max, mean_of_abs, stddev, variance, coeff_var, sum, null_cells, cells",
-    "parameters":
-        {
-            "imagery":
-                {
-                    "description": "Any openEO process object that returns a space-time raster dataset",
-                    "schema":
-                        {
-                            "type": "object",
-                            "format": "eodata"
-                        }
-                },
-            "polygons":
-                {
-                    "description": "URL to a publicly accessible polygon file readable by OGR",
-                    "schema":
-                        {
-                            "type": "string"
-                        }
-                }
-        },
-    "returns":
-        {
-            "description": "Processed EO data.",
-            "schema":
-                {
-                    "type": "object",
-                    "format": "eodata"
-                }
-        },
-    "examples": [
-        {
-            "process_id": PROCESS_NAME,
-            "imagery": {
-                "process_id": "get_data",
-                "data_id": "nc_spm_08.landsat.strds.lsat5_red"
-            },
-            "polygons": "https://geostorage.com/my_polygon.gml"
-        }
-    ]
-}
 
-PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+def create_process_description():
+    p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
+                                      "or space-time raster dataset",
+                          schema={"type": "object", "format": "eodata"},
+                          required=True)
+
+    p_polygons = Parameter(description="URL to a publicly accessible polygon file readable by OGR",
+                           schema={"type": "string"},
+                           required=True)
+
+    rv = ReturnValue(description="Processed EO data.",
+                     schema={"type": "object", "format": "eodata"})
+
+    simple_example = {
+        "process_id": PROCESS_NAME,
+        "imagery": {
+            "process_id": "get_data",
+            "data_id": "nc_spm_08.landsat.strds.lsat5_red"
+        },
+        "polygons": "https://geostorage.com/my_polygon.gml"
+    }
+
+    examples = dict(simple_example=simple_example)
+
+    pd = ProcessDescription(name=PROCESS_NAME,
+                            description="Compute the zonal statistics of a time series using a vector polygon. "
+                                        "The following parameters are computed: "
+                                        "mean, min, max, mean_of_abs, stddev, variance, "
+                                        "coeff_var, sum, null_cells, cells",
+                            summary="Compute the zonal statistics of a time series using a vector polygon.",
+                            parameters={"imagery": p_imagery, "polygons": p_polygons},
+                            returns=rv,
+                            examples=examples)
+
+    return json.loads(pd.to_json())
+
+
+PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_name, polygons):

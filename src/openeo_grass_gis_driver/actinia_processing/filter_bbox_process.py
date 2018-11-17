@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+import json
 from random import randint
 from pprint import pprint
+from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
@@ -11,53 +13,36 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "filter_bbox"
 
-DOC = {
-    "name": PROCESS_NAME,
-    "summary": "Filter raster based data by bounding box",
-    "description": "Drops observations from raster data or raster time series data "
-                   "that are located outside of a given bounding box.",
-    "parameters":
-        {
-            "imagery":
-                {
-                    "description": "Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                    "schema":
-                        {
-                            "type": "object",
-                            "format": "eodata"
-                        }
-                },
-            "spatial_extent":
-                {
-                    "description": "Filter by spatial extent",
-                    "schema":
-                        {
-                            "type": "object",
-                            "required":
-                                ["left", "right", "top", "bottom", "width_res", "height_res"],
-                            "properties":
-                                {
-                                    "left": {"type": "number"},
-                                    "right": {"type": "number"},
-                                    "top": {"type": "number"},
-                                    "bottom": {"type": "number"},
-                                    "width_res": {"type": "number"},
-                                    "height_res": {"type": "number"}
-                                }
-                        }
-                }
-        },
-    "returns":
-        {
-            "description": "Processed EO data.",
-            "schema":
-                {
-                    "type": "object",
-                    "format": "eodata"
-                }
-        },
-    "example": {
+
+def create_process_description():
+    p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
+                                      "or space-time raster dataset",
+                          schema={"type": "object", "format": "eodata"},
+                          required=True)
+
+    extent_schema = {
+        "type": "object",
+        "required":
+            ["left", "right", "top", "bottom", "width_res", "height_res"],
+        "properties":
+            {
+                "left": {"type": "number"},
+                "right": {"type": "number"},
+                "top": {"type": "number"},
+                "bottom": {"type": "number"},
+                "width_res": {"type": "number"},
+                "height_res": {"type": "number"}
+            }
+    }
+
+    p_extent = Parameter(description="Filter by spatial extent",
+                         schema=extent_schema,
+                         required=True)
+
+    rv = ReturnValue(description="Processed EO data.",
+                     schema={"type": "object", "format": "eodata"})
+
+    examples = dict(simple={
         "process_id": PROCESS_NAME,
         "imagery": {
             "process_id": "get_data",
@@ -70,14 +55,24 @@ DOC = {
             "bottom": 55,
             "width_res": 1,
             "height_res": 1
-        }
-    }
-}
+        }})
 
-PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+    pd = ProcessDescription(name=PROCESS_NAME,
+                            description="Drops observations from raster data or raster time series data "
+                                        " that are located outside of a given bounding box.",
+                            summary="Filter raster based data by bounding box",
+                            parameters={"imagery": p_imagery, "spatial_extent": p_extent},
+                            returns=rv,
+                            examples=examples)
+
+    return json.loads(pd.to_json())
 
 
-def create_process_chain_entry(left, right, top, bottom, width_res, height_res):
+PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
+
+
+def create_process_chain_entry(left: float, right: float, top:float,
+                               bottom: float, width_res: float, height_res: float) -> dict:
     """Create a Actinia command of the process chain that uses g.region to create a valid computational region
     for the provide input strds
 

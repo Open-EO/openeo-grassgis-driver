@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
+import json
 from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -11,69 +13,61 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "get_data"
 
-DOC = {
-    "name": PROCESS_NAME,
-    "summary": "Returns a single dataset that is available in the /data endpoint for processing",
-    "description": "This process returns a raster-, a vector- or a space-time raster datasets "
-                   "that is available in the /data endpoint.",
-    "parameters":
-        {
-            "imagery":
-                {
-                    "description": "Any openEO process object that returns raster datasets, "
-                                   "vector datasets or space-time raster dataset",
-                    "schema":
-                        {
-                            "type": "object",
-                            "format": "eodata"
-                        }
-                },
-            "data_id":
-                {
-                    "description": "The identifier of a single raster-, vector- or space-time raster dataset",
-                    "schema":
-                        {
-                            "type": "string",
-                            "examples": ["nc_spm_08.landsat.raster.lsat5_1987_10",
-                                         "nc_spm_08.PERMANENT.vector.lakes",
-                                         "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]
-                        }
-                }
-        },
-    "returns":
-        {
-            "description": "Processed EO data.",
-            "schema":
-                {
-                    "type": "object",
-                    "format": "eodata"
-                }
-        },
-    "examples": [
-        {
-            "process_id": PROCESS_NAME,
-            "data_id": "nc_spm_08.landsat.raster.lsat5_1987_10",
-            "imagery": {
-                "process_id": "get_data",
-                "data_id": "nc_spm_08.PERMANENT.vector.lakes"
-            }
-        },
-        {
-            "process_id": PROCESS_NAME,
-            "data_id": "nc_spm_08.PERMANENT.vector.lakes",
-        },
-        {
-            "process_id": PROCESS_NAME,
-            "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly",
-            "imagery": {
-                "process_id": "get_data",
-                "data_id": "ECAD.PERMANENT.strds.precipitation_1950_2017_yearly"
-            }
-        }
-    ]
-}
 
-PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+def create_process_description():
+    p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
+                                      "or space-time raster dataset",
+                          schema={"type": "object", "format": "eodata"},
+                          required=False)
+
+    p_data_id = Parameter(description="The identifier of a single raster-, vector- or space-time raster dataset",
+                          schema={"type": "string",
+                                  "examples": ["nc_spm_08.landsat.raster.lsat5_1987_10",
+                                               "nc_spm_08.PERMANENT.vector.lakes",
+                                               "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]},
+                          required=True)
+
+    rv = ReturnValue(description="Processed EO data.",
+                     schema={"type": "object", "format": "eodata"})
+
+    simple_example = {
+        "process_id": PROCESS_NAME,
+        "data_id": "nc_spm_08.PERMANENT.vector.lakes",
+    }
+    raster_vector_example = {
+        "process_id": PROCESS_NAME,
+        "data_id": "nc_spm_08.landsat.raster.lsat5_1987_10",
+        "imagery": {
+            "process_id": "get_data",
+            "data_id": "nc_spm_08.PERMANENT.vector.lakes"
+        }
+    }
+    strds_example = {
+        "process_id": PROCESS_NAME,
+        "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly",
+        "imagery": {
+            "process_id": "get_data",
+            "data_id": "ECAD.PERMANENT.strds.precipitation_1950_2017_yearly"
+        }
+    }
+
+    examples = dict(simple_example=simple_example,
+                    raster_vector_example=raster_vector_example,
+                    strds_example=strds_example)
+
+    pd = ProcessDescription(name=PROCESS_NAME,
+                            description="This process returns a raster-, a vector- or a space-time raster "
+                                        "datasets that is available in the /collections endpoint.",
+                            summary="Returns a single dataset that is available in "
+                                    "the /collections endpoint for processing",
+                            parameters={"imagery": p_imagery, "data_id": p_data_id},
+                            returns=rv,
+                            examples=examples)
+
+    return json.loads(pd.to_json())
+
+
+PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_name):

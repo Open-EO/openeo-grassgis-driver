@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
+import json
 from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -11,44 +13,23 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "NDVI"
 
-DOC = {
-    "name": PROCESS_NAME,
-    "summary": "Compute the NDVI based on the red and nir bands of the input datasets.",
-    "description": "Compute the NDVI based on the red and nir bands of the input datasets.",
-    "parameters":
-        {
-            "red":
-                {
-                    "description": "Any openEO process object that returns a single space-time raster datasets "
-                                   "that contains the RED band for NDVI computation.",
-                    "schema":
-                        {
-                            "type": "string",
-                            "examples": ["nc_spm_08.landsat.strds.lsat5_red"]
-                        }
-                },
-            "nir":
-                {
-                    "description": "Any openEO process object that returns a single space-time raster datasets "
-                                   "that contains the NIR band for NDVI computation.",
-                    "schema":
-                        {
-                            "type": "string",
-                            "examples": ["nc_spm_08.landsat.strds.lsat5_nir"]
-                        }
-                },
-        },
-    "returns":
-        {
-            "description": "Processed EO data.",
-            "schema":
-                {
-                    "type": "object",
-                    "format": "eodata"
-                }
-        },
-    "examples": [
-        {
+
+def create_process_description():
+
+    p_red = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
+                                  "that contains the RED band for NDVI computation.",
+                      schema={"type": "string", "examples": ["nc_spm_08.landsat.strds.lsat5_red"]},
+                      required=True)
+
+    p_nir = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
+                                  "that contains the NIR band for NDVI computation.",
+                      schema={"type": "string", "examples": ["nc_spm_08.landsat.strds.lsat5_nir"]},
+                      required=True)
+
+    rv = ReturnValue(description="Processed EO data.",
+                     schema={"type": "object", "format": "eodata"})
+
+    simple_example = {
             "process_id": PROCESS_NAME,
             "red": {
                 "process_id": "get_data",
@@ -59,10 +40,20 @@ DOC = {
                 "data_id": "nc_spm_08.landsat.strds.lsat5_nir"
             }
         }
-    ]
-}
 
-PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+    examples = dict(simple_example=simple_example)
+
+    pd = ProcessDescription(name=PROCESS_NAME,
+                            description="Compute the NDVI based on the red and nir bands of the input datasets.",
+                            summary="Compute the NDVI based on the red and nir bands of the input datasets.",
+                            parameters={"red": p_red, "nir": p_nir},
+                            returns=rv,
+                            examples=examples)
+
+    return json.loads(pd.to_json())
+
+
+PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(nir_time_series, red_time_series, output_time_series):
@@ -89,8 +80,8 @@ def create_process_chain_entry(nir_time_series, red_time_series, output_time_ser
                                                         "nir": nir_time_series,
                                                         "red": red_time_series}},
                     {"param": "inputs",
-                     "value": "%(nir)s,%(red)s"%{"nir": nir_time_series,
-                                                 "red": red_time_series}},
+                     "value": "%(nir)s,%(red)s" % {"nir": nir_time_series,
+                                                   "red": red_time_series}},
                     {"param": "basename",
                      "value": "ndvi"},
                     {"param": "output",

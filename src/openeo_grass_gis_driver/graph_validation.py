@@ -7,15 +7,14 @@ from .definitions import ProcessGraph
 from .actinia_processing.base import analyse_process_graph
 from .graph_db import GraphDB
 from .actinia_processing.actinia_interface import ActiniaInterface
+from .error_schemas import ErrorSchema
+from datetime import datetime
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
-
-POST_JOBS_EXAMPLE = {"job_id": "42d5k3nd92mk49dmj294md"}
-
 
 
 class GraphValidation(Resource):
@@ -48,7 +47,7 @@ class GraphValidation(Resource):
             process_chain = dict(list=process_list,
                                  version="1")
 
-            # pprint(process_chain)
+            pprint(process_chain)
 
             status, response = self.iface.sync_ephemeral_processing_validation(location=location,
                                                                                process_chain=process_chain)
@@ -57,6 +56,8 @@ class GraphValidation(Resource):
             if status == 200:
                 return make_response("", 204)
             else:
-                return make_response(jsonify(response), status)
+                es = ErrorSchema(id=str(datetime.now()), code=status, message=str(response))
+                return make_response(es.to_json(), status)
         except Exception as e:
-                return make_response(jsonify({"error": str(e)}), 400)
+                es = ErrorSchema(id=str(datetime.now()), code=400, message=str(e))
+                return make_response(es.to_json(), 400)

@@ -122,6 +122,52 @@ class ProcessDefinitionTestCase(TestBase):
         graph = {
             "process_graph": {
                 "process_id": "NDVI",
+                "red": "lsat5_red",
+                "nir": "lsat5_nir",
+                "imagery": {
+                    "process_id": "get_data",
+                    "data_id": "nc_spm_08.landsat.strds.lsat5_red",
+                    "imagery": {
+                        "process_id": "get_data",
+                        "data_id": "nc_spm_08.landsat.strds.lsat5_nir"
+                    }
+                }
+            }
+        }
+        names, pc = analyse_process_graph(graph=graph)
+        pprint(names)
+        pprint(pc)
+
+        self.assertEqual(names[0], "lsat5_red_NDVI")
+        self.assertEqual(len(pc), 4)
+
+        graph = {
+            "process_graph": {
+                "process_id": "NDVI",
+                "red": "S2A_B04",
+                "nir": "S2A_B08",
+                "imagery": {
+                    "process_id": "get_data",
+                    "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08",
+                    "imagery": {
+                        "process_id": "get_data",
+                        "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"
+                    }
+                }
+            }
+        }
+        names, pc = analyse_process_graph(graph=graph)
+        pprint(names)
+        pprint(pc)
+
+        self.assertEqual(names[0], "S2A_B04_NDVI")
+        self.assertEqual(len(pc), 4)
+
+    def test_ndvi_2(self):
+
+        graph = {
+            "process_graph": {
+                "process_id": "NDVI2",
                 "red": {
                     "process_id": "get_data",
                     "data_id": "nc_spm_08.landsat.strds.lsat5_red"
@@ -136,12 +182,12 @@ class ProcessDefinitionTestCase(TestBase):
         pprint(names)
         pprint(pc)
 
-        self.assertEqual(names[0], "lsat5_red_NDVI")
+        self.assertEqual(names[0], "lsat5_red_NDVI2")
         self.assertEqual(len(pc), 4)
 
         graph = {
             "process_graph": {
-                "process_id": "NDVI",
+                "process_id": "NDVI2",
                 "nir": {
                     "process_id": "get_data",
                     "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"
@@ -156,7 +202,7 @@ class ProcessDefinitionTestCase(TestBase):
         pprint(names)
         pprint(pc)
 
-        self.assertEqual(names[0], "S2A_B04_NDVI")
+        self.assertEqual(names[0], "S2A_B04_NDVI2")
         self.assertEqual(len(pc), 4)
 
     def test_raster_export(self):
@@ -229,119 +275,108 @@ class ProcessDefinitionTestCase(TestBase):
         except:
             pass
 
-    def otest_openeo_usecase_1(self):
+    def test_openeo_usecase_1(self):
 
-        graph = \
-            {
-                "process_graph": {
-                    "process_id": "min_time",
-                    "args": {
-                        "collections": [{
-                            "process_id": "NDVI",
-                            "args": {
-                                "collections": [{
-                                    "process_id": "filter_daterange",
-                                    "args": {
-                                        "collections": [{
-                                            "process_id": "filter_bbox",
-                                            "args": {
-                                                "collections": [{
-                                                    "product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"
-                                                }],
-                                                "left": -5.0,
-                                                "right": -4.7,
-                                                "top": 39.3,
-                                                "bottom": 39.0,
-                                                "ewres": 0.1,
-                                                "nsres": 0.1,
-                                                "srs": "EPSG:4326"
-                                            }
-                                        }],
-                                        "from": "2017-04-12 11:17:08",
-                                        "to": "2017-09-04 11:18:26"
-                                    }
-                                },
-                                    {
-                                        "process_id": "filter_daterange",
-                                        "args": {
-                                            "collections": [{
-                                                "process_id": "filter_bbox",
-                                                "args": {
-                                                    "collections": [{
-                                                        "product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"
-                                                    }],
-                                                    "left": -5.0,
-                                                    "right": -4.7,
-                                                    "top": 39.3,
-                                                    "bottom": 39.0,
-                                                    "ewres": 0.1,
-                                                    "nsres": 0.1,
-                                                    "srs": "EPSG:4326"
-                                                }
-                                            }],
-                                            "from": "2017-04-12 11:17:08",
-                                            "to": "2017-09-04 11:18:26"
-                                        }
-                                    }],
-                                "red": "S2A_B04",
-                                "nir": "S2A_B08"
+        graph = {
+            "process_graph": {
+                "process_id": "reduce_time",
+                "method": "minimum",
+                "imagery": {
+                    "process_id": "NDVI2",
+                    "red": {
+                        "process_id": "filter_daterange",
+                        "from": "2001-01-01",
+                        "to": "2005-01-01",
+                        "imagery": {
+                            "process_id": "filter_bbox",
+                            "imagery": {
+                                "process_id": "get_data",
+                                "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04",
+                            },
+                            "spatial_extent": {
+                                "left": -40.5,
+                                "right": 75.5,
+                                "top": 75.5,
+                                "bottom": 25.25,
+                                "width_res": 0.1,
+                                "height_res": 0.1,
                             }
-                        }]
+                        }
+                    },
+                    "nir": {
+                        "process_id": "filter_daterange",
+                        "from": "2001-01-01",
+                        "to": "2005-01-01",
+                        "imagery": {
+                            "process_id": "filter_bbox",
+                            "imagery": {
+                                "process_id": "get_data",
+                                "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08",
+                            },
+                            "spatial_extent": {
+                                "left": -40.5,
+                                "right": 75.5,
+                                "top": 75.5,
+                                "bottom": 25.25,
+                                "width_res": 0.1,
+                                "height_res": 0.1,
+                            }
+                        }
                     }
                 }
+
             }
+        }
 
         name, pc = analyse_process_graph(graph=graph)
         pprint(name)
         pprint(pc)
 
-        self.assertEqual(len(pc), 7)
+        self.assertEqual(len(pc), 9)
 
-    def otest_openeo_usecase_1a(self):
-
-        graph = \
-            {
-                "process_graph": {
-                    "process_id": "min_time",
-                    "args": {
-                        "collections": [{
-                            "process_id": "NDVI",
-                            "args": {
-                                "collections": [{
-                                    "process_id": "filter_daterange",
-                                    "args": {
-                                        "collections": [{
-                                            "process_id": "filter_bbox",
-                                            "args": {
-                                                "collections": [
-                                                    {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"},
-                                                    {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"}],
-                                                "left": -5.0,
-                                                "right": -4.7,
-                                                "top": 39.3,
-                                                "bottom": 39.0,
-                                                "ewres": 0.1,
-                                                "nsres": 0.1,
-                                                "srs": "EPSG:4326"
-                                            }
-                                        }],
-                                        "from": "2017-04-12 11:17:08",
-                                        "to": "2017-09-04 11:18:26"
-                                    }
-                                }],
-                                "red": "S2A_B04",
-                                "nir": "S2A_B08"
+    def test_openeo_usecase_1a(self):
+        graph = {
+            "process_graph": {
+                "process_id": "reduce_time",
+                "method": "minimum",
+                "imagery": {
+                    "process_id": "NDVI",
+                    "red": "S2A_B04",
+                    "nir": "S2A_B08",
+                    "imagery": {
+                        "process_id": "filter_daterange",
+                        "from": "2001-01-01",
+                        "to": "2005-01-01",
+                        "imagery": {
+                            "process_id": "filter_bbox",
+                            "imagery": {
+                                "process_id": "get_data",
+                                "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04",
+                                "imagery": {
+                                    "process_id": "get_data",
+                                    "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08",
+                                }
+                            },
+                            "spatial_extent": {
+                                "left": -40.5,
+                                "right": 75.5,
+                                "top": 75.5,
+                                "bottom": 25.25,
+                                "width_res": 0.1,
+                                "height_res": 0.1,
                             }
-                        }]
+                        }
                     }
+
                 }
             }
+        }
 
         name, pc = analyse_process_graph(graph=graph)
         pprint(name)
         pprint(pc)
 
-        self.assertEqual(len(pc), 7)
+        self.assertEqual(len(pc), 8)
 
     def otest_openeo_usecase_2(self):
 

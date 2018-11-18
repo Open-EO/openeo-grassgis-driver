@@ -18,16 +18,24 @@ def create_process_description():
     p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
                                       "or space-time raster dataset",
                           schema={"type": "object", "format": "eodata"},
-                          required=False)
+                          required=True)
+    p_format = Parameter(description="The format of the export. Default is GeotTiff format.",
+                         schema={"type": "string", "default": "GTiff"},
+                         required=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
     simple_example = {
         "process_id": PROCESS_NAME,
+        "format": "GTiff",
         "imagery": {
             "process_id": "get_data",
-            "data_id": "nc_spm_08.PERMANENT.vector.lakes"
+            "data_id": "nc_spm_08.landsat.raster.elevation",
+            "imagery": {
+                "process_id": "get_data",
+                "data_id": "nc_spm_08.landsat.raster.slope"
+            }
         }
     }
 
@@ -37,7 +45,7 @@ def create_process_description():
                             description="This process exports an arbitrary number of raster map layers "
                                         "using the region specified upstream.",
                             summary="Exports raster map layers using the region specified upstream.",
-                            parameters={"imagery": p_imagery},
+                            parameters={"imagery": p_imagery, "format": p_format},
                             returns=rv,
                             examples=examples)
 
@@ -87,6 +95,7 @@ def get_process_list(args):
     input_names, process_list = analyse_process_graph(args)
     output_names = []
 
+    # Pipe the inputs to the outputs
     for input_name in input_names:
         output_name = input_name
         output_names.append(output_name)

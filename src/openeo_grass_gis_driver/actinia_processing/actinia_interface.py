@@ -234,6 +234,18 @@ class ActiniaInterface(object):
                                                                     "location": location}
         return self._send_post_request(url=url, process_chain=process_chain)
 
+    def sync_ephemeral_processing_validation(self, location, process_chain):
+        """Send a process chain to the Actinia backend to be validated
+
+        :param location: The location in which to process
+        :param process_chain: The process chain that must be executed
+        :return: Status code and the json data (status, json)
+        """
+
+        url = "%(base)s/locations/%(location)s/process_chain_validation_sync" % {"base": self.base_url,
+                                                                                 "location": location}
+        return self._send_post_request(url=url, process_chain=process_chain)
+
     def async_ephemeral_processing_export(self, location, process_chain):
         """Send a process chain to the Actinia backend to be run asynchronously in a ephemeral database
         with export capabilities

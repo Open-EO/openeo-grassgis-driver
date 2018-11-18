@@ -6,6 +6,7 @@ from .collection_information import CollectionInformationResource
 from .processes import Processes
 from .jobs import Jobs
 from .jobs_job_id import JobsJobId
+from .graph_validation import GraphValidation
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -27,6 +28,7 @@ def create_endpoints():
     flask_api.add_resource(CollectionInformationResource, '/collections/<string:name>')
 
     flask_api.add_resource(Processes, '/processes')
+    flask_api.add_resource(GraphValidation, '/validation')
 
-    flask_api.add_resource(Jobs, '/jobs')
-    flask_api.add_resource(JobsJobId, '/jobs/<string:job_id>')
+    # flask_api.add_resource(Jobs, '/jobs')
+    # flask_api.add_resource(JobsJobId, '/jobs/<string:job_id>')

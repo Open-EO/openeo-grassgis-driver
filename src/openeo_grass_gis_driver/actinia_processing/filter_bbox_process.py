@@ -109,7 +109,6 @@ def get_process_list(process):
     :return: (output_names, actinia_process_list)
     """
 
-    pprint(process)
     input_names, process_list = analyse_process_graph(process)
     output_names = []
 

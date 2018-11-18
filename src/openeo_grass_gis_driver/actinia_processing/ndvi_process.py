@@ -123,7 +123,6 @@ def get_process_list(process):
 
     # Find the red and nir datasets in the input
     for input_name in input_names:
-        print(input_name)
         if process["red"] in input_name:
             red_strds = input_name
         elif process["nir"] in input_name:

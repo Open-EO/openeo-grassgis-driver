@@ -289,10 +289,38 @@ date_range_filter_error_no_strds = {
     }
 }
 
+graph_filter_bbox_nc = {
+    "process_graph": {
+        "process_id": "filter_bbox",
+        "imagery": {
+            "process_id": "get_data",
+            "data_id": "nc_spm_08.PERMANENT.raster.elevation"
+        },
+        "spatial_extent": {
+            "left": -40.5,
+            "right": 75.5,
+            "top": 75.5,
+            "bottom": 25.25,
+            "width_res": 0.1,
+            "height_res": 0.1,
+        }
+    }
+}
+
 
 class JobsTestCase(TestBase):
 
-    def test_1_post_use_case_1_job_ephemeral(self):
+    def test_graph_filter_bbox_nc_job_ephemeral(self):
+        """Run the test in the ephemeral database
+        """
+        response = self.app.post('/jobs', data=json.dumps(graph_filter_bbox_nc), content_type="application/json")
+
+        data = json.loads(response.data.decode())
+        pprint.pprint(data)
+
+        self.wait_until_finished(response)
+
+    def otest_1_post_use_case_1_job_ephemeral(self):
         """Run the test in the ephemeral database
         """
         response = self.app.post('/jobs', data=json.dumps(use_case_1_graph), content_type="application/json")
@@ -302,7 +330,7 @@ class JobsTestCase(TestBase):
 
         self.wait_until_finished(response)
 
-    def test_1_put_use_case_1_job_persistent(self):
+    def otest_1_put_use_case_1_job_persistent(self):
         """Run the test in the persistent database
         """
         response = self.app.put('/jobs', data=json.dumps(use_case_1_graph), content_type="application/json")
@@ -312,7 +340,7 @@ class JobsTestCase(TestBase):
 
         self.wait_until_finished(response)
 
-    def test_1_post_use_case_1_job_ephemeral_export(self):
+    def otest_1_post_use_case_1_job_ephemeral_export(self):
         """Run the test in the ephemeral database with export support
         """
         response = self.app.post('/jobs', data=json.dumps(use_case_1_graph_export), content_type="application/json")
@@ -322,7 +350,7 @@ class JobsTestCase(TestBase):
 
         self.wait_until_finished(response)
 
-    def test_2_post_use_case_2_job(self):
+    def otest_2_post_use_case_2_job(self):
         response = self.app.post('/jobs', data=json.dumps(use_case_2_graph), content_type="application/json")
 
         data = json.loads(response.data.decode())
@@ -330,7 +358,7 @@ class JobsTestCase(TestBase):
 
         self.wait_until_finished(response)
 
-    def test_2_post_use_case_2_job_export(self):
+    def otest_2_post_use_case_2_job_export(self):
         response = self.app.post('/jobs', data=json.dumps(use_case_2_graph_export), content_type="application/json")
 
         data = json.loads(response.data.decode())
@@ -338,7 +366,7 @@ class JobsTestCase(TestBase):
 
         self.wait_until_finished(response)
 
-    def test_3_post_use_case_3_job(self):
+    def otest_3_post_use_case_3_job(self):
         response = self.app.post('/jobs', data=json.dumps(use_case_3_graph), content_type="application/json")
 
         data = json.loads(response.data.decode())
@@ -346,7 +374,7 @@ class JobsTestCase(TestBase):
 
         self.wait_until_finished(response)
 
-    def test_3_post_data_range_filter_job(self):
+    def otest_3_post_data_range_filter_job(self):
         response = self.app.post('/jobs', data=json.dumps(date_range_filter), content_type="application/json")
 
         data = json.loads(response.data.decode())
@@ -354,7 +382,7 @@ class JobsTestCase(TestBase):
 
         self.wait_until_finished(response)
 
-    def test_4_post_use_case_1_job_delete(self):
+    def otest_4_post_use_case_1_job_delete(self):
         response = self.app.post('/jobs', data=json.dumps(date_range_filter_long_run), content_type="application/json")
 
         data = json.loads(response.data.decode())
@@ -367,7 +395,7 @@ class JobsTestCase(TestBase):
 
         self.wait_until_finished(response=response, status="terminated")
 
-    def test_4_error_no_strds(self):
+    def otest_4_error_no_strds(self):
         response = self.app.post('/jobs', data=json.dumps(date_range_filter_error_no_strds),
                                  content_type="application/json")
 

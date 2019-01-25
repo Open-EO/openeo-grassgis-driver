@@ -70,8 +70,9 @@ class ProcessNode:
         parent_ids = set()
 
         for key in self.arguments:
-            if "from_node" in self.arguments[key]:
-                parent_ids.add(self.arguments[key]["from_node"])
+            if isinstance(self.arguments[key], dict):
+                if "from_node" in self.arguments[key]:
+                    parent_ids.add(self.arguments[key]["from_node"])
 
         return parent_ids
 
@@ -79,34 +80,52 @@ class ProcessNode:
         return self._process_description
 
 
-def build_process_graph_from_description(graph_description: dict) -> set:
-    """Build the directed process graph from the graph description
+class ProcessGraph:
 
-    :param graph_description: The description of the graph as dictionary
-    :return: The set of child nodes that are the roots of the process graph
-    """
+    def __init__(self, graph_description: dict):
 
-    node_dict = dict()
-    root_nodes = set()
+        if "title" not in graph_description:
+            raise Exception("Title is required in the process graph")
 
-    if "process_graph" in graph_description:
-        for key in graph_description["process_graph"].keys():
-            process_description = graph_description["process_graph"][key]
-            node = ProcessNode(id=key, process_description=process_description)
-            node_dict[node.id] = node
+        if "description" not in graph_description:
+            raise Exception("Description is required in the process graph")
 
-    # Create node connections
-    for node in node_dict.values():
-        # Connect parents with childs
-        parent_ids = node.get_parent_ids()
-        if parent_ids:
-            for parent_id in parent_ids:
-                parent_node = node_dict[parent_id]
-                node.parents.add(parent_node)
-                parent_node.child = node
+        if "process_graph" not in graph_description:
+            raise Exception("process_graph is required in the process graph")
 
-    for node in node_dict.values():
-        if node.child is None:
-            root_nodes.add(node)
+        self.title = graph_description["title"]
+        self.description = graph_description["description"]
+        self.root_nodes = self.build_process_graph_from_description(graph_description=graph_description)
 
-    return root_nodes
+    @staticmethod
+    def build_process_graph_from_description(graph_description: dict) -> set:
+        """Build the directed process graph from the graph description
+
+        :param graph_description: The description of the graph as dictionary
+        :return: The set of child nodes that are the roots of the process graph
+        """
+
+        node_dict = dict()
+        root_nodes = set()
+
+        if "process_graph" in graph_description:
+            for key in graph_description["process_graph"].keys():
+                process_description = graph_description["process_graph"][key]
+                node = ProcessNode(id=key, process_description=process_description)
+                node_dict[node.id] = node
+
+        # Create node connections
+        for node in node_dict.values():
+            # Connect parents with childs
+            parent_ids = node.get_parent_ids()
+            if parent_ids:
+                for parent_id in parent_ids:
+                    parent_node = node_dict[parent_id]
+                    node.parents.add(parent_node)
+                    parent_node.child = node
+
+        for node in node_dict.values():
+            if node.child is None:
+                root_nodes.add(node)
+
+        return root_nodes

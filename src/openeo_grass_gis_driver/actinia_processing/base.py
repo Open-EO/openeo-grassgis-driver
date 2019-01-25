@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from typing import Set, Dict, Optional
+
 # This is the process dictionary that is used to store all processes of the Actinia wrapper
 PROCESS_DESCRIPTION_DICT = {}
 PROCESS_DICT = {}
@@ -51,14 +53,13 @@ class ProcessNode:
     def __init__(self, id, process_description: dict):
 
         self.id = id
-        print("id", self.id)
-        self.process = process_description
-        self.process_id = self.process["process_id"]
-        self.arguments = None
+        self.process: dict = process_description
+        self.process_id: str = self.process["process_id"]
+        self.arguments: Optional[dict] = None
         if "arguments" in self.process:
-            self.arguments = self.process ["arguments"]
-        self.parents = set()
-        self.child = None
+            self.arguments = self.process["arguments"]
+        self.parents: Set[ProcessNode] = set()
+        self.child: Optional[ProcessNode] = None
 
         self._process_description = process_description
 
@@ -105,10 +106,10 @@ class ProcessGraph:
         if "process_graph" not in graph_description:
             raise Exception("process_graph is required in the process graph")
 
-        self.title = graph_description["title"]
-        self.description = graph_description["description"]
-        self.node_dict = dict()
-        self.root_nodes = set()
+        self.title: str = graph_description["title"]
+        self.description: str = graph_description["description"]
+        self.node_dict: Dict[ProcessNode] = dict()
+        self.root_nodes: Set[ProcessNode] = set()
 
         self.build_process_graph_from_description(graph_description=graph_description)
 

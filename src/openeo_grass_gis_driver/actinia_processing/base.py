@@ -62,6 +62,18 @@ class ProcessNode:
 
         self._process_description = process_description
 
+    def __str__(self):
+
+        child_id = None
+        if self.child is not None:
+            child_id = self.child.id
+
+        parent_ids = list()
+        if self.parents:
+            parent_ids = [node.id for node in self.parents]
+
+        return f"Node: {self.id} parents: {parent_ids} child: {child_id}"
+
     def get_parent_ids(self) -> set:
 
         if not self.arguments:

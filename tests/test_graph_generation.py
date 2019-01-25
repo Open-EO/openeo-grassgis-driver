@@ -30,7 +30,7 @@ graph_filter_bbox_nc_legacy = {
 
 graph_filter_bbox_nc = {
   "title": "Bounding box filtering of raster layer elevation",
-  "description": "This process grpah applies the bounding box filter to a raster layer",
+  "description": "This process graph applies the bounding box filter to a raster layer",
   "process_graph": {
     "filter_bbox_1": {
       "process_id": "filter_bbox",
@@ -55,7 +55,7 @@ graph_filter_bbox_nc = {
   }
 }
 
-graph_ndvi_strds = {
+graph_ndvi_strds_legacy = {
     "process_graph": {
         "process_id": "NDVI",
         "red": "lsat5_red",
@@ -69,6 +69,36 @@ graph_ndvi_strds = {
             }
         }
     }
+}
+
+graph_ndvi_strds = {
+  "title": "Compute the NDVI based on two STRDS",
+  "description": "Compute the NDVI data from two space-time raster datasets",
+  "process_graph": {
+    "ndvi_1": {
+      "process_id": "NDVI",
+      "arguments": {
+        "red": {"from_node": "get_red_data"},
+        "nir": {"from_node": "get_nir_data"},
+      }
+    },
+    "get_red_data": {
+      "process_id": "get_data",
+      "arguments": {
+        "data": {
+          "name": "nc_spm_08.landsat.strds.lsat5_red"
+        }
+      }
+    },
+    "get_nir_data": {
+      "process_id": "get_data",
+      "arguments": {
+        "data": {
+          "name": "nc_spm_08.landsat.strds.lsat5_nir"
+        }
+      }
+    }
+  }
 }
 
 graph_use_case_1 = {
@@ -275,6 +305,17 @@ class GraphValidationTestCase(TestBase):
 
         self.assertEqual(1, len(pg.root_nodes))
         self.assertEqual(2, len(pg.node_dict))
+
+    def test_graph_creation_graph_graph_ndvi_strds(self):
+
+        pg = ProcessGraph(graph_ndvi_strds)
+        print(pg.root_nodes)
+
+        self.assertEqual(1, len(pg.root_nodes))
+        self.assertEqual(3, len(pg.node_dict))
+
+        print(pg.node_dict)
+        print(pg.node_dict["ndvi_1"])
 
 
 if __name__ == "__main__":

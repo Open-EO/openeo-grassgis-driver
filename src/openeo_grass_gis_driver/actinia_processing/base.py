@@ -108,11 +108,10 @@ class ProcessGraph:
         node_dict = dict()
         root_nodes = set()
 
-        if "process_graph" in graph_description:
-            for key in graph_description["process_graph"].keys():
-                process_description = graph_description["process_graph"][key]
-                node = ProcessNode(id=key, process_description=process_description)
-                node_dict[node.id] = node
+        for key in graph_description["process_graph"].keys():
+            process_description = graph_description["process_graph"][key]
+            node = ProcessNode(id=key, process_description=process_description)
+            node_dict[node.id] = node
 
         # Create node connections
         for node in node_dict.values():

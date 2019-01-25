@@ -48,11 +48,12 @@ class ProcessNode:
     """A single node in the process graph
     """
 
-    def __init__(self, process_description: dict):
+    def __init__(self, id, process_description: dict):
 
-        self.id = process_description.keys()[0]
-        self.process = process_description[self.id ]
-        self.process_id = self.process ["process_id"]
+        self.id = id
+        print("id", self.id)
+        self.process = process_description
+        self.process_id = self.process["process_id"]
         self.arguments = None
         if "arguments" in self.process:
             self.arguments = self.process ["arguments"]
@@ -89,10 +90,9 @@ def build_process_graph_from_description(graph_description: dict) -> set:
     root_nodes = set()
 
     if "process_graph" in graph_description:
-        for process_description in graph_description["process_graph"]:
-
-            node = ProcessNode(process_description=process_description)
-
+        for key in graph_description["process_graph"].keys():
+            process_description = graph_description["process_graph"][key]
+            node = ProcessNode(id=key, process_description=process_description)
             node_dict[node.id] = node
 
     # Create node connections

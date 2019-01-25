@@ -101,7 +101,7 @@ graph_ndvi_strds = {
   }
 }
 
-graph_use_case_1 = {
+graph_use_case_1_legacy = {
     "process_graph": {
         "process_id": "reduce_time",
         "method": "minimum",
@@ -138,6 +138,75 @@ graph_use_case_1 = {
     }
 }
 
+
+graph_use_case_1 = {
+  "title": "Compute the NDVI based on two STRDS",
+  "description": "Compute the NDVI data from two space-time raster datasets and apply several filters in the data",
+  "process_graph": {
+    "get_red_data": {
+      "process_id": "get_data",
+      "arguments": {
+        "data": {
+          "name": "nc_spm_08.landsat.strds.lsat5_red"
+        }
+      }
+    },
+    "get_nir_data": {
+      "process_id": "get_data",
+      "arguments": {
+        "data": {
+          "name": "nc_spm_08.landsat.strds.lsat5_nir"
+        }
+      }
+    },
+    "filter_bbox_red": {
+      "process_id": "filter_bbox",
+      "arguments": {
+        "data": {"from_node": "get_red_data"},
+        "left": -40.5,
+        "right": 75.5,
+        "top": 75.5,
+        "bottom": 25.25,
+        "width_res": 0.1,
+        "height_res": 0.1,
+      }
+    },
+    "filter_bbox_nir": {
+      "process_id": "filter_bbox",
+      "arguments": {
+        "data": {"from_node": "get_nir_data"},
+        "left": -40.5,
+        "right": 75.5,
+        "top": 75.5,
+        "bottom": 25.25,
+        "width_res": 0.1,
+        "height_res": 0.1,
+      }
+    },
+    "ndvi_1": {
+      "process_id": "NDVI",
+      "arguments": {
+        "red": {"from_node": "filter_bbox_red"},
+        "nir": {"from_node": "filter_bbox_nir"},
+      }
+    },
+    "filter_daterange_ndvi": {
+      "process_id": "filter_daterange",
+      "arguments": {
+        "data": {"from_node": "ndvi_1"},
+        "from": "2001-01-01",
+        "to": "2005-01-01",
+      }
+    },
+    "reduce_time_1": {
+      "process_id": "reduce_time",
+      "arguments": {
+        "data": {"from_node": "filter_daterange_ndvi"},
+        "method": "minimum",
+      }
+    }
+  }
+}
 
 example_graph = {
   "title": "NDVI based on Sentinel 2",
@@ -291,31 +360,67 @@ example_graph = {
 
 class GraphValidationTestCase(TestBase):
 
-    def test_graph_creation_example_graph(self):
+    def otest_graph_creation_example_graph(self):
 
         pg = ProcessGraph(example_graph)
-        print(pg.root_nodes)
-
         self.assertEqual(2, len(pg.root_nodes))
         self.assertEqual(9, len(pg.node_dict))
 
-    def test_graph_creation_graph_filter_bbox_nc(self):
+        print(pg.node_dict["export1"])
+        print(pg.node_dict["export2"])
+        print(pg.node_dict["filter1"])
+        print(pg.node_dict["filter2"])
+        print(pg.node_dict["filter3"])
+        print(pg.node_dict["getcol1"])
+        print(pg.node_dict["mergec1"])
+        print(pg.node_dict["reduce1"])
+        print(pg.node_dict["reduce2"])
+
+    def otest_graph_creation_graph_filter_bbox_nc(self):
+
         pg = ProcessGraph(graph_filter_bbox_nc)
-        print(pg.root_nodes)
+
+        print(pg.node_dict["get_data_1"])
+        print(pg.node_dict["filter_bbox_1"])
 
         self.assertEqual(1, len(pg.root_nodes))
         self.assertEqual(2, len(pg.node_dict))
 
-    def test_graph_creation_graph_graph_ndvi_strds(self):
+        self.assertIsNone(pg.node_dict["filter_bbox_1"].child)
+        self.assertEqual(pg.node_dict["filter_bbox_1"], pg.node_dict["get_data_1"].child)
+        self.assertEqual(1, len(pg.node_dict["filter_bbox_1"].parents))
+        self.assertTrue(pg.node_dict["get_data_1"] in pg.node_dict["filter_bbox_1"].parents)
+
+    def otest_graph_creation_graph_ndvi_strds(self):
 
         pg = ProcessGraph(graph_ndvi_strds)
-        print(pg.root_nodes)
+
+        print(pg.node_dict["get_nir_data"])
+        print(pg.node_dict["get_red_data"])
+        print(pg.node_dict["ndvi_1"])
 
         self.assertEqual(1, len(pg.root_nodes))
         self.assertEqual(3, len(pg.node_dict))
 
-        print(pg.node_dict)
+        self.assertIsNone(pg.node_dict["ndvi_1"].child)
+        self.assertEqual(2, len(pg.node_dict["ndvi_1"].parents))
+        self.assertTrue(pg.node_dict["get_nir_data"] in pg.node_dict["ndvi_1"].parents)
+        self.assertTrue(pg.node_dict["get_red_data"] in pg.node_dict["ndvi_1"].parents)
+
+        self.assertEqual(pg.node_dict["ndvi_1"], pg.node_dict["get_nir_data"].child)
+        self.assertEqual(pg.node_dict["ndvi_1"], pg.node_dict["get_red_data"].child)
+
+    def test_graph_creation_graph_use_case_1(self):
+
+        pg = ProcessGraph(graph_use_case_1)
+
+        print(pg.node_dict["get_nir_data"])
+        print(pg.node_dict["get_red_data"])
+        print(pg.node_dict["filter_bbox_red"])
+        print(pg.node_dict["filter_bbox_nir"])
         print(pg.node_dict["ndvi_1"])
+        print(pg.node_dict["filter_daterange_ndvi"])
+        print(pg.node_dict["reduce_time_1"])
 
 
 if __name__ == "__main__":

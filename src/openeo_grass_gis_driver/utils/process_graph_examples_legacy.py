@@ -6,14 +6,14 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-get_data_1 = {
+GET_DATA_1 = {
     "process_graph": {
         "process_id": "get_data",
         "data_id": "nc_spm_08.PERMANENT.raster.elevation"
     }
 }
 
-get_data_2 = {
+GET_DATA_2 = {
     "process_graph": {
         "process_id": "get_data",
         "data_id": "nc_spm_08.PERMANENT.raster.elevation",
@@ -28,7 +28,7 @@ get_data_2 = {
     }
 }
 
-filter_bbox = {
+FILTER_BOX = {
     "process_graph": {
         "process_id": "filter_bbox",
         "imagery": {
@@ -46,7 +46,7 @@ filter_bbox = {
     }
 }
 
-daterange = {
+DATERANGE = {
     "process_graph": {
         "process_id": "filter_daterange",
         "from": "2001-01-01",
@@ -59,7 +59,7 @@ daterange = {
     }
 }
 
-reduce_time_min = {
+REDUCE_TIME_MIN = {
     "process_graph": {
         "process_id": "reduce_time",
         "method": "minimum",
@@ -71,7 +71,7 @@ reduce_time_min = {
     }
 }
 
-ndvi_1 = {
+NDVI_1 = {
     "process_graph": {
         "process_id": "NDVI",
         "red": "lsat5_red",
@@ -87,7 +87,7 @@ ndvi_1 = {
     }
 }
 
-ndvi_2 = {
+NDVI_2 = {
     "process_graph": {
         "process_id": "NDVI",
         "red": "S2A_B04",
@@ -103,7 +103,7 @@ ndvi_2 = {
     }
 }
 
-ndvi_3 = {
+NDVI_3 = {
     "process_graph": {
         "process_id": "NDVI2",
         "red": {
@@ -117,7 +117,7 @@ ndvi_3 = {
     }
 }
 
-ndvi_4 = {
+NDVI_4 = {
     "process_graph": {
         "process_id": "NDVI2",
         "nir": {
@@ -131,7 +131,7 @@ ndvi_4 = {
     }
 }
 
-raster_export = {
+RASTER_EXPORT = {
     "process_graph": {
         "process_id": "raster_exporter",
         "imagery": {
@@ -145,7 +145,7 @@ raster_export = {
     }
 }
 
-zonal_statistics = {
+ZONAL_STATISTICS = {
     "process_graph": {
         "process_id": "zonal_statistics",
         "imagery": {
@@ -160,7 +160,7 @@ zonal_statistics = {
     }
 }
 
-ndvi_error = {
+NDVI_ERROR = {
     "process_graph": {
         "process_id": "NDVI_nope",
         "nir": {
@@ -174,7 +174,7 @@ ndvi_error = {
     }
 }
 
-openeo_usecase_1 = {
+OPENEO_USECASE_1 = {
     "process_graph": {
         "process_id": "reduce_time",
         "method": "minimum",
@@ -225,7 +225,7 @@ openeo_usecase_1 = {
     }
 }
 
-openeo_usecase_1a = {
+OPENEO_USECASE_1A = {
     "process_graph": {
         "process_id": "reduce_time",
         "method": "minimum",
@@ -262,7 +262,7 @@ openeo_usecase_1a = {
     }
 }
 
-openeo_usecase_2 = \
+OPENEO_USECASE_2 = \
     {
         "process_graph": {
             "process_id": "udf_reduce_time",

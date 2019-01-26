@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from .base import analyse_process_graph, PROCESS_DICT_LEGACY, PROCESS_DESCRIPTION_DICT_LEGACY
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from .actinia_interface import ActiniaInterface
 
@@ -67,7 +67,7 @@ def create_process_description():
     return json.loads(pd.to_json())
 
 
-PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
+PROCESS_DESCRIPTION_DICT_LEGACY[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_name):
@@ -137,4 +137,4 @@ def get_process_list(process):
     return output_names, process_list
 
 
-PROCESS_DICT[PROCESS_NAME] = get_process_list
+PROCESS_DICT_LEGACY[PROCESS_NAME] = get_process_list

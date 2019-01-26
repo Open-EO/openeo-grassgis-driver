@@ -5,9 +5,9 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-get_data_1 = {
-    "title": "Compute the NDVI based on two STRDS",
-    "description": "Compute the NDVI data from two space-time raster datasets",
+GET_DATA_1 = {
+    "title": "Get a raster layer",
+    "description": "This process is the source for a raster layer",
     "process_graph": {
         "get_elevation_data": {
             "process_id": "get_data",
@@ -20,11 +20,10 @@ get_data_1 = {
     }
 }
 
-get_data_2 = {
-    "title": "Compute the NDVI based on two STRDS",
-    "description": "Compute the NDVI data from two space-time raster datasets",
+GET_DATA_2 = {
+    "title": "Get three different data sources",
+    "description": "This process graph is the source for three different layer: raster, vector and strds",
     "process_graph": {
-
         "get_strds_data": {
             "process_id": "get_data",
             "arguments": {
@@ -52,7 +51,7 @@ get_data_2 = {
     }
 }
 
-graph_filter_bbox_nc = {
+FILTER_BBOX = {
     "title": "Bounding box filtering of raster layer elevation",
     "description": "This process graph applies the bounding box filter to a raster layer",
     "process_graph": {
@@ -79,7 +78,53 @@ graph_filter_bbox_nc = {
     }
 }
 
-graph_ndvi_strds = {
+DATERANGE = {
+    "title": "Filter the daterange of a single STRDS",
+    "description": "Filter the daterange of a single STRDS",
+    "process_graph": {
+        "get_strds_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data": {
+                    "name": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
+                }
+            }
+        },
+        "filter_daterange_1": {
+            "process_id": "filter_daterange",
+            "arguments": {
+                "data": {"from_node": "get_strds_data"},
+                "from": "2001-01-01",
+                "to": "2005-01-01",
+            }
+        }
+    }
+}
+
+REDUCE_TIME_MIN = {
+    "title": "Reduce the time dimension of a single STRDS",
+    "description": "Reduce the time dimension of a single STRDS",
+    "process_graph": {
+        "get_strds_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data": {
+                    "name": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
+                }
+            }
+        },
+        "reduce_time_1": {
+            "process_id": "reduce_time",
+            "arguments": {
+                "data": {"from_node": "get_strds_data"},
+                "method": "minimum",
+            }
+        }
+    }
+}
+
+
+GRAPH_NDVI_STRDS = {
     "title": "Compute the NDVI based on two STRDS",
     "description": "Compute the NDVI data from two space-time raster datasets",
     "process_graph": {
@@ -109,7 +154,51 @@ graph_ndvi_strds = {
     }
 }
 
-graph_use_case_1 = {
+RASTER_EXPORT = {
+    "title": "Export the raster data from a single source",
+    "description": "Export raster the data from a single source",
+    "process_graph": {
+        "raster_exporter_1": {
+            "process_id": "raster_exporter",
+            "arguments": {
+                "data": {"from_node": "get_b08_data"}
+            }
+        },
+        "get_b08_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data": {
+                    "name": "LL.sentinel2A_openeo_subset.strds.S2A_B08"
+                }
+            }
+        }
+    }
+}
+
+ZONAL_STATISTICS = {
+    "title": "Compute zonal statistics based on a strds and a vector layer",
+    "description": "Compute zonal statistics based on a strds and a vector layer",
+    "process_graph": {
+        "zonal_statistics_1": {
+            "process_id": "zonal_statistics",
+            "arguments": {
+                "data": {"from_node": "get_b08_data"},
+                "polygons": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"
+            }
+        },
+        "get_b08_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data": {
+                    "name": "LL.sentinel2A_openeo_subset.strds.S2A_B08"
+                }
+            }
+        }
+    }
+}
+
+
+USE_CASE_1 = {
     "title": "Compute the NDVI based on two STRDS",
     "description": "Compute the NDVI data from two space-time raster datasets and apply several filters in the data",
     "process_graph": {
@@ -178,7 +267,7 @@ graph_use_case_1 = {
     }
 }
 
-openeo_example_graph = {
+OPENEO_EXAMPLE_1 = {
     "title": "NDVI based on Sentinel 2",
     "description": "Deriving minimum NDVI measurements over pixel time series of Sentinel 2",
     "process_graph": {

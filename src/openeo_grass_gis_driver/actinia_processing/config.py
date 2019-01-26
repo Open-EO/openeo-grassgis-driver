@@ -19,3 +19,5 @@ class Config:
     PASSWORD="gu3st!pa55w0rd"
     # The database file that stores the graphs
     GRAPH_DB="%s/.graph_db_file.sqlite"%os.environ["HOME"]
+    # The database file that stores the jobs
+    JOB_DB="%s/.job_db_file.sqlite"%os.environ["HOME"]

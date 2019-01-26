@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from .base import analyse_process_graph, PROCESS_DICT_LEGACY, PROCESS_DESCRIPTION_DICT_LEGACY
 from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -24,7 +24,7 @@ DOC = {
     }
 }
 
-PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = DOC
+PROCESS_DESCRIPTION_DICT_LEGACY[PROCESS_NAME] = DOC
 
 
 def create_process_chain_entry(input_name, python_file_url, output_name):
@@ -87,4 +87,4 @@ def get_process_list(args):
     return output_names, process_list
 
 
-PROCESS_DICT[PROCESS_NAME] = get_process_list
+PROCESS_DICT_LEGACY[PROCESS_NAME] = get_process_list

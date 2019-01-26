@@ -20,11 +20,14 @@ GET_DATA_2 = {
         "imagery": {
             "process_id": "get_data",
             "data_id": "nc_spm_08.PERMANENT.vector.lakes",
-            "imagery": {
-                "process_id": "get_data",
-                "data_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
-            }
         }
+    }
+}
+
+GET_DATA_3 = {
+    "process_graph": {
+        "process_id": "get_data",
+        "data_id": "latlong_wgs84.asia_gdd_2017.strds.gdd"
     }
 }
 
@@ -36,12 +39,12 @@ FILTER_BOX = {
             "data_id": "nc_spm_08.PERMANENT.raster.elevation"
         },
         "spatial_extent": {
-            "left": -40.5,
-            "right": 75.5,
-            "top": 75.5,
-            "bottom": 25.25,
-            "width_res": 0.1,
-            "height_res": 0.1,
+            "left": 630000,
+            "right": 645000,
+            "top": 228500,
+            "bottom": 215000,
+            "width_res": 10,
+            "height_res": 10,
         }
     }
 }
@@ -53,7 +56,7 @@ DATERANGE = {
         "to": "2005-01-01",
         "strds_data": {
             "process_id": "get_data",
-            "data_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
+            "data_id": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
         }
 
     }
@@ -65,7 +68,7 @@ REDUCE_TIME_MIN = {
         "method": "minimum",
         "images": {
             "process_id": "get_data",
-            "data_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
+            "data_id": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
         }
 
     }
@@ -136,10 +139,10 @@ RASTER_EXPORT = {
         "process_id": "raster_exporter",
         "imagery": {
             "process_id": "get_data",
-            "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08",
+            "data_id": "nc_spm_08.PERMANENT.raster.elevation",
             "imagery": {
                 "process_id": "get_data",
-                "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"
+                "data_id": "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -150,10 +153,10 @@ ZONAL_STATISTICS = {
         "process_id": "zonal_statistics",
         "imagery": {
             "process_id": "get_data",
-            "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08",
+            "data_id": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m",
             "imagery": {
                 "process_id": "get_data",
-                "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"
+                "data_id": "latlong_wgs84.asia_gdd_2017.strds.gdd"
             }
         },
         "polygons": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from .app import flask_api
-from .capabilities import Capabilities, OutputFormats, ServiceTypes
-from .collections import Collections
-from .collection_information import CollectionInformationResource
-from .processes import Processes
-from .jobs import Jobs
-from .jobs_job_id import JobsJobId
-from .graph_validation import GraphValidation
+from openeo_grass_gis_driver.app import flask_api
+from openeo_grass_gis_driver.capabilities import Capabilities, OutputFormats, ServiceTypes
+from openeo_grass_gis_driver.collections import Collections
+from openeo_grass_gis_driver.collection_information import CollectionInformationResource
+from openeo_grass_gis_driver.processes import Processes
+from openeo_grass_gis_driver.jobs import Jobs
+from openeo_grass_gis_driver.jobs_job_id import JobsJobId
+from openeo_grass_gis_driver.graph_validation import GraphValidation
+from openeo_grass_gis_driver.preview import Preview
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -30,5 +31,8 @@ def create_endpoints():
     flask_api.add_resource(Processes, '/processes')
     flask_api.add_resource(GraphValidation, '/validation')
 
+    flask_api.add_resource(Preview, '/preview')
+
     # flask_api.add_resource(Jobs, '/jobs')
     # flask_api.add_resource(JobsJobId, '/jobs/<string:job_id>')
+

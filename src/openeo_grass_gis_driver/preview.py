@@ -48,8 +48,8 @@ class Preview(Resource):
 
             status, response = self.iface.async_ephemeral_processing_export(location=location,
                                                                             process_chain=process_chain)
-
-            self.wait_until_finished(response=response, max_time=5)
+            print(status, response)
+            response = self.wait_until_finished(response=response, max_time=5)
 
             if status == 200:
                 return make_response(jsonify({"job_id":response["resource_id"],
@@ -57,7 +57,7 @@ class Preview(Resource):
             else:
                 return make_response(jsonify(response), status)
         except Exception as e:
-                return make_response(jsonify({"error": str(e)}), 400)
+            return make_response(jsonify({"preview error": str(e)}), 400)
 
     def wait_until_finished(self, response, max_time = 30):
         """Poll the status of a resource and assert its finished HTTP status
@@ -76,14 +76,11 @@ class Preview(Resource):
         """
         # Check if the resource was accepted
 
-        job_info = json.loads(response.data.decode())
-        job_id = job_info["job_id"]
-
-        start_time = datetime.datetime.now()
+        resource_id = response["resource_id"]
+        start_time = time.time()
 
         while True:
-            status, response = self.iface.resource_info(job_id)
-            resp_data = json.loads(response.data.decode())
+            status, resp_data = self.iface.resource_info(resource_id)
 
             if "status" not in resp_data:
                 raise Exception("wrong return values %s" % str(resp_data))
@@ -93,9 +90,9 @@ class Preview(Resource):
                 break
             time.sleep(1)
 
-            current_time = datetime.datetime.now()
+            current_time = time.time()
             if current_time - start_time > max_time:
-                status_code, data = self.iface.delete_resource(resource_id=job_id)
+                status_code, data = self.iface.delete_resource(resource_id=resource_id)
 
                 if status_code != 200:
                     raise Exception(f"Unable to terminate job, error: {data}")

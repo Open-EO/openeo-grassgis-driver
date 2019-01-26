@@ -24,14 +24,6 @@ GET_DATA_2 = {
     "title": "Get three different data sources",
     "description": "This process graph is the source for three different layer: raster, vector and strds",
     "process_graph": {
-        "get_strds_data": {
-            "process_id": "get_data",
-            "arguments": {
-                "data": {
-                    "name": "CAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
-                }
-            }
-        },
         "get_lakes_data": {
             "process_id": "get_data",
             "arguments": {
@@ -51,6 +43,21 @@ GET_DATA_2 = {
     }
 }
 
+GET_DATA_3 = {
+    "title": "Get three different data sources",
+    "description": "This process graph is the source for three different layer: raster, vector and strds",
+    "process_graph": {
+        "get_strds_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data": {
+                    "name": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
+                }
+            }
+        }
+    }
+}
+
 FILTER_BBOX = {
     "title": "Bounding box filtering of raster layer elevation",
     "description": "This process graph applies the bounding box filter to a raster layer",
@@ -59,12 +66,12 @@ FILTER_BBOX = {
             "process_id": "filter_bbox",
             "arguments": {
                 "data": {"from_node": "get_data_1"},
-                "left": -40.5,
-                "right": 75.5,
-                "top": 75.5,
-                "bottom": 25.25,
-                "width_res": 0.1,
-                "height_res": 0.1,
+                "left": 630000,
+                "right": 645000,
+                "top": 228500,
+                "bottom": 215000,
+                "width_res": 10,
+                "height_res": 10,
             }
         },
         "get_data_1": {
@@ -86,7 +93,7 @@ DATERANGE = {
             "process_id": "get_data",
             "arguments": {
                 "data": {
-                    "name": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
+                    "name": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
                 }
             }
         },
@@ -109,7 +116,7 @@ REDUCE_TIME_MIN = {
             "process_id": "get_data",
             "arguments": {
                 "data": {
-                    "name": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius"
+                    "name": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
                 }
             }
         },
@@ -168,7 +175,7 @@ RASTER_EXPORT = {
             "process_id": "get_data",
             "arguments": {
                 "data": {
-                    "name": "LL.sentinel2A_openeo_subset.strds.S2A_B08"
+                    "name": "nc_spm_08.PERMANENT.raster.elevation"
                 }
             }
         }
@@ -190,7 +197,7 @@ ZONAL_STATISTICS = {
             "process_id": "get_data",
             "arguments": {
                 "data": {
-                    "name": "LL.sentinel2A_openeo_subset.strds.S2A_B08"
+                    "name": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
                 }
             }
         }
@@ -222,24 +229,24 @@ USE_CASE_1 = {
             "process_id": "filter_bbox",
             "arguments": {
                 "data": {"from_node": "get_red_data"},
-                "left": -40.5,
-                "right": 75.5,
-                "top": 75.5,
-                "bottom": 25.25,
-                "width_res": 0.1,
-                "height_res": 0.1,
+                "left": 630000,
+                "right": 645000,
+                "top": 228500,
+                "bottom": 215000,
+                "width_res": 10,
+                "height_res": 10,
             }
         },
         "filter_bbox_nir": {
             "process_id": "filter_bbox",
             "arguments": {
                 "data": {"from_node": "get_nir_data"},
-                "left": -40.5,
-                "right": 75.5,
-                "top": 75.5,
-                "bottom": 25.25,
-                "width_res": 0.1,
-                "height_res": 0.1,
+                "left": 630000,
+                "right": 645000,
+                "top": 228500,
+                "bottom": 215000,
+                "width_res": 10,
+                "height_res": 10,
             }
         },
         "ndvi_1": {

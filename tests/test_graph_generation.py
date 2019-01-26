@@ -2,7 +2,7 @@
 import unittest
 from openeo_grass_gis_driver.test_base import TestBase
 from openeo_grass_gis_driver.actinia_processing.base import ProcessNode, ProcessGraph
-from openeo_grass_gis_driver.utils.process_graph_examples import OPENEO_EXAMPLE_1, \
+from openeo_grass_gis_driver.utils.process_graph_examples_v04 import OPENEO_EXAMPLE_1, \
   FILTER_BBOX, NDVI_STRDS, USE_CASE_1, ZONAL_STATISTICS, DATERANGE
 
 __license__ = "Apache License, Version 2.0"
@@ -95,8 +95,6 @@ class GraphValidationTestCase(TestBase):
         self.assertEqual(pg.node_dict["ndvi_1"], pg.node_dict["get_red_data"].child)
 
     def test_graph_creation_graph_use_case_1(self):
-
-        # TODO: implement assertion tests
 
         pg = ProcessGraph(USE_CASE_1)
 

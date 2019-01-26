@@ -124,7 +124,7 @@ REDUCE_TIME_MIN = {
 }
 
 
-GRAPH_NDVI_STRDS = {
+NDVI_STRDS = {
     "title": "Compute the NDVI based on two STRDS",
     "description": "Compute the NDVI data from two space-time raster datasets",
     "process_graph": {

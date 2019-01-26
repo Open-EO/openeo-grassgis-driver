@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from typing import Set, Dict, Optional
+from typing import Set, Dict, Optional, Tuple
 
 # This is the process dictionary that is used to store all processes of the Actinia wrapper
+PROCESS_DESCRIPTION_DICT_LEGACY = {}
+PROCESS_DICT_LEGACY = {}
 PROCESS_DESCRIPTION_DICT = {}
 PROCESS_DICT = {}
 
@@ -14,8 +16,7 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-# TODO: Rewrite this function to reflect the process graph approach that allows branches
-def analyse_process_graph(graph):
+def analyse_process_graph(graph: dict):
     """Analyse a process graph and call the required subprocess analysis
 
     This function return the list of input names for the next process and the
@@ -36,10 +37,10 @@ def analyse_process_graph(graph):
 
         if "process_id" in process:
 
-            if process["process_id"] not in PROCESS_DICT:
-                raise Exception("Unsupported process id, available processes: %s"%PROCESS_DICT.keys())
+            if process["process_id"] not in PROCESS_DICT_LEGACY:
+                raise Exception("Unsupported process id, available processes: %s" % PROCESS_DICT_LEGACY.keys())
 
-            outputs, processes = PROCESS_DICT[process["process_id"]](process)
+            outputs, processes = PROCESS_DICT_LEGACY[process["process_id"]](process)
             process_list.extend(processes)
             output_name_list.extend(outputs)
 
@@ -62,6 +63,15 @@ class ProcessNode:
         self.child: Optional[ProcessNode] = None
 
         self._process_description = process_description
+        self._was_processed = False
+
+    @property
+    def processed(self):
+        return self._was_processed
+
+    @processed.setter
+    def processed(self, flag: bool):
+        self._was_processed = flag
 
     def __str__(self):
 
@@ -94,8 +104,16 @@ class ProcessNode:
 
 
 class ProcessGraph:
+    """This class represents a process graph
+
+    """
 
     def __init__(self, graph_description: dict):
+        """The constructor checks the validity of the provided dictionary
+        and build the node interconnections
+
+        :param graph_description:
+        """
 
         if "title" not in graph_description:
             raise Exception("Title is required in the process graph")
@@ -138,3 +156,32 @@ class ProcessGraph:
         for node in self.node_dict.values():
             if node.child is None:
                 self.root_nodes.add(node)
+
+
+def process_node_to_actinia_process_chain(node: ProcessNode) -> Tuple[list, list]:
+    """This function calls the openEO process node to actinia process chain converter process
+    based on the node process_id.
+
+    It will gather the actinia process chain and the output identifier of the
+    process converter and sets the node status to processed==True.
+
+    :param node: A single process node
+    :return: (output_name_list, process_list)
+    """
+
+    if node is None:
+        raise Exception("Missing process node")
+
+    process_list = []
+    output_name_list = []
+
+    if node.process_id not in PROCESS_DICT:
+        raise Exception("Unsupported process id, available processes: %s" % PROCESS_DICT.keys())
+
+    outputs, processes = PROCESS_DICT[node.process_id](node)
+    process_list.extend(processes)
+    output_name_list.extend(outputs)
+
+    node.processed = True
+
+    return output_name_list, process_list

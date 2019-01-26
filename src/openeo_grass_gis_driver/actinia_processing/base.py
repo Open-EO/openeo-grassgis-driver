@@ -3,8 +3,6 @@
 from typing import Set, Dict, Optional, Tuple
 
 # This is the process dictionary that is used to store all processes of the Actinia wrapper
-PROCESS_DESCRIPTION_DICT_LEGACY = {}
-PROCESS_DICT_LEGACY = {}
 PROCESS_DESCRIPTION_DICT = {}
 PROCESS_DICT = {}
 
@@ -37,10 +35,10 @@ def analyse_process_graph(graph: dict):
 
         if "process_id" in process:
 
-            if process["process_id"] not in PROCESS_DICT_LEGACY:
-                raise Exception("Unsupported process id, available processes: %s" % PROCESS_DICT_LEGACY.keys())
+            if process["process_id"] not in PROCESS_DICT:
+                raise Exception("Unsupported process id, available processes: %s" % PROCESS_DICT.keys())
 
-            outputs, processes = PROCESS_DICT_LEGACY[process["process_id"]](process)
+            outputs, processes = PROCESS_DICT[process["process_id"]](process)
             process_list.extend(processes)
             output_name_list.extend(outputs)
 

@@ -17,6 +17,23 @@ PREVIEW_TEMPLATE = {
     "process_graph": None,
 }
 
+FILTER_BOX = {
+    "process_graph": {
+        "process_id": "filter_bbox",
+        "imagery": {
+            "process_id": "get_data",
+            "data_id": "nc_spm_08.PERMANENT.raster.elevation"
+        },
+        "spatial_extent": {
+            "left": 630000,
+            "right": 645000,
+            "top": 228500,
+            "bottom": 215000,
+            "width_res": 10,
+            "height_res": 10,
+        }
+    }
+}
 
 class PreviewTestCase(TestBase):
 
@@ -24,6 +41,18 @@ class PreviewTestCase(TestBase):
         """Run the test in the ephemeral database
         """
         PREVIEW_TEMPLATE["process_graph"] = FILTER_BOX
+        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json")
+
+        data = json.loads(response.data.decode())
+        pprint.pprint(data)
+
+    def test_graph_filter_bbox_nc_job_ephemeral_error(self):
+        """Run the test in the ephemeral database
+        """
+
+        fbox = FILTER_BOX
+        fbox["process_graph"]["imagery"]["data_id"] = "nc_spm_08.PERMANENT.raster.elevation_nonon"
+        PREVIEW_TEMPLATE["process_graph"] = fbox
         response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json")
 
         data = json.loads(response.data.decode())

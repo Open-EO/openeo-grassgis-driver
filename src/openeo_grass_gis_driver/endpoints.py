@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from openeo_grass_gis_driver.app import flask_api
-from openeo_grass_gis_driver.capabilities import Capabilities, OutputFormats, ServiceTypes
+from openeo_grass_gis_driver.capabilities import Capabilities, ServiceTypes
 from openeo_grass_gis_driver.collections import Collections
 from openeo_grass_gis_driver.collection_information import CollectionInformationResource
 from openeo_grass_gis_driver.processes import Processes
-from openeo_grass_gis_driver.jobs import Jobs
+from openeo_grass_gis_driver.jobs import Jobs, OutputFormats
 from openeo_grass_gis_driver.jobs_job_id import JobsJobId
 from openeo_grass_gis_driver.graph_validation import GraphValidation
 from openeo_grass_gis_driver.preview import Preview
@@ -22,7 +22,6 @@ def create_endpoints():
     :return:
     """
     flask_api.add_resource(Capabilities, '/')
-    flask_api.add_resource(OutputFormats, '/output_formats')
     flask_api.add_resource(ServiceTypes, '/service_types')
 
     flask_api.add_resource(Collections, '/collections')
@@ -33,6 +32,7 @@ def create_endpoints():
 
     flask_api.add_resource(Preview, '/preview')
 
-    # flask_api.add_resource(Jobs, '/jobs')
-    # flask_api.add_resource(JobsJobId, '/jobs/<string:job_id>')
+    flask_api.add_resource(OutputFormats, '/output_formats')
+    flask_api.add_resource(Jobs, '/jobs')
+    flask_api.add_resource(JobsJobId, '/jobs/<string:job_id>')
 

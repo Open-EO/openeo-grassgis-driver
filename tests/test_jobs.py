@@ -26,7 +26,7 @@ class JobsTestCase(TestBase):
         response = self.app.delete('/jobs')
         self.assertEqual(204, response.status_code)
 
-    def test_job_creation_1(self):
+    def otest_job_creation_1(self):
         """Run the test in the ephemeral database
         """
         JOB_TEMPLATE["process_graph"] = FILTER_BOX["process_graph"]
@@ -52,7 +52,7 @@ class JobsTestCase(TestBase):
         self.assertEqual(job_id, data["job_id"])
         self.assertEqual(FILTER_BOX["process_graph"], data["process_graph"])
 
-    def test_job_creation_2(self):
+    def otest_job_creation_2(self):
         """Run the test in the ephemeral database
         """
         JOB_TEMPLATE["process_graph"] = ZONAL_STATISTICS["process_graph"]
@@ -73,7 +73,7 @@ class JobsTestCase(TestBase):
         self.assertEqual(404, response.status_code)
 
 
-    def test_job_creation_deletion_1(self):
+    def otest_job_creation_deletion_1(self):
         """Run the test in the ephemeral database
         """
         JOB_TEMPLATE["process_graph"] = ZONAL_STATISTICS["process_graph"]
@@ -93,6 +93,83 @@ class JobsTestCase(TestBase):
 
         response = self.app.get(f'/jobs/{job_id}')
         self.assertEqual(404, response.status_code)
+
+
+class JobsTestResultsCase(TestBase):
+
+    def setUp(self):
+        TestBase.setUp(self)
+        response = self.app.delete('/jobs')
+        self.assertEqual(204, response.status_code)
+
+    def otest_job_creation_and_processing_filter_box(self):
+        """Run the test in the ephemeral database
+        """
+        JOB_TEMPLATE["process_graph"] = FILTER_BOX["process_graph"]
+
+        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json")
+        self.assertEqual(201, response.status_code)
+        job_id = response.get_data().decode("utf-8")
+
+        # Get job information
+        response = self.app.get(f'/jobs/{job_id}/results')
+        self.assertEqual(200, response.status_code)
+        data = response.get_data().decode("utf-8")
+        print(data)
+
+        # Start the job
+        response = self.app.post(f'/jobs/{job_id}/results')
+        data = response.get_data().decode("utf-8")
+        print(data)
+        self.assertEqual(202, response.status_code)
+
+        # get job information
+        response = self.app.get(f'/jobs/{job_id}/results')
+        data = response.get_data().decode("utf-8")
+        print(data)
+        self.assertEqual(200, response.status_code)
+
+    def test_job_creation_and_processing_zonal_stats(self):
+        """Run the test in the ephemeral database
+        """
+        JOB_TEMPLATE["process_graph"] = ZONAL_STATISTICS_SINGLE["process_graph"]
+
+        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json")
+        self.assertEqual(201, response.status_code)
+        job_id = response.get_data().decode("utf-8")
+
+        # Get job information
+        response = self.app.get(f'/jobs/{job_id}/results', data=json.dumps(JOB_TEMPLATE), content_type="application/json")
+        self.assertEqual(200, response.status_code)
+        data = response.get_data().decode("utf-8")
+        print(data)
+
+        # Start the job
+        response = self.app.post(f'/jobs/{job_id}/results')
+        data = response.get_data().decode("utf-8")
+        print(data)
+        self.assertEqual(202, response.status_code)
+
+        # get job information
+        response = self.app.get(f'/jobs/{job_id}/results')
+        data = response.get_data().decode("utf-8")
+        print(data)
+        self.assertEqual(200, response.status_code)
+
+        # cancel the job
+        response = self.app.delete(f'/jobs/{job_id}/results')
+        data = response.get_data().decode("utf-8")
+        print(data)
+        self.assertEqual(204, response.status_code)
+
+        import time
+        time.sleep(2)
+
+        # get job information
+        response = self.app.get(f'/jobs/{job_id}/results')
+        data = response.get_data().decode("utf-8")
+        print(data)
+        self.assertEqual(200, response.status_code)
 
 
 if __name__ == "__main__":

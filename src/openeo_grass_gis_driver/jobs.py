@@ -2,7 +2,6 @@
 from flask import make_response, jsonify, request
 from flask_restful_swagger_2 import swagger
 from flask_restful import Resource
-from .definitions import ProcessGraph
 from .actinia_processing.base import analyse_process_graph
 from .graph_db import GraphDB
 from .actinia_processing.actinia_interface import ActiniaInterface

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+from typing import List
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
@@ -29,10 +30,8 @@ class JsonableObject:
         return json.dumps(self, default=lambda o: as_dict_without_nones(o), sort_keys=False, indent=2)
 
 
-class EoLinks(JsonableObject):
-    """Additional links related to this collection.
-    Could reference to other meta data formats
-    with additional information or a preview image.
+class EoLink(JsonableObject):
+    """link related to this collection.
 
     rel:
         string
@@ -42,20 +41,21 @@ class EoLinks(JsonableObject):
         string <url>
         The value MUST be a dereferenceable URL.
 
-    type:
-        string
-        The value MUST be a string that hints at the format used to
-        represent data at the provided URI, preferably a mime-type.
+    """
 
-    title:
-        string
-        Used as a human-readable label for a link.
+    def __init__(self, href: str, rel: str = None):
+        self.str = href
+        self.rel = rel
+
+class EoLinks(JsonableObject):
+    """Additional links related to this collection.
+    Could reference to other meta data formats
+    with additional information or a preview image.
+
+    links: A list of EoLink's
 
     """
 
-    def __init__(self, href: str, rel: str = None, type: str = None, title: str = None):
-        self.str = href
-        self.rel = rel
-        self.type = type
-        self.title = title
+    def __init__(self, links: List[EoLink]):
+        self.links = links
 

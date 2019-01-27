@@ -27,29 +27,6 @@ class Capabilities(Resource):
         return make_response(jsonify(CAPABILITIES), 200)
 
 
-OUTPUT_FORMATS = {
-  "default": "GTiff",
-  "formats": {
-    "GTiff": {
-      "parameters": {
-        "compress": {
-          "type": "string",
-          "description": "Set the compression to use.",
-          "default": "LZW",
-          "enum": ["LZW"]
-        }
-      }
-    }
-  }
-}
-
-
-class OutputFormats(Resource):
-
-    def get(self, ):
-        return make_response(jsonify(OUTPUT_FORMATS), 200)
-
-
 SERVICE_TYPES = {}
 
 

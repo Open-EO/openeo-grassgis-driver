@@ -70,7 +70,7 @@ class CollectionEntry(JsonableObject):
         """
 
     def __init__(self, name: str, title=None, description: str = None, license: str = None,
-                 links: List[Optional[EoLinks]] = list(), extent: Extent = Extent()):
+                 links: EoLinks = EoLinks(links=[EoLink(href="unknown")]), extent: Extent = Extent()):
         self.name = name
         self.title = title
         self.description = description

@@ -46,6 +46,7 @@ class JobInformation(JsonableObject):
         self.plan =plan
         self.cost = cost
         self.budget = budget
+        self.additional_info = None
 
 
 class JobList(JsonableObject):

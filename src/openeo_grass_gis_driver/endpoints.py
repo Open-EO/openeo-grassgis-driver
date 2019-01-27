@@ -8,6 +8,7 @@ from openeo_grass_gis_driver.jobs import Jobs, OutputFormats
 from openeo_grass_gis_driver.jobs_job_id import JobsJobId
 from openeo_grass_gis_driver.graph_validation import GraphValidation
 from openeo_grass_gis_driver.preview import Preview
+from openeo_grass_gis_driver.jobs_job_id_results import JobsJobIdResults
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -35,4 +36,5 @@ def create_endpoints():
     flask_api.add_resource(OutputFormats, '/output_formats')
     flask_api.add_resource(Jobs, '/jobs')
     flask_api.add_resource(JobsJobId, '/jobs/<string:job_id>')
+    flask_api.add_resource(JobsJobIdResults, '/jobs/<string:job_id>/results')
 

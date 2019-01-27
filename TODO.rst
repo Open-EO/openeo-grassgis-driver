@@ -8,11 +8,11 @@ See https://open-eo.github.io/openeo-api/v/0.3.0/apireference/#tag/Job-Managemen
 
 Implement job management:
 
-- job database interface to store and delete jobs
-- job storage
-- job information retrival
+- job database interface to store and delete jobs                                   (partly done)
+- job storage                                                                       (done)
+- job information retrival                                                          (partly done)
 - job running endpoint /jobs/<job_id>/result that triggers the batch job start
-- job deletion
+- job deletion                                                                      (partly done)
 - Running job cancelling
 - job cost estimation
 - job information download

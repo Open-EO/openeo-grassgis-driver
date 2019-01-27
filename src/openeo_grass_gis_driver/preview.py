@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 import time
+import sys
+import traceback
 import datetime
 from flask import make_response, jsonify, request, json
 from flask_restful import Resource
 from openeo_grass_gis_driver.actinia_processing.base import analyse_process_graph
 from openeo_grass_gis_driver.graph_db import GraphDB
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.error_schemas import ErrorSchema, EoLinks
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -21,8 +24,8 @@ class Preview(Resource):
         self.db = GraphDB()
 
     def post(self):
-        """Run the job in an ephemeral mapset synchronously for 30 seconds. After 30 seconds the job
-        will be killed on the actinia server and the response will be an error report.
+        """Run the job in an ephemeral mapset synchronously for 10 seconds. After 10 seconds the running job
+        will be killed on the actinia server and the response will be an termination report.
         """
 
         try:
@@ -48,18 +51,24 @@ class Preview(Resource):
 
             status, response = self.iface.async_ephemeral_processing_export(location=location,
                                                                             process_chain=process_chain)
-            print(status, response)
-            response = self.wait_until_finished(response=response, max_time=5)
+            status, response = self.wait_until_finished(response=response, max_time=10)
 
             if status == 200:
                 return make_response(jsonify({"job_id":response["resource_id"],
                                               "job_info":response}), status)
             else:
-                return make_response(jsonify(response), status)
-        except Exception as e:
-            return make_response(jsonify({"preview error": str(e)}), 400)
+                error = ErrorSchema(id="1234567890", code=1, message=str(response), links=response["urls"]["status"])
+                return make_response(error.to_json(), status)
+        except Exception:
 
-    def wait_until_finished(self, response, max_time = 30):
+            e_type, e_value, e_tb = sys.exc_info()
+            traceback_model = dict(message=str(e_value),
+                                   traceback=traceback.format_tb(e_tb),
+                                   type=str(e_type))
+            error = ErrorSchema(id="1234567890", code=2, message=str(traceback_model))
+            return make_response(error.to_json(), 400)
+
+    def wait_until_finished(self, response, max_time: int=10):
         """Poll the status of a resource and assert its finished HTTP status
 
         The response will be checked if the resource was accepted. Hence it must always be HTTP 200 status.
@@ -82,7 +91,7 @@ class Preview(Resource):
         while True:
             status, resp_data = self.iface.resource_info(resource_id)
 
-            if "status" not in resp_data:
+            if isinstance(resp_data, dict) is False or "status" not in resp_data:
                 raise Exception("wrong return values %s" % str(resp_data))
             if resp_data["status"] == "finished" or \
                     resp_data["status"] == "error" or \
@@ -97,4 +106,4 @@ class Preview(Resource):
                 if status_code != 200:
                     raise Exception(f"Unable to terminate job, error: {data}")
 
-        return resp_data
+        return status, resp_data

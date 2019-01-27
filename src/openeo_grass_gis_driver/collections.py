@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from .definitions import CollectionEntry
 from .actinia_processing.actinia_interface import ActiniaInterface
 from flask import make_response, jsonify
 from flask_restful import Resource

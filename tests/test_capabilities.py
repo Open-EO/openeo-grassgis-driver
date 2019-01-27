@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask import json
 import unittest
-from openeo_grass_gis_driver.capabilities import CAPABILITIES, OUTPUT_FORMATS, SERVICE_TYPES
+from openeo_grass_gis_driver.capabilities import CAPABILITIES, SERVICE_TYPES
+from openeo_grass_gis_driver.jobs import OUTPUT_FORMATS
 from openeo_grass_gis_driver.test_base import TestBase
 
 __license__ = "Apache License, Version 2.0"

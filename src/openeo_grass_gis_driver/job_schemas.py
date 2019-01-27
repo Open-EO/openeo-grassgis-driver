@@ -2,7 +2,7 @@
 """This file includes all required openEO response schemas
 """
 from typing import List, Tuple, Optional, Dict
-from .schema_base import JsonableObject, EoLinks
+from .schema_base import JsonableObject, EoLinks, EoLink
 from datetime import datetime
 
 __author__ = "Sören Gebbert"
@@ -32,8 +32,8 @@ class JobInformation(JsonableObject):
     def __init__(self, job_id: str, title: str,
                  description: str, status: str,
                  process_graph: dict(),
-                 output: OutputFormat,
-                 submitted: datetime, updated: datetime,
+                 output: Optional[OutputFormat],
+                 submitted: str, updated: Optional[str],
                  plan: str = "free", cost: float= 0.0, budget: float = 0.0):
         self.job_id = job_id
         self.title = title
@@ -55,6 +55,6 @@ class JobList(JsonableObject):
     """
 
     def __init__(self, jobs: List[JobInformation],
-                 links: List[Optional[EoLinks]] = EoLinks(href="unknown")):
+                 links: List[Optional[EoLinks]] = [EoLink(href="unknown")]):
         self.jobs = jobs
         self.links = links

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from uuid import uuid4
+from datetime import datetime
 from flask import make_response, jsonify, request
-from flask_restful_swagger_2 import swagger
 from flask_restful import Resource
-from .actinia_processing.base import analyse_process_graph
-from .graph_db import GraphDB
-from .actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.graph_db import GraphDB
+from openeo_grass_gis_driver.job_db import JobDB
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.job_schemas import JobInformation, JobList
+from openeo_grass_gis_driver.error_schemas import ErrorSchema
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -12,110 +15,89 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-POST_JOBS_EXAMPLE = {"job_id": "42d5k3nd92mk49dmj294md"}
+
+OUTPUT_FORMATS = {
+    "default": "GTiff",
+    "formats": {
+        "GTiff": {
+            "gis_data_types": ["raster"],
+            "parameters": {
+                "compress": {
+                    "type": "string",
+                    "description": "Set the compression to use.",
+                    "default": "LZW",
+                    "enum": ["LZW"]
+                }
+            }
+        }
+    }
+}
+
+
+class OutputFormats(Resource):
+
+    def get(self, ):
+        return make_response(jsonify(OUTPUT_FORMATS), 200)
 
 
 class Jobs(Resource):
+    """The /jobs endpoint implementation"""
 
     def __init__(self):
         self.iface = ActiniaInterface()
-        self.db = GraphDB()
+        self.graph_db = GraphDB()
+        self.job_db = JobDB()
 
-    def put(self):
-        """Modify the existing database by running the job in a persistent mapset
+    def get(self):
+        """Return all jobs in the job database"""
+        # TODO: Implement user specific database access
 
-        :return:
-        """
+        jobs = []
 
-        try:
+        for key in self.job_db:
+            job = self.job_db[key]
+            job.process_graph = None
+            jobs.append(job)
 
-            # Empty the process location
-            ActiniaInterface.PROCESS_LOCATION = {}
-            request_doc = request.get_json()
-            process_graph = request_doc["process_graph"]
+        job_list = JobList(jobs=jobs)
 
-            # Transform the process graph into a process chain and store the input location
-            # Check all locations in the process graph
-            result_name, process_list = analyse_process_graph(process_graph)
-
-            if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
-                return make_response(jsonify({"description":"Processes can only be defined for a single location!"},
-                                             400))
-
-            location = ActiniaInterface.PROCESS_LOCATION.keys()
-            location = list(location)[0]
-
-            status_code, mapsets = self.iface.list_mapsets(location=location)
-            if status_code != 200:
-                return make_response(jsonify({"description":"An internal error occurred "
-                                                            "while catching mapsets!"}, 400))
-
-            count = 0
-            name = "openeo_mapset"
-            new_mapset = "%s_%i"%(name, count)
-            while new_mapset in mapsets:
-                count += 1
-                new_mapset = "%s_%i"%(name, count)
-
-            process_chain = dict(list=process_list,
-                                 version="1")
-
-            # pprint.pprint(process_chain)
-
-            status, response = self.iface.async_persistent_processing(location=location,
-                                                                      mapset=new_mapset,
-                                                                      process_chain=process_chain)
-            # pprint.pprint(response)
-
-            # Save the process graph into the graph db
-            self.db[response["resource_id"]] = process_graph
-
-            if status == 200:
-                return make_response(jsonify({"job_id":response["resource_id"],
-                                              "job_info":response}), status)
-            else:
-                return make_response(jsonify(response), status)
-        except Exception as e:
-                return make_response(jsonify({"error": str(e)}), 400)
+        return make_response(job_list.to_json(), 200)
 
     def post(self):
-        """Run the job in an ephemeral mapset
+        """Submit a new job to the job database"""
+        # TODO: Implement user specific database access
 
-        :return:
-        """
+        request_doc = request.get_json()
 
-        try:
-            # Empty the process location
-            ActiniaInterface.PROCESS_LOCATION = {}
-            request_doc = request.get_json()
-            process_graph = request_doc["process_graph"]
-            # Transform the process graph into a process chain and store the input location
-            # Check all locations in the process graph
-            result_name, process_list = analyse_process_graph(process_graph)
+        if "process_graph" not in request_doc:
+            error = ErrorSchema(id=uuid4(), message="A process graph is required in the request")
+            return make_response(error.to_json(), 400)
 
-            if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
-                return make_response(jsonify({"description":"Processes can only be defined for a single location!"},
-                                             400))
+        title = None
+        if "title" in request_doc:
+            title = request_doc["title"]
 
-            location = ActiniaInterface.PROCESS_LOCATION.keys()
-            location = list(location)[0]
+        description = None
+        if "description" in request_doc:
+            description = request_doc["description"]
 
-            process_chain = dict(list=process_list,
-                                 version="1")
+        process_graph = request_doc["process_graph"]
+        submitted = str(datetime.now())
 
-            # pprint.pprint(process_chain)
+        job_id = str(uuid4())
 
-            status, response = self.iface.async_ephemeral_processing_export(location=location,
-                                                                            process_chain=process_chain)
-            # pprint.pprint(response)
+        job_info = JobInformation(job_id=job_id, title=title,
+                                  description=description,
+                                  process_graph=process_graph,
+                                  output=None, updated=None,
+                                  submitted=submitted, status="submitted")
+        self.job_db[job_id] = job_info
 
-            # Save the process graph into the graph db
-            self.db[response["resource_id"]] = process_graph
+        return make_response(job_id, 201)
 
-            if status == 200:
-                return make_response(jsonify({"job_id":response["resource_id"],
-                                              "job_info":response}), status)
-            else:
-                return make_response(jsonify(response), status)
-        except Exception as e:
-                return make_response(jsonify({"error": str(e)}), 400)
+    def delete(self):
+        """Clear the job database"""
+        # TODO: Implement user specific database access
+
+        self.job_db.clear()
+        return make_response("All jobs has been successfully deleted", 204)

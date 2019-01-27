@@ -26,7 +26,7 @@ class JobsTestCase(TestBase):
         response = self.app.delete('/jobs')
         self.assertEqual(204, response.status_code)
 
-    def otest_job_creation_1(self):
+    def test_job_creation_1(self):
         """Run the test in the ephemeral database
         """
         JOB_TEMPLATE["process_graph"] = FILTER_BOX["process_graph"]
@@ -52,7 +52,7 @@ class JobsTestCase(TestBase):
         self.assertEqual(job_id, data["job_id"])
         self.assertEqual(FILTER_BOX["process_graph"], data["process_graph"])
 
-    def otest_job_creation_2(self):
+    def test_job_creation_2(self):
         """Run the test in the ephemeral database
         """
         JOB_TEMPLATE["process_graph"] = ZONAL_STATISTICS["process_graph"]
@@ -73,7 +73,7 @@ class JobsTestCase(TestBase):
         self.assertEqual(404, response.status_code)
 
 
-    def otest_job_creation_deletion_1(self):
+    def test_job_creation_deletion_1(self):
         """Run the test in the ephemeral database
         """
         JOB_TEMPLATE["process_graph"] = ZONAL_STATISTICS["process_graph"]
@@ -102,7 +102,7 @@ class JobsTestResultsCase(TestBase):
         response = self.app.delete('/jobs')
         self.assertEqual(204, response.status_code)
 
-    def otest_job_creation_and_processing_filter_box(self):
+    def test_job_creation_and_processing_filter_box(self):
         """Run the test in the ephemeral database
         """
         JOB_TEMPLATE["process_graph"] = FILTER_BOX["process_graph"]

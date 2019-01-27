@@ -99,8 +99,10 @@ class ActiniaInterface(object):
                           json=process_chain)
         data = r.text
 
-        if r.status_code == 200:
+        try:
             data = r.json()
+        except:
+            pass
 
         return r.status_code, data
 
@@ -109,8 +111,10 @@ class ActiniaInterface(object):
         r = requests.get(url=url, auth=self.auth)
         data = r.text
 
-        if r.status_code == 200:
+        try:
             data = r.json()
+        except:
+            pass
 
         return r.status_code, data
 
@@ -119,8 +123,10 @@ class ActiniaInterface(object):
         r = requests.delete(url=url, auth=self.auth)
         data = r.text
 
-        if r.status_code == 200:
+        try:
             data = r.json()
+        except:
+            pass
 
         return r.status_code, data
 
@@ -131,8 +137,10 @@ class ActiniaInterface(object):
         r = requests.post(url=url, auth=self.auth)
         data = r.text
 
-        if r.status_code == 200:
+        try:
             data = r.json()
+        except:
+            pass
 
         return r.status_code, data
 
@@ -143,8 +151,10 @@ class ActiniaInterface(object):
         r = requests.delete(url=url, auth=self.auth)
         data = r.text
 
-        if r.status_code == 200:
+        try:
             data = r.json()
+        except:
+            pass
 
         return r.status_code, data
 

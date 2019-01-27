@@ -2,7 +2,7 @@
 """This file includes all required openEO response schemas
 """
 from typing import List, Tuple, Optional
-from .schema_base import JsonableObject, EoLinks
+from .schema_base import JsonableObject, EoLinks, EoLink
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
@@ -84,7 +84,7 @@ class Collection(JsonableObject):
     """
 
     def __init__(self, collections: List[CollectionEntry],
-                 links: List[Optional[EoLinks]] = EoLinks(href="unknown")):
+                 links: EoLinks = EoLinks(links=[EoLink(href="unknown")])):
         self.collections = collections
         self.links = links
 

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import make_response, jsonify
 from flask_restful import Resource
-from .definitions import SpatialExtent, BandDescription, BandDataTypes
 from .actinia_processing.actinia_interface import ActiniaInterface
 from .collection_schemas import CollectionInformation, Extent, EoLinks
 from osgeo import osr, ogr

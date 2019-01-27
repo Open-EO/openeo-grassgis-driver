@@ -1,6 +1,31 @@
-Version v0.3:
+Version v0.3
+============
 
-- Implement the job ddtabase interface to store and delete jobs
-- Implement the job running endpoint /jobs/<job_id>/result that triggers the batch job start
-- Implement job deletion and cancelling
-- Implement job cost estimation and job information download
+Jobs
+----
+
+See https://open-eo.github.io/openeo-api/v/0.3.0/apireference/#tag/Job-Management
+
+Implement job management:
+
+- job database interface to store and delete jobs
+- job storage
+- job information retrival
+- job running endpoint /jobs/<job_id>/result that triggers the batch job start
+- job deletion
+- Running job cancelling
+- job cost estimation
+- job information download
+
+Process graphs
+--------------
+
+See https://open-eo.github.io/openeo-api/v/0.3.0/apireference/#tag/Process-Graph-Management
+
+Implement process graph management endpoints:
+- Storage endpoint
+- Process graph validation              (done)
+- Process graph preview                 (done)
+- Full process graph info endpoint
+- Process graph modification
+- Process graph deletion

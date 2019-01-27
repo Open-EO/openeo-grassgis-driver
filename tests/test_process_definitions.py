@@ -29,7 +29,15 @@ class ProcessDefinitionTestCase(TestBase):
         pprint(output_names)
         pprint(pc)
 
-        self.assertEqual(len(pc), 3)
+        self.assertEqual(len(pc), 2)
+
+    def test_get_data_3(self):
+
+        output_names, pc = analyse_process_graph(graph=GET_DATA_3)
+        pprint(output_names)
+        pprint(pc)
+
+        self.assertEqual(len(pc), 1)
 
     def test_filter_bbox(self):
 
@@ -101,7 +109,7 @@ class ProcessDefinitionTestCase(TestBase):
         pprint(pc)
 
         self.assertEqual(names[0], "nc_spm_08.PERMANENT.raster.elevation")
-        self.assertEqual(names[1], "nc_spm_08.PERMANENT.raster.elevation")
+        self.assertEqual(names[1], "nc_spm_08.PERMANENT.raster.slope")
         self.assertEqual(len(pc), 4)
 
     def test_zonal_statistics(self):

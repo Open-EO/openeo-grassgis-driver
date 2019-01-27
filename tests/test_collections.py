@@ -13,7 +13,11 @@ __email__ = "soerengebbert@googlemail.com"
 
 class DataTestCase(TestBase):
 
-    def otest_collections(self):
+    def test_collections(self):
+        """Test the return of raster and vector maps in the north carolina test dataset
+
+        :return:
+        """
         response = self.app.get('/collections')
         data = json.loads(response.data.decode())
 

@@ -266,6 +266,6 @@ class ActiniaInterface(object):
         :return: Status code and the json data (status, json)
         """
 
-        url = "%(base)s/locations/%(location)s/processing_async_export_gcs" % {"base": self.base_url,
+        url = "%(base)s/locations/%(location)s/processing_async_export" % {"base": self.base_url,
                                                                                "location": location}
         return self._send_post_request(url=url, process_chain=process_chain)

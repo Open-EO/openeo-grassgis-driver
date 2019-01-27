@@ -142,9 +142,20 @@ RASTER_EXPORT = {
             "data_id": "nc_spm_08.PERMANENT.raster.elevation",
             "imagery": {
                 "process_id": "get_data",
-                "data_id": "nc_spm_08.PERMANENT.raster.elevation"
+                "data_id": "nc_spm_08.PERMANENT.raster.slope"
             }
         }
+    }
+}
+
+ZONAL_STATISTICS_SINGLE = {
+    "process_graph": {
+        "process_id": "zonal_statistics",
+        "imagery": {
+            "process_id": "get_data",
+            "data_id": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m",
+        },
+        "polygons": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"
     }
 }
 

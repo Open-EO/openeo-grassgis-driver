@@ -49,13 +49,19 @@ class GraphValidationTestCase(TestBase):
         response = self.app.post('/validation', data=json.dumps(ZONAL_STATISTICS), content_type="application/json")
         self.assertEqual(response.status_code, 204)
 
-    def test_7_graph_ndvi_3(self):
+    def test_7_graph_zonal_statistics_single(self):
+        """Run the validation test
+        """
+        response = self.app.post('/validation', data=json.dumps(ZONAL_STATISTICS_SINGLE), content_type="application/json")
+        self.assertEqual(response.status_code, 204)
+
+    def test_8_graph_ndvi_3(self):
         """Run the validation test
         """
         response = self.app.post('/validation', data=json.dumps(NDVI_3), content_type="application/json")
         self.assertEqual(response.status_code, 204)
 
-    def test_8_graph_raster_export(self):
+    def test_9_graph_raster_export(self):
         """Run the validation test
         """
         response = self.app.post('/validation', data=json.dumps(RASTER_EXPORT), content_type="application/json")

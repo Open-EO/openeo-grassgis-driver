@@ -138,7 +138,7 @@ class ProcessDescription(JsonableObject):
     def __init__(self, name: str, description: str,
                  parameters: Dict[str, Parameter],
                  returns: ReturnValue,
-                 links: List[Optional[EoLinks]] = list(),
+                 links: EoLinks = list(),
                  summary: Optional[str] = None,
                  min_parameters: Optional[int] = None,
                  deprecated: bool = False,

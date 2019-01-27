@@ -21,3 +21,5 @@ class Config:
     GRAPH_DB="%s/.graph_db_file.sqlite"%os.environ["HOME"]
     # The database file that stores the jobs
     JOB_DB="%s/.job_db_file.sqlite"%os.environ["HOME"]
+    # The database file that stores the actinia jobs
+    ACTINIA_JOB_DB="%s/.actinia_job_db_file.sqlite"%os.environ["HOME"]

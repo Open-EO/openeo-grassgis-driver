@@ -61,12 +61,6 @@ class GraphValidationTestCase(TestBase):
         response = self.app.post('/validation', data=json.dumps(RASTER_EXPORT), content_type="application/json")
         self.assertEqual(response.status_code, 204)
 
-    def otest_100_use_case_1(self):
-        """Run the validation test
-        """
-        response = self.app.post('/validation', data=json.dumps(OPENEO_USECASE_1), content_type="application/json")
-        self.assertEqual(response.status_code, 204)
-
 
 if __name__ == "__main__":
     unittest.main()

@@ -44,6 +44,9 @@ def analyse_process_graph(graph: dict):
 
     return output_name_list, process_list
 
+###############################################################################
+####### Version 0.4 of the API ################################################
+###############################################################################
 
 class ProcessNode:
     """A single node in the process graph

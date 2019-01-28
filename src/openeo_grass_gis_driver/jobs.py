@@ -3,7 +3,7 @@ from uuid import uuid4
 from datetime import datetime
 from flask import make_response, jsonify, request
 from flask_restful import Resource
-from openeo_grass_gis_driver.graph_db import GraphDB
+from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.job_schemas import JobInformation, JobList
@@ -84,7 +84,7 @@ class Jobs(Resource):
         process_graph = request_doc["process_graph"]
         submitted = str(datetime.now())
 
-        job_id = str(uuid4())
+        job_id = f"user-job::{str(uuid4())}"
 
         job_info = JobInformation(job_id=job_id, title=title,
                                   description=description,
@@ -97,7 +97,5 @@ class Jobs(Resource):
 
     def delete(self):
         """Clear the job database"""
-        # TODO: Implement user specific database access
-
         self.job_db.clear()
         return make_response("All jobs has been successfully deleted", 204)

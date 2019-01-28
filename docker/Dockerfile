@@ -1,5 +1,5 @@
 # Use standard ubuntu 16.04
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 EXPOSE 5000
 
@@ -13,8 +13,8 @@ RUN apt update && apt upgrade -y && \
     gcc \
     libgcc1 \
     g++ \
-    python3.5 \
-    python3.5-dev \
+    python3 \
+    python3-dev \
     python3-pip -y  && \
     apt-get clean && \
     apt-get autoremove
@@ -22,24 +22,15 @@ RUN apt update && apt upgrade -y && \
 # Set the working directory to /src
 WORKDIR /src
 
-# Clone the GRaaS software
-RUN git clone https://bitbucket.org/huhabla/openeo_core.git openeo_core
+RUN git clone https://github.com/Open-EO/openeo-grassgis-driver.git openeo_grass_gis_driver
 
-WORKDIR /src/openeo_core
-RUN pip3 install --upgrade pip &&  \
-    pip3 install -U setuptools && \
-    pip3 install wheel && \
-    pip3 install -r requirements.txt && \
-    python3.5 setup.py install
+WORKDIR /src/openeo_grass_gis_driver
 
-WORKDIR /tmp/blaubrause
+RUN pip3 install -U setuptools
+RUN pip3 install wheel
 
-WORKDIR /src
+RUN pip3 install -r requirements.txt
+RUN make test
+RUN make install
 
-RUN git clone https://github.com/Open-EO/openeo-grassgis-driver.git graas_openeo_core_wrapper
-
-WORKDIR /src/graas_openeo_core_wrapper
-RUN pip3 install -r requirements.txt && \
-    python3.5 setup.py install
-
-CMD python3.5 -m graas_openeo_core_wrapper.main
+CMD python3 -m openeo_grass_gis_driver.main

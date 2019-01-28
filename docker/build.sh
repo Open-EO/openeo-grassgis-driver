@@ -1,12 +1,12 @@
 #!/bin/bash
 # Build it
-docker build -t graas_openeo_core_wrapper .
+docker build -t openeo_grass_gis_driver_img .
 # Run it
-docker run --name=graas_wrapper -p 5000:5000 graas_openeo_core_wrapper
+docker run --name=openeo_grass_gis_driver -p 5000:5000 openeo_grass_gis_driver_img
 
 curl http://openeo.mundialis.de:5000/data
 
 docker ps
-docker stop graas_openeo_core_wrapper && docker rm graas_openeo_core_wrapper
+docker stop openeo_grass_gis_driver && docker rm openeo_grass_gis_driver
 
 curl http://openeo.mundialis.de:5000/data

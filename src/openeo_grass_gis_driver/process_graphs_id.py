@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from uuid import uuid4
-from datetime import datetime
+import traceback
+import sys
 from flask import make_response, jsonify, request
 from flask_restful import Resource
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
-from openeo_grass_gis_driver.process_graph_schemas import ProcessGraphListEntry, ProcessGraphList
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
 
 __license__ = "Apache License, Version 2.0"
@@ -34,3 +34,33 @@ class ProcessGraphId(Resource):
         else:
             return make_response(ErrorSchema(id=str(uuid4()), code=400,
                                              message=f"Process graph id {process_graph_id} not found").to_json(), 400)
+
+    def patch(self, process_graph_id):
+        try:
+            """Update a process graph in the graph database"""
+            # TODO: Implement user specific database access
+
+            process_graph = request.get_json()
+            self.graph_db[process_graph_id] = process_graph
+
+            return make_response(process_graph_id, 204)
+        except Exception:
+
+            e_type, e_value, e_tb = sys.exc_info()
+            traceback_model = dict(message=str(e_value),
+                                   traceback=traceback.format_tb(e_tb),
+                                   type=str(e_type))
+            error = ErrorSchema(id="1234567890", code=2, message=str(traceback_model))
+            return make_response(error.to_json(), 400)
+
+    def delete(self, process_graph_id):
+        """Remove a single process graph from the database"""
+
+        if process_graph_id in self.graph_db:
+
+            del self.graph_db[process_graph_id]
+            return make_response(f"Process graph {process_graph_id} have been successfully deleted", 204)
+        else:
+            return make_response(ErrorSchema(id=str(uuid4()), code=400,
+                                             message=f"Process graph id {process_graph_id} "
+                                                     f"not found").to_json(), 400)

@@ -56,6 +56,6 @@ class JobList(JsonableObject):
     """
 
     def __init__(self, jobs: List[JobInformation],
-                 links: List[Optional[EoLinks]] = [EoLink(href="unknown")]):
+                 links: Optional[EoLinks] = None):
         self.jobs = jobs
         self.links = links

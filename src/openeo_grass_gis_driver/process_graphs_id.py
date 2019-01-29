@@ -22,28 +22,28 @@ class ProcessGraphId(Resource):
         self.iface = ActiniaInterface()
         self.graph_db = GraphDB()
 
-    def get(self, process_graph_id):
+    def get(self, id):
         """Return all jobs in the job database"""
         # TODO: Implement user specific database access
 
-        if process_graph_id in self.graph_db:
+        if id in self.graph_db:
 
-            graph = self.graph_db[process_graph_id]
-            graph["process_graph_id"] = process_graph_id
+            graph = self.graph_db[id]
+            graph["id"] = id
             return make_response(jsonify(graph), 200)
         else:
             return make_response(ErrorSchema(id=str(uuid4()), code=400,
-                                             message=f"Process graph id {process_graph_id} not found").to_json(), 400)
+                                             message=f"Process graph id {id} not found").to_json(), 400)
 
-    def patch(self, process_graph_id):
+    def patch(self, id):
         try:
             """Update a process graph in the graph database"""
             # TODO: Implement user specific database access
 
             process_graph = request.get_json()
-            self.graph_db[process_graph_id] = process_graph
+            self.graph_db[id] = process_graph
 
-            return make_response(process_graph_id, 204)
+            return make_response(id, 204)
         except Exception:
 
             e_type, e_value, e_tb = sys.exc_info()
@@ -53,14 +53,14 @@ class ProcessGraphId(Resource):
             error = ErrorSchema(id="1234567890", code=2, message=str(traceback_model))
             return make_response(error.to_json(), 400)
 
-    def delete(self, process_graph_id):
+    def delete(self, id):
         """Remove a single process graph from the database"""
 
-        if process_graph_id in self.graph_db:
+        if id in self.graph_db:
 
-            del self.graph_db[process_graph_id]
-            return make_response(f"Process graph {process_graph_id} have been successfully deleted", 204)
+            del self.graph_db[id]
+            return make_response(f"Process graph {id} have been successfully deleted", 204)
         else:
             return make_response(ErrorSchema(id=str(uuid4()), code=400,
-                                             message=f"Process graph id {process_graph_id} "
+                                             message=f"Process graph id {id} "
                                                      f"not found").to_json(), 400)

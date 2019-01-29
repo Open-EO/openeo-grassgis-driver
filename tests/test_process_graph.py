@@ -3,7 +3,7 @@ import unittest
 import pprint
 from flask import json
 from openeo_grass_gis_driver.test_base import TestBase
-from openeo_grass_gis_driver.utils.process_graph_examples_v03 import *
+from openeo_grass_gis_driver.utils.process_graph_examples_v04 import *
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -29,7 +29,7 @@ class ProcessGraphTestCase(TestBase):
     def test_job_creation_1(self):
         """Run the test in the ephemeral database
         """
-        PROCESS_CHAIN_TEMPLATE["process_graph"] = FILTER_BOX["process_graph"]
+        PROCESS_CHAIN_TEMPLATE["process_graph"] = FILTER_BBOX["process_graph"]
 
         response = self.app.post('/process_graphs', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
                                  content_type="application/json")
@@ -51,13 +51,13 @@ class ProcessGraphTestCase(TestBase):
         pprint.pprint(data)
 
         self.assertEqual(process_graph_id, data["process_graph_id"])
-        self.assertEqual(FILTER_BOX["process_graph"], data["process_graph"])
+        self.assertEqual(FILTER_BBOX["process_graph"], data["process_graph"])
 
 
     def test_job_creation_2(self):
         """Run the test in the ephemeral database
         """
-        PROCESS_CHAIN_TEMPLATE["process_graph"] = FILTER_BOX["process_graph"]
+        PROCESS_CHAIN_TEMPLATE["process_graph"] = FILTER_BBOX["process_graph"]
 
         response = self.app.post('/process_graphs', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
                                  content_type="application/json")
@@ -71,7 +71,7 @@ class ProcessGraphTestCase(TestBase):
         pprint.pprint(data)
 
         self.assertEqual(process_graph_id, data["process_graph_id"])
-        self.assertEqual(FILTER_BOX["process_graph"], data["process_graph"])
+        self.assertEqual(FILTER_BBOX["process_graph"], data["process_graph"])
 
         response = self.app.delete(f'/process_graphs/{process_graph_id}')
         self.assertEqual(204, response.status_code)
@@ -90,7 +90,7 @@ class ProcessGraphTestCase(TestBase):
     def test_job_creation_3(self):
         """Run the test in the ephemeral database
         """
-        PROCESS_CHAIN_TEMPLATE["process_graph"] = FILTER_BOX["process_graph"]
+        PROCESS_CHAIN_TEMPLATE["process_graph"] = FILTER_BBOX["process_graph"]
 
         # Create graph
         response = self.app.post('/process_graphs', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
@@ -109,7 +109,7 @@ class ProcessGraphTestCase(TestBase):
         self.assertEqual(FILTER_BOX["process_graph"], data["process_graph"])
 
         # Modify graph
-        PROCESS_CHAIN_TEMPLATE["process_graph"] = ZONAL_STATISTICS_SINGLE["process_graph"]
+        PROCESS_CHAIN_TEMPLATE["process_graph"] = ZONAL_STATISTICS["process_graph"]
 
         response = self.app.patch(f'/process_graphs/{process_graph_id}',
                                   data=json.dumps(PROCESS_CHAIN_TEMPLATE),
@@ -124,7 +124,7 @@ class ProcessGraphTestCase(TestBase):
         pprint.pprint(data)
 
         self.assertEqual(process_graph_id, data["process_graph_id"])
-        self.assertEqual(ZONAL_STATISTICS_SINGLE["process_graph"], data["process_graph"])
+        self.assertEqual(ZONAL_STATISTICS_["process_graph"], data["process_graph"])
 
 
 if __name__ == "__main__":

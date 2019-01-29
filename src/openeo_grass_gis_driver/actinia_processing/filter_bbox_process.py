@@ -3,7 +3,7 @@ import json
 from random import randint
 from pprint import pprint
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
-from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -109,7 +109,7 @@ def get_process_list(process):
     :return: (output_names, actinia_process_list)
     """
 
-    input_names, process_list = analyse_process_graph(process)
+    input_names, process_list = process_node_to_actinia_process_chain(process)
     output_names = []
 
     if "spatial_extent" not in process.keys():

@@ -33,8 +33,7 @@ class ProcessGraphs(Resource):
         for key in self.graph_db:
             graph = self.graph_db[key]
 
-            entry = ProcessGraphListEntry(title=graph["title"], description=graph["description"],
-                                          process_graph_id=key)
+            entry = ProcessGraphListEntry(title=graph["title"], description=graph["description"], id=key)
 
             process_graphs.append(entry)
 

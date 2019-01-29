@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 from .actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -65,7 +65,7 @@ def get_process_list(args):
     """
 
     # Get the input description and the process chain to attach this process
-    input_names, process_list = analyse_process_graph(args)
+    input_names, process_list = process_node_to_actinia_process_chain(args)
     output_names = []
 
     for input_name in input_names:

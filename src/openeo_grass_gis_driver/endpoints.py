@@ -33,7 +33,7 @@ def create_endpoints():
     flask_api.add_resource(GraphValidation, '/validation')
     flask_api.add_resource(Preview, '/preview')
     flask_api.add_resource(ProcessGraphs, '/process_graphs')
-    flask_api.add_resource(ProcessGraphId, '/process_graphs/<string:process_graph_id>')
+    flask_api.add_resource(ProcessGraphId, '/process_graphs/<string:id>')
 
     flask_api.add_resource(OutputFormats, '/output_formats')
     flask_api.add_resource(Jobs, '/jobs')

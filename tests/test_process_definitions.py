@@ -3,7 +3,7 @@ import unittest
 from pprint import pprint
 from openeo_grass_gis_driver.actinia_processing import config
 from openeo_grass_gis_driver.test_base import TestBase
-from openeo_grass_gis_driver.actinia_processing.base import analyse_process_graph
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain
 from openeo_grass_gis_driver.utils.process_graph_examples_v03 import *
 
 __license__ = "Apache License, Version 2.0"
@@ -17,7 +17,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_get_data_1(self):
 
-        output_names, pc = analyse_process_graph(graph=GET_DATA_1)
+        output_names, pc = process_node_to_actinia_process_chain(graph=GET_DATA_1)
         pprint(output_names)
         pprint(pc)
 
@@ -25,7 +25,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_get_data_2(self):
 
-        output_names, pc = analyse_process_graph(graph=GET_DATA_2)
+        output_names, pc = process_node_to_actinia_process_chain(graph=GET_DATA_2)
         pprint(output_names)
         pprint(pc)
 
@@ -33,7 +33,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_get_data_3(self):
 
-        output_names, pc = analyse_process_graph(graph=GET_DATA_3)
+        output_names, pc = process_node_to_actinia_process_chain(graph=GET_DATA_3)
         pprint(output_names)
         pprint(pc)
 
@@ -41,7 +41,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_filter_bbox(self):
 
-        output_names, pc = analyse_process_graph(graph=FILTER_BOX)
+        output_names, pc = process_node_to_actinia_process_chain(graph=FILTER_BOX)
         pprint(output_names)
         pprint(pc)
 
@@ -50,7 +50,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_daterange(self):
 
-        output_names, pc = analyse_process_graph(graph=DATERANGE)
+        output_names, pc = process_node_to_actinia_process_chain(graph=DATERANGE)
         pprint(output_names)
         pprint(pc)
 
@@ -60,7 +60,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_reduce_time_min(self):
 
-        name, pc = analyse_process_graph(graph=REDUCE_TIME_MIN)
+        name, pc = process_node_to_actinia_process_chain(graph=REDUCE_TIME_MIN)
         pprint(name)
         pprint(pc)
 
@@ -68,7 +68,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_ndvi_1(self):
 
-        names, pc = analyse_process_graph(graph=NDVI_1)
+        names, pc = process_node_to_actinia_process_chain(graph=NDVI_1)
         pprint(names)
         pprint(pc)
 
@@ -77,7 +77,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_ndvi_2(self):
 
-        names, pc = analyse_process_graph(graph=NDVI_2)
+        names, pc = process_node_to_actinia_process_chain(graph=NDVI_2)
         pprint(names)
         pprint(pc)
 
@@ -86,7 +86,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_ndvi_3(self):
 
-        names, pc = analyse_process_graph(graph=NDVI_3)
+        names, pc = process_node_to_actinia_process_chain(graph=NDVI_3)
         pprint(names)
         pprint(pc)
 
@@ -95,7 +95,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_ndvi_4(self):
 
-        names, pc = analyse_process_graph(graph=NDVI_4)
+        names, pc = process_node_to_actinia_process_chain(graph=NDVI_4)
         pprint(names)
         pprint(pc)
 
@@ -104,7 +104,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_raster_export(self):
 
-        names, pc = analyse_process_graph(graph=RASTER_EXPORT)
+        names, pc = process_node_to_actinia_process_chain(graph=RASTER_EXPORT)
         pprint(names)
         pprint(pc)
 
@@ -114,7 +114,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_zonal_statistics(self):
 
-        names, pc = analyse_process_graph(graph=ZONAL_STATISTICS)
+        names, pc = process_node_to_actinia_process_chain(graph=ZONAL_STATISTICS)
         pprint(names)
         pprint(pc)
 
@@ -125,7 +125,7 @@ class ProcessDefinitionTestCase(TestBase):
     def test_ndvi_error(self):
 
         try:
-            names, pc = analyse_process_graph(graph=NDVI_ERROR)
+            names, pc = process_node_to_actinia_process_chain(graph=NDVI_ERROR)
             pprint(names)
             pprint(pc)
             self.assertTrue(False)
@@ -134,7 +134,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_openeo_usecase_1(self):
 
-        name, pc = analyse_process_graph(graph=OPENEO_USECASE_1)
+        name, pc = process_node_to_actinia_process_chain(graph=OPENEO_USECASE_1)
         pprint(name)
         pprint(pc)
 
@@ -142,7 +142,7 @@ class ProcessDefinitionTestCase(TestBase):
 
     def test_openeo_usecase_1a(self):
 
-        name, pc = analyse_process_graph(graph=OPENEO_USECASE_1A)
+        name, pc = process_node_to_actinia_process_chain(graph=OPENEO_USECASE_1A)
         pprint(name)
         pprint(pc)
 
@@ -151,7 +151,7 @@ class ProcessDefinitionTestCase(TestBase):
     def otest_openeo_usecase_2(self):
         # Disabled since UDF is not supported
 
-        name, pc = analyse_process_graph(graph=OPENEO_USECASE_2)
+        name, pc = process_node_to_actinia_process_chain(graph=OPENEO_USECASE_2)
         pprint(name)
         pprint(pc)
 

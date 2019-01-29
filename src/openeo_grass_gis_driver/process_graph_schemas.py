@@ -10,15 +10,17 @@ __maintainer__ = "Sören Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class ProcessGraphDefinition(JsonableObject):
+class ProcessGraphNode(JsonableObject):
     """This is the definition of a single process graph
 
     """
 
-    def __init__(self, process_id: str, process_description: str):
+    def __init__(self, process_id: str, description: str, arguments: dict(), result: bool = False):
 
         self.process_id = process_id
-        self.process_description = process_description
+        self.description = description
+        self.arguments = arguments
+        self.result = result
 
 
 class ProcessGraph(JsonableObject):
@@ -26,7 +28,7 @@ class ProcessGraph(JsonableObject):
 
     """
 
-    def __init__(self, title: str, description: str, process_graph: ProcessGraphDefinition):
+    def __init__(self, title: str, description: str, process_graph: Dict[str, ProcessGraphNode]):
 
         self.title = title
         self.description = description
@@ -38,11 +40,11 @@ class ProcessGraphListEntry(JsonableObject):
 
     """
 
-    def __init__(self, title: str, description: str, process_graph_id: str):
+    def __init__(self, title: str, description: str, id: str):
 
         self.title = title
         self.description = description
-        self.process_graph_id = process_graph_id
+        self.id = id
 
 
 class ProcessGraphList(JsonableObject):

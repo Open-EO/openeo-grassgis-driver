@@ -4,7 +4,7 @@ import sys
 import traceback
 from flask import make_response, jsonify, request
 from flask_restful import Resource
-from openeo_grass_gis_driver.actinia_processing.base import analyse_process_graph
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
@@ -34,7 +34,7 @@ class Preview(Resource):
             process_graph = request_doc["process_graph"]
             # Transform the process graph into a process chain and store the input location
             # Check all locations in the process graph
-            result_name, process_list = analyse_process_graph(process_graph)
+            result_name, process_list = process_node_to_actinia_process_chain(process_graph)
 
             if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
                 return make_response(jsonify({"description":"Processes can only be defined for a single location!"},

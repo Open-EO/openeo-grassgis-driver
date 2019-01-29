@@ -10,34 +10,6 @@ __maintainer__ = "Sören Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class DependentObject(JsonableObject):
-    """This is the definition of a dependent object of a parameter
-
-    description:
-        string (description) Nullable
-        Detailed description to fully explain the entity.
-
-        CommonMark 0.28 syntax MAY be used for rich text representation.
-
-    parameter:
-        required
-        string
-        The name of the referenced parameter.
-
-    ref_values:
-        Array of any
-        Embedded literal value that the referenced parameter MUST hold for this dependency to apply.
-    """
-
-    def __init__(self, parameter: str,
-                 description: str,
-                 ref_values: dict = None):
-
-        self.parameter = parameter
-        self.description = description
-        self.ref_values = ref_values
-
-
 class Parameter(JsonableObject):
     """This is a single parameter of a process
 
@@ -58,9 +30,15 @@ class Parameter(JsonableObject):
         Default: false
         Specifies that a parameter is deprecated and SHOULD be transitioned out of usage.
 
-    mime_type:
+    experimental:
+        boolean
+        Default: false
+
+        Specifies that a parameter is experimental and likely to change or produce unpredictable behaviour.
+
+    media_type:
         string
-        The mime type that the parameter is formatted with.
+        The media (MIME) type that the value is encoded in.
 
     schema:
         required
@@ -73,15 +51,15 @@ class Parameter(JsonableObject):
     def __init__(self, description: str,
                  schema: dict,
                  required: bool = False,
-                 dependencies: Optional[List[DependentObject]] = None,
                  depricated: bool=False,
+                 experimental: bool=False,
                  mime_type: Optional[str] = None):
 
         self.description = description
         self.schema = schema
         self.required = required
-        self.dependencies = dependencies
         self.depricated = depricated
+        self.experimental = experimental
         self.mime_type = mime_type
 
 
@@ -94,9 +72,9 @@ class ReturnValue(JsonableObject):
 
         CommonMark 0.28 syntax MAY be used for rich text representation.
 
-    mime_type:
+    media_type:
         string
-        The mime type that the returned data is formatted with.
+        The media (MIME) type that the value is encoded in.
 
     schema:
         required
@@ -105,37 +83,48 @@ class ReturnValue(JsonableObject):
         Additional values for format are defined centrally in the API documentation, e.g. bbox or crs.
     """
 
-    def __init__(self, description: str, schema: dict, mime_type: Optional[str] = None):
+    def __init__(self, description: str, schema: dict, media_type: Optional[str] = None):
 
         self.description = description
         self.schema = schema
-        self.mime_type = mime_type
+        self.media_type = media_type
 
 
 class ProcessException(JsonableObject):
     """
-    code:
-        integer
-        Code to identify the exception.
-
     description:
-        required
-        string (description) Nullable
-        Detailed description to fully explain the entity.
+        string
+        Detailed description to fully explain the error to client users and back-end developers.
+        This should not be shown in the clients directly, but may be linked to in the errors url property.
 
         CommonMark 0.28 syntax MAY be used for rich text representation.
 
+    message:
+        required
+        string
+        Explains the reason the server is rejecting the request. This message is intended to be displayed to the
+        client user. For "4xx" error codes the message should explain shortly how the client needs to modify the request.
+        The message MAY contain variables, which are enclosed by curly brackets. Example: {variable_name}
+
+    http:
+        integer
+        Default: 400
+
+        HTTP Status Code, following the error handling conventions in openEO. Defaults to 400.
+
+
     """
 
-    def __init__(self, code: int,description: str):
+    def __init__(self, message: str, description: str, http: int = 400):
 
-        self.code = code
+        self.message = message
         self.description = description
+        self.http = http
 
 
 class ProcessDescription(JsonableObject):
 
-    def __init__(self, name: str, description: str,
+    def __init__(self, id: str, description: str,
                  parameters: Dict[str, Parameter],
                  returns: ReturnValue,
                  links: EoLinks = list(),
@@ -145,7 +134,7 @@ class ProcessDescription(JsonableObject):
                  exceptions: Optional[Dict[str, ProcessException]] = None,
                  examples: Optional[Dict] = None):
 
-        self.name = name
+        self.id = id
         self.description = description
         self.parameters = parameters
         self.returns = returns

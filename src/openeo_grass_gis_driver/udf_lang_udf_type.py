@@ -4,7 +4,6 @@ from flask import make_response, jsonify
 from .process_graph_db import GraphDB
 # from .actinia_processing import udf_reduce_time
 from flask_restful import Resource
-from .definitions import UDFDescription
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -16,7 +15,7 @@ __email__ = "soerengebbert@googlemail.com"
 python_udfs = dict(python={})
 # python_udfs["python"][udf_reduce_time.PROCESS_NAME] = udf_reduce_time.DOC
 
-GET_UDF_TYPE_EXAMPLE = UDFDescription.example
+GET_UDF_TYPE_EXAMPLE = None
 
 GET_UDF_TYPE_DOC = {
     "summary": "Returns the process description of UDF schemas, which offer different possibilities how "

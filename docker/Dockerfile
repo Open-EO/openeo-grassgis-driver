@@ -26,10 +26,12 @@ RUN git clone https://github.com/Open-EO/openeo-grassgis-driver.git openeo_grass
 
 WORKDIR /src/openeo_grass_gis_driver
 
+RUN pip3 install --upgrade pip
 RUN pip3 install -U setuptools
 RUN pip3 install wheel
-
 RUN pip3 install -r requirements.txt
+
+ENV SETUPTOOLS_SCM_DEBUG=1
 RUN make test
 RUN make install
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
-from typing import List
+from typing import List, Optional
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
@@ -41,11 +41,25 @@ class EoLink(JsonableObject):
         string <url>
         The value MUST be a dereferenceable URL.
 
+    type:
+        string
+
+        The value MUST be a string that hints at the format used to represent data at
+        the provided URI, preferably a media (MIME) type.
+
+    title:
+        string
+
+        Used as a human-readable label for a link.
+
     """
 
-    def __init__(self, href: str, rel: str = None):
-        self.str = href
+    def __init__(self, href: str, title: Optional[str] = None, rel: Optional[str] = None, type_: Optional[str] = None):
+        self.href = href
+        self.title = title
         self.rel = rel
+        self.type = type_
+
 
 class EoLinks(JsonableObject):
     """Additional links related to this collection.

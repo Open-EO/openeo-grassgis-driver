@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from .actinia_interface import ActiniaInterface
 
@@ -116,9 +116,9 @@ def get_process_list(process):
     red_process = dict(myproc="myproc", red=process["red"])
     nir_process = dict(myproc="myproc", red=process["nir"])
 
-    red_input_names, red_process_list = analyse_process_graph(red_process)
+    red_input_names, red_process_list = process_node_to_actinia_process_chain(red_process)
     process_list.extend(red_process_list)
-    nir_input_names, nir_process_list = analyse_process_graph(nir_process)
+    nir_input_names, nir_process_list = process_node_to_actinia_process_chain(nir_process)
     process_list.extend(nir_process_list)
 
     if not red_input_names:

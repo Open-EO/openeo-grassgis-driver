@@ -10,7 +10,7 @@ from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.actinia_processing.actinia_job_db import ActiniaJobDB
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.job_schemas import JobInformation
-from openeo_grass_gis_driver.actinia_processing.base import analyse_process_graph
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -107,7 +107,7 @@ class JobsJobIdResults(Resource):
             ActiniaInterface.PROCESS_LOCATION = {}
             # Transform the process graph into a process chain and store the input location
             # Check all locations in the process graph
-            result_name, process_list = analyse_process_graph({"process_graph":job.process_graph})
+            result_name, process_list = process_node_to_actinia_process_chain({"process_graph":job.process_graph})
 
             if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
                 raise Exception("Processes can only be defined for a single location!")

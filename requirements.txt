@@ -32,3 +32,5 @@ urllib3==1.23
 uWSGI==2.0.15
 Werkzeug==0.14.1
 sqlitedict==1.5.0
+pyproj==1.9.5.1
+pygdal==2.2.3.3

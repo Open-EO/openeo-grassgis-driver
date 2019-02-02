@@ -40,10 +40,14 @@ class ProcessGraphId(Resource):
             """Update a process graph in the graph database"""
             # TODO: Implement user specific database access
 
-            process_graph = request.get_json()
-            self.graph_db[id] = process_graph
-
-            return make_response(id, 204)
+            if id in self.graph_db:
+                process_graph = request.get_json()
+                self.graph_db[id] = process_graph
+                return make_response(id, 204)
+            else:
+                return make_response(ErrorSchema(id="123456678", code=404,
+                                                 message=f"Process graph with id {id} "
+                                                         f"not found in database.").to_json(), 404)
         except Exception:
 
             e_type, e_value, e_tb = sys.exc_info()

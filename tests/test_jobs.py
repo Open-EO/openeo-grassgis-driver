@@ -139,7 +139,7 @@ class JobsTestResultsCase(TestBase):
         job_id = response.get_data().decode("utf-8")
 
         # Get job information
-        response = self.app.get(f'/jobs/{job_id}/results', data=json.dumps(JOB_TEMPLATE), content_type="application/json")
+        response = self.app.get(f'/jobs/{job_id}/results', content_type="application/json")
         self.assertEqual(200, response.status_code)
         data = response.get_data().decode("utf-8")
         print(data)
@@ -167,6 +167,33 @@ class JobsTestResultsCase(TestBase):
 
         # get job information
         response = self.app.get(f'/jobs/{job_id}/results')
+        data = response.get_data().decode("utf-8")
+        print(data)
+        self.assertEqual(200, response.status_code)
+
+    def test_job_creation_and_patch_filter_box(self):
+        """Run job creation and patch test
+        """
+        JOB_TEMPLATE["process_graph"] = FILTER_BOX["process_graph"]
+
+        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json")
+        self.assertEqual(201, response.status_code)
+        job_id = response.get_data().decode("utf-8")
+        print(job_id)
+
+        # Get job information
+        response = self.app.get(f'/jobs/{job_id}')
+        data = response.get_data().decode("utf-8")
+        print(data)
+        self.assertEqual(200, response.status_code)
+
+        JOB_TEMPLATE["process_graph"] = ZONAL_STATISTICS_SINGLE["process_graph"]
+
+        response = self.app.patch(f'/jobs/{job_id}', data=json.dumps(JOB_TEMPLATE), content_type="application/json")
+        self.assertEqual(204, response.status_code)
+
+        # Get job information
+        response = self.app.get(f'/jobs/{job_id}')
         data = response.get_data().decode("utf-8")
         print(data)
         self.assertEqual(200, response.status_code)

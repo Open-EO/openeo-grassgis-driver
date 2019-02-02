@@ -67,30 +67,14 @@ class Jobs(Resource):
         """Submit a new job to the job database"""
         # TODO: Implement user specific database access
 
-        request_doc = request.get_json()
+        job_id = f"user-job::{str(uuid4())}"
+        job = request.get_json()
 
-        if "process_graph" not in request_doc:
+        if "process_graph" not in job:
             error = ErrorSchema(id=uuid4(), message="A process graph is required in the request")
             return make_response(error.to_json(), 400)
 
-        title = None
-        if "title" in request_doc:
-            title = request_doc["title"]
-
-        description = None
-        if "description" in request_doc:
-            description = request_doc["description"]
-
-        process_graph = request_doc["process_graph"]
-        submitted = str(datetime.now())
-
-        job_id = f"user-job::{str(uuid4())}"
-
-        job_info = JobInformation(job_id=job_id, title=title,
-                                  description=description,
-                                  process_graph=process_graph,
-                                  output=None, updated=None,
-                                  submitted=submitted, status="submitted")
+        job_info = check_job(job=job, job_id=job_id)
         self.job_db[job_id] = job_info
 
         return make_response(job_id, 201)
@@ -99,3 +83,24 @@ class Jobs(Resource):
         """Clear the job database"""
         self.job_db.clear()
         return make_response("All jobs has been successfully deleted", 204)
+
+
+def check_job(job, job_id):
+    title = None
+    if "title" in job:
+        title = job["title"]
+
+    description = None
+    if "description" in job:
+        description = job["description"]
+
+    process_graph = job["process_graph"]
+    submitted = str(datetime.now())
+
+    job_info = JobInformation(job_id=job_id, title=title,
+                              description=description,
+                              process_graph=process_graph,
+                              output=None, updated=None,
+                              submitted=submitted, status="submitted")
+
+    return job_info

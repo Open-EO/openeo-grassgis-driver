@@ -17,7 +17,7 @@ class Collections(Resource):
     def __init__(self):
         self.iface = ActiniaInterface()
 
-    def get(self, ):
+    def get(self):
 
         dataset_list = []
 

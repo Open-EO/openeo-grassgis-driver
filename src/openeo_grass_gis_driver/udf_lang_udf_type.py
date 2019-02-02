@@ -44,7 +44,7 @@ GET_UDF_TYPE_DOC = {
     "responses": {
         "200": {
             "description": "Process description",
-            "schema": UDFDescription,
+            "schema": None,
             "examples": {"application/json": GET_UDF_TYPE_EXAMPLE}
         },
         "401": {"$ref": "#/responses/auth_required"},

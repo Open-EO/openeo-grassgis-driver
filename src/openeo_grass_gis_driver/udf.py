@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import make_response, jsonify
 from flask_restful import Resource
-from .definitions import UDFTypen
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -71,7 +70,7 @@ GET_UDF_DOC = {
                         "properties": {
                             "udf_types": {
                                 "type": "array",
-                                "items": UDFTypen
+                                "items": None
                             },
                             "versions": {
                                 "type": "object",

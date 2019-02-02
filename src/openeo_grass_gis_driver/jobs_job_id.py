@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from flask_restful import Resource
 import traceback
+from uuid import uuid4
 import sys
 from flask import make_response, jsonify, request
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
+from openeo_grass_gis_driver.jobs import check_job
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -39,11 +41,19 @@ class JobsJobId(Resource):
         try:
             """Update a job in the job database"""
             # TODO: Implement user specific database access
-
             job = request.get_json()
-            self.job_db[job_id] = job
+            if job_id in self.job_db:
 
-            return make_response(job_id, 204)
+                if "process_graph" not in job:
+                    error = ErrorSchema(id=uuid4(), message="A process graph is required in the job request")
+                    return make_response(error.to_json(), 400)
+
+                job_info = check_job(job=job, job_id=job_id)
+                self.job_db[job_id] = job_info
+                return make_response(job_id, 204)
+            else:
+                return make_response(ErrorSchema(id="123456678", code=404,
+                                                 message=f"job with id {job_id} not found in database.").to_json(), 404)
         except Exception:
 
             e_type, e_value, e_tb = sys.exc_info()

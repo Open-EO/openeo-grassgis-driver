@@ -1,6 +1,8 @@
 # Add your pinned requirements so that they can be easily installed with:
 # pip install -r requirements.txt
 # Remember to also add them in setup.cfg but unpinned.
+pyproj==1.9.5.1
+pygdal==2.2.3.3
 alabaster==0.7.10
 aniso8601==3.0.0
 Babel==2.5.3
@@ -28,5 +30,3 @@ urllib3==1.23
 uWSGI==2.0.15
 Werkzeug==0.14.1
 sqlitedict==1.5.0
-pyproj==1.9.5.1
-pygdal==2.2.3.3

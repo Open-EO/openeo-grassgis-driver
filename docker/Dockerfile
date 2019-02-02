@@ -31,6 +31,7 @@ RUN pip3 install -U setuptools
 RUN pip3 install wheel
 RUN pip3 install -r requirements.txt
 
+ENV SETUPTOOLS_SCM_PRETEND_VERSION=0.0.1
 ENV SETUPTOOLS_SCM_DEBUG=1
 RUN make test
 RUN make install

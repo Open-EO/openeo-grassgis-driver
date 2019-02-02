@@ -16,6 +16,72 @@ CAPABILITIES = {
             "methods": [
                 "GET"
             ]
+        },
+        {
+            "path": "/preview",
+            "methods": [
+                "POST"
+            ]
+        },
+        {
+            "path": "/collections",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "path": "//collections/<string:name>",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/processes",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/validation",
+            "methods": [
+                "POST"
+            ]
+        },
+        {
+            "path": "/process_graphs",
+            "methods": [
+                "GET", "POST", "DELETE"
+            ]
+        },
+        {
+            "path": "/process_graphs/<string:process_graph_id>",
+            "methods": [
+                "GET", "PATCH", "DELETE"
+            ]
+        },
+        {
+            "path": "/output_formats",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/jobs",
+            "methods": [
+                "GET", "POST", "DELETE"
+            ]
+        },
+        {
+            "path": "/jobs/<string:job_id>",
+            "methods": [
+                "GET", "PATCH", "DELETE"
+            ]
+        },
+        {
+            "path": "/jobs/<string:job_id>/results",
+            "methods": [
+                "GET", "POST", "DELETE"
+            ]
         }
     ]
 }

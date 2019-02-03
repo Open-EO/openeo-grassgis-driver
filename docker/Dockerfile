@@ -26,7 +26,7 @@ WORKDIR /src
 RUN git clone https://github.com/Open-EO/openeo-grassgis-driver.git openeo_grass_gis_driver
 
 WORKDIR /src/openeo_grass_gis_driver
-RUN git checkout "openeo-api-0.3.0"
+RUN git checkout "openeo-api-0.4.0"
 
 RUN pip3 install --upgrade pip
 RUN pip3 install -U setuptools

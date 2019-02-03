@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
 from random import randint
-from pprint import pprint
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
-from .base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.actinia_processing.base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 from random import randint
-from pprint import pprint
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 

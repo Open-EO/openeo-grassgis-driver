@@ -2,9 +2,9 @@
 from pprint import pprint
 from flask import make_response, jsonify, request
 from flask_restful import Resource
-from .actinia_processing.base import process_node_to_actinia_process_chain
-from .actinia_processing.actinia_interface import ActiniaInterface
-from .error_schemas import ErrorSchema
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.error_schemas import ErrorSchema
 from datetime import datetime
 
 __license__ = "Apache License, Version 2.0"

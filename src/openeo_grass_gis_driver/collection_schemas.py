@@ -2,7 +2,7 @@
 """This file includes all required openEO response schemas
 """
 from typing import List, Tuple, Optional
-from .schema_base import JsonableObject, EoLinks, EoLink
+from openeo_grass_gis_driver.schema_base import JsonableObject, EoLinks, EoLink
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"

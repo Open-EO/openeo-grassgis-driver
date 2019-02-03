@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
 # This shell script is a collection of curl commands to test the GRaaS openEO Core API
 
-# get the swagger json description
-curl -X GET http://openeo.mundialis.de:5000/api/v0/swagger.json
-# Capabilities
-curl -X GET http://openeo.mundialis.de:5000/capabilities
-# Data
-curl -X GET http://openeo.mundialis.de:5000/data
-# Data product id
-curl -X GET http://openeo.mundialis.de:5000/data/precipitation_1950_2013_yearly_mm@PERMANENT
-# Processes
-curl -X GET http://openeo.mundialis.de:5000/processes
-# Processes process ids
-curl -X GET http://openeo.mundialis.de:5000/processes/NDVI
-curl -X GET http://openeo.mundialis.de:5000/processes/filter_bbox
-curl -X GET http://openeo.mundialis.de:5000/processes/filter_daterange
+HOST="localhost"
 
+# Get the capabilities
+curl -X GET http://$HOST:5000/
+# Collections
+curl -X GET http://$HOST:5000/collections
+# A single collection
+curl -X GET http://$HOST:5000/collections/nc_spm_08.landsat.raster.lsat7_2000_80
+# Processes
+curl -X GET http://$HOST:5000/processes
+# Processes process ids
+curl -X GET http://$HOST:5000/processes/NDVI
+curl -X GET http://$HOST:5000/processes/filter_bbox
+curl -X GET http://$HOST:5000/processes/filter_daterange

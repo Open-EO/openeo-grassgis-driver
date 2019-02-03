@@ -15,10 +15,35 @@ class ProcessesTestCase(TestBase):
 
     def test_processes(self):
         response = self.app.get('/processes')
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         pprint(data)
 
         self.assertEqual(len("processes"), 9)
+
+    def test_process_zonal_statistics(self):
+        response = self.app.get('/processes/zonal_statistics')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data.decode())
+        pprint(data)
+
+    def test_process_filter_bbox(self):
+        response = self.app.get('/processes/filter_bbox')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data.decode())
+        pprint(data)
+
+    def test_process_get_data(self):
+        response = self.app.get('/processes/get_data')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data.decode())
+        pprint(data)
+
+    def test_process_NDVI(self):
+        response = self.app.get('/processes/NDVI')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data.decode())
+        pprint(data)
 
 
 if __name__ == "__main__":

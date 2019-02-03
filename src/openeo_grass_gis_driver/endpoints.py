@@ -4,6 +4,7 @@ from openeo_grass_gis_driver.capabilities import Capabilities, ServiceTypes
 from openeo_grass_gis_driver.collections import Collections
 from openeo_grass_gis_driver.collection_information import CollectionInformationResource
 from openeo_grass_gis_driver.processes import Processes
+from openeo_grass_gis_driver.processes_process_id import ProcessesProcessId
 from openeo_grass_gis_driver.jobs import Jobs, OutputFormats
 from openeo_grass_gis_driver.jobs_job_id import JobsJobId
 from openeo_grass_gis_driver.process_graph_validation import GraphValidation
@@ -29,6 +30,7 @@ def create_endpoints():
     flask_api.add_resource(CollectionInformationResource, '/collections/<string:name>')
 
     flask_api.add_resource(Processes, '/processes')
+    flask_api.add_resource(ProcessesProcessId, '/processes/<string:process_id>')
 
     flask_api.add_resource(GraphValidation, '/validation')
     flask_api.add_resource(Preview, '/preview')

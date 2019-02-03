@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .actinia_processing.config import Config as ActiniaConfig
+from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
 from sqlitedict import SqliteDict
 
 __license__ = "Apache License, Version 2.0"

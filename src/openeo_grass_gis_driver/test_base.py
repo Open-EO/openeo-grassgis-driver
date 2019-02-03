@@ -2,9 +2,9 @@
 import unittest
 from flask import json
 import time
-from .app import flask_api
-from .endpoints import create_endpoints
-from .actinia_processing.config import Config as ActiniaConfig
+from openeo_grass_gis_driver.app import flask_api
+from openeo_grass_gis_driver.endpoints import create_endpoints
+from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

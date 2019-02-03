@@ -42,6 +42,12 @@ CAPABILITIES = {
             ]
         },
         {
+            "path": "/processes/<string:process_id>",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
             "path": "/validation",
             "methods": [
                 "POST"

@@ -123,6 +123,85 @@ class ProcessException(JsonableObject):
 
 
 class ProcessDescription(JsonableObject):
+    """
+    id:
+
+        string (process_id) ^[A-Za-z0-9_]+$
+
+    required:
+
+        Unique identifier of the process.
+
+    summary:
+        string
+
+        A short summary of what the process does.
+
+    description:
+        required
+
+        string (process_description)
+
+        Detailed description to fully explain the entity.
+
+        CommonMark 0.28 syntax MAY be used for rich text representation. In addition to the CommonMark syntax, clients can convert process IDs that are formatted as in the following example into links instead of code blocks: ``process_id()``
+
+    categories:
+        Array of string
+
+        A list of categories.
+
+    parameter_order:
+        Array of string
+
+        Describes the order or the parameter for any environments that don't support named parameters. This property MUST be present for all processes with two or more parameters.
+
+    parameters:
+        required
+
+        object
+
+        A list of parameters that are applicable for this process. The keys of the object are the names of the parameters. They keys MUST match the following pattern: ^[A-Za-z0-9_]+$
+
+    returns:
+        required
+
+        object
+
+        The data that is returned from this process.
+
+    deprecated:
+        boolean
+        Default: false
+
+        Declares this process to be deprecated. Consumers SHOULD refrain from usage of the declared process.
+
+    experimental:
+        boolean
+        Default: false
+
+        Declares this process to be still experimental, which means that it is likely to change or produce unpredictable behaviour.
+
+    exceptions:
+        object
+
+        Declares any exceptions (errors) that might occur during execution of this process. MUST be used only for exceptions that stop the execution of a process and are therefore not to be used for warnings, or notices or debugging messages.
+
+        The keys define the error code and MUST match the following pattern: ^[A-Za-z0-9_]+$
+
+        This schema follows the schema of the general openEO error list (see errors.json).
+
+    examples:
+        Array of object
+
+        Examples, may be used for tests. Either process_graph or arguments must be set, never both.
+
+    links:
+        Array of object (link)
+
+        Related links, e.g. additional external documentation for this process.
+
+    """
 
     def __init__(self, id: str, description: str,
                  parameters: Dict[str, Parameter],

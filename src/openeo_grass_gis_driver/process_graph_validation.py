@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from pprint import pprint
 from flask import make_response, jsonify, request
-from flask_restful import Resource
 from openeo_grass_gis_driver.actinia_processing.base import analyse_process_graph
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
+from openeo_grass_gis_driver.authentication import ResourceBase
 from datetime import datetime
 
 __license__ = "Apache License, Version 2.0"
@@ -14,7 +14,7 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class GraphValidation(Resource):
+class GraphValidation(ResourceBase):
 
     def __init__(self):
         self.iface = ActiniaInterface()

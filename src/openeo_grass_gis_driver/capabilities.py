@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import make_response, jsonify
-from flask_restful import Resource
+
+from openeo_grass_gis_driver.authentication import ResourceBase
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -93,7 +94,7 @@ CAPABILITIES = {
 }
 
 
-class Capabilities(Resource):
+class Capabilities(ResourceBase):
 
     def get(self, ):
         return make_response(jsonify(CAPABILITIES), 200)
@@ -102,7 +103,7 @@ class Capabilities(Resource):
 SERVICE_TYPES = {}
 
 
-class ServiceTypes(Resource):
+class ServiceTypes(ResourceBase):
 
     def get(self, ):
         return make_response(jsonify(SERVICE_TYPES), 200)

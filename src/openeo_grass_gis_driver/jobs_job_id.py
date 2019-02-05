@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from flask_restful import Resource
 import traceback
 from uuid import uuid4
 import sys
@@ -9,6 +8,7 @@ from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.jobs import check_job
+from openeo_grass_gis_driver.authentication import ResourceBase
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -17,7 +17,7 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class JobsJobId(Resource):
+class JobsJobId(ResourceBase):
 
     def __init__(self):
         self.iface = ActiniaInterface()

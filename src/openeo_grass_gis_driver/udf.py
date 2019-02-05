@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import make_response, jsonify
-from flask_restful import Resource
+from openeo_grass_gis_driver.authentication import ResourceBase
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -99,6 +99,6 @@ GET_UDF_DOC = {
 }
 
 
-class Udf(Resource):
+class Udf(ResourceBase):
     def get(self):
         return make_response(jsonify(SUPPORTED_UDF), 200)

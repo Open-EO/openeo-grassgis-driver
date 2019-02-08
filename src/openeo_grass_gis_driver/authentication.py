@@ -27,21 +27,23 @@ __license__ = "Apache-2.0"
 
 from flask_restful import Resource
 from flask import make_response, jsonify, request
-from openeo_grass_gis_driver.config import Config as OpeneoConfig
 import functools
+
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 # from openeo_grass_gis_driver.resources.config import APP
 # from openeo_grass_gis_driver.model.responseModels import SimpleResponseModel
 
 
-def ok_user_and_password(username, password, config: OpeneoConfig=None):
-    if config is None:
-        config = OpeneoConfig
-    # in USER_DATA can be writen multiple users
-    USER_DATA = {
-        config.USER: config.PASSWORD
-        }
-    return USER_DATA.get(username) == password
+def ok_user_and_password(username, password):
+
+    iface = ActiniaInterface()
+    status_code, locations = iface.list_locations(auth=(username, password))
+
+    if status_code != 200:
+        return False
+    else:
+        return True
 
 
 def authenticate():

@@ -130,6 +130,17 @@ class ActiniaInterface(object):
 
         return r.status_code, data
 
+    def list_locations(self, auth) -> Tuple[int, dict]:
+        url = "%(base)s/locations" % {"base": self.base_url}
+        r = requests.get(url=url, auth=auth)
+        data = r.text
+
+        if r.status_code == 200:
+            ret = r.json()
+            data = ret["locations"]
+
+        return r.status_code, data
+
     def create_mapset(self, location: str, mapset: str="PERMANENT") -> Tuple[int, dict]:
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {"base": self.base_url,
                                                                       "location": location,

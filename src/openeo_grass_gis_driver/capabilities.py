@@ -15,7 +15,7 @@ CAPABILITIES = {
     "description": "GRASS GIS Driver",
     "endpoints": [
         {
-            "path": "/capabilities",
+            "path": "/",
             "methods": [
                 "GET"
             ]

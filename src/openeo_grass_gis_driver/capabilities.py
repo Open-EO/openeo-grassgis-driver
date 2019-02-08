@@ -12,7 +12,7 @@ CAPABILITIES = {
     "version": "0.3.0",
     "endpoints": [
         {
-            "path": "/capabilities",
+            "path": "/",
             "methods": [
                 "GET"
             ]

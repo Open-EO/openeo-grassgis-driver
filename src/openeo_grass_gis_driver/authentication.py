@@ -30,16 +30,14 @@ from flask import make_response, jsonify, request
 import functools
 
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
-
-# from openeo_grass_gis_driver.resources.config import APP
 # from openeo_grass_gis_driver.model.responseModels import SimpleResponseModel
 
 
 def ok_user_and_password(username, password):
 
     iface = ActiniaInterface()
-    status_code, locations = iface.list_locations(auth=(username, password))
-
+    iface.set_auth(username, password)
+    status_code, locations = iface.list_locations()
     if status_code != 200:
         return False
     else:

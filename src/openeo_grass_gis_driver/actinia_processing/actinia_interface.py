@@ -132,9 +132,9 @@ class ActiniaInterface(object):
 
         return r.status_code, data
 
-    def list_locations(self, auth) -> Tuple[int, dict]:
+    def list_locations(self) -> Tuple[int, dict]:
         url = "%(base)s/locations" % {"base": self.base_url}
-        r = requests.get(url=url, auth=auth)
+        r = requests.get(url=url, auth=self.auth)
         data = r.text
 
         if r.status_code == 200:

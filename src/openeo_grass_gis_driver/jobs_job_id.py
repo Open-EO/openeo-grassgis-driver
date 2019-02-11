@@ -21,6 +21,7 @@ class JobsJobId(ResourceBase):
 
     def __init__(self):
         self.iface = ActiniaInterface()
+        self.iface.set_auth(request.authorization.username, request.authorization.password)
         self.db = GraphDB()
         self.job_db = JobDB()
 

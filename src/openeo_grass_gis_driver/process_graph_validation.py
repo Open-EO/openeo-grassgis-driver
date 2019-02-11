@@ -18,6 +18,7 @@ class GraphValidation(ResourceBase):
 
     def __init__(self):
         self.iface = ActiniaInterface()
+        self.iface.set_auth(request.authorization.username, request.authorization.password)
 
     def post(self):
         """Run the job in an ephemeral mapset

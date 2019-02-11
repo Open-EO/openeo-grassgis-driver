@@ -30,7 +30,6 @@ from flask import make_response, jsonify, request
 import functools
 
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
-# from openeo_grass_gis_driver.model.responseModels import SimpleResponseModel
 
 
 def ok_user_and_password(username, password):
@@ -45,7 +44,6 @@ def ok_user_and_password(username, password):
 
 
 def authenticate():
-    # resp = jsonify(SimpleResponseModel(status=401, message="Unauthorized."))
     resp = jsonify({'message': "Unauthorized.", 'status': 401})
     resp.status_code = 401
     resp.headers['WWW-Authenticate'] = 'Basic realm="Main"'

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import make_response, jsonify
+from flask import make_response, jsonify, request
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.collection_schemas import CollectionInformation, Extent, EoLinks
 from openeo_grass_gis_driver.authentication import ResourceBase
@@ -110,6 +110,7 @@ class CollectionInformationResource(ResourceBase):
 
     def __init__(self):
         self.iface = ActiniaInterface()
+        self.iface.set_auth(request.authorization.username, request.authorization.password)
 
     def get(self, name):
 

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+from flask import make_response, jsonify, request
+
 from .actinia_processing.actinia_interface import ActiniaInterface
-from flask import make_response, jsonify
-from flask_restful import Resource
 from openeo_grass_gis_driver.actinia_processing.config import Config
 from openeo_grass_gis_driver.collection_schemas import Collection, CollectionEntry
+from openeo_grass_gis_driver.authentication import ResourceBase
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -12,10 +13,11 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class Collections(Resource):
+class Collections(ResourceBase):
 
     def __init__(self):
         self.iface = ActiniaInterface()
+        self.iface.set_auth(request.authorization.username, request.authorization.password)
 
     def get(self):
 

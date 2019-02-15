@@ -2,12 +2,12 @@
 from uuid import uuid4
 from datetime import datetime
 from flask import make_response, jsonify, request
-from flask_restful import Resource
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.job_schemas import JobInformation, JobList
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
+from openeo_grass_gis_driver.authentication import ResourceBase
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -34,17 +34,18 @@ OUTPUT_FORMATS = {
 }
 
 
-class OutputFormats(Resource):
+class OutputFormats(ResourceBase):
 
     def get(self, ):
         return make_response(jsonify(OUTPUT_FORMATS), 200)
 
 
-class Jobs(Resource):
+class Jobs(ResourceBase):
     """The /jobs endpoint implementation"""
 
     def __init__(self):
         self.iface = ActiniaInterface()
+        self.iface.set_auth(request.authorization.username, request.authorization.password)
         self.graph_db = GraphDB()
         self.job_db = JobDB()
 

@@ -2,8 +2,7 @@
 import sys
 import traceback
 from datetime import datetime
-from flask_restful import Resource
-from flask import make_response, jsonify
+from flask import make_response, jsonify, request
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
@@ -11,8 +10,8 @@ from openeo_grass_gis_driver.actinia_processing.actinia_job_db import ActiniaJob
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.job_schemas import JobInformation
 from openeo_grass_gis_driver.actinia_processing.base import analyse_process_graph
+from openeo_grass_gis_driver.authentication import ResourceBase
 from openeo_grass_gis_driver.schema_base import EoLink
-
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -21,10 +20,11 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class JobsJobIdResults(Resource):
+class JobsJobIdResults(ResourceBase):
 
     def __init__(self):
         self.iface = ActiniaInterface()
+        self.iface.set_auth(request.authorization.username, request.authorization.password)
         self.db = GraphDB()
         self.job_db = JobDB()
         self.actinia_job_db = ActiniaJobDB()

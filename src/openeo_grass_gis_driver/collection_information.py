@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from flask import make_response, jsonify
-from flask_restful import Resource
+from flask import make_response, jsonify, request
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.collection_schemas import CollectionInformation, Extent, EoLinks
+from openeo_grass_gis_driver.authentication import ResourceBase
 from osgeo import osr, ogr
 
 __license__ = "Apache License, Version 2.0"
@@ -106,10 +106,11 @@ def coorindate_transform_extent_to_EPSG_4326(crs: str, extent: Extent):
     return extent
 
 
-class CollectionInformationResource(Resource):
+class CollectionInformationResource(ResourceBase):
 
     def __init__(self):
         self.iface = ActiniaInterface()
+        self.iface.set_auth(request.authorization.username, request.authorization.password)
 
     def get(self, name):
 

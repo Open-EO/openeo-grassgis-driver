@@ -3,7 +3,9 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import Actinia
 from flask import make_response, jsonify
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 # from .actinia_processing import udf_reduce_time
-from flask_restful import Resource
+# from flask_restful import Resource
+from openeo_grass_gis_driver.authentication import ResourceBase
+
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -56,7 +58,7 @@ GET_UDF_TYPE_DOC = {
 }
 
 
-class UdfType(Resource):
+class UdfType(ResourceBase):
 
     def __init__(self):
         self.iface = ActiniaInterface()

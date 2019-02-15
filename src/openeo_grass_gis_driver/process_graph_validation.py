@@ -35,8 +35,10 @@ class GraphValidation(ResourceBase):
             result_name, process_list = analyse_process_graph(process_graph)
 
             if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
-                return make_response(jsonify({"description":"Processes can only be defined for a single location!"},
-                                             400))
+                msg = "Processes can only be defined for a single location!"
+                status = 400
+                es = ErrorSchema(id=str(datetime.now()), code=status, message=str(msg))
+                return make_response(es.to_json(), status)
 
             location = ActiniaInterface.PROCESS_LOCATION.keys()
             location = list(location)[0]
@@ -49,6 +51,7 @@ class GraphValidation(ResourceBase):
             status, response = self.iface.sync_ephemeral_processing_validation(location=location,
                                                                                process_chain=process_chain)
             pprint(response)
+
 
             if status == 200:
                 return make_response("", 204)

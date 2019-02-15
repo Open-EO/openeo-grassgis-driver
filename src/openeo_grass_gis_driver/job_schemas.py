@@ -33,7 +33,8 @@ class JobInformation(JsonableObject):
                  process_graph: dict(),
                  output: Optional[OutputFormat],
                  submitted: str, updated: Optional[str],
-                 plan: str = "free", cost: float= 0.0, budget: float = 0.0):
+                 plan: str = "free", cost: float= 0.0, budget: float = 0.0,
+                 links: Optional[EoLinks] = None):
         self.job_id = job_id
         self.title = title
         self.description = description
@@ -46,6 +47,8 @@ class JobInformation(JsonableObject):
         self.cost = cost
         self.budget = budget
         self.additional_info = None
+        self.links = links
+
 
 
 class JobList(JsonableObject):

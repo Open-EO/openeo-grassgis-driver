@@ -44,8 +44,8 @@ class EoLink(JsonableObject):
     """
 
     def __init__(self, href: str, rel: str = None):
-        self.str = href
         self.rel = rel
+        self.href = href
 
 class EoLinks(JsonableObject):
     """Additional links related to this collection.
@@ -58,4 +58,3 @@ class EoLinks(JsonableObject):
 
     def __init__(self, links: List[EoLink]):
         self.links = links
-

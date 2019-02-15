@@ -4,15 +4,18 @@
 from typing import List, Tuple, Optional
 from openeo_grass_gis_driver.schema_base import JsonableObject, EoLinks, EoLink
 
-__author__ = "Sören Gebbert"
+__author__ = "Sören Gebbert, Anika Bettge"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Sören Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class Extent(JsonableObject):
+# TODO: collection_sci
+
+class CollectionExtent(JsonableObject):
     """
     spatial:
+        required
         Array of number
         The potential spatial extent covered by the collection.
         The bounding box is provided as four or six numbers, depending on whether
@@ -27,6 +30,7 @@ class Extent(JsonableObject):
         The coordinate reference system of the values is WGS84 longitude/latitude.
 
     temporal:
+        required
         Array of string <date-time>
         Potential temporal extent covered by the collection.
         The temporal extent specified by a start and an end time,
@@ -36,19 +40,374 @@ class Extent(JsonableObject):
 
     """
 
-    def __init__(self, spatial: Optional[Tuple[float, float, float, float]] = None,
-                 temporal: Optional[Tuple[str, Optional[str]]] = None):
+    def __init__(self, spatial: Tuple[float, float, float, float]],
+                 temporal: Tuple[str, Optional[str]]):
         self.spatial = spatial
         self.temporal = temporal
 
 
-class CollectionEntry(JsonableObject):
+class EOBands(JsonableObject):
+    """
+    name:
+        string
+        The name of the band (e.g., "B01", "B02", "B1", "B5", "QA").
+
+    common_name:
+        string
+        Not required, but STRONGLY RECOMMENDED! The name commonly used to refer
+        to the band to make it easier to search for bands across instruments.
+        See the "Common Band Names" for a list of accepted common names.
+
+    description:
+        strings
+        nullable: true
+        $ref: "#/components/schemas/description"
+
+    gsd:
+        number
+        Ground Sample distance, the nominal distance between pixel centers
+        available, in meters. See eo:gsd for more information. Defaults to
+        eo:gsd if not provided.
+
+    accuracy:
+        number
+        The expected error between the measured location and the true location
+        of a pixel, in meters on the ground.
+
+    center_wavelength:
+        number
+        The center wavelength of the band, in micrometers (μm).
+
+    full_width_half_max:
+        number
+        Full width at half maximum (FWHM) is a common way to describe the size
+        of a spectral band. It is the width, in micrometers (μm), of the
+        bandpass measured at a half of the maximum transmission. Thus, if the
+        maximum transmission of the bandpass was 80%, the FWHM is measured as
+        the width of the bandpass at 40% transmission.
+
+    offset
+        number
+        default: 0
+        Offset to convert band values to the actual measurement scale.
+
+    scale:
+        number
+        default: 1
+        Scale to convert band values to the actual measurement scale.
+
+    unit:
+        string (url-format)
+        The unit of measurement for the data, specified as OGC URN.
+
+    nodata:
+        array of numbers
+        Specific values representing no data.
+
+    periodicity:
+        string
+        Periodictity of the measurements, preferably specified using ISO 8601.
+    """
+
+    def __init__(
+            self, name: str = None, common_name: str = None, gsd: float = None,
+            accuracy: float = None, center_wavelength: float = None,
+            full_width_half_max: float = None, offset: float = 0,
+            unit: str = None, nodata: List[int], periodicity: str = None,
+            scale: int = 1, description: Optional[str] = None):
+        self.name = name
+        self.common_name = common_name
+        self.description = description # TODO nullable=True
+        self.gsd = gsd
+        self.accuracy = accuracy
+        self.center_wavelength = center_wavelength
+        self.full_width_half_max = full_width_half_max
+        self.offset = offset
+        self.scale = scale
+        self.unit = unit
+        self.nodata = nodata
+        self.periodicity = periodicity
+
+
+class SarBands(JsonableObject):
+    """
+    name:
+        string
+        The name of the band.
+
+    common_name:
+        Description to fully explain the band, should include processing
+        information. CommonMark 0.28 syntax MAY be used for rich textrepresentation.
+
+    data_type:
+        string
+        Specifies the type of the data contained in the band, for example
+        `amplitude`, `intensity`, `phase`, `angle`, `sigma0`, `gamma0`.
+
+    unit:
+        string (url-format)
+        The unit of measurement for the data, specified as OGC URN.
+
+    polarization:
+        string
+        nullable: true
+        The polarization of the band, either `HH`, `VV`, `HV`, `VH` or `null`
+        if not applicable.
+        "HH", "VV", "HV", "VH", null
+    """
+
+    def __init__(
+            self, name: str = None, common_name: str = None,
+            data_type: str = None, unit: str = None, polarization: str = None):
+
+        self.name = name
+        self.common_name = common_name
+        self.data_type = data_type
+        self.unit = unit
+        self.polarization = polarization
+
+
+class CollectionSar(JsonableObject):
+    """
+    sar:platform:
+        required
+        string
+        Unique name of the specific platform the instrument is attached to. For
+        satellites this would be the name of the satellite (e.g., landsat-8,
+        sentinel-2A), whereas for drones this would be a unique name for the
+        drone.
+
+    sar:constellation:
+        string
+        sar:constellation is the name of the group of satellites that have
+        similar payloads and have their orbits arranged in a way to increase
+        the temporal resolution of acquisitions of data with similar geometric
+        and radiometric characteristics. Examples are the Sentinel-1
+        constellation, which has S1A, S1B, S1C and S1D and RADARSAT, which has
+        RADARSAT-1 and RADARSAT-2. This field allows users to search for
+        Sentinel-1 data, for example, without needing to specify which specific
+        platform the data came from.
+
+    sar:instrument:
+        required
+        string
+        Name of the sensor used, although for Items which contain data from
+        multiple sensors this could also name multiple sensors.
+
+    sar:instrument_mode:
+        required
+        string
+        The name of the sensor acquisition mode that is commonly used. This
+        should be the short name, if available. For example, WV for "Wave mode"
+        of Sentinel-1 and Envisat ASAR satellites.
+        example: "WV"
+
+    sar:frequency_band:
+        required
+        string
+        The common name for the frequency band to make it easier to search for
+        bands across instruments. See section "Common Frequency Band Names" for
+        a list of accepted names.
+        "P", "L", "S", "C", "X", "Ku", "K", "Ka"
+
+    sar:center_wavelength:
+        number
+        The center wavelength of the instrument, in centimeters (cm).
+
+    sar:center_frequency:
+        number
+        The center frequency of the instrument, in gigahertz (GHz).
+
+    sar:polarization:
+        required
+        array of strings (length of 1 to 4)
+        A single polarization or a polarization combinations specified as array.
+        For single polarized radars one of `HH`, `VV`, `HV` or `VH` must be set.
+        Fully polarimetric radars add all four polarizations to the array. Dual
+        polarized radars and alternating polarization add the corresponding
+        polarizations to the array, for instance for `HH+HV` add both `HH`
+        and `HV`.
+        "HH", "VV", "HV", "VH"
+
+    sar:bands:
+        array of objects
+        This is a list of the available bands where each item is a Band Object.
+
+    sar:type:
+        required
+        string
+        The product type, for example `RAW`, `GRD`, `OCN` or `SLC` for
+        Sentinel-1.
+
+    sar:resolution:
+        array of numbers (minimum = 0, length = 2)
+        The maximum ability to distinguish two adjacent targets, in
+        meters (m). The first element of the array is the range resolution,
+        the second element is the azimuth resolution.
+
+    sar:pixel_spacing:
+        array of numbers (minimum = 0, length = 2)
+        The distance between adjacent pixels, in meters (m). The first
+        element of the array is the range pixel spacing, the second element
+        is the azimuth pixel spacing. Strongly RECOMMENDED to be specified
+        for products of type `GRD`.
+
+    sar:looks:
+        array of numbers (minimum = 0, length = 2 or 3)
+        The number of groups of signal samples (looks). The first element of
+        the array must be the number of range looks, the second element must be
+        the number of azimuth looks, the optional third element is the
+        equivalent number of looks (ENL).
+
+    sar:absolute_orbit:
+        array of numbers and arrays of numbers (with length = 2 of the array in the array and minimum = 0)
+        A list of absolute orbit numbers. Usually corresponds to the orbit
+        count within the orbit cycle (e.g. ALOS, ERS-1/2, JERS-1, and
+        RADARSAT-1, Sentinel-1). For UAVSAR it is the Flight ID. A range can be
+        specified as two element array in the array, e.g. `[25101, [25131, 25140]]`
+        would be 25101 and 25131 to 25140.
+    """
+    # TODO Doppelpunkte!!!
+    def __init__(
+            self, sar_platform: str,  sar_constellation: str = None,
+            sar_instrument: str, sar_instrument_mode: str,
+            sar_frequency_band: str, sar_center_wavelength: float = None,
+            sar_center_frequency: float = None,
+            sar_polarization: Optional[Tuple[str, Optional[str], Optional[str], Optional[str]]] = None,
+            sar_bands: SarBands = SarBands(), sar_type: str,
+            sar_resolution: Optional[Tuple[float, float]] = None,
+            sar_pixel_spacing: Optional[Tuple[float, float]] = None,
+            sar_looks: Optional[Tuple[int, int, Optinal[int]]] = None,
+            sar_absolute_orbit: Optional[List[Union[int, List[int]]]] = None
+            ):
+
+        self.sar:platform = sar_platform
+        self.sar:constellation = sar_constellation
+        self.sar:instrument = sar_instrument
+        self.sar:instrument_mode = sar_instrument_mode
+        self.sar:frequency_band = sar_frequency_band
+        self.sar:center_wavelength = sar_center_wavelength
+        self.sar:center_frequency = sar_center_frequency
+        self.sar:polarization = sar_polarization
+        self.sar:bands = sar_bands
+        self.sar:type = sar_type
+        self.sar:resolution = sar_resolution
+        self.sar:pixel_spacing = sar_pixel_spacing
+        self.sar:looks = sar_looks
+        self.sar:absolute_orbit = sar_absolute_orbit
+
+
+class CollectionEO(JsonableObject):
+    """
+    eo:gsd:
+        required
+        number
+        The nominal Ground Sample Distance for the data, as measured in meters
+        on the ground. Since GSD can vary across a scene depending on
+        projection, this should be the average or most commonly used GSD in the
+        center of the image. If the data includes multiple bands with different
+        GSD values, this should be the value for the greatest number or most
+        common bands. For instance, Landsat optical and short-wave IR bands are
+        all 30 meters, but the panchromatic band is 15 meters. The eo:gsd
+        should be 30 meters in this case since those are the bands most
+        commonly used.
+
+    eo:platform:
+        required
+        string
+        Unique name of the specific platform the instrument is attached to. For
+        satellites this would be the name of the satellite (e.g., landsat-8,
+        sentinel-2A), whereas for drones this would be a unique name for the
+        drone.
+
+    eo:constellation:
+        string
+        The name of the group of satellites that have similar payloads and have
+        their orbits arranged in a way to increase the temporal resolution of
+        acquisitions of data with similar geometric and radiometric
+        characteristics. Examples are the Sentinel-2 constellation, which has
+        S2A and S2B and RapidEye. This field allows users to search for
+        Sentinel-2 data, for example, without needing to specify which specific
+        platform the data came from.
+
+    eo:instrument:
+        required
+        string
+        The name of the sensor used, although for Items which contain data from
+        multiple sensors this could also name multiple sensors. For example,
+        data from the Landsat-8 platform is collected with the OLI sensor as
+        well as the TIRS sensor, but the data is distributed together and
+        commonly referred to as OLI_TIRS.
+
+    eo:epsg:
+        nullable: true
+        number
+        EPSG code of the datasource, `null` if no EPSG code. A Coordinate
+        Reference System (CRS) is the native reference system (sometimes called
+        a 'projection') used by the data, and can usually be referenced using
+        an EPSG code. If the data does not have a CRS, such as in the case of
+        non-rectified imagery with Ground Control Points, `eo:epsg` should be
+        set to `null`. It should also be set to `null` if a CRS exists, but for
+        which there is no valid EPSG code.
+
+    eo:bands:
+        required
+        list of object
+        This is a list of the available bands where each item is a Band Object.
+    """
+    # TODO Doppelpunkte!!!
+    def __init__(self, eo_gsd: int, eo_platform: str, eo_constellation: str = None,
+                    eo_instrument: str, eo_epsg: int = None, eo_bands: List[EOBands] ):
+        self.eo:gsd = eo_gsd
+        self.eo:platform = eo_platform
+        self.eo:constellation = eo_constellation
+        self.eo:instrument = eo_instrument
+        self.eo:epsg = eo_epsg # TODO nullable=True
+        self.eo:bands = eo_bands
+
+
+class CollectionProviders(JsonableObject):
     """
     name:
         required
-        string (collection_name) ^[A-Za-z0-9_\-\.~\/]+$
-        Unique identifier for EO collections. MUST match the specified pattern.
+        string
+        The name of the organization or the individual.
 
+    description:
+        string
+        Multi-line description to add further provider information such as
+        processing details for processors and producers, hosting details for
+        hosts or basic contact information. CommonMark 0.28 syntax MAY be used
+        for rich text representation.
+
+    roles:
+        array of strings
+        Roles of the provider. The provider's role(s) can be one or more of the
+        following elements:
+        * licensor: The organization that is licensing the dataset under the
+          license specified in the collection's license field.
+        * producer: The producer of the data is the provider that initially
+          captured and processed the source data, e.g. ESA for Sentinel-2 data.
+        * processor: A processor is any provider who processed data to a
+          derived product.
+        * host: The host is the actual provider offering the data on their
+          storage. There should be no more than one host, specified as last element of the list.
+
+    url:
+        string (url-format)
+        Homepage on which the provider describes the dataset and publishes
+        contact information.
+    """
+
+    def __init__(self, name: str, description: str = None, roles: List[str] = None, url: str = None):
+        self.name = name
+        self.description = description
+        self.roles = roles
+        self.url = url
+
+
+class CollectionEntry(JsonableObject):
+    """
     title:
         string (collection_title)
         A short descriptive one-line title for the collection.
@@ -61,22 +420,46 @@ class CollectionEntry(JsonableObject):
 
     license:
         required
-        string (license)
+        string (collection_license)
         Collection's license(s) as a SPDX License identifier, SPDX expression,
         or the string proprietary if the license is not on the SPDX license list.
         Proprietary licensed data SHOULD add a link to the license text with the l
         icense relation in the links section (not as a value of this fields).
 
-        """
+    stac_version:
+        required
+        string (stac_version)
+        The STAC version the collection implements.
 
-    def __init__(self, name: str, title=None, description: str = None, license: str = None,
-                 links: EoLinks = EoLinks(links=[EoLink(href="unknown")]), extent: Extent = Extent()):
-        self.name = name
+    id:
+        required
+        string (collection_id) ^[A-Za-z0-9_\-\.~\/]+$
+        Identifier for the collection that is unique across the provider. MUST match the specified pattern.
+
+    keywords:
+        Array of strings (collection_keywords)
+        List of keywords describing the collection.
+
+    version:
+        string (collection_version)
+        Version of the collection.
+
+    """
+
+    def __init__(self, title=None, description: str = None, license: str = None,
+                 stac_version: str = None, id: str = None, version: str = None,
+                 keywords: List[str] = None, providers: CollectionProviders = CollectionProviders(),
+                 links: EoLinks = EoLinks(links=[EoLink(href="unknown")]), extent: CollectionExtent = CollectionExtent()):
         self.title = title
         self.description = description
         self.license = license
         self.extent = extent
         self.links = links
+        self.stac_version = stac_version
+        self.id = id
+        self.keywords = keywords
+        self.version = version
+        self.providers = providers
 
 
 class Collection(JsonableObject):
@@ -96,6 +479,3 @@ class CollectionInformation(CollectionEntry):
 
         self.keywords = keywords
         self.version = version
-
-
-

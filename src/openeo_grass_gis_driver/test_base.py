@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
+import base64
 import unittest
-from flask import json
 import time
+
+from flask import json
+from werkzeug.datastructures import Headers
+
 from openeo_grass_gis_driver.app import flask_api
 from openeo_grass_gis_driver.endpoints import create_endpoints
 from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
@@ -21,6 +25,11 @@ class TestBase(unittest.TestCase):
         self.app = flask_api.app.test_client()
         self.gconf = ActiniaConfig()
         self.gconf.PORT = "443"
+        self.auth = Headers()
+        auth = bytes(self.gconf.USER + ':' + self.gconf.PASSWORD, "utf-8")
+        encodeAuth = base64.b64encode(auth).decode()
+        self.auth.add('Authorization', 'Basic ' + encodeAuth)
+
 
     def wait_until_finished(self, response, http_status=200, status="finished"):
         """Poll the status of a resource and assert its finished HTTP status

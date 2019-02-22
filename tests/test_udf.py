@@ -15,14 +15,14 @@ __email__ = "soerengebbert@googlemail.com"
 class UdfTestCase(TestBase):
 
     def otest_udf(self):
-        response = self.app.get('/udf')
+        response = self.app.get('/udf', headers=self.auth)
         data = json.loads(response.data.decode())
         print(data)
 
         self.assertEqual(data, SUPPORTED_UDF)
 
     def otest_udf_lang(self):
-        response = self.app.get('/udf/python/udf_reduce_time')
+        response = self.app.get('/udf/python/udf_reduce_time', headers=self.auth)
         data = json.loads(response.data.decode())
         print(data)
 

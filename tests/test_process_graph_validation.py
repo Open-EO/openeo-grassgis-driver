@@ -16,55 +16,55 @@ class GraphValidationTestCase(TestBase):
     def test_1_graph_filter_bbox(self):
         """Run the validation test
         """
-        response = self.app.post('/validation', data=json.dumps(FILTER_BOX), content_type="application/json")
+        response = self.app.post('/validation', data=json.dumps(FILTER_BOX), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
     def test_2_graph_ndvi(self):
         """Run the validation test
         """
-        response = self.app.post('/validation', data=json.dumps(NDVI_1), content_type="application/json")
+        response = self.app.post('/validation', data=json.dumps(NDVI_1), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
     def test_3_graph_get_data_1(self):
         """Run the validation test
         """
-        response = self.app.post('/validation', data=json.dumps(GET_DATA_1), content_type="application/json")
+        response = self.app.post('/validation', data=json.dumps(GET_DATA_1), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
     def test_4_graph_get_data_3(self):
         """Run the validation test
         """
-        response = self.app.post('/validation', data=json.dumps(GET_DATA_3), content_type="application/json")
+        response = self.app.post('/validation', data=json.dumps(GET_DATA_3), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
     def test_5_graph_daterange(self):
         """Run the validation test
         """
-        response = self.app.post('/validation', data=json.dumps(DATERANGE), content_type="application/json")
+        response = self.app.post('/validation', data=json.dumps(DATERANGE), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
     def test_6_graph_zonal_statistics(self):
         """Run the validation test
         """
-        response = self.app.post('/validation', data=json.dumps(ZONAL_STATISTICS), content_type="application/json")
+        response = self.app.post('/validation', data=json.dumps(ZONAL_STATISTICS), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
     def test_7_graph_zonal_statistics_single(self):
         """Run the validation test
         """
-        response = self.app.post('/validation', data=json.dumps(ZONAL_STATISTICS_SINGLE), content_type="application/json")
+        response = self.app.post('/validation', data=json.dumps(ZONAL_STATISTICS_SINGLE), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
     def test_8_graph_ndvi_3(self):
         """Run the validation test
         """
-        response = self.app.post('/validation', data=json.dumps(NDVI_3), content_type="application/json")
+        response = self.app.post('/validation', data=json.dumps(NDVI_3), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
     def test_9_graph_raster_export(self):
         """Run the validation test
         """
-        response = self.app.post('/validation', data=json.dumps(RASTER_EXPORT), content_type="application/json")
+        response = self.app.post('/validation', data=json.dumps(RASTER_EXPORT), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
 

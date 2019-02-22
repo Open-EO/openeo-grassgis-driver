@@ -23,7 +23,7 @@ class ProcessGraphTestCase(TestBase):
 
     def setUp(self):
         TestBase.setUp(self)
-        response = self.app.delete('/process_graphs')
+        response = self.app.delete('/process_graphs', headers=self.auth)
         self.assertEqual(204, response.status_code)
 
     def test_job_creation_1(self):
@@ -32,11 +32,11 @@ class ProcessGraphTestCase(TestBase):
         PROCESS_CHAIN_TEMPLATE["process_graph"] = FILTER_BOX["process_graph"]
 
         response = self.app.post('/process_graphs', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
-                                 content_type="application/json")
+                                 content_type="application/json", headers=self.auth)
         self.assertEqual(201, response.status_code)
         process_graph_id = response.get_data().decode("utf-8")
 
-        response = self.app.get('/process_graphs')
+        response = self.app.get('/process_graphs', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))
@@ -44,7 +44,7 @@ class ProcessGraphTestCase(TestBase):
 
         self.assertEqual(process_graph_id, data["process_graphs"][0]["process_graph_id"])
 
-        response = self.app.get(f'/process_graphs/{process_graph_id}')
+        response = self.app.get(f'/process_graphs/{process_graph_id}', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))
@@ -60,11 +60,11 @@ class ProcessGraphTestCase(TestBase):
         PROCESS_CHAIN_TEMPLATE["process_graph"] = FILTER_BOX["process_graph"]
 
         response = self.app.post('/process_graphs', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
-                                 content_type="application/json")
+                                 content_type="application/json", headers=self.auth)
         self.assertEqual(201, response.status_code)
         process_graph_id = response.get_data().decode("utf-8")
 
-        response = self.app.get(f'/process_graphs/{process_graph_id}')
+        response = self.app.get(f'/process_graphs/{process_graph_id}', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))
@@ -73,13 +73,13 @@ class ProcessGraphTestCase(TestBase):
         self.assertEqual(process_graph_id, data["process_graph_id"])
         self.assertEqual(FILTER_BOX["process_graph"], data["process_graph"])
 
-        response = self.app.delete(f'/process_graphs/{process_graph_id}')
+        response = self.app.delete(f'/process_graphs/{process_graph_id}', headers=self.auth)
         self.assertEqual(204, response.status_code)
 
-        response = self.app.get(f'/process_graphs/{process_graph_id}')
+        response = self.app.get(f'/process_graphs/{process_graph_id}', headers=self.auth)
         self.assertEqual(400, response.status_code)
 
-        response = self.app.get('/process_graphs')
+        response = self.app.get('/process_graphs', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))
@@ -94,12 +94,12 @@ class ProcessGraphTestCase(TestBase):
 
         # Create graph
         response = self.app.post('/process_graphs', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
-                                 content_type="application/json")
+                                 content_type="application/json", headers=self.auth)
         self.assertEqual(201, response.status_code)
         process_graph_id = response.get_data().decode("utf-8")
 
         # Check graph
-        response = self.app.get(f'/process_graphs/{process_graph_id}')
+        response = self.app.get(f'/process_graphs/{process_graph_id}', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))
@@ -113,11 +113,11 @@ class ProcessGraphTestCase(TestBase):
 
         response = self.app.patch(f'/process_graphs/{process_graph_id}',
                                   data=json.dumps(PROCESS_CHAIN_TEMPLATE),
-                                  content_type="application/json")
+                                  content_type="application/json", headers=self.auth)
         self.assertEqual(204, response.status_code)
 
         # Check graph
-        response = self.app.get(f'/process_graphs/{process_graph_id}')
+        response = self.app.get(f'/process_graphs/{process_graph_id}', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))

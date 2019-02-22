@@ -15,21 +15,21 @@ __email__ = "soerengebbert@googlemail.com"
 class CapabilitiesTestCase(TestBase):
 
     def test_capabilities(self):
-        response = self.app.get('/')
+        response = self.app.get('/', headers=self.auth)
         print(response.data)
 
         self.assertEqual(json.loads(response.data.decode()),
                          CAPABILITIES)
 
     def test_ouput_formats(self):
-        response = self.app.get('/output_formats')
+        response = self.app.get('/output_formats', headers=self.auth)
         print(response.data)
 
         self.assertEqual(json.loads(response.data.decode()),
                          OUTPUT_FORMATS)
 
     def test_service_types(self):
-        response = self.app.get('/service_types')
+        response = self.app.get('/service_types', headers=self.auth)
         print(response.data)
 
         self.assertEqual(json.loads(response.data.decode()),

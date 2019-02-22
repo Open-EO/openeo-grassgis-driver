@@ -25,7 +25,7 @@ class PreviewTestCase(TestBase):
         """Test the filter box process
         """
         PREVIEW_TEMPLATE["process_graph"] = FILTER_BOX
-        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json")
+        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -39,7 +39,7 @@ class PreviewTestCase(TestBase):
         fbox = FILTER_BOX
         fbox["process_graph"]["imagery"]["data_id"] = "nc_spm_08.PERMANENT.raster.elevation_nonon"
         PREVIEW_TEMPLATE["process_graph"] = fbox
-        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json")
+        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -50,7 +50,7 @@ class PreviewTestCase(TestBase):
         """Test the get data process to get raster data
         """
         PREVIEW_TEMPLATE["process_graph"] = GET_DATA_1
-        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json")
+        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -61,7 +61,7 @@ class PreviewTestCase(TestBase):
         """Test the get data process to get strds data
         """
         PREVIEW_TEMPLATE["process_graph"] = GET_DATA_3
-        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json")
+        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -72,7 +72,7 @@ class PreviewTestCase(TestBase):
         """Run the daterange process
         """
         PREVIEW_TEMPLATE["process_graph"] = DATERANGE
-        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json")
+        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -83,7 +83,7 @@ class PreviewTestCase(TestBase):
         """Run the raster export process
         """
         PREVIEW_TEMPLATE["process_graph"] = RASTER_EXPORT
-        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json")
+        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -94,7 +94,7 @@ class PreviewTestCase(TestBase):
         """Run the zonal statistics process
         """
         PREVIEW_TEMPLATE["process_graph"] = ZONAL_STATISTICS_SINGLE
-        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json")
+        response = self.app.post('/preview', data=json.dumps(PREVIEW_TEMPLATE), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)

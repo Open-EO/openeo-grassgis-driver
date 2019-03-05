@@ -25,6 +25,8 @@ class ActiniaInterface(object):
         self.host = config.HOST
         self.port = config.PORT
         self.base_url = "%(host)s:%(port)s/latest" % {"host": self.host, "port": self.port}
+        self.auth = (config.USER, config.PASSWORD)
+        self.user = config.USER
 
     def set_auth(self, user: str, password: str):
         self.auth = (user, password)

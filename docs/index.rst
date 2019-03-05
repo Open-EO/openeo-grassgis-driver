@@ -72,7 +72,7 @@ An active internet connection is required. All requests to the openEO GRASS GIS 
 2. Alternatively use the docker deployment located in the **docker** directory of this repository
 
     1. Make sure the actinia deployment is reachable by the openEO GRASS GIS driver container
-    2. Deploy the openEO GRaaS docker container
+    2. Deploy the openEO GRASS GIS driver docker container
 
         .. code-block:: bash
 
@@ -93,7 +93,7 @@ An active internet connection is required. All requests to the openEO GRASS GIS 
 The openEO use cases - ATTENTION - below describes the deprecated usage of API v0.0.1
 ====================
 
-First list all available data in the GRaaS database, the list was shortened, since aver 120 raster layer are
+First list all available data in the actinia database, the list was shortened, since aver 120 raster layer are
 in the database:
 
    .. code-block:: bash
@@ -427,8 +427,8 @@ Get information about each available process:
 openEO use case 1
 =================
 
-Use case one can be addressed in different ways using the openEO GRaaS wrapper. There are **POST** and **PUT**
-calls for job creation that reflects the concept of persistent and ephemeral processing in GRaaS databases.
+Use case one can be addressed in different ways using the openEO GRASS GIS driver wrapper. There are **POST** and **PUT**
+calls for job creation that reflects the concept of persistent and ephemeral processing in actinia databases.
 
 Persistent database approach
 ----------------------------

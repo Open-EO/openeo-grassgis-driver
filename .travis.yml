@@ -1,6 +1,6 @@
 language: python
 
-python: 3.7
+python: 3.6
 
 env: SETUPTOOLS_SCM_PRETEND_VERSION=0.0.1
 

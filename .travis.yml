@@ -24,7 +24,7 @@ jobs:
     # - stage: test
     #   script: make test
     - stage: docs
-      script: cd docs && make html
+      script: cd docs && make html && touch _build/html/.nojekyll
 
 deploy:
   provider: pages

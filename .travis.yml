@@ -7,8 +7,8 @@ env: SETUPTOOLS_SCM_PRETEND_VERSION=0.0.1
 services:
   - docker
 
-before_install:
-  - docker build -t openeo-grassgis-driver docker
+# before_install:
+#   - docker build -t openeo-grassgis-driver docker
 
 install:
   - pip install -r requirements.txt
@@ -16,8 +16,8 @@ install:
 
 jobs:
   include:
-    - stage: test
-      script: make test
+    # - stage: test
+    #   script: make test
     - stage: docs
       script: cd docs && make html
 

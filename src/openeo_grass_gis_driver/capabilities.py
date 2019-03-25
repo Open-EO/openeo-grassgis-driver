@@ -31,7 +31,7 @@ CAPABILITIES = {
             ]
         },
         {
-            "path": "//collections/<string:name>",
+            "path": "/collections/{name}",
             "methods": [
                 "GET"
             ]
@@ -43,7 +43,7 @@ CAPABILITIES = {
             ]
         },
         {
-            "path": "/processes/<string:process_id>",
+            "path": "/processes/{process_id}",
             "methods": [
                 "GET"
             ]
@@ -61,7 +61,7 @@ CAPABILITIES = {
             ]
         },
         {
-            "path": "/process_graphs/<string:process_graph_id>",
+            "path": "/process_graphs/{process_graph_id}",
             "methods": [
                 "GET", "PATCH", "DELETE"
             ]
@@ -79,13 +79,13 @@ CAPABILITIES = {
             ]
         },
         {
-            "path": "/jobs/<string:job_id>",
+            "path": "/jobs/{job_id}",
             "methods": [
                 "GET", "PATCH", "DELETE"
             ]
         },
         {
-            "path": "/jobs/<string:job_id>/results",
+            "path": "/jobs/{job_id}/results",
             "methods": [
                 "GET", "POST", "DELETE"
             ]

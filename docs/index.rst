@@ -38,41 +38,20 @@ An active internet connection is required. All requests to the openEO GRASS GIS 
 
 1. Deploy the openEO GRASS GIS driver locally:
 
-    1. Create directory that should contain the code and the virtual environment and switch the environment.
-       It is preferred to run the openEO Actinia Core wrapper in a virtual python environment:
+    1. Clone the openEO GRASS GIS driver and install the required Python packages. It is preferred to run the openEO Actinia Core wrapper in a virtual python environment:
 
        .. code-block:: bash
 
-          mkdir openEO
-          cd openEO
-          virtualenv -p python3.5 venv
-          source venv/bin/activate
-       ..
-
-    2. Clone the official python based openEO reference implementation repository and install
-       the required Python packages into the virtual environment:
-
-       .. code-block:: bash
-
-          git clone https://bitbucket.org/huhabla/openeo_core.git openeo_core
-          cd openeo_core
+          git clone https://github.com/Open-EO/openeo-grassgis-driver.git
+          cd openeo-grassgis-driver
+          virtualenv -p python3 venv
+          . venv/bin/activate
           pip install -r requirements.txt
           python setup.py install
-          cd ..
+
        ..
 
-    3. After installing the official python based openEO reference implementation, the openEO GRASS GIS driver
-       must be installed, since it is based on the openEO reference implementation.
-
-       .. code-block:: bash
-
-          git clone https://github.com/Open-EO/openeo-grassgis-driver.git graas_openeo_core_wrapper
-          cd graas_openeo_core_wrapper
-          pip install -r requirements.txt
-          python setup.py install
-       ..
-
-    4. Run the openEO GRASS GIS driver test suite (openEO wrapper test):
+    2. Run the openEO GRASS GIS driver test suite:
 
        .. code-block:: bash
 
@@ -83,46 +62,38 @@ An active internet connection is required. All requests to the openEO GRASS GIS 
 
           .. image:: OpenEO_GRaaS_Wrapper_Testsuite.png
 
-    5. Run the server locally:
+    3. Run the server locally:
 
        .. code-block:: bash
 
-          python -m graas_openeo_core_wrapper.main
+          python -m openeo_grass_gis_driver.main
        ..
 
 2. Alternatively use the docker deployment located in the **docker** directory of this repository
 
-    1. Make sure the GRaaS deployment is reachable by the openEO GRASS GIS driver container
-    2. use the **build.sh** in the **docker** directory to build the image
-    3. Deploy the openEO GRaaS docker container
+    1. Make sure the actinia deployment is reachable by the openEO GRASS GIS driver container
+    2. Deploy the openEO GRASS GIS driver docker container
 
         .. code-block:: bash
 
-            cd graas_openeo_core_wrapper/docker
-            docker build -t graas_openeo_core_wrapper .
-            docker run --name=graas_wrapper -p 5000:5000 graas_openeo_core_wrapper
+            docker build -t openeo_grass_gis_driver docker
+            docker run --name=openeo_grass_gis_driver -p 5000:5000 openeo_grass_gis_driver
         ..
 
-3. Get the swagger.json API description using curl:
+3. Explore the capabilities, data and processes that are available:
 
    .. code-block:: bash
 
-      curl -X GET http://openeo.mundialis.de:5000/api/v0/swagger.json
-
-4. Explore the capabilities, data and processes that are available:
-
-   .. code-block:: bash
-
-      curl http://openeo.mundialis.de:5000/capabilities
-      curl http://openeo.mundialis.de:5000/data
-      curl http://openeo.mundialis.de:5000/processes
+      curl http://openeo.mundialis.de/api/v0.3/
+      curl http://openeo.mundialis.de/api/v0.3/collections
+      curl http://openeo.mundialis.de/api/v0.3/processes
 
 
 ====================
-The openEO use cases
+The openEO use cases - ATTENTION - below describes the deprecated usage of API v0.0.1
 ====================
 
-First list all available data in the GRaaS database, the list was shortened, since aver 120 raster layer are
+First list all available data in the actinia database, the list was shortened, since aver 120 raster layer are
 in the database:
 
    .. code-block:: bash
@@ -456,8 +427,8 @@ Get information about each available process:
 openEO use case 1
 =================
 
-Use case one can be addressed in different ways using the openEO GRaaS wrapper. There are **POST** and **PUT**
-calls for job creation that reflects the concept of persistent and ephemeral processing in GRaaS databases.
+Use case one can be addressed in different ways using the openEO GRASS GIS driver wrapper. There are **POST** and **PUT**
+calls for job creation that reflects the concept of persistent and ephemeral processing in actinia databases.
 
 Persistent database approach
 ----------------------------

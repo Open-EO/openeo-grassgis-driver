@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask import make_response, jsonify
 from flask_restful import Resource
+from flask import make_response, jsonify
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"

@@ -5,6 +5,7 @@ from flask_restful import Resource
 from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
+from openeo_grass_gis_driver.authentication import ResourceBase
 from datetime import datetime
 
 __license__ = "Apache License, Version 2.0"
@@ -14,10 +15,11 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class GraphValidation(Resource):
+class GraphValidation(ResourceBase):
 
     def __init__(self):
         self.iface = ActiniaInterface()
+        self.iface.set_auth(request.authorization.username, request.authorization.password)
 
     def post(self):
         """Run the job in an ephemeral mapset
@@ -34,8 +36,10 @@ class GraphValidation(Resource):
             result_name, process_list = process_node_to_actinia_process_chain(process_graph)
 
             if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
-                return make_response(jsonify({"description":"Processes can only be defined for a single location!"},
-                                             400))
+                msg = "Processes can only be defined for a single location!"
+                status = 400
+                es = ErrorSchema(id=str(datetime.now()), code=status, message=str(msg))
+                return make_response(es.to_json(), status)
 
             location = ActiniaInterface.PROCESS_LOCATION.keys()
             location = list(location)[0]
@@ -48,6 +52,7 @@ class GraphValidation(Resource):
             status, response = self.iface.sync_ephemeral_processing_validation(location=location,
                                                                                process_chain=process_chain)
             pprint(response)
+
 
             if status == 200:
                 return make_response("", 204)

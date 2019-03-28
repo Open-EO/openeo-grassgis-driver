@@ -6,7 +6,6 @@ SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build
-AUTODOCDIR    = api
 AUTODOCBUILD  = sphinx-apidoc
 PROJECT       = graas_openeo_core_wrapper
 MODULEDIR     = ../src/graas_openeo_core_wrapper

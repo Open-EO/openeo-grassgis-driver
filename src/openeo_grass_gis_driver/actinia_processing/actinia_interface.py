@@ -28,6 +28,10 @@ class ActiniaInterface(object):
         self.auth = (config.USER, config.PASSWORD)
         self.user = config.USER
 
+    def set_auth(self, user: str, password: str):
+        self.auth = (user, password)
+        self.user = user
+
     @staticmethod
     def layer_def_to_components(layer: str) -> Tuple[Optional[str], Optional[str], Optional[str], str]:
         """Convert the name of a layer in the openeo framework into GRASS GIS definitions
@@ -127,6 +131,17 @@ class ActiniaInterface(object):
             data = r.json()
         except:
             pass
+
+        return r.status_code, data
+
+    def list_locations(self) -> Tuple[int, dict]:
+        url = "%(base)s/locations" % {"base": self.base_url}
+        r = requests.get(url=url, auth=self.auth)
+        data = r.text
+
+        if r.status_code == 200:
+            ret = r.json()
+            data = ret["locations"]
 
         return r.status_code, data
 

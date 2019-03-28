@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask import make_response, jsonify
 from flask_restful import Resource
+from flask import make_response, jsonify, request
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.collection_schemas import CollectionInformation, Extent, EoLinks
 from osgeo import osr, ogr

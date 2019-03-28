@@ -72,4 +72,3 @@ class EoLinks(JsonableObject):
 
     def __init__(self, links: List[EoLink]):
         self.links = links
-

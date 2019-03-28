@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask import make_response, jsonify
 from flask_restful import Resource
+from flask import make_response, jsonify
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -33,7 +33,7 @@ CAPABILITIES = {
             ]
         },
         {
-            "path": "//collections/<string:name>",
+            "path": "/collections/{collection_id}",
             "methods": [
                 "GET"
             ]
@@ -45,7 +45,7 @@ CAPABILITIES = {
             ]
         },
         {
-            "path": "/processes/<string:process_id>",
+            "path": "/processes/{process_id}",
             "methods": [
                 "GET"
             ]
@@ -63,7 +63,7 @@ CAPABILITIES = {
             ]
         },
         {
-            "path": "/process_graphs/<string:process_graph_id>",
+            "path": "/process_graphs/{process_graph_id}",
             "methods": [
                 "GET", "PATCH", "DELETE"
             ]
@@ -81,13 +81,13 @@ CAPABILITIES = {
             ]
         },
         {
-            "path": "/jobs/<string:job_id>",
+            "path": "/jobs/{job_id}",
             "methods": [
                 "GET", "PATCH", "DELETE"
             ]
         },
         {
-            "path": "/jobs/<string:job_id>/results",
+            "path": "/jobs/{job_id}/results",
             "methods": [
                 "GET", "POST", "DELETE"
             ]

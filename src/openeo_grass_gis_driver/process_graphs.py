@@ -4,11 +4,11 @@ import traceback
 import sys
 from datetime import datetime
 from flask import make_response, jsonify, request
-from flask_restful import Resource
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.process_graph_schemas import ProcessGraphListEntry, ProcessGraphList
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
+from openeo_grass_gis_driver.authentication import ResourceBase
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -17,11 +17,12 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class ProcessGraphs(Resource):
+class ProcessGraphs(ResourceBase):
     """The /jobs endpoint implementation"""
 
     def __init__(self):
         self.iface = ActiniaInterface()
+        self.iface.set_auth(request.authorization.username, request.authorization.password)
         self.graph_db = GraphDB()
 
     def get(self):

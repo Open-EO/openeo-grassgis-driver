@@ -73,3 +73,21 @@ class EoLinks(JsonableObject):
     def __init__(self, links: List[EoLink]):
         self.links = links
 
+
+class ListLinks(JsonableObject):
+    """Additional links related to this list of resources.
+    Could reference to alternative formats such as a
+    rendered HTML version. The links could also be used for
+    pagination using the [rel types]
+    (https://www.iana.org/assignments/link-relations/link-relations.xhtml)
+    `first`, `prev`, `next` and `last`. Pagination is
+    currently OPTIONAL and clients may not support it.
+    Therefore it MUST be implemented in a way that clients
+    not supporting pagination get all resources regardless.
+
+    links: A list of EoLink's
+
+    """
+
+    def __init__(self, links: List[EoLink]):
+        self.links = links

@@ -55,7 +55,7 @@ def create_process_description():
                     raster_vector_example=raster_vector_example,
                     strds_example=strds_example)
 
-    pd = ProcessDescription(name=PROCESS_NAME,
+    pd = ProcessDescription(id=PROCESS_NAME,
                             description="This process returns a raster-, a vector- or a space-time raster "
                                         "datasets that is available in the /collections endpoint.",
                             summary="Returns a single dataset that is available in "

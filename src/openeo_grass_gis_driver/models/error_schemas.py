@@ -2,7 +2,7 @@
 """This file includes all required openEO response schemas
 """
 from typing import List, Tuple, Optional, Dict
-from openeo_grass_gis_driver.schema_base import JsonableObject, EoLinks
+from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
@@ -51,8 +51,8 @@ class ErrorSchema(JsonableObject):
         e-mail address.
     """
 
-    def __init__(self, id: str = None, code: int, message: str,
-                 links: List[Optional[EoLinks]] = list()):
+    def __init__(self, code: int, message: str,
+                 links: List[Optional[EoLinks]] = list(), id: str = None):
 
         # Standardized status codes: https://open-eo.github.io/openeo-api/v/0.4.0/errors/index.html
         standardized_status_codes = {

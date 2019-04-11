@@ -4,9 +4,9 @@
 from flask import make_response
 import re
 from typing import List, Tuple, Optional, Dict
-from openeo_grass_gis_driver.schema_base import JsonableObject, EoLinks
-from openeo_grass_gis_driver.process_graph_schemas import ProcessGraph
-from openeo_grass_gis_driver.error_schemas import ErrorSchema
+from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
+from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
@@ -131,15 +131,69 @@ class ProcessException(JsonableObject):
         self.http = http
 
 
-class ProcessArguments(JsonableObject):
-    # TODO please check if it is correct
-    """
-    Process Arguments
+# # TODO please check if it is correct
+# class ProcessArgumentValue(JsonableObject):
+#     """
+#     Process Argument Value (process_argument_value")
+#     Arguments for a process. See the API documentation for more information.
+#
+#     one of:
+#         string
+#         number: "Number (incl. integers)"
+#         boolean
+#         object: Data that is expected to be passed from another process.
+#             from_node
+#                 required
+#                 string
+#                 The ID of the node that data is expected to come from.
+#         object: Data that is expected to be passed to a callback from a calling process.
+#             from_argument
+#                 required
+#                 string
+#                 The name of the parameter that is made available to a callback by a calling process
+#         object: Process graph to be executed as callback from withing the process.
+#             callback
+#                 required
+#                 (process_graph)
+#         array
+#             (process_argument_value")
+#
+#         variable
+#             (variable)
+#
+#     """
+#
+#     def __init__(self, value):
+#         NumberTypes = (types.IntType, types.LongType, types.FloatType, types.ComplexType)
+#         # if (not (isinstance(value, list) and isinstance(value[0]), ProcessArgumentValue())     and
+#         if  (not isinstance(value, str) # string
+#                 and not isinstance(value, (int, float, complex)) # number
+#                 and not isinstance(value, bool) # boolean
+#                 and not instance(value, Variable)
+#                 and (isinstance(value, object)
+#                 and (
+#                 not hasattr(value, 'from_node')
+#                 and not hasattr(value, 'from_argument')
+#                 and not hasattr(value, 'callback')))):
+#
+#             es = ErrorSchema(id=str(datetime.now()), code=400,
+#                 message="A string, number, boolean, array of process argument values or an object with from_node, from_argument or callback attribute have to be set.")
+#             return make_response(es.to_json(), 400)
+#         self.value = value
+#
+#
+# # TODO please check if it is correct
+# class ProcessArguments(JsonableObject):
+#     """
+#     Process Arguments
+#
+#     (process_argument_value)
+#     """
+#
+#     def __init__(self, arguments: List[ProcessArgumentValue] = None):
+#
+#         self.arguments = arguments
 
-    (process_argument_value)
-    """
-    def __init__(self, arguments: List(ProcessArgumentValue) = None):
-        self.arguments = arguments
 
 class Variable(JsonableObject):
     """ Process graphs can hold a variable, which can be filled in later.
@@ -178,8 +232,8 @@ class Variable(JsonableObject):
         oneOf: "string", "number", "array", "boolean", "object", (process_graph)
 
     """
-    def __init__(self, variable_id:  str, type: str = None,
-            description: str = None, default):
+    def __init__(self, variable_id: str, default, type: str = None,
+            description: str = None):
 
         pattern = "^[a-z0-9_]+$"
         x = re.search(pattern, variable_id)
@@ -190,65 +244,15 @@ class Variable(JsonableObject):
         self.variable_id = variable_id
         self.type = type
         self.description = description
-        if not isinstance(default, str)
+        if (not isinstance(default, str)
                 and not isinstance(default, (int, float, complex))
                 and not isinstance(default, list)
                 and not isinstance(default, bool)
                 and not isinstance(default, object)
-                and not isinstance(default, ProcessGraph):
+                and not isinstance(default, ProcessGraph)):
             es = ErrorSchema(id=str(datetime.now()), code=400,
                 message="The default values MUST be from type \"string\", \"number\", \"array\", \"boolean\", \"object\", \"process_graph\"")
             return make_response(es.to_json(), 400)
-
-
-class ProcessArgumentValue(JsonableObject):
-    # TODO please check if it is correct
-    """
-    Process Argument Value (process_argument_value")
-    Arguments for a process. See the API documentation for more information.
-
-    one of:
-        string
-        number: "Number (incl. integers)"
-        boolean
-        object: Data that is expected to be passed from another process.
-            from_node
-                required
-                string
-                The ID of the node that data is expected to come from.
-        object: Data that is expected to be passed to a callback from a calling process.
-            from_argument
-                required
-                string
-                The name of the parameter that is made available to a callback by a calling process
-        object: Process graph to be executed as callback from withing the process.
-            callback
-                required
-                (process_graph)
-        array
-            (process_argument_value")
-
-        variable
-            (variable)
-
-    """
-
-    def __init__(self, value):
-        NumberTypes = (types.IntType, types.LongType, types.FloatType, types.ComplexType)
-        if not (isinstance(value, list) and isinstance(value[0]), ProcessArgumentValue())
-            and not isinstance(value, str) # string
-            and not isinstance(value, (int, float, complex)) # number
-            and not isinstance(value, bool) # boolean
-            and not instance(value, Variable)
-            and (isinstance(value, object) and
-            (not hasattr(value, 'from_node')
-            and not hasattr(value, 'from_argument')
-            and not hasattr(value, 'callback')):
-
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="A string, number, boolean, array of process argument values or an object with from_node, from_argument or callback attribute have to be set.")
-            return make_response(es.to_json(), 400)
-        self.value = value
 
 
 class ProcessExample(JsonableObject):
@@ -277,10 +281,9 @@ class ProcessExample(JsonableObject):
     returns: { }
     """
 
-    def __init__(self, title: str = None, description: str = None,
-        process_graph: ProcessGraph = None,
-        arguments, # TODO
-        returns):
+    def __init__(self, arguments: List, returns,
+            title: str = None, description: str = None,
+            process_graph: ProcessGraph = None):
 
         self.title = title
         self.description = description
@@ -379,7 +382,7 @@ class ProcessDescription(JsonableObject):
                  deprecated: bool = False,
                  experimental: bool = False,
                  exceptions: Optional[Dict[str, ProcessException]] = None,
-                 examples: ProcessArguments = None,
+                 examples: List = None,
                  categories: List[str] = None,
                  parameter_order: List[str] = None):
 

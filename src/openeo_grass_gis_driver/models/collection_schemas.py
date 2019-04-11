@@ -4,8 +4,9 @@
 from typing import List, Tuple, Optional
 from flask import make_response
 import re
-from openeo_grass_gis_driver.schema_base import JsonableObject, EoLinks, EoLink
-from openeo_grass_gis_driver.error_schemas import ErrorSchema
+from datetime import datetime
+from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks, EoLink
+from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
 __author__ = "Sören Gebbert, Anika Bettge"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
@@ -42,7 +43,8 @@ class CollectionExtent(JsonableObject):
 
     """
 
-    def __init__(self, spatial: Tuple[float, float, float, float]],
+    def __init__(self,
+                 spatial: Tuple[float, float, float, float],
                  temporal: Tuple[str, Optional[str]]):
 
         self.spatial = spatial # TODO maxItems: 6
@@ -116,7 +118,7 @@ class EOBands(JsonableObject):
             self, name: str = None, common_name: str = None, gsd: float = None,
             accuracy: float = None, center_wavelength: float = None,
             full_width_half_max: float = None, offset: float = 0,
-            unit: str = None, nodata: List[int], periodicity: str = None,
+            unit: str = None, nodata: List[int] = None, periodicity: str = None,
             scale: int = 1, description: Optional[str] = None):
         self.name = name
         self.common_name = common_name
@@ -473,14 +475,16 @@ class CollectionProviders(JsonableObject):
         contact information.
     """
 
-    def __init__(self, name: str, description: str = None, roles: List[str] = None, url: str = None):
+    def __init__(self, name: str, description: str = None,
+            roles: List[str] = None, url: str = None):
         self.name = name
         self.description = description
-        for role in roles:
-            if role not in ["producer", "licensor", "processor", "host"]:
-                es = ErrorSchema(id=str(datetime.now()), code=400,
-                    message="The provider's role(s) can be one or more of the following elements: producer, licensor, processor, host")
-                return make_response(es.to_json(), 400)
+        if roles:
+            for role in roles:
+                if role not in ["producer", "licensor", "processor", "host"]:
+                    es = ErrorSchema(id=str(datetime.now()), code=400,
+                        message="The provider's role(s) can be one or more of the following elements: producer, licensor, processor, host")
+                    return make_response(es.to_json(), 400)
         self.roles = roles
         self.url = url
 
@@ -545,12 +549,12 @@ class CollectionEntry(JsonableObject):
         information or a preview image.
     """
     # TODO provider not required
-    def __init__(self, title=None, description: str = None, license: str = None,
-                 stac_version: str = None, id: str = None, version: str = None,
-                 keywords: List[str] = None,
-                 providers: CollectionProviders = CollectionProviders(),
+    def __init__(self, providers: CollectionProviders = CollectionProviders("default"),
                  links: EoLinks = EoLinks(links=[EoLink(href="unknown")]),
-                 extent: CollectionExtent = CollectionExtent()):
+                 extent: CollectionExtent = CollectionExtent([0,0,0,0], str(datetime.now())),
+                 title: str = None, description: str = None, license: str = None,
+                 stac_version: str = None, id: str = None, version: str = None,
+                 keywords: List[str] = None):
         self.title = title
         self.description = description
         self.license = license

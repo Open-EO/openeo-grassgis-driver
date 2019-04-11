@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from random import randint
-from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
 from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
@@ -56,7 +56,7 @@ def create_process_description():
             "height_res": 1
         }})
 
-    pd = ProcessDescription(name=PROCESS_NAME,
+    pd = ProcessDescription(id=PROCESS_NAME,
                             description="Drops observations from raster data or raster time series data "
                                         " that are located outside of a given bounding box.",
                             summary="Filter raster based data by bounding box",

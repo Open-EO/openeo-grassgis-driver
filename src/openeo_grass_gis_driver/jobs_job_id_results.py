@@ -8,8 +8,8 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import Actinia
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.actinia_processing.actinia_job_db import ActiniaJobDB
-from openeo_grass_gis_driver.error_schemas import ErrorSchema
-from openeo_grass_gis_driver.job_schemas import JobInformation
+from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
+from openeo_grass_gis_driver.models.job_schemas import JobInformation
 from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain
 
 __license__ = "Apache License, Version 2.0"

@@ -2,8 +2,8 @@
 """This file includes all required openEO response schemas
 """
 from typing import List, Optional, Dict
-from .schema_base import JsonableObject, EoLinks
-from .process_graph_schemas import ProcessGraph
+from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
@@ -145,8 +145,8 @@ class JobError(JsonableObject):
         e-mail address.
     """
 
-    def __init__(self, id: str = None, code: int, message: str,
-                 links: List[Optional[EoLinks]] = list()):
+    def __init__(self, code: int, message: str,
+                 links: List[Optional[EoLinks]] = list(), id: str = None):
 
         # Standardized status codes: https://open-eo.github.io/openeo-api/v/0.4.0/errors/index.html
         standardized_status_codes = {
@@ -228,11 +228,11 @@ class JobInformation(JsonableObject):
         to null means there is no specified budget.
     """
 
-    def __init__(self, job_id: str, title: str = None,
+    def __init__(self, job_id: str, submitted: str,
+                 process_graph: ProcessGraph, title: str = None,
                  description: str = None, status: str = "submitted",
-                 process_graph: ProcessGraph,
                  # output: Optional[OutputFormat],
-                 submitted: str, updated: Optional[str] = None,
+                 updated: Optional[str] = None,
                  plan: str = None, cost: float=None, budget: float = None):
         # Test id
         pattern = "^[A-Za-z0-9_\-\.~]+$"

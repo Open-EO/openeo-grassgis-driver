@@ -49,7 +49,7 @@ def create_process_description():
 
     examples = dict(simple_example=simple_example)
 
-    pd = ProcessDescription(name=PROCESS_NAME,
+    pd = ProcessDescription(id=PROCESS_NAME,
                             description="Compute the NDVI based on the red and nir bands of the input datasets.",
                             summary="Compute the NDVI based on the red and nir bands of the input datasets.",
                             parameters={"imagery":p_imagery, "red": p_red, "nir": p_nir},

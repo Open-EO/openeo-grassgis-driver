@@ -2,8 +2,8 @@
 """This file includes all required openEO response schemas
 """
 from typing import List, Optional, Dict
-from .schema_base import JsonableObject, EoLinks
-from .process_graph_schemas import ProcessGraphNode
+from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode
 
 __author__ = "Anika Bettge"
 __copyright__ = "Copyright 2018, mundialis"
@@ -110,11 +110,13 @@ class Service(JsonableObject):
         no specified budget.
 
     """
-    
-    def __init__(self, title: str = None, description: str = None,
-            process_graph = ProcessGraphNode, url: str,
-            type: str, enabled: bool = True, parameters: Dict,
+
+    def __init__(self,
+            process_graph: ProcessGraphNode,
+            url: str, type: str, parameters: Dict,
             attributes: Dict, submitted: str = None,
+            title: str = None, description: str = None,
+            enabled: bool = True,
             plan: str = None, costs: float = None, budget: float = None):
 
         self.title = title

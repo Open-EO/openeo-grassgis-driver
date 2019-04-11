@@ -2,8 +2,8 @@
 """This file includes all required openEO response schemas
 """
 from typing import List, Tuple, Optional, Dict
-from openeo_grass_gis_driver.schema_base import JsonableObject, EoLinks, EoLink
-from openeo_grass_gis_driver.process_schemas import ProcessArguments
+from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks, EoLink
+
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
@@ -37,8 +37,9 @@ class ProcessGraphNode(JsonableObject):
 }
     """
 
-    def __init__(self, process_id: str, description: str = None,
-        arguments: ProcessArguments, result: bool = False):
+    def __init__(self, process_id: str,
+                        arguments: List,
+                        description: str = None, result: bool = False):
 
         # ID in pattern
         pattern = "^[A-Za-z0-9_]+$"
@@ -49,7 +50,7 @@ class ProcessGraphNode(JsonableObject):
             return make_response(es.to_json(), 400)
         self.process_id = process_id
         self.description = description
-        self.arguments = arguments
+        # self.arguments = arguments
         self.result = result
 
 
@@ -76,8 +77,8 @@ class ProcessGraph(JsonableObject):
 
     """
 
-    def __init__(self, title: str = None, description: str = None,
-            process_graph: Dict[str, ProcessGraphNode]):
+    def __init__(self, process_graph: Dict[str, ProcessGraphNode],
+                    title: str = None, description: str = None):
 
         self.title = title
         self.description = description
@@ -106,7 +107,7 @@ class ProcessGraphListEntry(JsonableObject):
 
     """
 
-    def __init__(self, title: str = None, description: str = None, id: str):
+    def __init__(self, id: str, title: str = None, description: str = None):
 
         self.title = title
         self.description = description

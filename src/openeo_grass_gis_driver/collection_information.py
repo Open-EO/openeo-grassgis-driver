@@ -2,7 +2,7 @@
 from flask import make_response, jsonify
 from flask_restful import Resource
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
-from openeo_grass_gis_driver.collection_schemas import CollectionInformation, Extent, EoLinks
+from openeo_grass_gis_driver.models.collection_schemas import CollectionInformation, Extent, EoLinks
 from osgeo import osr, ogr
 
 __license__ = "Apache License, Version 2.0"

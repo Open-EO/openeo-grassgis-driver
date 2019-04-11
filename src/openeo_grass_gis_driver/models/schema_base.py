@@ -85,7 +85,8 @@ class EoLink(JsonableObject):
 
     """
 
-    def __init__(self, href: str, title: Optional[str] = None, rel: Optional[str] = None, type_: Optional[str] = None):
+    def __init__(self, href: str, title: Optional[str] = None,
+            rel: Optional[str] = None, type_: Optional[str] = None):
         self.href = href
         self.title = title
         self.rel = rel

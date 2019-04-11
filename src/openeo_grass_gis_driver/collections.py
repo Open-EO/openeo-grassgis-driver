@@ -39,7 +39,7 @@ class Collections(Resource):
 
                 for entry in strds_data:
                     strds_id = "%s.%s.strds.%s" % (location, mapset, entry)
-                    ds = CollectionEntry(name=strds_id,
+                    ds = CollectionEntry(id=strds_id,
                                          title="Space time raster dataset",
                                          license="unknown",
                                          description="Space time raster dataset GRASS GIS location/mapset path: /%s/%s" % (location, mapset))
@@ -53,7 +53,7 @@ class Collections(Resource):
 
                 for entry in raster_data:
                     raster_id = "%s.%s.raster.%s" % (location, mapset, entry)
-                    ds = CollectionEntry(name=raster_id,
+                    ds = CollectionEntry(id=raster_id,
                                          title="Raster dataset",
                                          license="unknown",
                                          description="Raster dataset GRASS GIS location/mapset path: /%s/%s" % (location, mapset))
@@ -67,7 +67,7 @@ class Collections(Resource):
 
                 for entry in vector_data:
                     vector_id = "%s.%s.vector.%s" % (location, mapset, entry)
-                    ds = CollectionEntry(name=vector_id,
+                    ds = CollectionEntry(id=vector_id,
                                          title="Vector dataset",
                                          license="unknown",
                                          description="Raster Vector GRASS GIS location/mapset path: /%s/%s" % (

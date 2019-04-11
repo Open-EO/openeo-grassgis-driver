@@ -141,6 +141,65 @@ class ProcessArguments(JsonableObject):
     def __init__(self, arguments: List(ProcessArgumentValue) = None):
         self.arguments = arguments
 
+class Variable(JsonableObject):
+    """ Process graphs can hold a variable, which can be filled in later.
+    For shared process graphs this can be useful to make them more portable,
+    e.g in case a back-end specific product name would be stored with the
+    process graph. If a process graph with a variable is about to be executed
+    and neither a value nor a default value is specified, the back-end MUST
+    reject the request with an error of type `VariableValueMissing`.
+    The values are usually defined when loading the process graph with the
+    `run_process_graph` process. Invalid variable types MUST be rejected with
+    error `VariableTypeInvalid`. If the default value is not compatible to
+    the specified type an `VariableDefaultValueTypeInvalid` error MUST be sent.
+    Invalid variable ids MUST be rejected with error `VariableIdInvalid`.
+
+    variable_id:
+        string
+        The name of the variable. Can be any valid JSON key, but it is
+        RECOMMENDED to use snake case and limit the characters to
+        `a-z`, `0-9` and `_`.
+
+    type:
+        string
+        The value for type is the expected data type for the content of the
+        variable. `null` is allowed for all types.
+        enum: "string", "number", "integer", "boolean", "array", "object"
+        default: "string"
+
+    description:
+        string (description)Detailed description to fully explain the entity.
+        CommonMark 0.28 syntax MAY be used for rich text representation.
+
+    default:
+        Whenever no value for the variable is defined, the default value
+        is used.
+        nullable: true,
+        oneOf: "string", "number", "array", "boolean", "object", (process_graph)
+
+    """
+    def __init__(self, variable_id:  str, type: str = None,
+            description: str = None, default):
+
+        pattern = "^[a-z0-9_]+$"
+        x = re.search(pattern, variable_id)
+        if not x:
+            es = ErrorSchema(id=str(datetime.now()), code=400,
+                message="The variable_id MUST match the following pattern: %s" % pattern)
+            return make_response(es.to_json(), 400)
+        self.variable_id = variable_id
+        self.type = type
+        self.description = description
+        if not isinstance(default, str)
+                and not isinstance(default, (int, float, complex))
+                and not isinstance(default, list)
+                and not isinstance(default, bool)
+                and not isinstance(default, object)
+                and not isinstance(default, ProcessGraph):
+            es = ErrorSchema(id=str(datetime.now()), code=400,
+                message="The default values MUST be from type \"string\", \"number\", \"array\", \"boolean\", \"object\", \"process_graph\"")
+            return make_response(es.to_json(), 400)
+
 
 class ProcessArgumentValue(JsonableObject):
     # TODO please check if it is correct
@@ -169,6 +228,9 @@ class ProcessArgumentValue(JsonableObject):
         array
             (process_argument_value")
 
+        variable
+            (variable)
+
     """
 
     def __init__(self, value):
@@ -177,6 +239,7 @@ class ProcessArgumentValue(JsonableObject):
             and not isinstance(value, str) # string
             and not isinstance(value, (int, float, complex)) # number
             and not isinstance(value, bool) # boolean
+            and not instance(value, Variable)
             and (isinstance(value, object) and
             (not hasattr(value, 'from_node')
             and not hasattr(value, 'from_argument')

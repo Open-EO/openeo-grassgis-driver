@@ -11,15 +11,97 @@ __maintainer__ = "Sören Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class OutputFormat(JsonableObject):
-    """Information about the output format
 
-    https://open-eo.github.io/openeo-api/v/0.3.0/apireference/#tag/Job-Management/paths/~1jobs~1{job_id}/get
+class Argument(JsonableObject):
+    """	Describes a general argument for various entities.
+
+    description:
+        required
+        string
+        A brief description of the argument.
+
+    required:
+        boolean
+        Determines whether this argument is mandatory.
+        default: false
+
+    default:
+        any
+        The default value represents what would be assumed by the consumer
+        of the input as the value of the argument if none is provided.
+        The value MUST conform to the defined type for the argument defined
+        at the same level. For example, if type is string, then default can
+        be "foo" but cannot be 1.
+
+    minimum:
+        number
+        Minimum value allowed for numeric arguments.
+
+    maximum:
+        number
+        Maximum value allowed for numeric arguments.
+
+    enum:
+        array of any
+        List of allowed values for this argument. To represent examples that
+        cannot be naturally represented in JSON, a string value can be used
+        to contain the example with escaping where necessary.
+            items: A single value allowed for this argument.
+
+    example:
+        any
+        A free-form property to include an example for this argument.
+        To represent examples that cannot be naturally represented in JSON,
+        a string value can be used to contain the example with escaping
+        where necessary.
+
+"""
+    def __init__(self, description: str, required: bool = False,
+            default = None, enum: List = None, example = None):
+
+        self.description = description
+        self.required = required
+        self.default = default
+        if not isinstance(minimum, (int, float, complex)):
+            es = ErrorSchema(id=str(datetime.now()), code=400,
+                message="The minimum MUST be a number")
+        self.minimum = minimum
+        if not isinstance(maximum, (int, float, complex)):
+            es = ErrorSchema(id=str(datetime.now()), code=400,
+                message="The maximum MUST be a number")
+        self.maximum = maximum
+        self.enum = enum
+        self.example = example
+
+
+class OutputFormat(JsonableObject):
+    """Describes a specific output format. The key of the entry is
+    the output format name.
+    https://open-eo.github.io/openeo-api/v/0.4.0/apireference/#tag/Batch-Job-Management/paths/~1output_formats/get
+
+    gis_data_types:
+        required
+        Array of string
+        Items Enum:"raster" "vector" "table" "other"
+        Specifies the supported GIS spatial data type for this format.
+
+    parameters:
+        object (Output Format Parameters)
+        Specifies the supported parameters for this output format.
+
+    links:
+        Array of object (Link)
+        Additional links related to this output format, e.g. more
+        information about the parameters.
+
     """
 
-    def __init__(self, format: str, parameters: Dict[str, str]):
+    def __init__(self, gis_data_types: List[str],
+            links: List[Optional[EoLinks]] = None,
+            parameters: List[Argument] = None):
 
-        self.format = format
+        self.gis_data_types = gis_data_types
+        self.links = links
         self.parameters = parameters
 
 

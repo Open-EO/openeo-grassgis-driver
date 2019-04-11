@@ -579,64 +579,45 @@ class Collection(JsonableObject):
         self.links = links
 
 # TODO !!!
-# collection_band_description: {
-# description: "Description to fully explain the band, should include processing information. [CommonMark 0.28](http://commonmark.org/) syntax MAY be used for rich text representation.",
-# type: "string"
-# },
+# collection_band_description:
+#     string
+#     Description to fully explain the band, should include processing information.
+#     CommonMark 0.28syntax MAY be used for rich text representation.",
 #
-# collection_dimension_type_spatial: {
-# description: "Type of the dimension, always `spatial`.",
-# type: "string",
-# enum: [
-# "spatial"
-# ]
-# },
-# collection_dimension_extent_open: {
-# description: "If the dimension consists of [ordinal](https://en.wikipedia.org/wiki/Level_of_measurement#Ordinal_scale) values, the extent (lower and upper bounds) of the values as two-dimensional array. Use `null` for open intervals.",
-# type: "array",
-# minItems: 2,
-# maxItems: 2,
-# items: {
-# type: "number",
-# nullable: true
-# }
-# },
-# collection_dimension_values: {
-# description: "A set of all potential values, especially useful for [nominal](https://en.wikipedia.org/wiki/Level_of_measurement#Nominal_level) values. **Important:** The order of the values MUST be exactly how the dimension values are also ordered in the data (cube). If the values specify band names, the values MUST be in the same order as they are in the corresponding band fields (i.e. `eo:bands` or `sar:bands`).",
-# type: "array",
-# minItems: 1,
-# items: {
-# oneOf: [
-# {
-# type: "number"
-# },
-# {
-# type: "string"
-# }
-# ]
-# }
-# },
-# collection_dimension_step: {
-# description: "If the dimension consists of [interval](https://en.wikipedia.org/wiki/Level_of_measurement#Interval_scale) values, the space between the values. Use `null` for irregularly spaced steps.",
-# type: "number",
-# nullable: true
-# },
-# collection_dimension_unit: {
-# description: "The unit of measurement for the data, preferably the symbols from [SI](https://physics.nist.gov/cuu/Units/units.html) or [UDUNITS](https://ncics.org/portfolio/other-resources/udunits2/).",
-# type: "string"
-# },
-# collection_dimension_reference_system_spatial: {
-# description: "The spatial reference system for the data, specified as [EPSG code](http://www.epsg-registry.org/) or [PROJ definition](https://proj4.org/operations/projections/index.html). Defaults to EPSG code 4326.",
-# oneOf: [
-# {
-# type: "string"
-# },
-# {
-# type: "number",
-# default: 4326
-# }
-# ]
-# },
+#
+# collection_dimension_type_spatial:
+#     string
+#     Type of the dimension, always `spatial`.
+#     enum: ["spatial"]
+#
+# collection_dimension_extent_open:
+#     array of numbers (minItems: 2, maxItems: 2)
+#     If the dimension consists of ordinal values, the extent
+#     (lower and upper bounds) of the values as two-dimensional array.
+#     Use `null` for open intervals.
+#
+# collection_dimension_values:
+#     array (number/string) (minItems: 1)
+#     A set of all potential values, especially useful for nominal values.
+#     Important: The order of the values MUST be exactly how the dimension
+#     values are also ordered in the data (cube). If the values specify band
+#     names, the values MUST be in the same order as they are in the
+#     corresponding band fields (i.e. `eo:bands` or `sar:bands`).
+#
+# collection_dimension_step:
+#     number
+#     If the dimension consists of interval values, the space between the values.
+#     Use `null` for irregularly spaced steps.
+#
+# collection_dimension_unit:
+#     string
+#     The unit of measurement for the data, preferably the symbols from SI
+#     or UDUNITS.
+#
+# collection_dimension_reference_system_spatial:
+#     string odr number
+#     The spatial reference system for the data, specified as EPSG code.
+#     Defaults to EPSG code 4326.
 
 
 class CollectionInformation(CollectionEntry):

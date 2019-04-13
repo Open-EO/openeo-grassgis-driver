@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT, \
+    PROCESS_DESCRIPTION_DICT, ProcessNode
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -15,13 +16,9 @@ PROCESS_NAME = "get_data"
 
 
 def create_process_description():
-    p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
-                                      "or space-time raster dataset",
-                          schema={"type": "object", "format": "eodata"},
-                          required=False)
 
-    p_data_id = Parameter(description="The identifier of a single raster-, vector- or space-time raster dataset",
-                          schema={"type": "string",
+    p_data = Parameter(description="The identifier of a single raster-, vector- or space-time raster dataset",
+                        schema={"type": "string",
                                   "examples": ["nc_spm_08.landsat.raster.lsat5_1987_10",
                                                "nc_spm_08.PERMANENT.vector.lakes",
                                                "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]},
@@ -31,23 +28,41 @@ def create_process_description():
                      schema={"type": "object", "format": "eodata"})
 
     simple_example = {
-        "process_id": PROCESS_NAME,
-        "data_id": "nc_spm_08.PERMANENT.vector.lakes",
+        "get_elevation_data": {
+            "process_id": PROCESS_NAME,
+            "arguments": {
+                "data": {
+                    "name": "nc_spm_08.PERMANENT.raster.elevation"
+                }
+            }
+        }
     }
     raster_vector_example = {
-        "process_id": PROCESS_NAME,
-        "data_id": "nc_spm_08.landsat.raster.lsat5_1987_10",
-        "imagery": {
-            "process_id": "get_data",
-            "data_id": "nc_spm_08.PERMANENT.vector.lakes"
+        "get_lakes_data": {
+            "process_id": PROCESS_NAME,
+            "arguments": {
+                "data": {
+                    "name": "nc_spm_08.PERMANENT.vector.lakes"
+                }
+            }
+        },
+        "get_elevation_data": {
+            "process_id": PROCESS_NAME,
+            "arguments": {
+                "data": {
+                    "name": "nc_spm_08.PERMANENT.raster.elevation"
+                }
+            }
         }
     }
     strds_example = {
-        "process_id": PROCESS_NAME,
-        "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly",
-        "imagery": {
-            "process_id": "get_data",
-            "data_id": "ECAD.PERMANENT.strds.precipitation_1950_2017_yearly"
+        "get_strds_data": {
+            "process_id": PROCESS_NAME,
+            "arguments": {
+                "data": {
+                    "name": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
+                }
+            }
         }
     }
 
@@ -60,7 +75,7 @@ def create_process_description():
                                         "datasets that is available in the /collections endpoint.",
                             summary="Returns a single dataset that is available in "
                                     "the /collections endpoint for processing",
-                            parameters={"imagery": p_imagery, "data_id": p_data_id},
+                            parameters={"data": p_data},
                             returns=rv,
                             examples=examples)
 
@@ -109,23 +124,23 @@ def create_process_chain_entry(input_name):
     return pc
 
 
-def get_process_list(process):
+def get_process_list(node: ProcessNode):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
 
-    :param process: The process description
+    :param node: The process node
     :return: (output_names, actinia_process_list)
     """
 
-    input_names, process_list = process_node_to_actinia_process_chain(process)
+    input_names, process_list = process_node_to_actinia_process_chain(node)
     output_names = []
 
-    # First analyse the data entrie
-    if "data_id" not in process:
+    # First analyse the data entry
+    if "data_id" not in node.arguments:
         raise Exception("Process %s requires parameter <data_id>" % PROCESS_NAME)
 
-    output_names.append(process["data_id"])
+    output_names.append(node.arguments["data_id"])
 
-    pc = create_process_chain_entry(input_name=process["data_id"])
+    pc = create_process_chain_entry(input_name=node.arguments["data_id"])
     process_list.append(pc)
 
     # Then add the input to the output

@@ -91,7 +91,7 @@ def get_process_list(node: ProcessNode):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
     strds that was filtered by start and end date
 
-    :param process: The process description
+    :param node: The process node
     :return: (output_names, actinia_process_list)
     """
 

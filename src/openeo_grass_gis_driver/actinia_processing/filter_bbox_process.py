@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
 from random import randint
+from typing import List, Tuple
+
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
-from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, ProcessNode
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -14,53 +16,58 @@ PROCESS_NAME = "filter_bbox"
 
 
 def create_process_description():
-    p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
-                                      "or space-time raster dataset",
-                          schema={"type": "object", "format": "eodata"},
-                          required=True)
-
-    extent_schema = {
-        "type": "object",
-        "required":
-            ["left", "right", "top", "bottom", "width_res", "height_res"],
-        "properties":
-            {
-                "left": {"type": "number"},
-                "right": {"type": "number"},
-                "top": {"type": "number"},
-                "bottom": {"type": "number"},
-                "width_res": {"type": "number"},
-                "height_res": {"type": "number"}
-            }
-    }
-
-    p_extent = Parameter(description="Filter by spatial extent",
-                         schema=extent_schema,
+    p_data = Parameter(description="Any openEO process object that returns raster datasets "
+                                   "or space-time raster dataset",
+                       schema={"type": "object", "format": "eodata"},
+                       required=True)
+    p_left = Parameter(description="The left (western) border of the spatial extent",
+                       schema={"type": "object", "format": "float"},
+                       required=True)
+    p_right = Parameter(description="The right (eastern) border of the spatial extent",
+                        schema={"type": "object", "format": "float"},
+                        required=True)
+    p_top = Parameter(description="The top (northern) border of the spatial extent",
+                      schema={"type": "object", "format": "float"},
+                      required=True)
+    p_bottom = Parameter(description="The bottom (southern) border of the spatial extent",
+                         schema={"type": "object", "format": "float"},
                          required=True)
+    p_width_res = Parameter(description="The width resolution of the spatial extent",
+                            schema={"type": "object", "format": "float"},
+                            required=True)
+    p_height_res = Parameter(description="The height resolution of the spatial extent",
+                             schema={"type": "object", "format": "float"},
+                             required=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
     examples = dict(simple={
-        "process_id": PROCESS_NAME,
-        "imagery": {
-            "process_id": "get_data",
-            "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
-        },
-        "spatial_extent": {
-            "left": 50,
-            "right": 55,
-            "top": 60,
-            "bottom": 55,
-            "width_res": 1,
-            "height_res": 1
-        }})
+        "filter_bbox_1": {
+            "process_id": "filter_bbox",
+            "arguments": {
+                "data": {"from_node": "get_data_1"},
+                "left": 630000,
+                "right": 645000,
+                "top": 228500,
+                "bottom": 215000,
+                "width_res": 10,
+                "height_res": 10,
+            }
+        }
+    })
 
-    pd = ProcessDescription(name=PROCESS_NAME,
+    pd = ProcessDescription(id=PROCESS_NAME,
                             description="Drops observations from raster data or raster time series data "
                                         " that are located outside of a given bounding box.",
                             summary="Filter raster based data by bounding box",
-                            parameters={"imagery": p_imagery, "spatial_extent": p_extent},
+                            parameters={"data": p_data,
+                                        "left": p_left,
+                                        "right": p_right,
+                                        "top": p_top,
+                                        "bottom": p_bottom,
+                                        "width_res": p_width_res,
+                                        "hieght_res": p_height_res},
                             returns=rv,
                             examples=examples)
 
@@ -70,13 +77,10 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(left: float, right: float, top:float,
+def create_process_chain_entry(left: float, right: float, top: float,
                                bottom: float, width_res: float, height_res: float) -> dict:
     """Create a Actinia command of the process chain that uses g.region to create a valid computational region
     for the provide input strds
-
-    TODO: This approach is a hack, the g.region command should accept a STRDS as input to set the
-          resolution accordingly, or this function must have the resolution option set by the user.
 
     :param left:
     :param right:
@@ -101,34 +105,32 @@ def create_process_chain_entry(left: float, right: float, top:float,
     return pc
 
 
-def get_process_list(process):
-    """Analyse the process description and return the Actinia process chain and the name of the processing result
+def get_process_list(node: ProcessNode) -> Tuple[list, list]:
+    """Analyse the process node and return the Actinia process chain and the name of the processing result
 
-    :param process: The process description
+    :param node: The process node
     :return: (output_names, actinia_process_list)
     """
 
-    input_names, process_list = process_node_to_actinia_process_chain(process)
+    input_names, process_list = process_node_to_actinia_process_chain(node)
     output_names = []
 
-    if "spatial_extent" not in process.keys():
-        raise Exception("Process %s requires parameter <spatial_extent>" % PROCESS_NAME)
-
-    if "left" not in process["spatial_extent"] or \
-            "right" not in process["spatial_extent"] or \
-            "top" not in process["spatial_extent"] or \
-            "bottom" not in process["spatial_extent"] or \
-            "width_res" not in process["spatial_extent"] or \
-            "height_res" not in process["spatial_extent"]:
-        raise Exception("Process %s requires parameter left, right, top, bottom, "
+    if "data" not in node.arguments or \
+            "left" not in node.arguments or \
+            "right" not in node.arguments or \
+            "top" not in node.arguments or \
+            "bottom" not in node.arguments or \
+            "width_res" not in node.arguments or \
+            "height_res" not in node.arguments:
+        raise Exception("Process %s requires parameter data, left, right, top, bottom, "
                         "width_res, height_res" % PROCESS_NAME)
 
-    left = process["spatial_extent"]["left"]
-    right = process["spatial_extent"]["right"]
-    top = process["spatial_extent"]["top"]
-    bottom = process["spatial_extent"]["bottom"]
-    width_res = process["spatial_extent"]["width_res"]
-    height_res = process["spatial_extent"]["height_res"]
+    left = node.arguments["left"]
+    right = node.arguments["right"]
+    top = node.arguments["top"]
+    bottom = node.arguments["bottom"]
+    width_res = node.arguments["width_res"]
+    height_res = node.arguments["height_res"]
 
     pc = create_process_chain_entry(left=left, right=right, top=top,
                                     bottom=bottom, width_res=width_res,

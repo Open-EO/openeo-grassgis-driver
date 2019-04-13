@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from openeo_grass_gis_driver.actinia_processing.base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -43,7 +43,7 @@ def create_process_description():
 
     examples = dict(simple_example=simple_example)
 
-    pd = ProcessDescription(name=PROCESS_NAME,
+    pd = ProcessDescription(id=PROCESS_NAME,
                             description="Compute the NDVI based on the red and nir bands of the input datasets.",
                             summary="Compute the NDVI based on the red and nir bands of the input datasets.",
                             parameters={"red": p_red, "nir": p_nir},

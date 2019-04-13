@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from openeo_grass_gis_driver.actinia_processing.base import analyse_process_graph, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT, \
+    PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -15,10 +16,10 @@ PROCESS_NAME = "filter_daterange"
 
 
 def create_process_description():
-    p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
-                                      "or space-time raster dataset",
-                          schema={"type": "object", "format": "eodata"},
-                          required=True)
+    p_data = Parameter(description="Any openEO process object that returns raster datasets "
+                                   "or space-time raster dataset",
+                       schema={"type": "object", "format": "eodata"},
+                       required=True)
 
     p_from = Parameter(description="The start date of the filter in YYYY-MM-DD HH:mm:SS format",
                        schema={"type": "string", "examples": ["2018-01-01 00:30:00"]},
@@ -32,20 +33,21 @@ def create_process_description():
                      schema={"type": "object", "format": "eodata"})
 
     examples = dict(simple={
-        "process_id": PROCESS_NAME,
-        "from": "2018-01-01 00:30:00",
-        "to": "2018-01-01 00:30:00",
-        "imagery": {
-            "process_id": "get_data",
-            "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
+        "filter_daterange_1": {
+            "process_id": PROCESS_NAME,
+            "arguments": {
+                "data": {"from_node": "get_strds_data"},
+                "from": "2001-01-01",
+                "to": "2005-01-01",
+            }
         }
     })
 
-    pd = ProcessDescription(name=PROCESS_NAME,
+    pd = ProcessDescription(id=PROCESS_NAME,
                             description="Drops observations from a collection that have been "
                                         "captured between start and end date.",
                             summary="Drops observations from a collection",
-                            parameters={"imagery": p_imagery, "from": p_from, "to": p_to},
+                            parameters={"data": p_data, "from": p_from, "to": p_to},
                             returns=rv,
                             examples=examples)
 

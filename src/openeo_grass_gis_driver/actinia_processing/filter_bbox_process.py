@@ -137,10 +137,11 @@ def get_process_list(node: ProcessNode) -> Tuple[list, list]:
                                     height_res=height_res)
     process_list.append(pc)
 
-    for input_name in input_names:
+    for input_name in node.get_parent_by_name(parent_name="data").output_names:
         # Create the output name based on the input name and method
         output_name = input_name
         output_names.append(output_name)
+        node.add_output(output_name)
 
     return output_names, process_list
 

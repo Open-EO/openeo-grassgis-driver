@@ -31,10 +31,19 @@ class ProcessNode:
         if "arguments" in self.process:
             self.arguments = self.process["arguments"]
         self.parents: Set[ProcessNode] = set()
+        self.parents_dict: Dict[str, ProcessNode] = dict()
         self.child: Optional[ProcessNode] = None
-
         self._process_description = process_description
         self._was_processed = False
+        self.output_names = set()
+
+    def add_output(self, output_name: str):
+        self.output_names.add(output_name)
+
+    def get_parent_by_name(self, parent_name: str) -> Optional['ProcessNode']:
+        if parent_name in self.parents_dict.keys():
+            return self.parents_dict[parent_name]
+        return None
 
     @property
     def processed(self):
@@ -54,23 +63,27 @@ class ProcessNode:
         if self.parents:
             parent_ids = [node.id for node in self.parents]
 
-        return f"Node: {self.id} parents: {parent_ids} child: {child_id}"
+        parent_names = list()
+        if self.parents_dict:
+            parent_names = list(self.parents_dict.keys())
 
-    def get_parent_ids(self) -> set:
+        return f"Node: {self.id} parent names: {parent_names} parent ids: {parent_ids} child: {child_id}"
+
+    def get_parents_dict(self) -> dict:
 
         if not self.arguments:
-            return set()
+            return dict()
 
-        parent_ids = set()
+        parent_dict = dict()
 
         for key in self.arguments:
             if isinstance(self.arguments[key], dict):
                 if "from_node" in self.arguments[key]:
-                    parent_ids.add(self.arguments[key]["from_node"])
+                    parent_dict[key] = self.arguments[key]["from_node"]
 
-        return parent_ids
+        return parent_dict
 
-    def asDict(self) -> dict:
+    def as_dict(self) -> dict:
         return self._process_description
 
 
@@ -97,7 +110,7 @@ class ProcessGraph:
 
         self.title: str = graph_description["title"]
         self.description: str = graph_description["description"]
-        self.node_dict: Dict[ProcessNode] = dict()
+        self.node_dict: Dict[str, ProcessNode] = dict()
         self.root_nodes: Set[ProcessNode] = set()
 
         self.build_process_graph_from_description(graph_description=graph_description)
@@ -117,11 +130,12 @@ class ProcessGraph:
         # Create node connections
         for node in self.node_dict.values():
             # Connect parents with childs
-            parent_ids = node.get_parent_ids()
-            if parent_ids:
-                for parent_id in parent_ids:
-                    parent_node = self.node_dict[parent_id]
+            parent_dict = node.get_parents_dict()
+            if parent_dict:
+                for parent_name in parent_dict.keys():
+                    parent_node = self.node_dict[parent_dict[parent_name]]
                     node.parents.add(parent_node)
+                    node.parents_dict[parent_name] = parent_node
                     parent_node.child = node
 
         for node in self.node_dict.values():

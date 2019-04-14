@@ -139,6 +139,7 @@ def get_process_list(node: ProcessNode):
         raise Exception("Process %s requires parameter <data_id>" % PROCESS_NAME)
 
     output_names.append(node.arguments["data_id"])
+    node.add_output(node.arguments["data_id"])
 
     pc = create_process_chain_entry(input_name=node.arguments["data_id"])
     process_list.append(pc)

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain,\
+    PROCESS_DICT, PROCESS_DESCRIPTION_DICT, ProcessNode
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -15,11 +16,10 @@ PROCESS_NAME = "reduce_time"
 
 
 def create_process_description():
-    p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
-                                      "or space-time raster dataset",
-                          schema={"type": "object", "format": "eodata"},
-                          required=True)
-
+    p_data = Parameter(description="Any openEO process object that returns raster datasets "
+                                   "or space-time raster dataset",
+                       schema={"type": "object", "format": "eodata"},
+                       required=True)
     p_method = Parameter(description="The method to reduce the time dimension of a "
                                      "space-time raster dataset",
                          schema={"type": "string"},
@@ -34,11 +34,12 @@ def create_process_description():
                      schema={"type": "object", "format": "eodata"})
 
     simple_example = {
-        "process_id": PROCESS_NAME,
-        "method": "average",
-        "imagery": {
-            "process_id": "get_data",
-            "data_id": "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
+        "reduce_time_1": {
+            "process_id": PROCESS_NAME,
+            "arguments": {
+                "data": {"from_node": "get_strds_data"},
+                "method": "minimum",
+            }
         }
     }
 
@@ -48,7 +49,7 @@ def create_process_description():
                             description="Reduce the time dimension of a space-time raster dataset "
                                         "with different reduce options.",
                             summary="Reduce the time dimension of a space-time raster dataset.",
-                            parameters={"imagery": p_imagery, "method": p_method},
+                            parameters={"imagery": p_data, "method": p_method},
                             returns=rv,
                             examples=examples)
 
@@ -80,7 +81,7 @@ def create_process_chain_entry(input_name, method, output_name):
     return pc
 
 
-def get_process_list(process):
+def get_process_list(node: ProcessNode):
     """Analyse the process description and return the Actinia process chain
     and the name of the processing result layer
     which is a single raster layer
@@ -88,18 +89,19 @@ def get_process_list(process):
     :param args: The process description arguments
     :return: (output_names, actinia_process_list)
     """
-    input_names, process_list = process_node_to_actinia_process_chain(process)
+    input_names, process_list = process_node_to_actinia_process_chain(node)
     output_names = []
 
-    if "method" not in process:
+    if "method" not in node.arguments:
         raise Exception("Parameter method is required.")
 
-    for input_name in input_names:
+    for input_name in node.get_parent_by_name("data").output_names:
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
         output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)
+        node.add_output(output_name=output_name)
 
-        pc = create_process_chain_entry(input_name, process["method"], output_name)
+        pc = create_process_chain_entry(input_name, node.arguments["method"], output_name)
         process_list.append(pc)
 
     return output_names, process_list

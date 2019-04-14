@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain,\
+    PROCESS_DICT, PROCESS_DESCRIPTION_DICT, ProcessNode
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -15,10 +16,10 @@ PROCESS_NAME = "raster_exporter"
 
 
 def create_process_description():
-    p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
-                                      "or space-time raster dataset",
-                          schema={"type": "object", "format": "eodata"},
-                          required=True)
+    p_data = Parameter(description="Any openEO process object that returns raster datasets "
+                                   "or space-time raster dataset",
+                       schema={"type": "object", "format": "eodata"},
+                       required=True)
     p_format = Parameter(description="The format of the export. Default is GeotTiff format.",
                          schema={"type": "string", "default": "GTiff"},
                          required=False)
@@ -27,14 +28,11 @@ def create_process_description():
                      schema={"type": "object", "format": "eodata"})
 
     simple_example = {
-        "process_id": PROCESS_NAME,
-        "format": "GTiff",
-        "imagery": {
-            "process_id": "get_data",
-            "data_id": "nc_spm_08.landsat.raster.elevation",
-            "imagery": {
-                "process_id": "get_data",
-                "data_id": "nc_spm_08.landsat.raster.slope"
+        "raster_exporter_1": {
+            "process_id": PROCESS_NAME,
+            "arguments": {
+                "data": {"from_node": "get_b08_data"},
+                "format": "GTiff"
             }
         }
     }
@@ -45,7 +43,7 @@ def create_process_description():
                             description="This process exports an arbitrary number of raster map layers "
                                         "using the region specified upstream.",
                             summary="Exports raster map layers using the region specified upstream.",
-                            parameters={"imagery": p_imagery, "format": p_format},
+                            parameters={"data": p_data, "format": p_format},
                             returns=rv,
                             examples=examples)
 
@@ -83,7 +81,7 @@ def create_process_chain_entry(input_name):
     return pc
 
 
-def get_process_list(args):
+def get_process_list(node: ProcessNode):
     """Analyse the process description and return the Actinia process chain and the name of the processing result layer
     which is a single raster layer
 
@@ -92,11 +90,11 @@ def get_process_list(args):
     """
 
     # Get the input description and the process chain to attach this process
-    input_names, process_list = process_node_to_actinia_process_chain(args)
+    input_names, process_list = process_node_to_actinia_process_chain(node)
     output_names = []
 
     # Pipe the inputs to the outputs
-    for input_name in input_names:
+    for input_name in node.get_parent_by_name("data").output_names:
         output_name = input_name
         output_names.append(output_name)
 

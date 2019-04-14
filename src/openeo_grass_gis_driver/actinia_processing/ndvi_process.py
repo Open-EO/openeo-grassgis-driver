@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain,\
+    PROCESS_DICT, PROCESS_DESCRIPTION_DICT, ProcessNode
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -16,35 +17,27 @@ PROCESS_NAME = "NDVI"
 
 def create_process_description():
 
-    p_imagery = Parameter(description="Any openEO process object that returns space-time raster dataset",
-                          schema={"type": "object", "format": "eodata"},
-                          required=False)
-
-    p_red = Parameter(description="A substring a space-time raster dataset identifer "
+    p_red = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                                   "that contains the RED band for NDVI computation.",
-                      schema={"type": "string", "examples": {"red": "lsat5_red"}},
+                       schema={"type": "object", "format": "eodata"},
                       required=True)
 
-    p_nir = Parameter(description="A substring a space-time raster dataset identifer "
+    p_nir = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                                   "that contains the NIR band for NDVI computation.",
-                      schema={"type": "string", "examples": {"red": "lsat5_nir"}},
+                      schema={"type": "object", "format": "eodata"},
                       required=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
     simple_example = {
+        "ndvi_1": {
             "process_id": PROCESS_NAME,
-            "red": "lsat5_red",
-            "nir": "lsat5_nir",
-            "imagery": {
-                "process_id": "get_data",
-                "data_id": "nc_spm_08.landsat.strds.lsat5_red",
-                "imagery": {
-                    "process_id": "get_data",
-                    "data_id": "nc_spm_08.landsat.strds.lsat5_nir"
-                }
+            "arguments": {
+                "red": {"from_node": "get_red_data"},
+                "nir": {"from_node": "get_nir_data"},
             }
+        }
         }
 
     examples = dict(simple_example=simple_example)
@@ -52,7 +45,7 @@ def create_process_description():
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Compute the NDVI based on the red and nir bands of the input datasets.",
                             summary="Compute the NDVI based on the red and nir bands of the input datasets.",
-                            parameters={"imagery":p_imagery, "red": p_red, "nir": p_nir},
+                            parameters={"red": p_red, "nir": p_nir},
                             returns=rv,
                             examples=examples)
 
@@ -63,8 +56,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(nir_time_series, red_time_series, output_time_series):
-    """Create a Actinia process description that uses t.rast.series to create the minimum
-    value of the time series.
+    """Create a Actinia process description that uses t.rast.mapcalc to create the NDVI time series
 
     :param nir_time_series: The NIR band time series name
     :param red_time_series: The RED band time series name
@@ -102,46 +94,50 @@ def create_process_chain_entry(nir_time_series, red_time_series, output_time_ser
     return pc
 
 
-def get_process_list(process):
+def get_process_list(node: ProcessNode):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
 
     :param args: The process description arguments
     :return: (output_names, actinia_process_list)
     """
+
+    input_names, process_list = process_node_to_actinia_process_chain(node)
     output_names = []
 
     # First analyse the data entries
-    if "red" not in process:
+    if "red" not in node.arguments:
         raise Exception("Process %s requires parameter <red>" % PROCESS_NAME)
 
-    if "nir" not in process:
+    if "nir" not in node.arguments:
         raise Exception("Process %s requires parameter <nir>" % PROCESS_NAME)
 
-    red_strds = None
-    nir_strds = None
-    input_names, process_list = process_node_to_actinia_process_chain(process)
+    # Get the red and ir data separately
+    red_input_names = node.get_parent_by_name(parent_name="red").output_names
+    nir_input_names = node.get_parent_by_name(parent_name="nir").output_names
 
-    # Find the red and nir datasets in the input
-    for input_name in input_names:
-        if process["red"] in input_name:
-            red_strds = input_name
-        elif process["nir"] in input_name:
-            nir_strds = input_name
-        else:
-            # Pipe other inputs to the output
-            output_names.append(input_name)
-
-    if not red_strds:
+    if not red_input_names:
         raise Exception("Process %s requires an input strds for band <red>" % PROCESS_NAME)
 
-    if not nir_strds:
+    if not nir_input_names:
         raise Exception("Process %s requires an input strds for band <nir>" % PROCESS_NAME)
 
-    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(red_strds)
+    red_stds = red_input_names[-1]
+    nir_strds = nir_input_names[-1]
+
+    # Take the last entry from the
+    if len(red_input_names) > 1:
+        output_names.extend(red_input_names[0:-1])
+
+    # Take the last entry from the
+    if len(nir_input_names) > 1:
+        output_names.extend(nir_input_names[0:-1])
+
+    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(red_stds)
     output_name = "%s_%s" % (layer_name, PROCESS_NAME)
     output_names.append(output_name)
+    node.add_output(output_name=output_name)
 
-    pc = create_process_chain_entry(nir_strds, red_strds, output_name)
+    pc = create_process_chain_entry(nir_strds, red_stds, output_name)
     process_list.extend(pc)
 
     return output_names, process_list

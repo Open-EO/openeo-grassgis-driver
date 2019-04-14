@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT,\
+    PROCESS_DESCRIPTION_DICT, ProcessNode
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -15,7 +16,7 @@ PROCESS_NAME = "zonal_statistics"
 
 
 def create_process_description():
-    p_imagery = Parameter(description="Any openEO process object that returns raster datasets "
+    p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                       "or space-time raster dataset",
                           schema={"type": "object", "format": "eodata"},
                           required=True)
@@ -28,12 +29,13 @@ def create_process_description():
                      schema={"type": "object", "format": "eodata"})
 
     simple_example = {
-        "process_id": PROCESS_NAME,
-        "imagery": {
-            "process_id": "get_data",
-            "data_id": "nc_spm_08.landsat.strds.lsat5_red"
-        },
-        "polygons": "https://geostorage.com/my_polygon.gml"
+        "zonal_statistics_1": {
+            "process_id": PROCESS_NAME,
+            "arguments": {
+                "data": {"from_node": "get_b08_data"},
+                "polygons": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"
+            }
+        }
     }
 
     examples = dict(simple_example=simple_example)
@@ -44,7 +46,7 @@ def create_process_description():
                                         "mean, min, max, mean_of_abs, stddev, variance, "
                                         "coeff_var, sum, null_cells, cells",
                             summary="Compute the zonal statistics of a time series using a vector polygon.",
-                            parameters={"imagery": p_imagery, "polygons": p_polygons},
+                            parameters={"data": p_data, "polygons": p_polygons},
                             returns=rv,
                             examples=examples)
 

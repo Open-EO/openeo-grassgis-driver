@@ -99,7 +99,7 @@ def get_process_list(node: ProcessNode):
     input_names, process_list = process_node_to_actinia_process_chain(node)
     output_names = []
 
-    for input_name in input_names:
+    for input_name in node.get_parent_by_name(parent_name="data").output_names:
 
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
 
@@ -110,6 +110,7 @@ def get_process_list(node: ProcessNode):
 
         output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)
+        node.add_output(output_name)
 
         start_time = None
         end_time = None

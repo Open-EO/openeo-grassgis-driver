@@ -2,6 +2,8 @@
 """This file includes all required openEO response schemas
 """
 from typing import List, Optional, Dict
+
+from openeo_grass_gis_driver.process_graph_schemas import ProcessGraph
 from .schema_base import JsonableObject, EoLinks
 
 __author__ = "Sören Gebbert"
@@ -30,7 +32,7 @@ class JobInformation(JsonableObject):
 
     def __init__(self, job_id: str, title: str,
                  description: str, status: str,
-                 process_graph: dict(),
+                 process_graph: ProcessGraph,
                  output: Optional[OutputFormat],
                  submitted: str, updated: Optional[str],
                  plan: str = "free", cost: float= 0.0, budget: float = 0.0,

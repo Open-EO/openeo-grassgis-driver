@@ -9,6 +9,7 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import Actinia
 from openeo_grass_gis_driver.job_schemas import JobInformation, JobList
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.authentication import ResourceBase
+from openeo_grass_gis_driver.process_graph_schemas import ProcessGraph
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -96,7 +97,8 @@ def check_job(job, job_id):
     if "description" in job:
         description = job["description"]
 
-    process_graph = job["process_graph"]
+    process_graph = ProcessGraph(title=title, description=description, process_graph=job["process_graph"])
+
     submitted = str(datetime.now())
 
     job_info = JobInformation(job_id=job_id, title=title,

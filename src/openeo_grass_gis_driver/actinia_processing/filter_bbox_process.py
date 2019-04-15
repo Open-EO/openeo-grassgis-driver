@@ -3,8 +3,9 @@ import json
 from random import randint
 from typing import List, Tuple
 
+from openeo_grass_gis_driver.actinia_processing.base import check_node_parents
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
-from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, ProcessNode
+from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -105,14 +106,14 @@ def create_process_chain_entry(left: float, right: float, top: float,
     return pc
 
 
-def get_process_list(node: ProcessNode) -> Tuple[list, list]:
+def get_process_list(node: Node) -> Tuple[list, list]:
     """Analyse the process node and return the Actinia process chain and the name of the processing result
 
     :param node: The process node
     :return: (output_names, actinia_process_list)
     """
 
-    input_names, process_list = process_node_to_actinia_process_chain(node)
+    input_names, process_list = check_node_parents(node=node)
     output_names = []
 
     if "data" not in node.arguments or \

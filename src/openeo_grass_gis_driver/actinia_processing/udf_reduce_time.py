@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain,\
-    PROCESS_DICT, PROCESS_DESCRIPTION_DICT, ProcessNode
+    PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"

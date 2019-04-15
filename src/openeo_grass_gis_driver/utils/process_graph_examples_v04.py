@@ -12,9 +12,7 @@ GET_DATA_1 = {
         "get_elevation_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.PERMANENT.raster.elevation"
-                }
+                "data": "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -27,17 +25,13 @@ GET_DATA_2 = {
         "get_lakes_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.PERMANENT.vector.lakes"
-                }
+                "data": "nc_spm_08.PERMANENT.vector.lakes"
             }
         },
         "get_elevation_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.PERMANENT.raster.elevation"
-                }
+                "data":  "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -50,9 +44,7 @@ GET_DATA_3 = {
         "get_strds_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
-                }
+                "data": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
             }
         }
     }
@@ -77,9 +69,7 @@ FILTER_BBOX = {
         "get_data_1": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.PERMANENT.raster.elevation"
-                }
+                "data":  "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -92,9 +82,7 @@ DATERANGE = {
         "get_strds_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
-                }
+                "data": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
             }
         },
         "filter_daterange_1": {
@@ -115,9 +103,7 @@ REDUCE_TIME_MIN = {
         "get_strds_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
-                }
+                "data": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
             }
         },
         "reduce_time_1": {
@@ -145,17 +131,13 @@ NDVI_STRDS = {
         "get_red_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.landsat.strds.lsat5_red"
-                }
+                "data":  "nc_spm_08.landsat.strds.lsat5_red"
             }
         },
         "get_nir_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.landsat.strds.lsat5_nir"
-                }
+                "data":  "nc_spm_08.landsat.strds.lsat5_nir"
             }
         }
     }
@@ -174,9 +156,7 @@ RASTER_EXPORT = {
         "get_b08_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.PERMANENT.raster.elevation"
-                }
+                "data": "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -196,9 +176,7 @@ ZONAL_STATISTICS = {
         "get_b08_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
-                }
+                "data": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
             }
         }
     }
@@ -212,17 +190,13 @@ USE_CASE_1 = {
         "get_red_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.landsat.strds.lsat5_red"
-                }
+                "data":  "nc_spm_08.landsat.strds.lsat5_red"
             }
         },
         "get_nir_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.landsat.strds.lsat5_nir"
-                }
+                "data": "nc_spm_08.landsat.strds.lsat5_nir"
             }
         },
         "filter_bbox_red": {

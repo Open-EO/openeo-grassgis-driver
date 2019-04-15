@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from typing import Set, Dict, Optional, Tuple
+from typing import Set, Dict, Optional, Tuple, Union
 
 # This is the process dictionary that is used to store all processes of the Actinia wrapper
+from openeo_grass_gis_driver.process_graph_schemas import ProcessGraph
+
 PROCESS_DESCRIPTION_DICT = {}
 PROCESS_DICT = {}
 
@@ -18,7 +20,7 @@ __email__ = "soerengebbert@googlemail.com"
 ####### Version 0.4 of the API ################################################
 ###############################################################################
 
-class ProcessNode:
+class Node:
     """A single node in the process graph
     """
 
@@ -30,9 +32,9 @@ class ProcessNode:
         self.arguments: Optional[dict] = None
         if "arguments" in self.process:
             self.arguments = self.process["arguments"]
-        self.parents: Set[ProcessNode] = set()
-        self.parents_dict: Dict[str, ProcessNode] = dict()
-        self.child: Optional[ProcessNode] = None
+        self.parents: Set[Node] = set()
+        self.parents_dict: Dict[str, Node] = dict()
+        self.child: Optional[Node] = None
         self._process_description = process_description
         self._was_processed = False
         self.output_names = set()
@@ -40,7 +42,7 @@ class ProcessNode:
     def add_output(self, output_name: str):
         self.output_names.add(output_name)
 
-    def get_parent_by_name(self, parent_name: str) -> Optional['ProcessNode']:
+    def get_parent_by_name(self, parent_name: str) -> Optional['Node']:
         if parent_name in self.parents_dict.keys():
             return self.parents_dict[parent_name]
         return None
@@ -87,44 +89,49 @@ class ProcessNode:
         return self._process_description
 
 
-class ProcessGraph:
+class Graph:
     """This class represents a process graph
 
     """
 
-    def __init__(self, graph_description: dict):
+    def __init__(self, graph_description: Union[Dict, ProcessGraph]):
         """The constructor checks the validity of the provided dictionary
         and build the node interconnections
 
         :param graph_description:
         """
 
-        if "title" not in graph_description:
-            raise Exception("Title is required in the process graph")
+        self.node_dict: Dict[str, Node] = dict()
+        self.root_nodes: Set[Node] = set()
+        if isinstance(graph_description, ProcessGraph):
+            self.title: str = graph_description.title
+            self.description: str = graph_description.description
+            self.build_process_graph_from_description(process_graph=graph_description.process_graph)
+        else:
+            if "title" not in graph_description:
+                raise Exception("Title is required in the process graph")
 
-        if "description" not in graph_description:
-            raise Exception("Description is required in the process graph")
+            if "description" not in graph_description:
+                raise Exception("Description is required in the process graph")
 
-        if "process_graph" not in graph_description:
-            raise Exception("process_graph is required in the process graph")
+            if "process_graph" not in graph_description:
+                raise Exception("process_graph is required in the process graph")
 
-        self.title: str = graph_description["title"]
-        self.description: str = graph_description["description"]
-        self.node_dict: Dict[str, ProcessNode] = dict()
-        self.root_nodes: Set[ProcessNode] = set()
+            self.title: str = graph_description["title"]
+            self.description: str = graph_description["description"]
 
-        self.build_process_graph_from_description(graph_description=graph_description)
+            self.build_process_graph_from_description(process_graph=graph_description["process_graph"])
 
-    def build_process_graph_from_description(self, graph_description: dict):
+    def build_process_graph_from_description(self, process_graph: dict):
         """Build the directed process graph from the graph description
 
         :param graph_description: The description of the graph as dictionary
         :return: The set of child nodes that are the roots of the process graph
         """
 
-        for key in graph_description["process_graph"].keys():
-            process_description = graph_description["process_graph"][key]
-            node = ProcessNode(id=key, process_description=process_description)
+        for key in process_graph.keys():
+            process_description = process_graph[key]
+            node = Node(id=key, process_description=process_description)
             self.node_dict[node.id] = node
 
         # Create node connections
@@ -143,7 +150,7 @@ class ProcessGraph:
                 self.root_nodes.add(node)
 
 
-def process_node_to_actinia_process_chain(node: ProcessNode) -> Tuple[list, list]:
+def process_node_to_actinia_process_chain(node: Node) -> Tuple[list, list]:
     """This function calls the openEO process node to actinia process chain converter process
     based on the node process_id.
 
@@ -170,3 +177,15 @@ def process_node_to_actinia_process_chain(node: ProcessNode) -> Tuple[list, list
     node.processed = True
 
     return output_name_list, process_list
+
+
+def check_node_parents(node: Node) -> Tuple[list, list]:
+    process_list = []
+    input_names = []
+
+    for parent in node.parents:
+        i, p = process_node_to_actinia_process_chain(parent)
+        process_list.extend(p)
+        input_names.extend(i)
+
+    return input_names, process_list

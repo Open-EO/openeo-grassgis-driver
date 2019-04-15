@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pprint
 import sys
 import traceback
 from datetime import datetime
@@ -9,7 +10,7 @@ from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.actinia_processing.actinia_job_db import ActiniaJobDB
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.job_schemas import JobInformation
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, Graph
 from openeo_grass_gis_driver.authentication import ResourceBase
 from openeo_grass_gis_driver.schema_base import EoLink
 
@@ -41,7 +42,6 @@ class JobsJobIdResults(ResourceBase):
             # Check for the actinia id to get the latest actinia job information
             if job_id in self.actinia_job_db:
                 actinia_id = self.actinia_job_db[job_id]
-                print("Resource id", actinia_id)
                 code, job_info = self.iface.resource_info(resource_id=actinia_id)
 
                 if code == 200:
@@ -119,9 +119,10 @@ class JobsJobIdResults(ResourceBase):
         try:
             # Empty the process location
             ActiniaInterface.PROCESS_LOCATION = {}
+            graph = Graph(job.process_graph)
             # Transform the process graph into a process chain and store the input location
             # Check all locations in the process graph
-            result_name, process_list = process_node_to_actinia_process_chain({"process_graph":job.process_graph})
+            result_name, process_list = process_node_to_actinia_process_chain(list(graph.root_nodes)[0])
 
             if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
                 raise Exception("Processes can only be defined for a single location!")

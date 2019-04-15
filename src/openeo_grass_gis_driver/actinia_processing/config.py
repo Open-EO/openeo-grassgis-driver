@@ -15,8 +15,8 @@ class Config:
     LOCATION="nc_spm_08"
     # LOCATION="LL"
     LOCATIONS=["nc_spm_08"]
-    USER="user"
-    PASSWORD="test"
+    USER="demouser"
+    PASSWORD="gu3st!pa55w0rd"
     # The database file that stores the graphs
     GRAPH_DB="%s/.graph_db_file.sqlite"%os.environ["HOME"]
     # The database file that stores the jobs

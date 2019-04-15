@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT,\
-    PROCESS_DESCRIPTION_DICT, ProcessNode
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT, \
+    PROCESS_DESCRIPTION_DICT, Node, check_node_parents
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -141,25 +141,25 @@ def create_process_chain_entry(input_name, polygons):
     return pc
 
 
-def get_process_list(process):
+def get_process_list(node: Node):
     """Analyse the process description and return the Actinia process chain and the name of the processing result layer
     which is a single raster layer
 
-    :param process: The process description
+    :param node: The process node
     :return: (output_names, actinia_process_list)
     """
 
-    # Get the input description and the process chain to attach this process
-    input_names, process_list = process_node_to_actinia_process_chain(process)
+    input_names, process_list = check_node_parents(node=node)
     output_names = []
 
     for input_name in input_names:
 
         output_name = input_name
         output_names.append(output_name)
+        node.add_output(output_name=output_name)
 
-        if "polygons" in process:
-            polygons = process["polygons"]
+        if "polygons" in node.arguments:
+            polygons = node.arguments["polygons"]
         else:
             raise Exception("The vector polygon is missing in the process description")
 

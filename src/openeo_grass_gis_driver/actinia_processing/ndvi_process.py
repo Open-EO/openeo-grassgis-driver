@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain,\
-    PROCESS_DICT, PROCESS_DESCRIPTION_DICT, ProcessNode
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, \
+    PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, check_node_parents
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -94,14 +94,14 @@ def create_process_chain_entry(nir_time_series, red_time_series, output_time_ser
     return pc
 
 
-def get_process_list(node: ProcessNode):
+def get_process_list(node: Node):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
 
-    :param args: The process description arguments
+    :param node: The process node
     :return: (output_names, actinia_process_list)
     """
 
-    input_names, process_list = process_node_to_actinia_process_chain(node)
+    input_names, process_list = check_node_parents(node=node)
     output_names = []
 
     # First analyse the data entries

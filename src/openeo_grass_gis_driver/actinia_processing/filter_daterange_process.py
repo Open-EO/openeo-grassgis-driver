@@ -2,7 +2,7 @@
 from random import randint
 import json
 from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT, \
-    PROCESS_DESCRIPTION_DICT, ProcessNode
+    PROCESS_DESCRIPTION_DICT, Node, check_node_parents
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -87,7 +87,7 @@ def create__process_chain_entry(input_name, start_time, end_time, output_name):
     return pc
 
 
-def get_process_list(node: ProcessNode):
+def get_process_list(node: Node):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
     strds that was filtered by start and end date
 
@@ -95,8 +95,7 @@ def get_process_list(node: ProcessNode):
     :return: (output_names, actinia_process_list)
     """
 
-    # Get the input description and the process chain to attach this process
-    input_names, process_list = process_node_to_actinia_process_chain(node)
+    input_names, process_list = check_node_parents(node=node)
     output_names = []
 
     for input_name in node.get_parent_by_name(parent_name="data").output_names:

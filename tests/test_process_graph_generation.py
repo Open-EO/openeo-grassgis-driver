@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from openeo_grass_gis_driver.test_base import TestBase
-from openeo_grass_gis_driver.actinia_processing.base import ProcessNode, ProcessGraph
+from openeo_grass_gis_driver.actinia_processing.base import Node, Graph
 from openeo_grass_gis_driver.utils.process_graph_examples_v04 import OPENEO_EXAMPLE_1, \
   FILTER_BBOX, NDVI_STRDS, USE_CASE_1, ZONAL_STATISTICS, DATERANGE
 
@@ -16,7 +16,7 @@ class GraphValidationTestCase(TestBase):
 
     def test_graph_creation_openeo_example(self):
 
-        pg = ProcessGraph(OPENEO_EXAMPLE_1)
+        pg = Graph(OPENEO_EXAMPLE_1)
         self.assertEqual(2, len(pg.root_nodes))
         self.assertEqual(9, len(pg.node_dict))
 
@@ -32,7 +32,7 @@ class GraphValidationTestCase(TestBase):
 
     def test_graph_creation_graph_filter_bbox(self):
 
-        pg = ProcessGraph(FILTER_BBOX)
+        pg = Graph(FILTER_BBOX)
 
         print(pg.node_dict["get_data_1"])
         print(pg.node_dict["filter_bbox_1"])
@@ -48,7 +48,7 @@ class GraphValidationTestCase(TestBase):
 
     def test_graph_creation_graph_zonal_statistics(self):
 
-        pg = ProcessGraph(ZONAL_STATISTICS)
+        pg = Graph(ZONAL_STATISTICS)
 
         print(pg.node_dict["zonal_statistics_1"])
         print(pg.node_dict["get_b08_data"])
@@ -64,7 +64,7 @@ class GraphValidationTestCase(TestBase):
 
     def test_graph_creation_graph_daterange(self):
 
-        pg = ProcessGraph(DATERANGE)
+        pg = Graph(DATERANGE)
 
         print(pg.node_dict["filter_daterange_1"])
         print(pg.node_dict["get_strds_data"])
@@ -80,7 +80,7 @@ class GraphValidationTestCase(TestBase):
 
     def test_graph_creation_graph_ndvi_strds(self):
 
-        pg = ProcessGraph(NDVI_STRDS)
+        pg = Graph(NDVI_STRDS)
 
         print(pg.node_dict["get_nir_data"])
         print(pg.node_dict["get_red_data"])
@@ -102,7 +102,7 @@ class GraphValidationTestCase(TestBase):
 
     def test_graph_creation_graph_use_case_1(self):
 
-        pg = ProcessGraph(USE_CASE_1)
+        pg = Graph(USE_CASE_1)
 
         print(pg.node_dict["get_nir_data"])
         print(pg.node_dict["get_red_data"])

@@ -2,7 +2,7 @@
 from random import randint
 import json
 from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, PROCESS_DICT, \
-    PROCESS_DESCRIPTION_DICT, ProcessNode
+    PROCESS_DESCRIPTION_DICT, Node, check_node_parents
 from openeo_grass_gis_driver.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -31,9 +31,7 @@ def create_process_description():
         "get_elevation_data": {
             "process_id": PROCESS_NAME,
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.PERMANENT.raster.elevation"
-                }
+                "data":  "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -41,17 +39,13 @@ def create_process_description():
         "get_lakes_data": {
             "process_id": PROCESS_NAME,
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.PERMANENT.vector.lakes"
-                }
+                "data":  "nc_spm_08.PERMANENT.vector.lakes"
             }
         },
         "get_elevation_data": {
             "process_id": PROCESS_NAME,
             "arguments": {
-                "data": {
-                    "name": "nc_spm_08.PERMANENT.raster.elevation"
-                }
+                "data": "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -59,9 +53,7 @@ def create_process_description():
         "get_strds_data": {
             "process_id": PROCESS_NAME,
             "arguments": {
-                "data": {
-                    "name": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
-                }
+                "data": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
             }
         }
     }
@@ -124,24 +116,24 @@ def create_process_chain_entry(input_name):
     return pc
 
 
-def get_process_list(node: ProcessNode):
+def get_process_list(node: Node):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
 
     :param node: The process node
     :return: (output_names, actinia_process_list)
     """
 
-    input_names, process_list = process_node_to_actinia_process_chain(node)
+    input_names, process_list = check_node_parents(node=node)
     output_names = []
 
     # First analyse the data entry
-    if "data_id" not in node.arguments:
-        raise Exception("Process %s requires parameter <data_id>" % PROCESS_NAME)
+    if "data" not in node.arguments:
+        raise Exception("Process %s requires parameter <data>" % PROCESS_NAME)
 
-    output_names.append(node.arguments["data_id"])
-    node.add_output(node.arguments["data_id"])
+    output_names.append(node.arguments["data"])
+    node.add_output(node.arguments["data"])
 
-    pc = create_process_chain_entry(input_name=node.arguments["data_id"])
+    pc = create_process_chain_entry(input_name=node.arguments["data"])
     process_list.append(pc)
 
     # Then add the input to the output

@@ -120,9 +120,7 @@ class JobsJobIdResults(ResourceBase):
             # Empty the process location
             ActiniaInterface.PROCESS_LOCATION = {}
             graph = Graph(job.process_graph)
-            # Transform the process graph into a process chain and store the input location
-            # Check all locations in the process graph
-            result_name, process_list = process_node_to_actinia_process_chain(list(graph.root_nodes)[0])
+            result_name, process_list = graph.to_actinia_process_list()
 
             if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
                 raise Exception("Processes can only be defined for a single location!")

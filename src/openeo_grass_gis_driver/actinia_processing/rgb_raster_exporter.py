@@ -45,7 +45,7 @@ def create_process_description():
     examples = dict(simple_example=simple_example)
 
     pd = ProcessDescription(id=PROCESS_NAME,
-                            description="This process exports three raster map layers as a sinlge RGB image "
+                            description="This process exports three raster map layers as a single RGB image "
                                         "using the region specified upstream.",
                             summary="Exports three RGB raster map layers using the region specified upstream.",
                             parameters={"red": p_red, "green": p_green, "blur": p_blue},
@@ -58,12 +58,14 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(output_name: str, red_name: str, green_name: str, blue_name: str):
-    """Create a Actinia command of the process chain that computes the regional statistics based on a
-    strds and a polygon.
+def create_process_chain_entry(output_name: str, red_name: str, green_name: str, blue_name: str) -> list:
+    """Actinia process to export an RGB composite GeoTiff
 
-    :param input_name: The name of the raster layer
-    :return: A Actinia process chain description
+    :param output_name:
+    :param red_name:
+    :param green_name:
+    :param blue_name:
+    :return: The process chain
     """
 
     location, mapset, datatype, red_name = ActiniaInterface.layer_def_to_components(red_name)
@@ -95,8 +97,7 @@ def create_process_chain_entry(output_name: str, red_name: str, green_name: str,
 
 
 def get_process_list(node: Node):
-    """Analyse the process description and return the Actinia process chain and the name of the processing result layer
-    which is a single raster layer
+    """Analyse the process description and return the Actinia process chain and the name of the processing result
 
     :param node: The process node
     :return: (output_names, actinia_process_list)

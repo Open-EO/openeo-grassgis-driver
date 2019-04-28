@@ -12,6 +12,9 @@ __email__ = "soerengebbert@googlemail.com"
 
 class ProcessesProcessId(ResourceBase):
 
+    def __init__(self):
+        ResourceBase.__init__(self)
+
     def get(self, process_id):
 
         if process_id not in PROCESS_DESCRIPTION_DICT:

@@ -61,6 +61,7 @@ GET_UDF_TYPE_DOC = {
 class UdfType(ResourceBase):
 
     def __init__(self):
+        ResourceBase.__init__(self)
         self.iface = ActiniaInterface()
         self.db = GraphDB()
 

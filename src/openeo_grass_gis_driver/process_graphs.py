@@ -21,6 +21,7 @@ class ProcessGraphs(ResourceBase):
     """The /jobs endpoint implementation"""
 
     def __init__(self):
+        ResourceBase.__init__(self)
         self.iface = ActiniaInterface()
         self.iface.set_auth(request.authorization.username, request.authorization.password)
         self.graph_db = GraphDB()

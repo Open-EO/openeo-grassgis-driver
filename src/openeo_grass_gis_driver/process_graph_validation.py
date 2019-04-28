@@ -18,6 +18,7 @@ __email__ = "soerengebbert@googlemail.com"
 class GraphValidation(ResourceBase):
 
     def __init__(self):
+        ResourceBase.__init__(self)
         self.iface = ActiniaInterface()
         self.iface.set_auth(request.authorization.username, request.authorization.password)
 

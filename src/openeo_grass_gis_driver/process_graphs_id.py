@@ -19,6 +19,7 @@ class ProcessGraphId(ResourceBase):
     """The /jobs endpoint implementation"""
 
     def __init__(self):
+        ResourceBase.__init__(self)
         self.iface = ActiniaInterface()
         self.graph_db = GraphDB()
 

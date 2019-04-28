@@ -56,6 +56,18 @@ class GraphValidationTestCase(TestBase):
         response = self.app.post('/validation', data=json.dumps(RASTER_EXPORT), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
+    def test_10_graph_map_algebra(self):
+        """Run the validation test
+        """
+        response = self.app.post('/validation', data=json.dumps(MAP_ALGEBRA), content_type="application/json", headers=self.auth)
+        self.assertEqual(response.status_code, 204)
+
+    def no_support_test_11_graph_temporal_algebra(self):
+        """Run the validation test
+        """
+        response = self.app.post('/validation', data=json.dumps(TEMPORAL_ALGEBRA), content_type="application/json", headers=self.auth)
+        self.assertEqual(response.status_code, 204)
+
 
 if __name__ == "__main__":
     unittest.main()

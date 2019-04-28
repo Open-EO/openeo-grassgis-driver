@@ -14,12 +14,17 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-PREVIEW_TEMPLATE = {
-    "process_graph": None,
-}
-
-
 class PreviewTestCase(TestBase):
+
+    def test_graph_bbox_from_raster_nc_job_ephemeral(self):
+        """Test the bbox from raster process
+        """
+        response = self.app.post('/preview', data=json.dumps(BBOX_FROM_RASTER), content_type="application/json", headers=self.auth)
+
+        data = json.loads(response.data.decode())
+        pprint.pprint(data)
+
+        self.assertEqual(200, response.status_code)
 
     def test_graph_filter_bbox_nc_job_ephemeral(self):
         """Test the filter box process
@@ -78,6 +83,16 @@ class PreviewTestCase(TestBase):
         """Run the raster export process
         """
         response = self.app.post('/preview', data=json.dumps(RASTER_EXPORT), content_type="application/json", headers=self.auth)
+
+        data = json.loads(response.data.decode())
+        pprint.pprint(data)
+
+        self.assertEqual(200, response.status_code)
+
+    def test_graph_rgb_raster_export(self):
+        """Run the rgb raster export process
+        """
+        response = self.app.post('/preview', data=json.dumps(RGB_RASTER_EXPORT), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)

@@ -50,6 +50,25 @@ GET_DATA_3 = {
     }
 }
 
+BBOX_FROM_RASTER = {
+    "title": "Bounding box filtering of raster layer elevation",
+    "description": "This process graph applies the bounding box filter of a raster layer",
+    "process_graph": {
+        "bbox_from_raster_1": {
+            "process_id": "bbox_from_raster",
+            "arguments": {
+                "data": {"from_node": "get_data_1"}
+            }
+        },
+        "get_data_1": {
+            "process_id": "get_data",
+            "arguments": {
+                "data":  "nc_spm_08.PERMANENT.raster.elevation"
+            }
+        }
+    }
+}
+
 FILTER_BBOX = {
     "title": "Bounding box filtering of raster layer elevation",
     "description": "This process graph applies the bounding box filter to a raster layer",
@@ -171,6 +190,46 @@ TEMPORAL_ALGEBRA = {
             "process_id": "get_data",
             "arguments": {
                 "data":  "nc_spm_08.landsat.strds.lsat5_nir"
+            }
+        }
+    }
+}
+
+
+RGB_RASTER_EXPORT = {
+    "title": "Export three raster maps as RGB composite",
+    "description": "Export three raster maps as RGB composite",
+    "process_graph": {
+        "rgb_raster_exporter_1": {
+            "process_id": "rgb_raster_exporter",
+            "arguments": {
+                "red": {"from_node": "bbox_from_raster_red"},
+                "green": {"from_node": "get_green_data"},
+                "blue": {"from_node": "get_blue_data"},
+            }
+        },
+        "bbox_from_raster_red": {
+            "process_id": "bbox_from_raster",
+            "arguments": {
+                "data": {"from_node": "get_red_data"}
+            }
+        },
+        "get_red_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data":  "nc_spm_08.landsat.raster.lsat7_2000_30"
+            }
+        },
+        "get_green_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data":  "nc_spm_08.landsat.raster.lsat7_2000_20"
+            }
+        },
+        "get_blue_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data":  "nc_spm_08.landsat.raster.lsat7_2000_10"
             }
         }
     }

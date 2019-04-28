@@ -45,7 +45,7 @@ def create_process_description():
 
     examples = dict(simple={
         "filter_bbox_1": {
-            "process_id": "filter_bbox",
+            "process_id": PROCESS_NAME,
             "arguments": {
                 "data": {"from_node": "get_data_1"},
                 "left": 630000,

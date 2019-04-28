@@ -117,6 +117,66 @@ REDUCE_TIME_MIN = {
 }
 
 
+MAP_ALGEBRA = {
+    "title": "Compute the NDVI based on two raster layers with map algebra",
+    "description": "Compute the NDVI based on two raster layers with map algebra",
+    "process_graph": {
+        "mapcalc_1": {
+            "process_id": "map_algebra",
+            "arguments": {
+                "a": {"from_node": "get_red_data"},
+                "b": {"from_node": "get_nir_data"},
+                "result": "ndvi",
+                "expression": "$result = ($a + $b / ($a - $b))"
+            }
+        },
+        "get_red_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data":  "nc_spm_08.landsat.raster.lsat7_2000_30"
+            }
+        },
+        "get_nir_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data":  "nc_spm_08.landsat.raster.lsat7_2000_40"
+            }
+        }
+    }
+}
+
+
+
+TEMPORAL_ALGEBRA = {
+    "title": "Compute the NDVI based on two strds with temporal algebra",
+    "description": "Compute the NDVI based on two strds with temporal algebra",
+    "process_graph": {
+        "talgebra_1": {
+            "process_id": "temporal_algebra",
+            "arguments": {
+                "a": {"from_node": "get_red_data"},
+                "b": {"from_node": "get_nir_data"},
+                "result": "ndvi",
+                "basename": "ndvi_base",
+                "expression": "$result = ($a + $b / ($a - $b))"
+            }
+        },
+        "get_red_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data":  "nc_spm_08.landsat.strds.lsat5_red"
+            }
+        },
+        "get_nir_data": {
+            "process_id": "get_data",
+            "arguments": {
+                "data":  "nc_spm_08.landsat.strds.lsat5_nir"
+            }
+        }
+    }
+}
+
+
 NDVI_STRDS = {
     "title": "Compute the NDVI based on two STRDS",
     "description": "Compute the NDVI data from two space-time raster datasets",

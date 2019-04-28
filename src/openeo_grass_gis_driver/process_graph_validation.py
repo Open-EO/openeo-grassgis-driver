@@ -2,7 +2,7 @@
 from pprint import pprint
 from flask import make_response, jsonify, request
 from flask_restful import Resource
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain
+from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, Graph
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.authentication import ResourceBase
@@ -31,9 +31,9 @@ class GraphValidation(ResourceBase):
             # Empty the process location
             ActiniaInterface.PROCESS_LOCATION = {}
             process_graph = request.get_json()
-            # Transform the process graph into a process chain and store the input location
-            # Check all locations in the process graph
-            result_name, process_list = process_node_to_actinia_process_chain(process_graph)
+
+            g = Graph(graph_description=process_graph)
+            result_name, process_list = g.to_actinia_process_list()
 
             if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
                 msg = "Processes can only be defined for a single location!"

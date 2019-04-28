@@ -114,6 +114,17 @@ class ProcessDefinitionTestCase(TestBase):
         self.assertTrue("nc_spm_08.PERMANENT.raster.elevation" in output_names)
         self.assertEqual(len(pc), 2)
 
+    def test_rgb_raster_export(self):
+
+        g = Graph(RGB_RASTER_EXPORT)
+        output_names, pc = g.to_actinia_process_list()
+        pprint(output_names)
+        pprint(pc)
+        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_10" in output_names)
+        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_20" in output_names)
+        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_30" in output_names)
+        self.assertEqual(len(pc), 5)
+
     def test_zonal_statistics(self):
 
         g = Graph(ZONAL_STATISTICS)

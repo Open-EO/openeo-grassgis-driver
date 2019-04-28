@@ -60,6 +60,28 @@ class ProcessDefinitionTestCase(TestBase):
         self.assertTrue(pc[0]["module"] == "t.info")
         self.assertTrue(pc[1]["module"] == "t.rast.extract")
 
+    def test_map_algebra(self):
+
+        g = Graph(MAP_ALGEBRA)
+        output_names, pc = g.to_actinia_process_list()
+        pprint(output_names)
+        pprint(pc)
+        self.assertEqual(len(pc), 3)
+        self.assertTrue(pc[0]["module"] == "r.info")
+        self.assertTrue(pc[1]["module"] == "r.info")
+        self.assertTrue(pc[2]["module"] == "r.mapcalc")
+
+    def test_temporal_algebra(self):
+
+        g = Graph(TEMPORAL_ALGEBRA)
+        output_names, pc = g.to_actinia_process_list()
+        pprint(output_names)
+        pprint(pc)
+        self.assertEqual(len(pc), 3)
+        self.assertTrue(pc[0]["module"] == "t.info")
+        self.assertTrue(pc[1]["module"] == "t.info")
+        self.assertTrue(pc[2]["module"] == "t.rast.algebra")
+
     def test_reduce_time_min(self):
 
         g = Graph(REDUCE_TIME_MIN)

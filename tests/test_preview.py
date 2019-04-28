@@ -94,6 +94,16 @@ class PreviewTestCase(TestBase):
 
         self.assertEqual(200, response.status_code)
 
+    def test_graph_map_algebra(self):
+        """Run the map algebra process
+        """
+        response = self.app.post('/preview', data=json.dumps(MAP_ALGEBRA), content_type="application/json", headers=self.auth)
+
+        data = json.loads(response.data.decode())
+        pprint.pprint(data)
+
+        self.assertEqual(200, response.status_code)
+
 
 if __name__ == "__main__":
     unittest.main()

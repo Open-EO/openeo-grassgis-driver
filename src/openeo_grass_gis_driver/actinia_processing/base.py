@@ -149,6 +149,19 @@ class Graph:
             if node.child is None:
                 self.root_nodes.add(node)
 
+    def to_actinia_process_list(self) -> Tuple[list, list]:
+        """Compute the actinia process list traversing the tree from all root nodes"""
+
+        full_process_list = list()
+        full_output_name_list = list()
+
+        for node in self.root_nodes:
+            output_name_list, process_list = process_node_to_actinia_process_chain(node=node)
+            full_process_list.extend(process_list)
+            full_output_name_list.extend(output_name_list)
+
+        return full_output_name_list, full_process_list
+
 
 def process_node_to_actinia_process_chain(node: Node) -> Tuple[list, list]:
     """This function calls the openEO process node to actinia process chain converter process

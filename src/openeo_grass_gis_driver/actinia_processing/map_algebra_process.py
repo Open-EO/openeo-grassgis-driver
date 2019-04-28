@@ -12,49 +12,49 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-PROCESS_NAME = "MAPCALC"
+PROCESS_NAME = "map_algebra"
 
 
 def create_process_description():
-
-    p_a = Parameter(description="Any openEO process object that returns a single raster datasets identified as $A "
+    p_a = Parameter(description="Any openEO process object that returns a single raster datasets identified as $a "
                                 "in the r.mapcalc expression.",
-                       schema={"type": "object", "format": "eodata"},
-                      required=True)
+                    schema={"type": "object", "format": "eodata"},
+                    required=True)
 
-    p_b = Parameter(description="Any openEO process object that returns a single raster datasets identified as $B "
+    p_b = Parameter(description="Any openEO process object that returns a single raster datasets identified as $b "
                                 "in the r.mapcalc expression.",
-                       schema={"type": "object", "format": "eodata"},
-                      required=True)
+                    schema={"type": "object", "format": "eodata"},
+                    required=True)
 
-    p_c = Parameter(description="Any openEO process object that returns a single raster datasets identified as $C "
+    p_c = Parameter(description="Any openEO process object that returns a single raster datasets identified as $c "
                                 "in the r.mapcalc expression.",
-                       schema={"type": "object", "format": "eodata"},
-                      required=True)
+                    schema={"type": "object", "format": "eodata"},
+                    required=True)
 
-    p_d = Parameter(description="Any openEO process object that returns a single raster datasets identified as $D "
+    p_d = Parameter(description="Any openEO process object that returns a single raster datasets identified as $d "
                                 "in the r.mapcalc expression.",
-                       schema={"type": "object", "format": "eodata"},
-                      required=True)
+                    schema={"type": "object", "format": "eodata"},
+                    required=True)
 
-    p_e = Parameter(description="Any openEO process object that returns a single raster datasets identified as $E "
+    p_e = Parameter(description="Any openEO process object that returns a single raster datasets identified as $e "
                                 "in the r.mapcalc expression.",
-                       schema={"type": "object", "format": "eodata"},
-                      required=True)
+                    schema={"type": "object", "format": "eodata"},
+                    required=True)
 
-    p_f = Parameter(description="Any openEO process object that returns a single raster datasets identified as $F "
+    p_f = Parameter(description="Any openEO process object that returns a single raster datasets identified as $f "
                                 "in the r.mapcalc expression.",
-                       schema={"type": "object", "format": "eodata"},
-                      required=True)
+                    schema={"type": "object", "format": "eodata"},
+                    required=True)
 
-    p_result = Parameter(description="Any openEO process object that returns a single raster datasets identified as $RESULT "
-                                "in the r.mapcalc expression.",
-                       schema={"type": "object", "format": "eodata"},
-                      required=True)
+    p_result = Parameter(description="Any openEO process object that returns a single raster datasets "
+                                     "identified as RESULT in the r.mapcalc expression.",
+                         schema={"type": "object", "format": "eodata"},
+                         required=True)
 
     p_expression = Parameter(description="The r.mapcalc expression",
-                       schema={"type": "string", "examples": ["$RESULT = $A / $B", "$RESULT = ($A - $B)/($A + $B)"]},
-                       required=True)
+                             schema={"type": "string",
+                                     "examples": ["$result = ($a + $b / ($a - $b))"]},
+                             required=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
@@ -65,13 +65,11 @@ def create_process_description():
             "arguments": {
                 "a": {"from_node": "get_a_data"},
                 "b": {"from_node": "get_b_data"},
-                "c": {"from_node": "get_c_data"},
-                "d": {"from_node": "get_d_data"},
-                "e": {"from_node": "get_e_data"},
-                "f": {"from_node": "get_f_data"},
+                "result": "ndvi",
+                "expression": "$result = ($a + $b / ($a - $b))"
             }
         }
-        }
+    }
 
     examples = dict(simple_example=simple_example)
 
@@ -98,15 +96,14 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(expression: str):
-
     rn = randint(0, 1000000)
 
     pc = [
         {"id": "r_mapcalc_%i" % rn,
-         "module": "t.rast.mapcalc",
+         "module": "r.mapcalc",
          "inputs": [{"param": "expression",
                      "value": expression}]
-        }]
+         }]
 
     return pc
 
@@ -127,37 +124,37 @@ def get_process_list(node: Node):
     if "expression" not in node.arguments:
         raise Exception("The expression must be specified as parameter")
 
-    result = node.get_parent_by_name(parent_name="result").output_names[0]
+    result = node.arguments["result"]
     result = ActiniaInterface.layer_def_to_grass_map_name(result)
 
     expression = node.arguments["expression"]
 
-    if "a" not in node.arguments:
-        a = node.get_parent_by_name(parent_name="a").output_names[0]
+    if "a" in node.arguments:
+        a = list(node.get_parent_by_name(parent_name="a").output_names)[0]
         A = ActiniaInterface.layer_def_to_grass_map_name(a)
-        expression = expression.replace("$A", A)
-    if "b" not in node.arguments:
-        b = node.get_parent_by_name(parent_name="b").output_names[0]
+        expression = expression.replace("$a", A)
+    if "b" in node.arguments:
+        b = list(node.get_parent_by_name(parent_name="b").output_names)[0]
         B = ActiniaInterface.layer_def_to_grass_map_name(b)
-        expression = expression.replace("$B", B)
-    if "c" not in node.arguments:
-        c = node.get_parent_by_name(parent_name="c").output_names[0]
+        expression = expression.replace("$b", B)
+    if "c" in node.arguments:
+        c = list(node.get_parent_by_name(parent_name="c").output_names)[0]
         C = ActiniaInterface.layer_def_to_grass_map_name(c)
-        expression = expression.replace("$C", C)
-    if "d" not in node.arguments:
-        d = node.get_parent_by_name(parent_name="d").output_names[0]
+        expression = expression.replace("$c", C)
+    if "d" in node.arguments:
+        d = list(node.get_parent_by_name(parent_name="d").output_names)[0]
         D = ActiniaInterface.layer_def_to_grass_map_name(d)
-        expression = expression.replace("$D", D)
-    if "e" not in node.arguments:
-        e = node.get_parent_by_name(parent_name="e").output_names[0]
+        expression = expression.replace("$d", D)
+    if "e" in node.arguments:
+        e = list(node.get_parent_by_name(parent_name="e").output_names)[0]
         E = ActiniaInterface.layer_def_to_grass_map_name(e)
-        expression = expression.replace("$E", E)
-    if "f" not in node.arguments:
-        f = node.get_parent_by_name(parent_name="f").output_names[0]
+        expression = expression.replace("$e", E)
+    if "f" in node.arguments:
+        f = list(node.get_parent_by_name(parent_name="f").output_names)[0]
         F = ActiniaInterface.layer_def_to_grass_map_name(f)
-        expression = expression.replace("$F", F)
+        expression = expression.replace("$f", F)
 
-    expression = expression.replace("$RESULT", result)
+    expression = expression.replace("$result", result)
 
     output_names.append(result)
     node.add_output(output_name=result)

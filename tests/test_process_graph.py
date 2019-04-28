@@ -42,7 +42,7 @@ class ProcessGraphTestCase(TestBase):
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
 
-        self.assertEqual(process_graph_id, data["process_graphs"][0]["process_graph_id"])
+        self.assertEqual(process_graph_id, data["process_graphs"][0]["id"])
 
         response = self.app.get(f'/process_graphs/{process_graph_id}', headers=self.auth)
         self.assertEqual(200, response.status_code)
@@ -50,7 +50,7 @@ class ProcessGraphTestCase(TestBase):
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
 
-        self.assertEqual(process_graph_id, data["process_graph_id"])
+        self.assertEqual(process_graph_id, data["id"])
         self.assertEqual(FILTER_BBOX["process_graph"], data["process_graph"])
 
 
@@ -70,7 +70,7 @@ class ProcessGraphTestCase(TestBase):
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
 
-        self.assertEqual(process_graph_id, data["process_graph_id"])
+        self.assertEqual(process_graph_id, data["id"])
         self.assertEqual(FILTER_BBOX["process_graph"], data["process_graph"])
 
         response = self.app.delete(f'/process_graphs/{process_graph_id}', headers=self.auth)
@@ -105,8 +105,8 @@ class ProcessGraphTestCase(TestBase):
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
 
-        self.assertEqual(process_graph_id, data["process_graph_id"])
-        self.assertEqual(FILTER_BOX["process_graph"], data["process_graph"])
+        self.assertEqual(process_graph_id, data["id"])
+        self.assertEqual(FILTER_BBOX["process_graph"], data["process_graph"])
 
         # Modify graph
         PROCESS_CHAIN_TEMPLATE["process_graph"] = ZONAL_STATISTICS["process_graph"]
@@ -123,8 +123,8 @@ class ProcessGraphTestCase(TestBase):
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
 
-        self.assertEqual(process_graph_id, data["process_graph_id"])
-        self.assertEqual(ZONAL_STATISTICS_["process_graph"], data["process_graph"])
+        self.assertEqual(process_graph_id, data["id"])
+        self.assertEqual(ZONAL_STATISTICS["process_graph"], data["process_graph"])
 
 
 if __name__ == "__main__":

@@ -124,13 +124,8 @@ def get_process_list(node: Node):
     red_stds = list(red_input_names)[-1]
     nir_strds = list(nir_input_names)[-1]
 
-    # Take the last entry from the
-    if len(red_input_names) > 1:
-        output_names.extend(list(red_input_names)[0:-1])
-
-    # Take the last entry from the
-    if len(nir_input_names) > 1:
-        output_names.extend(list(nir_input_names)[0:-1])
+    output_names.extend(list(red_input_names))
+    output_names.extend(list(nir_input_names))
 
     location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(red_stds)
     output_name = "%s_%s" % (layer_name, PROCESS_NAME)

@@ -10,7 +10,7 @@ from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.actinia_processing.actinia_job_db import ActiniaJobDB
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.job_schemas import JobInformation
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, Graph
+from openeo_grass_gis_driver.actinia_processing.base import Graph
 from openeo_grass_gis_driver.authentication import ResourceBase
 from openeo_grass_gis_driver.schema_base import EoLink
 
@@ -67,7 +67,6 @@ class JobsJobIdResults(ResourceBase):
                     if job.additional_info != job_info:
                         job.additional_info = job_info
                         self.job_db[job_id] = job
-
 
                 if (job.additional_info['urls'] and
                     job.additional_info['urls']['resources']):

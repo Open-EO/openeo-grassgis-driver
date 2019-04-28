@@ -50,6 +50,16 @@ class ProcessDefinitionTestCase(TestBase):
         self.assertTrue(pc[0]["module"] == "r.info")
         self.assertTrue(pc[1]["module"] == "g.region")
 
+    def test_bbox_from_raster(self):
+
+        g = Graph(BBOX_FROM_RASTER)
+        output_names, pc = g.to_actinia_process_list()
+        pprint(output_names)
+        pprint(pc)
+        self.assertEqual(len(pc), 2)
+        self.assertTrue(pc[0]["module"] == "r.info")
+        self.assertTrue(pc[1]["module"] == "g.region")
+
     def test_daterange(self):
 
         g = Graph(DATERANGE)

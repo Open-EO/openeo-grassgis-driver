@@ -9,6 +9,8 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import Actinia
 from openeo_grass_gis_driver.process_graph_schemas import ProcessGraphListEntry, ProcessGraphList
 from openeo_grass_gis_driver.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.authentication import ResourceBase
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphListEntry, ProcessGraphList
+from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

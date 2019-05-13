@@ -30,7 +30,7 @@ class DataTestCase(TestBase):
         data_id_list = []
 
         for entry in data["collections"]:
-            data_id_list.append(entry["name"])
+            data_id_list.append(entry["id"])
 
         found = False
         for entry in dsets:
@@ -46,7 +46,7 @@ class DataTestCase(TestBase):
         data = json.loads(response.data.decode())
         pprint(data)
 
-        self.assertEqual(data["name"], "nc_spm_08.landsat.raster.lsat5_1987_10")
+        self.assertEqual(data["id"], "nc_spm_08.landsat.raster.lsat5_1987_10")
 
     def test_raster_collections_id_2(self):
         response = self.app.get('/collections/nc_spm_08.PERMANENT.raster.elevation',
@@ -55,7 +55,7 @@ class DataTestCase(TestBase):
         data = json.loads(response.data.decode())
         pprint(data)
 
-        self.assertEqual(data["name"], "nc_spm_08.PERMANENT.raster.elevation")
+        self.assertEqual(data["id"], "nc_spm_08.PERMANENT.raster.elevation")
 
     def test_vector_collections_id_2(self):
         response = self.app.get('/collections/nc_spm_08.PERMANENT.raster.elevation',
@@ -64,7 +64,7 @@ class DataTestCase(TestBase):
         data = json.loads(response.data.decode())
         pprint(data)
 
-        self.assertEqual(data["name"], "nc_spm_08.PERMANENT.raster.elevation")
+        self.assertEqual(data["id"], "nc_spm_08.PERMANENT.raster.elevation")
 
 
 if __name__ == "__main__":

@@ -3,11 +3,9 @@ import time
 import sys
 import traceback
 from flask import make_response, jsonify, request
-from flask_restful import Resource
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, Graph, Node
+from openeo_grass_gis_driver.actinia_processing.base import Graph
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
-from openeo_grass_gis_driver.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.authentication import ResourceBase
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
@@ -65,7 +63,7 @@ class Preview(ResourceBase):
             traceback_model = dict(message=str(e_value),
                                    traceback=traceback.format_tb(e_tb),
                                    type=str(e_type))
-            error = ErrorSchema(id="1234567890", code=2, message=str(traceback_model))
+            error = ErrorSchema(id="1234567890", code=404, message=str(traceback_model))
             return make_response(error.to_json(), 400)
 
     def wait_until_finished(self, response, max_time: int=10):

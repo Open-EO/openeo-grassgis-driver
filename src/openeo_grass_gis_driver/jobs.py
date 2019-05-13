@@ -6,10 +6,8 @@ from flask import make_response, jsonify, request
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
-from openeo_grass_gis_driver.job_schemas import JobInformation, JobList
-from openeo_grass_gis_driver.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.authentication import ResourceBase
-from openeo_grass_gis_driver.process_graph_schemas import ProcessGraph
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 from openeo_grass_gis_driver.models.job_schemas import JobInformation, JobList
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
@@ -106,8 +104,7 @@ def check_job(job, job_id):
 
     job_info = JobInformation(job_id=job_id, title=title,
                               description=description,
-                              process_graph=process_graph,
-                              output=None, updated=None,
+                              process_graph=process_graph, updated=None,
                               submitted=submitted, status="submitted")
 
     return job_info

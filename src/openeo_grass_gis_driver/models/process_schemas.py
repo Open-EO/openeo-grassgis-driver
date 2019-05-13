@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """This file includes all required openEO response schemas
 """
+from datetime import datetime
+
 from flask import make_response
 import re
 from typing import List, Tuple, Optional, Dict
@@ -235,24 +237,25 @@ class Variable(JsonableObject):
     def __init__(self, variable_id: str, default, type: str = None,
             description: str = None):
 
-        pattern = "^[a-z0-9_]+$"
-        x = re.search(pattern, variable_id)
-        if not x:
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="The variable_id MUST match the following pattern: %s" % pattern)
-            return make_response(es.to_json(), 400)
+        #pattern = "^[a-z0-9_]+$"
+        #x = re.search(pattern, variable_id)
+        #if not x:
+        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        message="The variable_id MUST match the following pattern: %s" % pattern)
+        #    return make_response(es.to_json(), 400)
         self.variable_id = variable_id
+        self.default = default
         self.type = type
         self.description = description
-        if (not isinstance(default, str)
-                and not isinstance(default, (int, float, complex))
-                and not isinstance(default, list)
-                and not isinstance(default, bool)
-                and not isinstance(default, object)
-                and not isinstance(default, ProcessGraph)):
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="The default values MUST be from type \"string\", \"number\", \"array\", \"boolean\", \"object\", \"process_graph\"")
-            return make_response(es.to_json(), 400)
+        #if (not isinstance(default, str)
+        #        and not isinstance(default, (int, float, complex))
+        #        and not isinstance(default, list)
+        #        and not isinstance(default, bool)
+        #        and not isinstance(default, object)
+        #        and not isinstance(default, ProcessGraph)):
+        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        message="The default values MUST be from type \"string\", \"number\", \"array\", \"boolean\", \"object\", \"process_graph\"")
+        #    return make_response(es.to_json(), 400)
 
 
 class ProcessExample(JsonableObject):
@@ -287,10 +290,10 @@ class ProcessExample(JsonableObject):
 
         self.title = title
         self.description = description
-        if (process_graph and arguments) or (not process_graph and not arguments):
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="Either process_graph or arguments must be set, never both.")
-            return make_response(es.to_json(), 400)
+        #if (process_graph and arguments) or (not process_graph and not arguments):
+        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        message="Either process_graph or arguments must be set, never both.")
+        #    return make_response(es.to_json(), 400)
         self.process_graph = process_graph
         self.arguments = arguments
         self.returns = returns
@@ -378,47 +381,44 @@ class ProcessDescription(JsonableObject):
                  returns: ReturnValue,
                  links: EoLinks = list(),
                  summary: Optional[str] = None,
-                 # min_parameters: Optional[int] = None,
                  deprecated: bool = False,
                  experimental: bool = False,
                  exceptions: Optional[Dict[str, ProcessException]] = None,
                  examples: List = None,
-                 categories: List[str] = None,
-                 parameter_order: List[str] = None):
+                 categories: List[str] = None):
 
         # ID in pattern
-        pattern = "^[A-Za-z0-9_]+$"
-        x = re.search(pattern, id)
-        if not x:
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="The process_id MUST match the following pattern: %s" % pattern)
-            return make_response(es.to_json(), 400)
+        #pattern = "^[A-Za-z0-9_]+$"
+        #x = re.search(pattern, id)
+        #if not x:
+        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        message="The process_id MUST match the following pattern: %s" % pattern)
+        #    return make_response(es.to_json(), 400)
         self.id = id
         self.description = description
         # keys of parameters in pattern
-        pattern = "^[A-Za-z0-9_]+$"
-        for key in parameters:
-            x = re.search(pattern, key)
-            if not x:
-                es = ErrorSchema(id=str(datetime.now()), code=400,
-                    message="The keys of the parameters MUST match the following pattern: %s" % pattern)
-                return make_response(es.to_json(), 400)
+        #pattern = "^[A-Za-z0-9_]+$"
+        #for key in parameters:
+        #    x = re.search(pattern, key)
+        #    if not x:
+        #        es = ErrorSchema(id=str(datetime.now()), code=400,
+        #            message="The keys of the parameters MUST match the following pattern: %s" % pattern)
+        #        return make_response(es.to_json(), 400)
         self.parameters = parameters
         self.returns = returns
         self.links = links
         self.summary = summary
-        # self.min_parameters = min_parameters
         self.deprecated = deprecated
         self.experimental = experimental
         self.exceptions = exceptions
         self.examples = examples
         self.categories = categories
         # parameter_order in pattern
-        pattern = "^[A-Za-z0-9_]+$"
-        if parameter_order:
-            x = re.search(pattern, parameter_order)
-            if not x:
-                es = ErrorSchema(id=str(datetime.now()), code=400,
-                    message="The parameter_order MUST match the following pattern: %s" % pattern)
-                return make_response(es.to_json(), 400)
-            self.parameter_order = parameter_order
+        #pattern = "^[A-Za-z0-9_]+$"
+        #if parameter_order:
+        #    x = re.search(pattern, parameter_order)
+        #    if not x:
+        #        es = ErrorSchema(id=str(datetime.now()), code=400,
+        #            message="The parameter_order MUST match the following pattern: %s" % pattern)
+        #        return make_response(es.to_json(), 400)
+        #    self.parameter_order = parameter_order

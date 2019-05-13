@@ -479,12 +479,12 @@ class CollectionProviders(JsonableObject):
             roles: List[str] = None, url: str = None):
         self.name = name
         self.description = description
-        if roles:
-            for role in roles:
-                if role not in ["producer", "licensor", "processor", "host"]:
-                    es = ErrorSchema(id=str(datetime.now()), code=400,
-                        message="The provider's role(s) can be one or more of the following elements: producer, licensor, processor, host")
-                    return make_response(es.to_json(), 400)
+        #if roles:
+        #    for role in roles:
+        #        if role not in ["producer", "licensor", "processor", "host"]:
+        #            es = ErrorSchema(id=str(datetime.now()), code=400,
+        #                message="The provider's role(s) can be one or more of the following elements: producer, licensor, processor, host")
+        #            return make_response(es.to_json(), 400)
         self.roles = roles
         self.url = url
 
@@ -561,12 +561,12 @@ class CollectionEntry(JsonableObject):
         self.extent = extent
         self.links = links
         self.stac_version = stac_version
-        pattern = "^[A-Za-z0-9_\-\.~\/]+$"
-        x = re.search(pattern, id)
-        if not x:
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="The id MUST match the following pattern: %s" % pattern)
-            return make_response(es.to_json(), 400)
+        #pattern = "^[A-Za-z0-9_\-\.~\/]+$"
+        #x = re.search(pattern, id)
+        #if not x:
+        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        message="The id MUST match the following pattern: %s" % pattern)
+        #    return make_response(es.to_json(), 400)
         self.id = id
         self.keywords = keywords
         self.version = version

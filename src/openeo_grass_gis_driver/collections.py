@@ -4,7 +4,6 @@ from flask import make_response, jsonify, request
 
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.actinia_processing.config import Config
-from openeo_grass_gis_driver.collection_schemas import Collection, CollectionEntry
 from openeo_grass_gis_driver.authentication import ResourceBase
 from openeo_grass_gis_driver.models.collection_schemas import Collection, CollectionEntry
 

@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """This file includes all required openEO response schemas
 """
+from datetime import datetime
 from typing import List, Optional, Dict
+
+from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 
@@ -56,19 +59,21 @@ class Argument(JsonableObject):
         where necessary.
 
 """
-    def __init__(self, description: str, required: bool = False,
-            default = None, enum: List = None, example = None):
+    def __init__(self, description: str, minimum: Optional[int] = None,
+                 maximum: Optional[int] = None, required: bool = False,
+                 default = None, enum: List = None, example = None):
 
         self.description = description
         self.required = required
         self.default = default
-        if not isinstance(minimum, (int, float, complex)):
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="The minimum MUST be a number")
+        #if not isinstance(minimum, (int, float, complex)):
+        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        message="The minimum MUST be a number")
+        #self.minimum = minimum
+        #if not isinstance(maximum, (int, float, complex)):
+        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        message="The maximum MUST be a number")
         self.minimum = minimum
-        if not isinstance(maximum, (int, float, complex)):
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="The maximum MUST be a number")
         self.maximum = maximum
         self.enum = enum
         self.example = example
@@ -231,24 +236,23 @@ class JobInformation(JsonableObject):
     def __init__(self, job_id: str, submitted: str,
                  process_graph: ProcessGraph, title: str = None,
                  description: str = None, status: str = "submitted",
-                 # output: Optional[OutputFormat],
                  updated: Optional[str] = None,
                  plan: str = None, cost: float=None, budget: float = None):
         # Test id
         pattern = "^[A-Za-z0-9_\-\.~]+$"
-        x = re.search(pattern, job_id)
-        if not x:
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="The id MUST match the following pattern: %s" % pattern)
-            return make_response(es.to_json(), 400)
+        #x = re.search(pattern, job_id)
+        #if not x:
+        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        message="The id MUST match the following pattern: %s" % pattern)
+        #    return make_response(es.to_json(), 400)
         self.job_id = job_id
         self.title = title
         self.description = description
         # Test Status
-        if status in ["submitted", "queued", "running", "canceled", "finished", "error"]:
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="The status has to one of \"submitted\" \"queued\" \"running\" \"canceled\" \"finished\" \"error\"")
-            return make_response(es.to_json(), 400)
+        #if status in ["submitted", "queued", "running", "canceled", "finished", "error"]:
+        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        message="The status has to one of \"submitted\" \"queued\" \"running\" \"canceled\" \"finished\" \"error\"")
+        #    return make_response(es.to_json(), 400)
         self.status = status
         self.submitted = submitted
         self.updated = updated
@@ -256,7 +260,6 @@ class JobInformation(JsonableObject):
         self.cost = cost
         self.budget = budget
         self.process_graph = process_graph
-        # self.output = output
 
 
 class JobList(JsonableObject):

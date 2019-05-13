@@ -3,7 +3,7 @@
 from typing import Set, Dict, Optional, Tuple, Union
 
 # This is the process dictionary that is used to store all processes of the Actinia wrapper
-from openeo_grass_gis_driver.process_graph_schemas import ProcessGraph
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 
 PROCESS_DESCRIPTION_DICT = {}
 PROCESS_DICT = {}

@@ -2,7 +2,7 @@
 from flask_restful import Resource
 from flask import make_response, jsonify, request
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
-from openeo_grass_gis_driver.models.collection_schemas import CollectionInformation, Extent, EoLinks
+from openeo_grass_gis_driver.models.collection_schemas import CollectionInformation, CollectionExtent, EoLinks
 from osgeo import osr, ogr
 
 __license__ = "Apache License, Version 2.0"
@@ -10,7 +10,6 @@ __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
-
 
 strds_example = {
     "aggregation_type": "None",
@@ -44,7 +43,6 @@ strds_example = {
     "west": "-40.5"
 }
 
-
 raster_example = {
     "cells": "2025000",
     "cols": "1500",
@@ -76,7 +74,7 @@ raster_example = {
 }
 
 
-def coorindate_transform_extent_to_EPSG_4326(crs: str, extent: Extent):
+def coorindate_transform_extent_to_EPSG_4326(crs: str, extent: CollectionExtent):
     """Tranfor the extent coordinates to lat/lon
 
     :param crs:
@@ -121,24 +119,25 @@ class CollectionInformationResource(Resource):
             return make_response(jsonify({"description": "An internal error occurred "
                                                          "while catching GRASS GIS layer information "
                                                          "for layer <%s>!\n Error: %s"
-                                                         ""%(name, str(layer_data))}, 400))
+                                                         "" % (name, str(layer_data))}, 400))
 
         # Get the projection from the GRASS mapset
         status_code, mapset_info = self.iface.mapset_info(location=location, mapset=mapset)
         if status_code != 200:
             return make_response(jsonify({"description": "An internal error occurred "
                                                          "while catching mapset info "
-                                                         "for mapset <%s>!"%mapset}, 400))
+                                                         "for mapset <%s>!" % mapset}, 400))
 
-        extent = Extent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
-                                 float(layer_data["east"]), float(layer_data["north"])))
+        extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
+                                           float(layer_data["east"]), float(layer_data["north"])),
+                                  temporal=("", ""))
 
         title = "Raster dataset"
         if datatype.lower() == "strds":
             title = "Space time raster dataset"
-            extent = Extent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
-                                     float(layer_data["east"]), float(layer_data["north"])),
-                            temporal=(layer_data["start_time"], layer_data["end_time"]))
+            extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
+                                               float(layer_data["east"]), float(layer_data["north"])),
+                                      temporal=(layer_data["start_time"], layer_data["end_time"]))
         if datatype.lower() == "vector":
             title = "Vector dataset"
 
@@ -147,7 +146,7 @@ class CollectionInformationResource(Resource):
 
         coorindate_transform_extent_to_EPSG_4326(crs=crs, extent=extent)
 
-        ci = CollectionInformation(name=name, title=title,
+        ci = CollectionInformation(id=name, title=title,
                                    description=description,
                                    extent=extent)
 

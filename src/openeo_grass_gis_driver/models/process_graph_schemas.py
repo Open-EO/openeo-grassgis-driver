@@ -34,7 +34,7 @@ class ProcessGraphNode(JsonableObject):
     arguments:
         required
         ProcessArguments (process_arguments)
-}
+
     """
 
     def __init__(self, process_id: str,
@@ -42,15 +42,15 @@ class ProcessGraphNode(JsonableObject):
                         description: str = None, result: bool = False):
 
         # ID in pattern
-        pattern = "^[A-Za-z0-9_]+$"
-        x = re.search(pattern, id)
-        if not x:
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="The process_id MUST match the following pattern: %s" % pattern)
-            return make_response(es.to_json(), 400)
+        #pattern = "^[A-Za-z0-9_]+$"
+        #x = re.search(pattern, id)
+        #if not x:
+        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        message="The process_id MUST match the following pattern: %s" % pattern)
+        #    return make_response(es.to_json(), 400)
         self.process_id = process_id
         self.description = description
-        # self.arguments = arguments
+        self.arguments = arguments
         self.result = result
 
 
@@ -106,16 +106,15 @@ class ProcessGraphListEntry(JsonableObject):
         CommonMark 0.28 syntax MAY be used for rich text representation.
 
     """
-
     def __init__(self, id: str, title: str = None, description: str = None):
 
         self.title = title
         self.description = description
-        pattern = "^[A-Za-z0-9_\-\.~]+$"
-        x = re.search(pattern, id)
-        if not x:
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="The id MUST match the following pattern: %s" % pattern)
+        #pattern = "^[A-Za-z0-9_\-\.~]+$"
+        #x = re.search(pattern, id)
+        #if not x:
+        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        message="The id MUST match the following pattern: %s" % pattern)
         self.id = id
 
 

@@ -12,7 +12,7 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-PROCESS_NAME = "reduce_time"
+PROCESS_NAME = "percentile_time"
 
 
 def create_process_description():
@@ -20,9 +20,9 @@ def create_process_description():
                                    "or space-time raster dataset",
                        schema={"type": "object", "format": "eodata"},
                        required=True)
-    p_percentile = Parameter(description="The percentiel to get from a "
+    p_percentile = Parameter(description="The percentile to get from a "
                                          "space-time raster dataset",
-                         schema={"type": "double"},
+                         schema={"type": "object", "format": "float"},
                          required=True)
 
     rv = ReturnValue(description="Processed EO data.",

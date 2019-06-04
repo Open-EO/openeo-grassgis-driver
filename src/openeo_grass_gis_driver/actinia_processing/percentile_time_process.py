@@ -29,7 +29,7 @@ def create_process_description():
                      schema={"type": "object", "format": "eodata"})
 
     simple_example = {
-        "reduce_time_1": {
+        "percentile_time_1": {
             "process_id": PROCESS_NAME,
             "arguments": {
                 "data": {"from_node": "get_strds_data"},

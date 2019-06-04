@@ -68,7 +68,7 @@ def create_process_description():
                                         "top": p_top,
                                         "bottom": p_bottom,
                                         "width_res": p_width_res,
-                                        "hieght_res": p_height_res},
+                                        "height_res": p_height_res},
                             returns=rv,
                             examples=examples)
 

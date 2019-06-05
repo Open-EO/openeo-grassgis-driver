@@ -8,7 +8,7 @@ from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDes
 from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
 __license__ = "Apache License, Version 2.0"
-__author__ = "Sören Gebbert"
+__author__ = "Markus Metz"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
@@ -81,7 +81,7 @@ def create_process_chain_entry(input_time_series, newmin, newmax, output_time_se
                               "(%(max)s - %(min)s) + %(min)s" % {"result": output_name,
                                                         "raw": input_name,
                                                         "rmin": str(oldmin),
-							"rmax": str(oldmax)}},
+							"rmax": str(oldmax),
                                                         "min": str(newmin),
 							"max": str(newmax)}},
                     {"param": "output",

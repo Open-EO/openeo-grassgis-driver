@@ -12,28 +12,23 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-PROCESS_NAME = "percentile_time"
+PROCESS_NAME = "multilayer_mask"
 
 
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
+                                   "or a space-time raster dataset",
                        schema={"type": "object", "format": "eodata"},
                        required=True)
-    p_percentile = Parameter(description="The percentile to get from a "
-                                         "space-time raster dataset",
-                         schema={"type": "object", "format": "float"},
-                         required=True)
 
-    rv = ReturnValue(description="Processed EO data.",
+    rv = ReturnValue(description="Multilayer mask as EO data.",
                      schema={"type": "object", "format": "eodata"})
 
     simple_example = {
-        "percentile_time_1": {
+        "multilayer_mask_1": {
             "process_id": PROCESS_NAME,
             "arguments": {
                 "data": {"from_node": "get_strds_data"},
-                "percentile": "5",
             }
         }
     }
@@ -41,10 +36,12 @@ def create_process_description():
     examples = dict(simple_example=simple_example)
 
     pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Reduce the time dimension of a space-time raster dataset "
-                                        "by getting the percentile.",
-                            summary="Reduce the time dimension of a space-time raster dataset.",
-                            parameters={"imagery": p_data, "percentile": p_percentile},
+                            description="Creates a mask using several bands of an EO dataset. "
+                                        "Each pixel that has nodata or invalid value in any of "
+					"the layers/bands gets value 1, pixels that have valid "
+					"values in all layers/bands get value 0.",
+                            summary="Create a multilayer mask from several raster datasets.",
+                            parameters={"imagery": p_data},
                             returns=rv,
                             examples=examples)
 
@@ -54,27 +51,39 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_name, percentile, output_name):
-    """Create a Actinia process description that uses t.rast.series to reduce a time series.
+def create_process_chain_entry(input_time_series, output_name):
+    """Create a Actinia process description that uses t.rast.series 
+       and r.mapcalc to create a multilayer mask.
 
     :param input_time_series: The input time series name
-    :param percentile: The percentile to use for time reduction
-    :param output_map: The name of the output map
+    :param output_name: The name of the output map
     :return: A Actinia process chain description
     """
-    input_name = ActiniaInterface.layer_def_to_grass_map_name(input_name)
+    input_name = ActiniaInterface.layer_def_to_grass_map_name(input_time_series)
+    output_name_tmp = output_name + '_tmp'
+    
+    # TODO: get number of maps in input_name
+    nmaps = ??? # Number of registered maps
 
     rn = randint(0, 1000000)
-
-    quantile = float(percentile) / 100.0
 
     pc = {"id": "t_rast_series_%i" % rn,
           "module": "t.rast.series",
           "inputs": [{"param": "input", "value": input_name},
-                     {"param": "method", "value": "quantile"},
-                     {"param": "quantile", "value": quantile},
-                     {"param": "output", "value": output_name}],
-          "flags": "t"}
+                     {"param": "method", "value": "count"},
+                     {"param": "output", "value": output_name_tmp}],
+          "flags": "t",
+
+          "module": "r.mapcalc",
+          "inputs": [{"param": "expression",
+                     "value": "%(result)s = int(if(%(raw)s < %(nmaps)s, 1, 0))" % 
+                                            {"result": output_name,
+                                             "raw": input_name,
+                                             "nmaps": str(nmaps)}},
+                    {"param": "output",
+                     "value": output_name}],
+	  }
+	  # g.remove raster name=output_name_tmp -f ?
 
     return pc
 
@@ -91,8 +100,8 @@ def get_process_list(node: Node):
     input_names, process_list = check_node_parents(node=node)
     output_names = []
 
-    if "percentile" not in node.arguments:
-        raise Exception("Parameter percentile is required.")
+    if "method" not in node.arguments:
+        raise Exception("Parameter method is required.")
 
     for input_name in node.get_parent_by_name("data").output_names:
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
@@ -100,7 +109,7 @@ def get_process_list(node: Node):
         output_names.append(output_name)
         node.add_output(output_name=output_name)
 
-        pc = create_process_chain_entry(input_name, node.arguments["percentile"], output_name)
+        pc = create_process_chain_entry(input_name, node.arguments["method"], output_name)
         process_list.append(pc)
 
     return output_names, process_list

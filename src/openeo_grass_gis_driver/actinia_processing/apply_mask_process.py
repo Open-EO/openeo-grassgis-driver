@@ -46,7 +46,7 @@ def create_process_description():
                                         "Each pixel that is 0 or nodata in the mask is set to nodata. "
 					"See also multilayer_mask.",
                             summary="Create a multilayer mask from several raster datasets.",
-                            parameters={"imagery": p_data, "mask_imagery": p_mask},
+                            parameters={"imagery": p_data, "mask": p_mask},
                             returns=rv,
                             examples=examples)
 

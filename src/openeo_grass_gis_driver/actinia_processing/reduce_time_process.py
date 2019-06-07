@@ -62,9 +62,9 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 def create_process_chain_entry(input_name, method, output_name):
     """Create a Actinia process description that uses t.rast.series to reduce a time series.
 
-    :param input_time_series: The input time series name
+    :param input_name: The input time series name
     :param method: The method for time reduction
-    :param output_map: The name of the output map
+    :param output_map: The name of the output raster map
     :return: A Actinia process chain description
     """
     input_name = ActiniaInterface.layer_def_to_grass_map_name(input_name)

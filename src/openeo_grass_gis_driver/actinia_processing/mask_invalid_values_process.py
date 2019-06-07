@@ -62,8 +62,10 @@ def create_process_chain_entry(input_time_series, min, max, output_time_series):
     """Create a Actinia command of the process chain that uses t.rast.mapcalc 
     to filter raster values by the specified interval
 
-    :param min:
-    :param max:
+    :param input_time_series: The input time series name
+    :param min: smallest allowed value 
+    :param max: largest allowed value
+    :param output_time_series: The output time series name
     :return: A Actinia process chain description
     """
 

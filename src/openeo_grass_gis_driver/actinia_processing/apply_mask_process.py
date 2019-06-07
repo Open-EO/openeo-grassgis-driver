@@ -29,12 +29,13 @@ def create_process_description():
     rv = ReturnValue(description="Multilayer mask as EO data.",
                      schema={"type": "object", "format": "eodata"})
 
+    # correct ?
     simple_example = {
         "apply_mask_1": {
             "process_id": PROCESS_NAME,
             "arguments": {
                 "data": {"from_node": "get_strds_data"},
-                "mask": {"from_node": "get_mask_strds_data"},
+                "mask": {"from_node": "get_strds_data"},
             }
         }
     }
@@ -110,12 +111,12 @@ def get_process_list(node: Node):
 
     mask_name = None
     if nmasks == 1:
-	mask_name = node.get_parent_by_name("data").output_names[0]
+	mask_name = node.get_parent_by_name("mask").output_names[0]
 
     for i in range(len(node.get_parent_by_name("data").output_names)):
 	input_name = node.get_parent_by_name("data").output_names[i]
 	if nmasks > 1:
-	    mask_name = node.get_parent_by_name("data").output_names[i]
+	    mask_name = node.get_parent_by_name("mask").output_names[i]
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
         output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)

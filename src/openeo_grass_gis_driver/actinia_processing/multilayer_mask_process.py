@@ -56,7 +56,7 @@ def create_process_chain_entry(input_time_series, output_name):
        and r.mapcalc to create a multilayer mask.
 
     :param input_time_series: The input time series name
-    :param output_name: The name of the output map
+    :param output_name: The name of the output raster map
     :return: A Actinia process chain description
     """
     input_name = ActiniaInterface.layer_def_to_grass_map_name(input_time_series)
@@ -78,7 +78,7 @@ def create_process_chain_entry(input_time_series, output_name):
           "inputs": [{"param": "expression",
                      "value": "%(result)s = int(if(%(raw)s < %(nmaps)s, 1, 0))" % 
                                             {"result": output_name,
-                                             "raw": input_name,
+                                             "raw": output_name_tmp,
                                              "nmaps": str(nmaps)}},
                     {"param": "output",
                      "value": output_name}],
@@ -100,17 +100,12 @@ def get_process_list(node: Node):
     input_names, process_list = check_node_parents(node=node)
     output_names = []
 
-    if "method" not in node.arguments:
-        raise Exception("Parameter method is required.")
+    output_name = "%s_%s" % (input_names, PROCESS_NAME)
+    output_names.append(output_name)
+    node.add_output(output_name=output_name)
 
-    for input_name in node.get_parent_by_name("data").output_names:
-        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
-        output_name = "%s_%s" % (layer_name, PROCESS_NAME)
-        output_names.append(output_name)
-        node.add_output(output_name=output_name)
-
-        pc = create_process_chain_entry(input_name, node.arguments["method"], output_name)
-        process_list.append(pc)
+    pc = create_process_chain_entry(input_names, node.arguments["method"], output_name)
+    process_list.append(pc)
 
     return output_names, process_list
 

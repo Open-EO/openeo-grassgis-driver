@@ -59,7 +59,7 @@ def create_process_chain_entry(input_name, percentile, output_name):
 
     :param input_time_series: The input time series name
     :param percentile: The percentile to use for time reduction
-    :param output_map: The name of the output map
+    :param output_map: The name of the output raster map
     :return: A Actinia process chain description
     """
     input_name = ActiniaInterface.layer_def_to_grass_map_name(input_name)
@@ -95,6 +95,8 @@ def get_process_list(node: Node):
         raise Exception("Parameter percentile is required.")
 
     for input_name in node.get_parent_by_name("data").output_names:
+        # multiple strds as input ?
+        # multiple raster layers as output !
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
         output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)

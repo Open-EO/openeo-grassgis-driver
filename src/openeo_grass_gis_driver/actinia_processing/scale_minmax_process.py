@@ -57,17 +57,19 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_time_series, newmin, newmax, output_time_series):
+def create_process_chain_entry(input_name, newmin, newmax, output_name):
     """Create a Actinia command of the process chain that uses t.rast.mapcalc 
     to rescale raster values to the specified interval
 
-    :param min:
-    :param max:
+    :param input_name: The input raster map name
+    :param min: new minimum value
+    :param max: new maximum value
+    :param output_name: The output raster map name
     :return: A Actinia process chain description
     """
 
-    input_name = ActiniaInterface.layer_def_to_grass_map_name(input_time_series)
-    output_name = ActiniaInterface.layer_def_to_grass_map_name(output_time_series)
+    input_name = ActiniaInterface.layer_def_to_grass_map_name(input_name)
+    output_name = ActiniaInterface.layer_def_to_grass_map_name(output_name)
 
     rn = randint(0, 1000000)
 

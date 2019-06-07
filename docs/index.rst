@@ -90,7 +90,7 @@ An active internet connection is required. All requests to the openEO GRASS GIS 
 
 
 ====================
-The openEO use cases - ATTENTION - below describes the deprecated usage of API v0.0.1
+The openEO use cases - ATTENTION - below describes the deprecated usage of API v0.0.1, update forthcoming
 ====================
 
 First list all available data in the actinia database, the list was shortened, since aver 120 raster layer are

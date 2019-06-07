@@ -10,7 +10,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 class Config:
     # Settings for docker swarm image
-    HOST="https://actinia.mundialis.de"
+    HOST="https://actinia4.mundialis.de"
     PORT=443
     LOCATION="nc_spm_08"
     # LOCATION="LL"

@@ -48,7 +48,7 @@ def create_process_description():
                             summary="Filter raster based data on the specified interval",
                             parameters={"data": p_data,
                                         "min": p_min,
-                                        "max": p_max,
+                                        "max": p_max},
                             returns=rv,
                             examples=examples)
 
@@ -81,7 +81,7 @@ def create_process_chain_entry(input_time_series, min, max, output_time_series):
                               "%(raw)s > %(max)s), null(), %(raw)s)" % {"result": output_name,
                                                         "raw": input_name,
                                                         "min": str(min),
-							"max": str(max)}},
+                                                        "max": str(max)}},
                     {"param": "basename",
                      "value": "masked"},
                     {"param": "output",

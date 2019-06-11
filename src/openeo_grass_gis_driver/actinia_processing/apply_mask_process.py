@@ -35,7 +35,7 @@ def create_process_description():
             "process_id": PROCESS_NAME,
             "arguments": {
                 "data": {"from_node": "get_strds_data"},
-                "mask": {"from_node": "get_strds_data"},
+                "mask": {"from_node": "get_mask_data"},
             }
         }
     }
@@ -45,7 +45,7 @@ def create_process_description():
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Applies a mask to an EO dataset. "
                                         "Each pixel that is 0 or nodata in the mask is set to nodata. "
-					"See also multilayer_mask.",
+                                        "See also multilayer_mask.",
                             summary="Create a multilayer mask from several raster datasets.",
                             parameters={"imagery": p_data, "mask": p_mask},
                             returns=rv,
@@ -111,12 +111,12 @@ def get_process_list(node: Node):
 
     mask_name = None
     if nmasks == 1:
-	mask_name = node.get_parent_by_name("mask").output_names[0]
+        mask_name = node.get_parent_by_name("mask").output_names[0]
 
     for i in range(len(node.get_parent_by_name("data").output_names)):
-	input_name = node.get_parent_by_name("data").output_names[i]
-	if nmasks > 1:
-	    mask_name = node.get_parent_by_name("mask").output_names[i]
+        input_name = node.get_parent_by_name("data").output_names[i]
+        if nmasks > 1:
+            mask_name = node.get_parent_by_name("mask").output_names[i]
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
         output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)

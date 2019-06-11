@@ -47,7 +47,7 @@ def create_process_description():
                             summary="Rescale raster based data on interval",
                             parameters={"data": p_data,
                                         "min": p_min,
-                                        "max": p_max,
+                                        "max": p_max},
                             returns=rv,
                             examples=examples)
 
@@ -78,17 +78,15 @@ def create_process_chain_entry(input_name, newmin, newmax, output_name):
 
     pc = {"id": "r_mapcalc_%i" % rn,
          "module": "r.mapcalc",
-         "inputs": [{"param": "expression",
+         "inputs": {"param": "expression",
                      "value": "%(result)s = ((%(raw)s - %(rmin)s) / (%(rmax)s - %(rmin)s)) * "
                               "(%(max)s - %(min)s) + %(min)s" % {"result": output_name,
                                                         "raw": input_name,
                                                         "rmin": str(oldmin),
-							"rmax": str(oldmax),
+                                                        "rmax": str(oldmax),
                                                         "min": str(newmin),
-							"max": str(newmax)}},
-                    {"param": "output",
-                     "value": output_name},
-                   ]}
+                                                        "max": str(newmax)}}
+          }
 
     return pc
 
@@ -113,13 +111,13 @@ def get_process_list(node: Node) -> Tuple[list, list]:
 
     # for each raster separately
     for input_name in node.get_parent_by_name("data").output_names:
-	location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
-	output_name = "%s_%s" % (layer_name, PROCESS_NAME)
-	output_names.append(output_name)
-	node.add_output(output_name=output_name)
+        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
+        output_name = "%s_%s" % (layer_name, PROCESS_NAME)
+        output_names.append(output_name)
+        node.add_output(output_name=output_name)
 
-	pc = create_process_chain_entry(input_names, min=min, max=max, output_names)
-	process_list.append(pc)
+        pc = create_process_chain_entry(input_names, min=min, max=max, output_names)
+        process_list.append(pc)
 
     # TODO: create strds from output raster maps
 

@@ -38,8 +38,8 @@ def create_process_description():
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Creates a mask using several bands of an EO dataset. "
                                         "Each pixel that has nodata or invalid value in any of "
-					"the layers/bands gets value 1, pixels that have valid "
-					"values in all layers/bands get value 0.",
+                                        "the layers/bands gets value 1, pixels that have valid "
+                                        "values in all layers/bands get value 0.",
                             summary="Create a multilayer mask from several raster datasets.",
                             parameters={"imagery": p_data},
                             returns=rv,
@@ -63,28 +63,28 @@ def create_process_chain_entry(input_time_series, output_name):
     output_name_tmp = output_name + '_tmp'
     
     # TODO: get number of maps in input_name
-    nmaps = ??? # Number of registered maps
+    nmaps = None # Number of registered maps
 
     rn = randint(0, 1000000)
 
-    pc = {"id": "t_rast_series_%i" % rn,
+    pc = [
+         {"id": "t_rast_series_%i" % rn,
           "module": "t.rast.series",
           "inputs": [{"param": "input", "value": input_name},
                      {"param": "method", "value": "count"},
                      {"param": "output", "value": output_name_tmp}],
-          "flags": "t",
+          "flags": "t"},
 
+         {"id": "r_mapcalc_%i" % rn,
           "module": "r.mapcalc",
           "inputs": [{"param": "expression",
                      "value": "%(result)s = int(if(%(raw)s < %(nmaps)s, 1, 0))" % 
                                             {"result": output_name,
                                              "raw": output_name_tmp,
                                              "nmaps": str(nmaps)}},
-                    {"param": "output",
-                     "value": output_name}],
-	  }
-	  # g.remove raster name=output_name_tmp -f ?
-
+    # g.remove raster name=output_name_tmp -f ?
+         }]
+         
     return pc
 
 

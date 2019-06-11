@@ -109,12 +109,12 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     min = node.arguments["min"]
     max = node.arguments["max"]
 
-    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
+    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_names)
     output_name = "%s_%s" % (layer_name, PROCESS_NAME)
     output_names.append(output_name)
     node.add_output(output_name=output_name)
 
-    pc = create_process_chain_entry(input_names, min=min, max=max, output_names)
+    pc = create_process_chain_entry(input_names, min=min, max=max, output_name)
     process_list.append(pc)
 
     return output_names, process_list

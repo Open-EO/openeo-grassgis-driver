@@ -116,7 +116,7 @@ def get_process_list(node: Node) -> Tuple[list, list]:
         output_names.append(output_name)
         node.add_output(output_name=output_name)
 
-        pc = create_process_chain_entry(input_names, min=min, max=max, output_names)
+        pc = create_process_chain_entry(input_name, min=min, max=max, output_name)
         process_list.append(pc)
 
     # TODO: create strds from output raster maps

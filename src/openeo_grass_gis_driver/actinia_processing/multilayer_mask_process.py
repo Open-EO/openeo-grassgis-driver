@@ -77,7 +77,7 @@ def create_process_chain_entry(input_time_series, output_name):
 
          {"id": "r_mapcalc_%i" % rn,
           "module": "r.mapcalc",
-          "inputs": [{"param": "expression",
+          "inputs": {"param": "expression",
                      "value": "%(result)s = int(if(%(raw)s < %(nmaps)s, 1, 0))" % 
                                             {"result": output_name,
                                              "raw": output_name_tmp,

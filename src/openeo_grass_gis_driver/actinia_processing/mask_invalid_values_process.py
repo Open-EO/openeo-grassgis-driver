@@ -58,7 +58,7 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_time_series, min, max, output_time_series):
+def create_process_chain_entry(input_time_series, vmin, vmax, output_time_series):
     """Create a Actinia command of the process chain that uses t.rast.mapcalc 
     to filter raster values by the specified interval
 
@@ -80,8 +80,8 @@ def create_process_chain_entry(input_time_series, min, max, output_time_series):
                      "value": "%(result)s = if(%(raw)s < %(min)s || "
                               "%(raw)s > %(max)s), null(), %(raw)s)" % {"result": output_name,
                                                         "raw": input_name,
-                                                        "min": str(min),
-                                                        "max": str(max)}},
+                                                        "min": str(vmin),
+                                                        "max": str(vmax)}},
                     {"param": "basename",
                      "value": "masked"},
                     {"param": "output",
@@ -106,15 +106,15 @@ def get_process_list(node: Node) -> Tuple[list, list]:
             "max" not in node.arguments:
         raise Exception("Process %s requires parameter data, min, max" % PROCESS_NAME)
 
-    min = node.arguments["min"]
-    max = node.arguments["max"]
+    vmin = node.arguments["min"]
+    vmax = node.arguments["max"]
 
     location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_names)
     output_name = "%s_%s" % (layer_name, PROCESS_NAME)
     output_names.append(output_name)
     node.add_output(output_name=output_name)
 
-    pc = create_process_chain_entry(input_names, min=min, max=max, output_name)
+    pc = create_process_chain_entry(input_names, vmin, vmax, output_name)
     process_list.append(pc)
 
     return output_names, process_list

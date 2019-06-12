@@ -106,8 +106,8 @@ def get_process_list(node: Node) -> Tuple[list, list]:
             "max" not in node.arguments:
         raise Exception("Process %s requires parameter data, min, max" % PROCESS_NAME)
 
-    min = node.arguments["min"]
-    max = node.arguments["max"]
+    newmin = node.arguments["min"]
+    newmax = node.arguments["max"]
 
     # for each raster separately
     for input_name in node.get_parent_by_name("data").output_names:
@@ -116,7 +116,7 @@ def get_process_list(node: Node) -> Tuple[list, list]:
         output_names.append(output_name)
         node.add_output(output_name=output_name)
 
-        pc = create_process_chain_entry(input_name, min=min, max=max, output_name)
+        pc = create_process_chain_entry(input_name, newmin, newmax, output_name)
         process_list.append(pc)
 
     # TODO: create strds from output raster maps

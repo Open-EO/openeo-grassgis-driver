@@ -6,7 +6,6 @@ from flask import make_response, jsonify, request
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
-from openeo_grass_gis_driver.authentication import ResourceBase
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 from openeo_grass_gis_driver.models.job_schemas import JobInformation, JobList
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
@@ -42,7 +41,7 @@ class OutputFormats(Resource):
         return make_response(jsonify(OUTPUT_FORMATS), 200)
 
 
-class Jobs(ResourceBase):
+class Jobs(Resource):
     """The /jobs endpoint implementation"""
 
     def __init__(self):

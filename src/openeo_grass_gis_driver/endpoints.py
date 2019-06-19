@@ -12,6 +12,7 @@ from openeo_grass_gis_driver.preview import Preview
 from openeo_grass_gis_driver.jobs_job_id_results import JobsJobIdResults
 from openeo_grass_gis_driver.process_graphs import ProcessGraphs
 from openeo_grass_gis_driver.process_graphs_id import ProcessGraphId
+from openeo_grass_gis_driver.well_known import WellKnown
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -42,3 +43,4 @@ def create_endpoints():
     flask_api.add_resource(JobsJobId, '/jobs/<string:job_id>')
     flask_api.add_resource(JobsJobIdResults, '/jobs/<string:job_id>/results')
 
+    flask_api.add_resource(WellKnown, '/.well-known/openeo')

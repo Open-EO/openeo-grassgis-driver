@@ -17,11 +17,15 @@ class WellKnown(Resource):
 
         host_url = request.host_url
 
-        versions = dict()
-        versions['0.3.1'] = host_url + "api/v0.3/"
-        versions['0.4.0'] = host_url + "api/v0.4/"
+        version_list = list()
+        version_list.append({"url": host_url + "api/v0.3/",
+                             "api_version": "0.3.1",
+                             "production": False})
+        version_list.append({"url": host_url + "api/v0.4/",
+                             "api_version": "0.4.0",
+                             "production": False})
 
         resp = dict()
-        resp['versions'] = versions
+        resp['versions'] = version_list
 
         return make_response(jsonify(resp), 200)

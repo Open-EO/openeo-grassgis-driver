@@ -55,7 +55,7 @@ class Preview(ResourceBase):
                 return make_response(jsonify({"job_id":response["resource_id"],
                                               "job_info":response}), status)
             else:
-                error = ErrorSchema(id="1234567890", code=1, message=str(response), links=response["urls"]["status"])
+                error = ErrorSchema(id="1234567890", code=404, message=str(response), links=response["urls"]["status"])
                 return make_response(error.to_json(), status)
         except Exception:
 
@@ -83,6 +83,8 @@ class Preview(ResourceBase):
         """
         # Check if the resource was accepted
 
+        if "resource_id" not in response:
+            raise Exception(f"Internal server error: {str(response)}")
         resource_id = response["resource_id"]
         start_time = time.time()
 

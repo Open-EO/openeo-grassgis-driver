@@ -26,7 +26,7 @@ def create_process_description():
                        schema={"type": "object", "format": "eodata"},
                        required=True)
 
-    rv = ReturnValue(description="Multilayer mask as EO data.",
+    rv = ReturnValue(description="Masked EO data.",
                      schema={"type": "object", "format": "eodata"})
 
     # correct ?
@@ -46,7 +46,7 @@ def create_process_description():
                             description="Applies a mask to an EO dataset. "
                                         "Each pixel that is 0 or nodata in the mask is set to nodata. "
                                         "See also multilayer_mask.",
-                            summary="Create a multilayer mask from several raster datasets.",
+                            summary="Apply a mask to an EO dataset.",
                             parameters={"imagery": p_data, "mask": p_mask},
                             returns=rv,
                             examples=examples)
@@ -80,9 +80,7 @@ def create_process_chain_entry(input_name, mask_name, output_name):
                      "value": "%(result)s = if(isnull(%(mask)s) || %(mask)s == 0, "
                               "null(), %(raw)s)" % {"result": output_name,
                                                     "raw": input_name,
-                                                    "mask": mask_name}},
-                    {"param": "output",
-                     "value": output_name},
+                                                    "mask": mask_name}}
                    ]}
 
     return pc

@@ -5,7 +5,10 @@ from typing import List, Tuple
 
 from openeo_grass_gis_driver.actinia_processing.base import check_node_parents
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
+
+from flask import make_response, jsonify, request
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -44,7 +47,7 @@ def create_process_description():
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Scales the image values between specified min and max values.",
-                            summary="Rescale raster based data on interval",
+                            summary="Rescale raster data based on interval",
                             parameters={"data": p_data,
                                         "min": p_min,
                                         "max": p_max},
@@ -61,31 +64,41 @@ def create_process_chain_entry(input_name, newmin, newmax, output_name):
     """Create a Actinia command of the process chain that uses t.rast.mapcalc 
     to rescale raster values to the specified interval
 
-    :param input_name: The input raster map name
+    :param input_name: The input openeo map name
     :param min: new minimum value
     :param max: new maximum value
     :param output_name: The output raster map name
     :return: A Actinia process chain description
     """
 
-    input_name = ActiniaInterface.layer_def_to_grass_map_name(input_name)
-    output_name = ActiniaInterface.layer_def_to_grass_map_name(output_name)
+    ginput_name = ActiniaInterface.layer_def_to_grass_map_name(input_name)
+    goutput_name = ActiniaInterface.layer_def_to_grass_map_name(output_name)
 
     rn = randint(0, 1000000)
 
     # TODO: get min, max for input raster with r.info -r,
     # these are oldmin, oldmax
+    iface = ActiniaInterface()
+    status_code, layer_data = iface.layer_info(layer_name=input_name)
+    if status_code != 200:
+        return make_response(jsonify({"description": "An internal error occurred "
+                                                         "while catching GRASS GIS layer information "
+                                                         "for layer <%s>!\n Error: %s"
+                                                         "" % (input_name, str(layer_data))}, 400))
+
+    oldmin = layer_data['min']
+    oldmax = layer_data['max']
 
     pc = {"id": "r_mapcalc_%i" % rn,
          "module": "r.mapcalc",
-         "inputs": {"param": "expression",
+         "inputs": [{"param": "expression",
                      "value": "%(result)s = ((%(raw)s - %(rmin)s) / (%(rmax)s - %(rmin)s)) * "
-                              "(%(max)s - %(min)s) + %(min)s" % {"result": output_name,
-                                                        "raw": input_name,
+                              "(%(max)s - %(min)s) + %(min)s" % {"result": goutput_name,
+                                                        "raw": ginput_name,
                                                         "rmin": str(oldmin),
                                                         "rmax": str(oldmax),
                                                         "min": str(newmin),
-                                                        "max": str(newmax)}}
+                                                        "max": str(newmax)}}]
           }
 
     return pc

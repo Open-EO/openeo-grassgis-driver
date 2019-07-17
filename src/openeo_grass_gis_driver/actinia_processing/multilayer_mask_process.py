@@ -6,6 +6,8 @@ from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCES
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
+from flask import make_response, jsonify, request
+
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
@@ -62,8 +64,15 @@ def create_process_chain_entry(input_time_series, output_name):
     input_name = ActiniaInterface.layer_def_to_grass_map_name(input_time_series)
     output_name_tmp = output_name + '_tmp'
     
-    # TODO: get number of maps in input_name
-    nmaps = None # Number of registered maps
+    # get number of maps in input_time_series
+    iface = ActiniaInterface()
+    status_code, layer_data = iface.layer_info(layer_name=input_time_series)
+    if status_code != 200:
+        return make_response(jsonify({"description": "An internal error occurred "
+                                                         "while catching GRASS GIS layer information "
+                                                         "for layer <%s>!\n Error: %s"
+                                                         "" % (input_time_series, str(layer_data))}, 400))
+    nmaps = layer_data['number_of_maps']
 
     rn = randint(0, 1000000)
 
@@ -77,13 +86,14 @@ def create_process_chain_entry(input_time_series, output_name):
 
          {"id": "r_mapcalc_%i" % rn,
           "module": "r.mapcalc",
-          "inputs": {"param": "expression",
+          "inputs": [{"param": "expression",
                      "value": "%(result)s = int(if(%(raw)s < %(nmaps)s, 1, 0))" % 
                                             {"result": output_name,
                                              "raw": output_name_tmp,
-                                             "nmaps": str(nmaps)}},
-    # g.remove raster name=output_name_tmp -f ?
+                                             "nmaps": str(nmaps)}}
+                    ],
          }]
+    # g.remove raster name=output_name_tmp -f ?
          
     return pc
 

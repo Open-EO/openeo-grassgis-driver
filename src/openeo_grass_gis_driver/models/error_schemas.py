@@ -67,6 +67,9 @@ class ErrorSchema(JsonableObject):
             500: "Internal Server Error",
             501: "Not Implemented"}
         self.id = id
-        self.code = standardized_status_codes[code]
+        if code in standardized_status_codes.keys():
+            self.code = standardized_status_codes[code]
+        else:
+            self.code = "Unknown code %d" % (code)
         self.message = message
         self.links = links

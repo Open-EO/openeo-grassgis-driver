@@ -94,6 +94,10 @@ class JobsJobIdResults(ResourceBase):
                 job: JobInformation = self.job_db[job_id]
 
                 status, response = self.send_actinia_processing_request(job=job)
+                if "resource_id" not in response:
+                    return make_response(ErrorSchema(id="12345678", code=status,
+                                                     message=f"Internal server error: {str(response)}").to_json(),
+                                         status)
                 self.actinia_job_db[job_id] = response["resource_id"]
 
                 job.additional_info = response

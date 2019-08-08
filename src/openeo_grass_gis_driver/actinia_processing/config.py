@@ -12,7 +12,7 @@ class Config:
     # Settings for docker swarm image
     HOST="https://actinia.mundialis.de"
     PORT=443
-    LOCATION="nc_spm_08,utm32n"
+    LOCATION="utm32n"
     # LOCATION="LL"
     LOCATIONS=["nc_spm_08,utm32n"]
     USER="demouser"

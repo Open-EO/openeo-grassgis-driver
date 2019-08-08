@@ -110,7 +110,7 @@ def get_process_list(node: Node):
     if "nir" not in node.arguments:
         raise Exception("Process %s requires parameter <nir>" % PROCESS_NAME)
 
-    # Get the red and ir data separately
+    # Get the red and nir data separately
     red_input_names = node.get_parent_by_name(parent_name="red").output_names
     nir_input_names = node.get_parent_by_name(parent_name="nir").output_names
 

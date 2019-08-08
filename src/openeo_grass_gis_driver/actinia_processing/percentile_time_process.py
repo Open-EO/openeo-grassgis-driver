@@ -7,12 +7,12 @@ from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDes
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
-__author__ = "Sören Gebbert"
+__author__ = "Markus Metz"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-PROCESS_NAME = "reduce_time"
+PROCESS_NAME = "percentile_time"
 
 
 def create_process_description():
@@ -20,25 +20,20 @@ def create_process_description():
                                    "or space-time raster dataset",
                        schema={"type": "object", "format": "eodata"},
                        required=True)
-    p_method = Parameter(description="The method to reduce the time dimension of a "
-                                     "space-time raster dataset",
-                         schema={"type": "string"},
+    p_percentile = Parameter(description="The percentile to get from a "
+                                         "space-time raster dataset",
+                         schema={"type": "object", "format": "float"},
                          required=True)
-
-    p_method.enum = ["average", "count", "median", "mode", "minimum", "min_raster", "maximum",
-                     "max_raster", "stddev", "range,sum", "variance", "diversity", "slope",
-                     "offset", "detcoeff", "quart1", "quart3", "perc90", "skewness",
-                     "kurtosis"]
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
     simple_example = {
-        "reduce_time_1": {
+        "percentile_time_1": {
             "process_id": PROCESS_NAME,
             "arguments": {
                 "data": {"from_node": "get_strds_data"},
-                "method": "minimum",
+                "percentile": "5",
             }
         }
     }
@@ -47,9 +42,9 @@ def create_process_description():
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Reduce the time dimension of a space-time raster dataset "
-                                        "with different reduce options.",
+                                        "by getting the percentile.",
                             summary="Reduce the time dimension of a space-time raster dataset.",
-                            parameters={"imagery": p_data, "method": p_method},
+                            parameters={"imagery": p_data, "percentile": p_percentile},
                             returns=rv,
                             examples=examples)
 
@@ -59,11 +54,11 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_name, method, output_name):
+def create_process_chain_entry(input_name, percentile, output_name):
     """Create a Actinia process description that uses t.rast.series to reduce a time series.
 
-    :param input_name: The input time series name
-    :param method: The method for time reduction
+    :param input_time_series: The input time series name
+    :param percentile: The percentile to use for time reduction
     :param output_map: The name of the output raster map
     :return: A Actinia process chain description
     """
@@ -71,10 +66,13 @@ def create_process_chain_entry(input_name, method, output_name):
 
     rn = randint(0, 1000000)
 
+    quantile = float(percentile) / 100.0
+
     pc = {"id": "t_rast_series_%i" % rn,
           "module": "t.rast.series",
           "inputs": [{"param": "input", "value": input_name},
-                     {"param": "method", "value": method},
+                     {"param": "method", "value": "quantile"},
+                     {"param": "quantile", "value": quantile},
                      {"param": "output", "value": output_name}],
           "flags": "t"}
 
@@ -93,8 +91,8 @@ def get_process_list(node: Node):
     input_names, process_list = check_node_parents(node=node)
     output_names = []
 
-    if "method" not in node.arguments:
-        raise Exception("Parameter method is required.")
+    if "percentile" not in node.arguments:
+        raise Exception("Parameter percentile is required.")
 
     for input_name in node.get_parent_by_name("data").output_names:
         # multiple strds as input ?
@@ -104,7 +102,7 @@ def get_process_list(node: Node):
         output_names.append(output_name)
         node.add_output(output_name=output_name)
 
-        pc = create_process_chain_entry(input_name, node.arguments["method"], output_name)
+        pc = create_process_chain_entry(input_name, node.arguments["percentile"], output_name)
         process_list.append(pc)
 
     return output_names, process_list

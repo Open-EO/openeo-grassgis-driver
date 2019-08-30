@@ -14,7 +14,7 @@ class Config:
     PORT=443
     LOCATION="utm32n"
     # LOCATION="LL"
-    LOCATIONS=["nc_spm_08,utm32n"]
+    LOCATIONS=["nc_spm_08", "utm32n"]
     USER="demouser"
     PASSWORD="gu3st!pa55w0rd"
     # The database file that stores the graphs

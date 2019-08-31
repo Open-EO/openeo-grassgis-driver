@@ -83,7 +83,7 @@ def create_process_chain_entry(input_time_series, vmin, vmax, output_time_series
                                                         "min": str(vmin),
                                                         "max": str(vmax)}},
                     {"param": "basename",
-                     "value": "masked"},
+                     "value": "masked_invalid"},
                     {"param": "output",
                      "value": output_name},
                    ]}

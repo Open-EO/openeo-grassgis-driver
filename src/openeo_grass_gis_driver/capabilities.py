@@ -9,7 +9,7 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 CAPABILITIES = {
-    "api_version": "0.4.0",
+    "api_version": "0.4.2",
     "backend_version": "0.1.0",
     "title": "GRASS GIS Driver",
     "description": "GRASS GIS Driver",

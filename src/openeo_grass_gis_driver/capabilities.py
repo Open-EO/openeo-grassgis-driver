@@ -21,7 +21,7 @@ CAPABILITIES = {
             ]
         },
         {
-            "path": "/preview",
+            "path": "/result",
             "methods": [
                 "POST"
             ]

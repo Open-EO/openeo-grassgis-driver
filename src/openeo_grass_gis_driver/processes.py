@@ -13,7 +13,7 @@ __email__ = "soerengebbert@googlemail.com"
 class Processes(Resource):
 
     def __init__(self):
-        ResourceBase.__init__(self)
+        Resource.__init__(self)
 
     def get(self):
 

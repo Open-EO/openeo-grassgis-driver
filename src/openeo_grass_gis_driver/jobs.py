@@ -20,22 +20,20 @@ __email__ = "soerengebbert@googlemail.com"
 
 
 OUTPUT_FORMATS = {
-    "default": "GTiff",
-    "formats": {
-        "GTiff": {
-            "gis_data_types": ["raster"],
-            "parameters": {
-                "compress": {
-                    "type": "string",
-                    "description": "Set the compression to use.",
-                    "default": "LZW",
-                    "enum": ["LZW"]
-                }
-            }
-        }
-    }
+  "GTiff": {
+    "gis_data_types": [
+      "raster"
+    ],
+    "parameters": {},
+    "links": [
+      {
+        "href": "https://www.gdal.org/frmt_gtiff.html",
+        "rel": "about",
+        "title": "GDAL on the GeoTiff file format andstorage options"
+      }
+    ]
+  }
 }
-
 
 class OutputFormats(Resource):
 

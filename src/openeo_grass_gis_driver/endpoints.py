@@ -8,7 +8,7 @@ from openeo_grass_gis_driver.processes_process_id import ProcessesProcessId
 from openeo_grass_gis_driver.jobs import Jobs, OutputFormats
 from openeo_grass_gis_driver.jobs_job_id import JobsJobId
 from openeo_grass_gis_driver.process_graph_validation import GraphValidation
-from openeo_grass_gis_driver.preview import Preview
+from openeo_grass_gis_driver.result import Result
 from openeo_grass_gis_driver.jobs_job_id_results import JobsJobIdResults
 from openeo_grass_gis_driver.process_graphs import ProcessGraphs
 from openeo_grass_gis_driver.process_graphs_id import ProcessGraphId
@@ -34,7 +34,7 @@ def create_endpoints():
     flask_api.add_resource(ProcessesProcessId, '/processes/<string:process_id>')
 
     flask_api.add_resource(GraphValidation, '/validation')
-    flask_api.add_resource(Preview, '/preview')
+    flask_api.add_resource(Result, '/result')
     flask_api.add_resource(ProcessGraphs, '/process_graphs')
     flask_api.add_resource(ProcessGraphId, '/process_graphs/<string:id>')
 

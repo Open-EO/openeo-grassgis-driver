@@ -16,7 +16,7 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-class Preview(ResourceBase):
+class Result(ResourceBase):
 
     def __init__(self):
         ResourceBase.__init__(self)

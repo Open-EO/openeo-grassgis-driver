@@ -19,7 +19,7 @@ class PreviewTestCase(TestBase):
     def test_graph_bbox_from_raster_nc_job_ephemeral(self):
         """Test the bbox from raster process
         """
-        response = self.app.post('/preview', data=json.dumps(BBOX_FROM_RASTER), content_type="application/json", headers=self.auth)
+        response = self.app.post('/result', data=json.dumps(BBOX_FROM_RASTER), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -29,7 +29,7 @@ class PreviewTestCase(TestBase):
     def test_graph_filter_bbox_nc_job_ephemeral(self):
         """Test the filter box process
         """
-        response = self.app.post('/preview', data=json.dumps(FILTER_BBOX), content_type="application/json", headers=self.auth)
+        response = self.app.post('/result', data=json.dumps(FILTER_BBOX), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -42,7 +42,7 @@ class PreviewTestCase(TestBase):
 
         fbox = FILTER_BBOX
         fbox["process_graph"]["get_data_1"]["arguments"]["data"] = "nc_spm_08.PERMANENT.raster.elevation_nonon"
-        response = self.app.post('/preview', data=json.dumps(fbox), content_type="application/json", headers=self.auth)
+        response = self.app.post('/result', data=json.dumps(fbox), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -52,7 +52,7 @@ class PreviewTestCase(TestBase):
     def test_graph_get_data_1(self):
         """Test the get data process to get raster data
         """
-        response = self.app.post('/preview', data=json.dumps(GET_DATA_1), content_type="application/json", headers=self.auth)
+        response = self.app.post('/result', data=json.dumps(GET_DATA_1), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -62,7 +62,7 @@ class PreviewTestCase(TestBase):
     def test_graph_get_data_3(self):
         """Test the get data process to get strds data
         """
-        response = self.app.post('/preview', data=json.dumps(GET_DATA_3), content_type="application/json", headers=self.auth)
+        response = self.app.post('/result', data=json.dumps(GET_DATA_3), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -72,7 +72,7 @@ class PreviewTestCase(TestBase):
     def test_graph_daterange(self):
         """Run the daterange process
         """
-        response = self.app.post('/preview', data=json.dumps(DATERANGE), content_type="application/json", headers=self.auth)
+        response = self.app.post('/result', data=json.dumps(DATERANGE), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -82,7 +82,7 @@ class PreviewTestCase(TestBase):
     def test_graph_raster_export(self):
         """Run the raster export process
         """
-        response = self.app.post('/preview', data=json.dumps(RASTER_EXPORT), content_type="application/json", headers=self.auth)
+        response = self.app.post('/result', data=json.dumps(RASTER_EXPORT), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -92,7 +92,7 @@ class PreviewTestCase(TestBase):
     def test_graph_rgb_raster_export(self):
         """Run the rgb raster export process
         """
-        response = self.app.post('/preview', data=json.dumps(RGB_RASTER_EXPORT), content_type="application/json", headers=self.auth)
+        response = self.app.post('/result', data=json.dumps(RGB_RASTER_EXPORT), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -102,7 +102,7 @@ class PreviewTestCase(TestBase):
     def test_graph_raster_zonal_statistics(self):
         """Run the zonal statistics process
         """
-        response = self.app.post('/preview', data=json.dumps(ZONAL_STATISTICS), content_type="application/json", headers=self.auth)
+        response = self.app.post('/result', data=json.dumps(ZONAL_STATISTICS), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -112,7 +112,7 @@ class PreviewTestCase(TestBase):
     def test_graph_map_algebra(self):
         """Run the map algebra process
         """
-        response = self.app.post('/preview', data=json.dumps(MAP_ALGEBRA), content_type="application/json", headers=self.auth)
+        response = self.app.post('/result', data=json.dumps(MAP_ALGEBRA), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)

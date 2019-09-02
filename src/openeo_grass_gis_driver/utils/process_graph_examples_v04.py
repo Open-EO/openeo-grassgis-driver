@@ -44,7 +44,7 @@ GET_DATA_3 = {
         "get_strds_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
+                "data": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
             }
         }
     }
@@ -101,15 +101,15 @@ DATERANGE = {
         "get_strds_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
+                "data": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
             }
         },
         "filter_daterange_1": {
             "process_id": "filter_daterange",
             "arguments": {
                 "data": {"from_node": "get_strds_data"},
-                "from": "2001-01-01",
-                "to": "2005-01-01",
+                "from": "2015-01-01",
+                "to": "2016-01-01",
             }
         }
     }
@@ -122,7 +122,7 @@ REDUCE_TIME_MIN = {
         "get_strds_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
+                "data": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
             }
         },
         "reduce_time_1": {
@@ -295,7 +295,7 @@ ZONAL_STATISTICS = {
         "get_b08_data": {
             "process_id": "get_data",
             "arguments": {
-                "data": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
+                "data": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
             }
         }
     }

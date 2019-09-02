@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """This file includes all required openEO response schemas
 """
-from typing import List, Tuple, Optional, Dict
+from typing import List, Tuple, Optional, Dict, Any
 from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks, EoLink
 
 
@@ -38,7 +38,7 @@ class ProcessGraphNode(JsonableObject):
     """
 
     def __init__(self, process_id: str,
-                        arguments: List,
+                        arguments: Dict[str, Any],
                         description: str = None, result: bool = False):
 
         # ID in pattern

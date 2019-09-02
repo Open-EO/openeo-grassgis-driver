@@ -4,7 +4,8 @@ from random import randint
 from typing import List, Tuple
 
 from openeo_grass_gis_driver.actinia_processing.base import check_node_parents
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
 __license__ = "Apache License, Version 2.0"
@@ -43,10 +44,8 @@ def create_process_description():
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
-    examples = dict(simple={
-        "filter_bbox_1": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
+    # Example
+    arguments = {
                 "data": {"from_node": "get_data_1"},
                 "left": 630000,
                 "right": 645000,
@@ -55,8 +54,10 @@ def create_process_description():
                 "width_res": 10,
                 "height_res": 10,
             }
-        }
-    })
+    node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
+    graph = ProcessGraph(title="title", description="description", process_graph={"filter_bbox_1": node})
+    examples = [ProcessExample(title="Simple example", description="Simple example",
+                               process_graph=graph, arguments=arguments)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Drops observations from raster data or raster time series data "

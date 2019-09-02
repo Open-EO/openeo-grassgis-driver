@@ -141,7 +141,7 @@ class ProcessDefinitionTestCase(TestBase):
         output_names, pc = g.to_actinia_process_list()
         pprint(output_names)
         pprint(pc)
-        self.assertTrue("latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m" in output_names)
+        self.assertTrue('nc_spm_08.modis_lst.strds.LST_Day_monthly' in output_names)
         self.assertEqual(len(pc), 8)
 
     def test_openeo_usecase_1(self):

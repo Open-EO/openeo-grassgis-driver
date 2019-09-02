@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
+
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, check_node_parents
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -18,32 +21,32 @@ def create_process_description():
     p_a = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $a in the t.rast.algebra expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
     p_b = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $b in the t.rast.algebra expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
     p_c = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $c in the t.rast.algebra expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
     p_d = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $d in the t.rast.algebra expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
     p_e = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $e in the t.rast.algebra expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
     p_f = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $f in the t.rast.algebra expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
     p_result = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                                      "identified as RESULT in the t.rast.algebra expression.",
@@ -62,20 +65,18 @@ def create_process_description():
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
-    simple_example = {
-        "t_rast_algebra_1": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
+    # Example
+    arguments = {
                 "a": {"from_node": "get_a_data"},
                 "b": {"from_node": "get_b_data"},
                 "result": "ndvi",
                 "basename": "ndvi_base",
                 "expression": "$result = ($a + $b / ($a - $b))"
             }
-        }
-    }
-
-    examples = dict(simple_example=simple_example)
+    node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
+    graph = ProcessGraph(title="title", description="description", process_graph={"t_rast_algebra_1": node})
+    examples = [ProcessExample(title="Simple example", description="Simple example",
+                               process_graph=graph, arguments=arguments)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Use a t.rast.algebra expression to compute a new space-time raster "

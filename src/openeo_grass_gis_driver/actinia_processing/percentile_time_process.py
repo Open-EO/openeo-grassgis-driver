@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
+
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+
 from openeo_grass_gis_driver.actinia_processing.base import Node, check_node_parents
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -22,23 +25,19 @@ def create_process_description():
                        required=True)
     p_percentile = Parameter(description="The percentile to get from a "
                                          "space-time raster dataset",
-                         schema={"type": "object", "format": "float"},
-                         required=True)
+                             schema={"type": "object", "format": "float"},
+                             required=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
-    simple_example = {
-        "percentile_time_1": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
-                "data": {"from_node": "get_strds_data"},
-                "percentile": "5",
-            }
-        }
-    }
-
-    examples = dict(simple_example=simple_example)
+    # Example
+    arguments = {"data": {"from_node": "get_strds_data"},
+                 "percentile": "5"}
+    node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
+    graph = ProcessGraph(title="title", description="description", process_graph={"percentile_time_1": node})
+    examples = [ProcessExample(title="Simple example", description="Simple example",
+                               process_graph=graph, arguments=arguments)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Reduce the time dimension of a space-time raster dataset "

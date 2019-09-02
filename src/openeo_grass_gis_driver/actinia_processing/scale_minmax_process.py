@@ -3,8 +3,10 @@ import json
 from random import randint
 from typing import List, Tuple
 
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+
 from openeo_grass_gis_driver.actinia_processing.base import check_node_parents
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
@@ -25,26 +27,25 @@ def create_process_description():
                        schema={"type": "object", "format": "eodata"},
                        required=True)
     p_min = Parameter(description="New minimum value",
-                       schema={"type": "object", "format": "float"},
-                       required=True)
+                      schema={"type": "object", "format": "float"},
+                      required=True)
     p_max = Parameter(description="New maximum value",
-                        schema={"type": "object", "format": "float"},
-                        required=True)
+                      schema={"type": "object", "format": "float"},
+                      required=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
-    examples = dict(simple={
-        "scale_minmax_1": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
-                "data": {"from_node": "get_data_1"},
-                "min": 1,
-                "max": 255,
-            }
-        }
-    })
-
+    # Example
+    arguments = {
+        "data": {"from_node": "get_data_1"},
+        "min": 1,
+        "max": 255,
+    }
+    node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
+    graph = ProcessGraph(title="title", description="description", process_graph={"scale_minmax_1": node})
+    examples = [ProcessExample(title="Simple example", description="Simple example",
+                               process_graph=graph, arguments=arguments)]
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Scales the image values between specified min and max values.",
                             summary="Rescale raster data based on interval",
@@ -82,23 +83,23 @@ def create_process_chain_entry(input_name, newmin, newmax, output_name):
     status_code, layer_data = iface.layer_info(layer_name=input_name)
     if status_code != 200:
         return make_response(jsonify({"description": "An internal error occurred "
-                                                         "while catching GRASS GIS layer information "
-                                                         "for layer <%s>!\n Error: %s"
-                                                         "" % (input_name, str(layer_data))}, 400))
+                                                     "while catching GRASS GIS layer information "
+                                                     "for layer <%s>!\n Error: %s"
+                                                     "" % (input_name, str(layer_data))}, 400))
 
     oldmin = layer_data['min']
     oldmax = layer_data['max']
 
     pc = {"id": "r_mapcalc_%i" % rn,
-         "module": "r.mapcalc",
-         "inputs": [{"param": "expression",
-                     "value": "%(result)s = ((%(raw)s - %(rmin)s) / (%(rmax)s - %(rmin)s)) * "
-                              "(%(max)s - %(min)s) + %(min)s" % {"result": goutput_name,
-                                                        "raw": ginput_name,
-                                                        "rmin": str(oldmin),
-                                                        "rmax": str(oldmax),
-                                                        "min": str(newmin),
-                                                        "max": str(newmax)}}]
+          "module": "r.mapcalc",
+          "inputs": [{"param": "expression",
+                      "value": "%(result)s = ((%(raw)s - %(rmin)s) / (%(rmax)s - %(rmin)s)) * "
+                               "(%(max)s - %(min)s) + %(min)s" % {"result": goutput_name,
+                                                                  "raw": ginput_name,
+                                                                  "rmin": str(oldmin),
+                                                                  "rmax": str(oldmax),
+                                                                  "min": str(newmin),
+                                                                  "max": str(newmax)}}]
           }
 
     return pc

@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
+
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph, ProcessGraphNode
+
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, check_node_parents
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -26,40 +29,12 @@ def create_process_description():
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
-    simple_example = {
-        "get_elevation_data": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
-                "data":  "nc_spm_08.PERMANENT.raster.elevation"
-            }
-        }
-    }
-    raster_vector_example = {
-        "get_lakes_data": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
-                "data":  "nc_spm_08.PERMANENT.vector.lakes"
-            }
-        },
-        "get_elevation_data": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
-                "data": "nc_spm_08.PERMANENT.raster.elevation"
-            }
-        }
-    }
-    strds_example = {
-        "get_strds_data": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
-                "data": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"
-            }
-        }
-    }
-
-    examples = dict(simple_example=simple_example,
-                    raster_vector_example=raster_vector_example,
-                    strds_example=strds_example)
+    # Example
+    arguments = {"data": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"}
+    node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
+    graph = ProcessGraph(title="title", description="description", process_graph={"get_strds_data": node})
+    examples = [ProcessExample(title="Simple example", description="Simple example",
+                               process_graph=graph, arguments=arguments)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="This process returns a raster-, a vector- or a space-time raster "

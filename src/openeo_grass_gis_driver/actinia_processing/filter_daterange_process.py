@@ -2,7 +2,8 @@
 from random import randint
 import json
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, check_node_parents
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -31,16 +32,16 @@ def create_process_description():
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
-    examples = dict(simple={
-        "filter_daterange_1": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
+    # Example
+    arguments = {
                 "data": {"from_node": "get_strds_data"},
                 "from": "2001-01-01",
                 "to": "2005-01-01",
             }
-        }
-    })
+    node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
+    graph = ProcessGraph(title="title", description="description", process_graph={"filter_daterange_1": node})
+    examples = [ProcessExample(title="Simple example", description="Simple example",
+                               process_graph=graph, arguments=arguments)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Drops observations from a collection that have been "

@@ -5,7 +5,7 @@ from datetime import datetime
 
 from flask import make_response
 import re
-from typing import List, Tuple, Optional, Dict
+from typing import List, Tuple, Optional, Dict, Any
 from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
@@ -61,7 +61,6 @@ class Parameter(JsonableObject):
                  depricated: bool = False,
                  experimental: bool = False,
                  mime_type: Optional[str] = None):
-
         self.description = description
         self.schema = schema
         self.required = required
@@ -90,8 +89,7 @@ class ReturnValue(JsonableObject):
         documentation, e.g. bbox or crs.
     """
 
-    def __init__(self, description: str, schema: dict, media_type: Optional[str] = None):
-
+    def __init__(self, description: str, schema: dict, media_type: Optional[str] = "application/json"):
         self.description = description
         self.schema = schema
         self.media_type = media_type
@@ -127,7 +125,6 @@ class ProcessException(JsonableObject):
     """
 
     def __init__(self, message: str, description: str, http: int = 400):
-
         self.message = message
         self.description = description
         self.http = http
@@ -234,12 +231,12 @@ class Variable(JsonableObject):
         oneOf: "string", "number", "array", "boolean", "object", (process_graph)
 
     """
-    def __init__(self, variable_id: str, default, type: str = None,
-            description: str = None):
 
-        #pattern = "^[a-z0-9_]+$"
-        #x = re.search(pattern, variable_id)
-        #if not x:
+    def __init__(self, variable_id: str, default, type: str = None,
+                 description: str = None):
+        # pattern = "^[a-z0-9_]+$"
+        # x = re.search(pattern, variable_id)
+        # if not x:
         #    es = ErrorSchema(id=str(datetime.now()), code=400,
         #        message="The variable_id MUST match the following pattern: %s" % pattern)
         #    return make_response(es.to_json(), 400)
@@ -247,7 +244,7 @@ class Variable(JsonableObject):
         self.default = default
         self.type = type
         self.description = description
-        #if (not isinstance(default, str)
+        # if (not isinstance(default, str)
         #        and not isinstance(default, (int, float, complex))
         #        and not isinstance(default, list)
         #        and not isinstance(default, bool)
@@ -284,13 +281,12 @@ class ProcessExample(JsonableObject):
     returns: { }
     """
 
-    def __init__(self, arguments: List, returns,
-            title: str = None, description: str = None,
-            process_graph: ProcessGraph = None):
-
+    def __init__(self, arguments: Dict[str, Any], returns: bool = False,
+                 title: str = None, description: str = None,
+                 process_graph: ProcessGraph = None):
         self.title = title
         self.description = description
-        #if (process_graph and arguments) or (not process_graph and not arguments):
+        # if (process_graph and arguments) or (not process_graph and not arguments):
         #    es = ErrorSchema(id=str(datetime.now()), code=400,
         #        message="Either process_graph or arguments must be set, never both.")
         #    return make_response(es.to_json(), 400)
@@ -386,19 +382,18 @@ class ProcessDescription(JsonableObject):
                  exceptions: Optional[Dict[str, ProcessException]] = None,
                  examples: List = None,
                  categories: List[str] = None):
-
         # ID in pattern
-        #pattern = "^[A-Za-z0-9_]+$"
-        #x = re.search(pattern, id)
-        #if not x:
+        # pattern = "^[A-Za-z0-9_]+$"
+        # x = re.search(pattern, id)
+        # if not x:
         #    es = ErrorSchema(id=str(datetime.now()), code=400,
         #        message="The process_id MUST match the following pattern: %s" % pattern)
         #    return make_response(es.to_json(), 400)
         self.id = id
         self.description = description
         # keys of parameters in pattern
-        #pattern = "^[A-Za-z0-9_]+$"
-        #for key in parameters:
+        # pattern = "^[A-Za-z0-9_]+$"
+        # for key in parameters:
         #    x = re.search(pattern, key)
         #    if not x:
         #        es = ErrorSchema(id=str(datetime.now()), code=400,
@@ -414,8 +409,8 @@ class ProcessDescription(JsonableObject):
         self.examples = examples
         self.categories = categories
         # parameter_order in pattern
-        #pattern = "^[A-Za-z0-9_]+$"
-        #if parameter_order:
+        # pattern = "^[A-Za-z0-9_]+$"
+        # if parameter_order:
         #    x = re.search(pattern, parameter_order)
         #    if not x:
         #        es = ErrorSchema(id=str(datetime.now()), code=400,

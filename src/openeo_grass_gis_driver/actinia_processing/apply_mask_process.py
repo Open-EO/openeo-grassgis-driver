@@ -3,7 +3,8 @@ from random import randint
 import json
 from openeo_grass_gis_driver.actinia_processing.base import Node, check_node_parents
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -29,18 +30,15 @@ def create_process_description():
     rv = ReturnValue(description="Masked EO data.",
                      schema={"type": "object", "format": "eodata"})
 
-    # correct ?
-    simple_example = {
-        "apply_mask_1": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
+    # Example
+    arguments = {
                 "data": {"from_node": "get_strds_data"},
                 "mask": {"from_node": "get_mask_data"},
             }
-        }
-    }
-
-    examples = dict(simple_example=simple_example)
+    node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
+    graph = ProcessGraph(title="title", description="description", process_graph={"apply_mask_1": node})
+    examples = [ProcessExample(title="Simple example", description="Simple example",
+                               process_graph=graph, arguments=arguments)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Applies a mask to an EO dataset. "

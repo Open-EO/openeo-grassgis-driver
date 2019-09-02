@@ -3,8 +3,10 @@ import json
 from random import randint
 from typing import List, Tuple
 
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+
 from openeo_grass_gis_driver.actinia_processing.base import check_node_parents
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
 __license__ = "Apache License, Version 2.0"
@@ -31,7 +33,7 @@ def create_process_description():
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
-    examples = dict(simple={
+    examples = {
         "mask_invalid_values_1": {
             "process_id": PROCESS_NAME,
             "arguments": {
@@ -40,7 +42,18 @@ def create_process_description():
                 "max": 150,
             }
         }
-    })
+    }
+
+    # Example
+    arguments = {
+                "data": {"from_node": "get_data_1"},
+                "mask": {"from_node": "get_data_2"},
+                "value": "null",
+            }
+    node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
+    graph = ProcessGraph(title="title", description="description", process_graph={"mask_1": node})
+    examples = [ProcessExample(title="Simple example", description="Simple example",
+                               process_graph=graph, arguments=arguments)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Drops observations from raster data or raster time series data "
@@ -50,7 +63,7 @@ def create_process_description():
                                         "min": p_min,
                                         "max": p_max},
                             returns=rv,
-                            examples=examples)
+                            examples=[examples])
 
     return json.loads(pd.to_json())
 

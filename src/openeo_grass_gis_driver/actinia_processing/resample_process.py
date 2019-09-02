@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
+
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+
 from openeo_grass_gis_driver.actinia_processing.base import Node, check_node_parents
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -16,7 +19,6 @@ PROCESS_NAME = "resample"
 
 
 def create_process_description():
-
     # see https://github.com/Open-EO/openeo-processes/blob/master/resample_cube_spatial.json
 
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
@@ -24,8 +26,8 @@ def create_process_description():
                        schema={"type": "object", "format": "eodata"},
                        required=True)
     p_target = Parameter(description="Any openEO process object that returns a raster dataset",
-                       schema={"type": "object", "format": "eodata"},
-                       required=True)
+                         schema={"type": "object", "format": "eodata"},
+                         required=True)
     p_method = Parameter(description="The resampling method to use",
                          schema={"type": "string"},
                          required=True)
@@ -41,23 +43,19 @@ def create_process_description():
                      "med",
                      "q1",
                      "q3"
-                ]
+                     ]
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
-    simple_example = {
-        "resample_1": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
-                "data": {"from_node": "get_strds_data_1"},
-                "target": {"from_node": "get_data_2"},
-                "method": "average",
-            }
-        }
-    }
-
-    examples = dict(simple_example=simple_example)
+    # Example
+    arguments = {"data": {"from_node": "get_strds_data_1"},
+                 "target": {"from_node": "get_data_2"},
+                 "method": "average"}
+    node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
+    graph = ProcessGraph(title="title", description="description", process_graph={"resample_1": node})
+    examples = [ProcessExample(title="Simple example", description="Simple example",
+                               process_graph=graph, arguments=arguments)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Change the resolution of a space-time raster dataset "
@@ -86,21 +84,18 @@ def create_process_chain_entry(input_name, target_name, method, output_name):
 
     rn = randint(0, 1000000)
 
-
-
     # TODO: a new GRASS addon that
     # 1. fetches a list of raster maps in a strds
     # 2. resamples each raster map with the selected method
-    
 
     pc = [
-         {"id": "t_rast_series_%i" % rn,
-          "module": "t.rast.series",
-          "inputs": [{"param": "input", "value": input_name},
-                     {"param": "method", "value": method},
-                     {"param": "output", "value": output_name}],
-          "flags": "t"}
-          ]
+        {"id": "t_rast_series_%i" % rn,
+         "module": "t.rast.series",
+         "inputs": [{"param": "input", "value": input_name},
+                    {"param": "method", "value": method},
+                    {"param": "output", "value": output_name}],
+         "flags": "t"}
+    ]
 
     return pc
 

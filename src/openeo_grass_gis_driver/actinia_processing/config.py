@@ -12,9 +12,7 @@ class Config:
     # Settings for docker swarm image
     HOST="https://actinia.mundialis.de"
     PORT=443
-    LOCATION="utm32n"
-    # LOCATION="LL"
-    LOCATIONS=["nc_spm_08", "latlong_wgs84", "utm32n"]
+    LOCATIONS=["nc_spm_08"]
     USER="demouser"
     PASSWORD="gu3st!pa55w0rd"
     # The database file that stores the graphs

@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, check_node_parents
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph, ProcessGraphNode
+
+from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
+    check_node_parents
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -15,10 +19,9 @@ PROCESS_NAME = "NDVI"
 
 
 def create_process_description():
-
     p_red = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                                   "that contains the RED band for NDVI computation.",
-                       schema={"type": "object", "format": "eodata"},
+                      schema={"type": "object", "format": "eodata"},
                       required=True)
 
     p_nir = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
@@ -29,17 +32,15 @@ def create_process_description():
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
-    simple_example = {
-        "ndvi_1": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
-                "red": {"from_node": "get_red_data"},
-                "nir": {"from_node": "get_nir_data"},
-            }
-        }
-        }
-
-    examples = dict(simple_example=simple_example)
+    # Example
+    arguments = {
+        "red": {"from_node": "get_red_data"},
+        "nir": {"from_node": "get_nir_data"},
+    }
+    node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
+    graph = ProcessGraph(title="title", description="description", process_graph={"ndvi_1": node})
+    examples = [ProcessExample(title="Simple example", description="Simple example",
+                               process_graph=graph, arguments=arguments)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Compute the NDVI based on the red and nir bands of the input datasets.",

@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
+
+from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, \
     PROCESS_DESCRIPTION_DICT, Node, check_node_parents
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue
+from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
@@ -28,17 +31,13 @@ def create_process_description():
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
-    simple_example = {
-        "zonal_statistics_1": {
-            "process_id": PROCESS_NAME,
-            "arguments": {
-                "data": {"from_node": "get_b08_data"},
-                "polygons": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"
-            }
-        }
-    }
-
-    examples = dict(simple_example=simple_example)
+    # Example
+    arguments = {"data": {"from_node": "get_b08_data"},
+                "polygons": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"}
+    node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
+    graph = ProcessGraph(title="title", description="description", process_graph={"zonal_statistics_1": node})
+    examples = [ProcessExample(title="Simple example", description="Simple example",
+                               process_graph=graph, arguments=arguments)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Compute the zonal statistics of a time series using a vector polygon. "

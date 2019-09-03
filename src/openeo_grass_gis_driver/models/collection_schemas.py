@@ -549,7 +549,7 @@ class CollectionEntry(JsonableObject):
         information or a preview image.
     """
     # TODO provider not required
-    def __init__(self, providers: CollectionProviders = CollectionProviders("default"),
+    def __init__(self, providers: Optional[CollectionProviders] = None,
                  links: Optional[EoLinks] = None,
                  extent: Optional[CollectionExtent] = None,
                  title: str = None, description: str = None, license: str = None,

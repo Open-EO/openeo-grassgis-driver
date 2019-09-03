@@ -140,10 +140,10 @@ class CollectionInformationResource(Resource):
             end_time = layer_data["end_time"]
 
             if start_time:
-                start_time = start_time.replace(" ", "T")
+                start_time = start_time.replace(" ", "T").replace("'", "").replace('"', '')
 
             if end_time:
-                end_time = end_time.replace(" ", "T")
+                end_time = end_time.replace(" ", "T").replace("'", "").replace('"', '')
 
             extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
                                                float(layer_data["east"]), float(layer_data["north"])),

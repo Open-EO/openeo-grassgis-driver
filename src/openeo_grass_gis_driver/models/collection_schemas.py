@@ -44,9 +44,10 @@ class CollectionExtent(JsonableObject):
     """
 
     def __init__(self,
-                 spatial: Tuple[float, float, float, float],
-                 temporal: Optional[Tuple[str, Optional[str]]] = None):
-
+                 spatial: Tuple[float, float, float, float] = (-180, -90, 180, 60),
+                 temporal: Optional[Tuple[str, Optional[str]]] = ("1900-01-01T00:00:00", "2100-01-01T00:00:00")):
+        # This is soooo stupid, why is the temporal extent required? There is data that has no temporal extent
+        # So we trick here to set an arbitrary extent of 200 years
         self.spatial = spatial # TODO maxItems: 6
         self.temporal = temporal
 

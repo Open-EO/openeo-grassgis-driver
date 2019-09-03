@@ -552,8 +552,8 @@ class CollectionEntry(JsonableObject):
     def __init__(self, providers: Optional[CollectionProviders] = None,
                  links: Optional[EoLinks] = None,
                  extent: Optional[CollectionExtent] = None,
-                 title: str = None, description: str = None, license: str = None,
-                 stac_version: str = None, id: str = None, version: str = None,
+                 title: str = None, description: str = None, license: str = "proprietary",
+                 stac_version: str = "0.6.2", id: str = None, version: str = None,
                  keywords: List[str] = None):
         self.title = title
         self.description = description

@@ -130,7 +130,7 @@ class CollectionInformationResource(Resource):
 
         extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
                                            float(layer_data["east"]), float(layer_data["north"])),
-                                  temporal=("", ""))
+                                  temporal=None)
 
         title = "Raster dataset"
         if datatype.lower() == "strds":

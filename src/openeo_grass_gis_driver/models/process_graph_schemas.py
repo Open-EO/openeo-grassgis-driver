@@ -38,8 +38,8 @@ class ProcessGraphNode(JsonableObject):
     """
 
     def __init__(self, process_id: str,
-                        arguments: Dict[str, Any],
-                        description: str = None, result: bool = False):
+                       arguments: Dict[str, Any],
+                       description: str = "This is a single process", result: bool = False):
 
         # ID in pattern
         #pattern = "^[A-Za-z0-9_]+$"
@@ -49,7 +49,7 @@ class ProcessGraphNode(JsonableObject):
         #        message="The process_id MUST match the following pattern: %s" % pattern)
         #    return make_response(es.to_json(), 400)
         self.process_id = process_id
-        self.description = description
+        self.description = description + " " + process_id
         self.arguments = arguments
         self.result = result
 

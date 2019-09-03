@@ -76,7 +76,7 @@ def create_process_description():
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"t_rast_algebra_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph, arguments=arguments)]
+                               process_graph=graph)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Use a t.rast.algebra expression to compute a new space-time raster "

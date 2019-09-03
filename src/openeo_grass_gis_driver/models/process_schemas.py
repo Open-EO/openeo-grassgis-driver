@@ -281,7 +281,8 @@ class ProcessExample(JsonableObject):
     returns: { }
     """
 
-    def __init__(self, arguments: Dict[str, Any], returns: bool = False,
+    def __init__(self, arguments: Optional[Dict[str, Any]] = None,
+                 returns: bool = False,
                  title: str = None, description: str = None,
                  process_graph: ProcessGraph = None):
         self.title = title

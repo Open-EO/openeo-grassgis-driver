@@ -45,7 +45,7 @@ def create_process_description():
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"scale_minmax_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph, arguments=arguments)]
+                               process_graph=graph)]
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Scales the image values between specified min and max values.",
                             summary="Rescale raster data based on interval",

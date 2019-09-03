@@ -43,7 +43,7 @@ def create_process_description():
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"reduce_time_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph, arguments=arguments)]
+                               process_graph=graph)]
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Reduce the time dimension of a space-time raster dataset "
                                         "with different reduce options.",

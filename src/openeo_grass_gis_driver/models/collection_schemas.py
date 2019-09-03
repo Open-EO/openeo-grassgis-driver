@@ -44,7 +44,7 @@ class CollectionExtent(JsonableObject):
     """
 
     def __init__(self,
-                 spatial: Tuple[float, float, float, float] = (-180, -90, 180, 60),
+                 spatial: Tuple[float, float, float, float] = (-180, -90, 180, 90),
                  temporal: Optional[Tuple[str, Optional[str]]] = ("1900-01-01T00:00:00", "2100-01-01T00:00:00")):
         # This is soooo stupid, why is the temporal extent required? There is data that has no temporal extent
         # So we trick here to set an arbitrary extent of 200 years
@@ -552,7 +552,7 @@ class CollectionEntry(JsonableObject):
     # TODO provider not required
     def __init__(self, providers: Optional[CollectionProviders] = None,
                  links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis"),],
-                 extent: Optional[CollectionExtent] = None,
+                 extent: Optional[CollectionExtent] = CollectionExtent(),
                  title: str = None, description: str = None, license: str = "proprietary",
                  stac_version: str = "0.6.2", id: str = None, version: str = None,
                  keywords: List[str] = None):

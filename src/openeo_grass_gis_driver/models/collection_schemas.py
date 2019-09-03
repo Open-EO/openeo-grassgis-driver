@@ -45,7 +45,7 @@ class CollectionExtent(JsonableObject):
 
     def __init__(self,
                  spatial: Tuple[float, float, float, float],
-                 temporal: Tuple[str, Optional[str]]):
+                 temporal: Optional[Tuple[str, Optional[str]]] = None):
 
         self.spatial = spatial # TODO maxItems: 6
         self.temporal = temporal
@@ -550,8 +550,8 @@ class CollectionEntry(JsonableObject):
     """
     # TODO provider not required
     def __init__(self, providers: CollectionProviders = CollectionProviders("default"),
-                 links: EoLinks = EoLinks(links=[EoLink(href="unknown")]),
-                 extent: CollectionExtent = CollectionExtent([0,0,0,0], str(datetime.now())),
+                 links: Optional[EoLinks] = None,
+                 extent: Optional[CollectionExtent] = None,
                  title: str = None, description: str = None, license: str = None,
                  stac_version: str = None, id: str = None, version: str = None,
                  keywords: List[str] = None):
@@ -578,7 +578,7 @@ class Collection(JsonableObject):
     """
 
     def __init__(self, collections: List[CollectionEntry],
-                 links: EoLinks = EoLinks(links=[EoLink(href="unknown")])):
+                 links: Optional[EoLinks] = None):
         self.collections = collections
         self.links = links
 

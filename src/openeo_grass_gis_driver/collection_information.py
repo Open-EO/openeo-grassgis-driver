@@ -135,9 +135,19 @@ class CollectionInformationResource(Resource):
         title = "Raster dataset"
         if datatype.lower() == "strds":
             title = "Space time raster dataset"
+
+            start_time = layer_data["start_time"]
+            end_time = layer_data["end_time"]
+
+            if start_time:
+                start_time = start_time.replace(" ", "T")
+
+            if end_time:
+                end_time = end_time.replace(" ", "T")
+
             extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
                                                float(layer_data["east"]), float(layer_data["north"])),
-                                      temporal=(layer_data["start_time"], layer_data["end_time"]))
+                                      temporal=(start_time, end_time))
         if datatype.lower() == "vector":
             title = "Vector dataset"
 

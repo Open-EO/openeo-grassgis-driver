@@ -11,5 +11,5 @@ __email__ = "soerengebbert@googlemail.com"
 
 flask_app = Flask(__name__)
 flask_app.wsgi_app = ProxyFix(flask_app.wsgi_app, x_for=1, x_host=1, x_proto=1)
-CORS(flask_app)
+CORS(flask_app, support_credentials=True)
 flask_api = Api(flask_app)

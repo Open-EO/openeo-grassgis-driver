@@ -4,6 +4,7 @@ from uuid import uuid4
 import sys
 from flask import make_response, jsonify, request
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
@@ -22,7 +23,7 @@ class JobsJobId(ResourceBase):
     def __init__(self):
         ResourceBase.__init__(self)
         self.iface = ActiniaInterface()
-        self.iface.set_auth(request.authorization.username, request.authorization.password)
+        self.iface.set_auth(ActiniaConfig.USER, ActiniaConfig.PASSWORD)
         self.db = GraphDB()
         self.job_db = JobDB()
 

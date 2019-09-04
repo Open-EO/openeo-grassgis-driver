@@ -29,7 +29,9 @@ class TestBase(unittest.TestCase):
         auth = bytes(self.gconf.USER + ':' + self.gconf.PASSWORD, "utf-8")
         encodeAuth = base64.b64encode(auth).decode()
         self.auth.add('Authorization', 'Basic ' + encodeAuth)
-
+        response = self.app.get('/credentials/basic', headers=self.auth)
+        resp_data = json.loads(response.data.decode())
+        self.auth.set('Authorization', 'Bearer ' + resp_data['access_token'])
 
     def wait_until_finished(self, response, http_status=200, status="finished"):
         """Poll the status of a resource and assert its finished HTTP status

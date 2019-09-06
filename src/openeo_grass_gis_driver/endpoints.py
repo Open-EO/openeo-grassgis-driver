@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from openeo_grass_gis_driver.app import flask_api
+from openeo_grass_gis_driver.authentication import Authentication
 from openeo_grass_gis_driver.capabilities import Capabilities, ServiceTypes
 from openeo_grass_gis_driver.collections import Collections
 from openeo_grass_gis_driver.collection_information import CollectionInformationResource
@@ -25,6 +26,7 @@ def create_endpoints():
     """Create all endpoints for the openEO Core API  wrapper
     """
     flask_api.add_resource(Capabilities, '/')
+    flask_api.add_resource(Authentication, '/credentials/basic')
     flask_api.add_resource(ServiceTypes, '/service_types')
 
     flask_api.add_resource(Collections, '/collections')

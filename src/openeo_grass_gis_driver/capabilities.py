@@ -13,9 +13,27 @@ CAPABILITIES = {
     "backend_version": "0.1.0",
     "title": "GRASS GIS Driver",
     "description": "GRASS GIS Driver",
+    # "components": {
+    #     "securitySchemes": {
+    #         "bearerAuth": {
+    #             "type": "http",
+    #             "scheme": "bearer",
+    #             "bearerFormat": "JWT"
+    #         }
+    #     }
+    # },
+    # "security": [{
+    #     "bearerAuth": []
+    # }],
     "endpoints": [
         {
             "path": "/",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/credentials/basic",
             "methods": [
                 "GET"
             ]

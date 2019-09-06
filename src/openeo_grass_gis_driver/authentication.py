@@ -28,12 +28,16 @@ __license__ = "Apache-2.0"
 from flask_restful import Resource
 from flask import make_response, jsonify, request
 import functools
+import hashlib
+import datetime
 
+from openeo_grass_gis_driver.token_db import TokenDB
+from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
+tokendb = TokenDB()
 
 def ok_user_and_password(username, password):
-
     iface = ActiniaInterface()
     iface.set_auth(username, password)
     status_code, locations = iface.list_locations()
@@ -42,23 +46,24 @@ def ok_user_and_password(username, password):
     else:
         return True
 
-
 def authenticate():
     resp = jsonify({'message': "Unauthorized.", 'status': 401})
     resp.status_code = 401
     resp.headers['WWW-Authenticate'] = 'Basic realm="Main"'
     return resp
 
+# def authenticate_with_token():
 
 def requires_authorization(f):
     @functools.wraps(f)
     def decorated(*args, **kwargs):
-        auth = request.authorization
-        if not auth or not ok_user_and_password(auth.username, auth.password):
+        auth = request.headers['Authorization']
+        auth = auth.split()[1]
+        user = tokendb[auth]
+        if not user:
             return authenticate()
         return f(*args, **kwargs)
     return decorated
-
 
 class ResourceBase(Resource):
     decorators = []
@@ -66,3 +71,16 @@ class ResourceBase(Resource):
 
     def __init__(self):
         Resource.__init__(self)
+
+class Authentication(Resource):
+    def get(self):
+        auth = request.authorization
+        if not auth or not ok_user_and_password(auth.username, auth.password):
+            return authenticate()
+        hash = hashlib.sha256((ActiniaConfig.SECRET_KEY + auth.username + str(datetime.datetime.now())).encode('UTF-8'))
+        hex = hash.hexdigest()
+        tokendb[hex] = auth.username
+        return make_response(jsonify({
+            'user_id': auth.username,
+            'access_token': hex
+        }), 200)

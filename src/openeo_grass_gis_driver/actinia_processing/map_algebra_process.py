@@ -21,34 +21,34 @@ def create_process_description():
     p_a = Parameter(description="Any openEO process object that returns a single raster datasets identified as $a "
                                 "in the r.mapcalc expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
     p_b = Parameter(description="Any openEO process object that returns a single raster datasets identified as $b "
                                 "in the r.mapcalc expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
     p_c = Parameter(description="Any openEO process object that returns a single raster datasets identified as $c "
                                 "in the r.mapcalc expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
     p_d = Parameter(description="Any openEO process object that returns a single raster datasets identified as $d "
                                 "in the r.mapcalc expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
     p_e = Parameter(description="Any openEO process object that returns a single raster datasets identified as $e "
                                 "in the r.mapcalc expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
     p_f = Parameter(description="Any openEO process object that returns a single raster datasets identified as $f "
                                 "in the r.mapcalc expression.",
                     schema={"type": "object", "format": "eodata"},
-                    required=True)
+                    required=False)
 
-    p_result = Parameter(description="Any openEO process object that returns a single raster datasets "
+    p_result = Parameter(description="An openEO process object "
                                      "identified as RESULT in the r.mapcalc expression.",
                          schema={"type": "object", "format": "eodata"},
                          required=True)

@@ -44,21 +44,16 @@ class GraphValidation(ResourceBase):
             location = ActiniaInterface.PROCESS_LOCATION.keys()
             location = list(location)[0]
 
-            process_chain = dict(list=process_list,
-                                 version="1")
-
-            pprint(process_chain)
+            process_chain = dict(list=process_list, version="1")
 
             status, response = self.iface.sync_ephemeral_processing_validation(location=location,
                                                                                process_chain=process_chain)
-            pprint(response)
-
 
             if status == 200:
                 return make_response("", 204)
             else:
-                es = ErrorSchema(id=str(datetime.now()), code=status, message=str(response))
-                return make_response(es.to_json(), status)
+                return ErrorSchema(id=str(datetime.now()), code=status,
+                                   message=str(response)).as_response(http_status=status)
+
         except Exception as e:
-                es = ErrorSchema(id=str(datetime.now()), code=400, message=str(e))
-                return make_response(es.to_json(), 400)
+                return ErrorSchema(id=str(datetime.now()), code=400, message=str(e)).as_response(http_status=400)

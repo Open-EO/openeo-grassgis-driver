@@ -76,8 +76,4 @@ class Collections(Resource):
                     dataset_list.append(ds)
 
         c = Collection(collections=dataset_list)
-
-        response = make_response(c.to_json(), 200)
-        response.headers['Content-Type'] = 'application/json'
-        return response
-
+        return c.as_response(http_status=200)

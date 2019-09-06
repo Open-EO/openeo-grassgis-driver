@@ -2,6 +2,8 @@
 import json
 from typing import List, Optional
 
+from flask import make_response
+
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Sören Gebbert"
@@ -28,6 +30,11 @@ class JsonableObject:
 
     def to_json(self):
         return json.dumps(self, default=lambda o: as_dict_without_nones(o), sort_keys=False, indent=2)
+
+    def as_response(self, http_status):
+        response = make_response(self.to_json(), http_status)
+        response.headers['Content-Type'] = 'application/json'
+        return response
 
 
 class Link(JsonableObject):

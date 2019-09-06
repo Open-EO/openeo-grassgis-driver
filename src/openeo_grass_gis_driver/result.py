@@ -55,16 +55,15 @@ class Result(ResourceBase):
                 return make_response(jsonify({"job_id":response["resource_id"],
                                               "job_info":response}), status)
             else:
-                error = ErrorSchema(id="1234567890", code=404, message=str(response), links=response["urls"]["status"])
-                return make_response(error.to_json(), status)
+                return ErrorSchema(id="1234567890", code=404,
+                                   message=str(response), links=response["urls"]["status"]).as_response(status)
         except Exception:
 
             e_type, e_value, e_tb = sys.exc_info()
             traceback_model = dict(message=str(e_value),
                                    traceback=traceback.format_tb(e_tb),
                                    type=str(e_type))
-            error = ErrorSchema(id="1234567890", code=404, message=str(traceback_model))
-            return make_response(error.to_json(), 400)
+            return ErrorSchema(id="1234567890", code=404, message=str(traceback_model)).as_response(404)
 
     def wait_until_finished(self, response, max_time: int=10):
         """Poll the status of a resource and assert its finished HTTP status

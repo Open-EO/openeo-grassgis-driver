@@ -63,8 +63,7 @@ class Jobs(ResourceBase):
             jobs.append(job)
 
         job_list = JobList(jobs=jobs)
-
-        return make_response(job_list.to_json(), 200)
+        return job_list.as_response(http_status=200)
 
     def post(self):
         """Submit a new job to the job database"""
@@ -74,8 +73,7 @@ class Jobs(ResourceBase):
         job = request.get_json()
 
         if "process_graph" not in job:
-            error = ErrorSchema(id=uuid4(), message="A process graph is required in the request")
-            return make_response(error.to_json(), 400)
+            return ErrorSchema(id=uuid4(), message="A process graph is required in the request").as_response(400)
 
         job_info = check_job(job=job, job_id=job_id)
         self.job_db[job_id] = job_info
@@ -101,7 +99,7 @@ def check_job(job, job_id):
 
     submitted = str(datetime.now())
 
-    job_info = JobInformation(job_id=job_id, title=title,
+    job_info = JobInformation(id=job_id, title=title,
                               description=description,
                               process_graph=process_graph, updated=None,
                               submitted=submitted, status="submitted")

@@ -36,8 +36,8 @@ class JobsJobId(ResourceBase):
             job = self.job_db[job_id]
             return make_response(job.to_json(), 200)
         else:
-            return make_response(ErrorSchema(id="123456678", code=404,
-                                             message=f"job with id {job_id} not found in database.").to_json(), 404)
+            return ErrorSchema(id="123456678", code=404,
+                               message=f"job with id {job_id} not found in database.").as_response(http_status=404)
 
     def patch(self, job_id):
         try:
@@ -47,23 +47,22 @@ class JobsJobId(ResourceBase):
             if job_id in self.job_db:
 
                 if "process_graph" not in job:
-                    error = ErrorSchema(id=uuid4(), message="A process graph is required in the job request")
-                    return make_response(error.to_json(), 400)
+                    return ErrorSchema(id=uuid4(),
+                                       message="A process graph is required in the job request").as_response(http_status=400)
 
                 job_info = check_job(job=job, job_id=job_id)
                 self.job_db[job_id] = job_info
                 return make_response(job_id, 204)
             else:
-                return make_response(ErrorSchema(id="123456678", code=404,
-                                                 message=f"job with id {job_id} not found in database.").to_json(), 404)
+                return ErrorSchema(id="123456678", code=404,
+                                   message=f"job with id {job_id} not found in database.").as_response(http_status=404)
         except Exception:
 
             e_type, e_value, e_tb = sys.exc_info()
             traceback_model = dict(message=str(e_value),
                                    traceback=traceback.format_tb(e_tb),
                                    type=str(e_type))
-            error = ErrorSchema(id="1234567890", code=2, message=str(traceback_model))
-            return make_response(error.to_json(), 400)
+            return ErrorSchema(id="1234567890", code=2, message=str(traceback_model)).as_response(http_status=400)
 
     def delete(self, job_id):
         """Delete a single job
@@ -75,5 +74,5 @@ class JobsJobId(ResourceBase):
             del self.job_db[job_id]
             return make_response("The job has been successfully deleted", 204)
         else:
-            return make_response(ErrorSchema(id="123456678", code=404,
-                                             message=f"job with id {job_id} not found in database.").to_json(), 404)
+            return ErrorSchema(id="123456678", code=404,
+                               message=f"job with id {job_id} not found in database.").as_response(http_status=404)

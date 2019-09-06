@@ -160,7 +160,4 @@ class CollectionInformationResource(Resource):
                                    description=description,
                                    extent=extent)
 
-        response = make_response(ci.to_json(), 200)
-        response.headers['Content-Type'] = 'application/json'
-        return response
-
+        return ci.as_response(http_status=200)

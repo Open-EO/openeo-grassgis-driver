@@ -44,7 +44,7 @@ class JobsTestCase(TestBase):
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
 
-        self.assertEqual(job_id, data["jobs"][0]["job_id"])
+        self.assertEqual(job_id, data["jobs"][0]["id"])
 
         response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
         self.assertEqual(200, response.status_code)
@@ -52,7 +52,7 @@ class JobsTestCase(TestBase):
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
 
-        self.assertEqual(job_id, data["job_id"])
+        self.assertEqual(job_id, data["id"])
 
     def test_job_creation_2(self):
         """Run the test in the ephemeral database
@@ -68,7 +68,7 @@ class JobsTestCase(TestBase):
 
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
-        self.assertEqual(job_id, data["job_id"])
+        self.assertEqual(job_id, data["id"])
 
         response = self.app.get(f'/jobs/{job_id}' + "_nope", headers=self.auth)
         self.assertEqual(404, response.status_code)

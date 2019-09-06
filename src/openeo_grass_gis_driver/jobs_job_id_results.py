@@ -79,10 +79,10 @@ class JobsJobIdResults(ResourceBase):
                         eo_link = EoLink(href=link)
                         job.links.append(eo_link)
 
-            return make_response(job.to_json(), 200)
+            return job.as_response(http_status=200)
         else:
-            return make_response(ErrorSchema(id="123456678", code=404,
-                                             message=f"job with id {job_id} not found in database.").to_json(), 404)
+            return ErrorSchema(id="123456678", code=404,
+                               message=f"job with id {job_id} not found in database.").as_response(http_status=404)
 
     def post(self, job_id):
         """Start a processing job in the actinia backend
@@ -108,16 +108,15 @@ class JobsJobIdResults(ResourceBase):
 
                 return make_response("The creation of the resource has been queued successfully.", 202)
             else:
-                return make_response(ErrorSchema(id="123456678", code=404,
-                                                 message=f"job with id {job_id} not found in database.").to_json(), 404)
+                return ErrorSchema(id="123456678", code=404,
+                                   message=f"job with id {job_id} not found in database.").as_response(http_status=404)
         except Exception:
 
             e_type, e_value, e_tb = sys.exc_info()
             traceback_model = dict(message=str(e_value),
                                    traceback=traceback.format_tb(e_tb),
                                    type=str(e_type))
-            error = ErrorSchema(id="1234567890", code=2, message=str(traceback_model))
-            return make_response(error.to_json(), 400)
+            return ErrorSchema(id="1234567890", code=2, message=str(traceback_model)).as_response(http_status=400)
 
     def send_actinia_processing_request(self, job: JobInformation):
         try:
@@ -132,8 +131,7 @@ class JobsJobIdResults(ResourceBase):
             location = ActiniaInterface.PROCESS_LOCATION.keys()
             location = list(location)[0]
 
-            process_chain = dict(list=process_list,
-                                 version="1")
+            process_chain = dict(list=process_list, version="1")
 
             # pprint.pprint(process_chain)
 
@@ -164,5 +162,5 @@ class JobsJobIdResults(ResourceBase):
 
             return make_response("The job has been successfully cancelled", 204)
         else:
-            return make_response(ErrorSchema(id="123456678", code=404,
-                                             message=f"job with id {job_id} not found in database.").to_json(), 404)
+            return ErrorSchema(id="123456678", code=404,
+                               message=f"job with id {job_id} not found in database.").as_response(http_status=404)

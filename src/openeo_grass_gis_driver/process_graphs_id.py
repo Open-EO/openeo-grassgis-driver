@@ -33,8 +33,7 @@ class ProcessGraphId(ResourceBase):
             graph["id"] = id
             return make_response(jsonify(graph), 200)
         else:
-            return make_response(ErrorSchema(id=str(uuid4()), code=400,
-                                             message=f"Process graph id {id} not found").to_json(), 400)
+            return ErrorSchema(id=str(uuid4()), code=400, message=f"Process graph id {id} not found").as_response(400)
 
     def patch(self, id):
         try:
@@ -46,17 +45,15 @@ class ProcessGraphId(ResourceBase):
                 self.graph_db[id] = process_graph
                 return make_response(id, 204)
             else:
-                return make_response(ErrorSchema(id="123456678", code=404,
-                                                 message=f"Process graph with id {id} "
-                                                         f"not found in database.").to_json(), 404)
+                return ErrorSchema(id="123456678", code=404,
+                                   message=f"Process graph with id {id} not found in database.").as_response(404)
         except Exception:
 
             e_type, e_value, e_tb = sys.exc_info()
             traceback_model = dict(message=str(e_value),
                                    traceback=traceback.format_tb(e_tb),
                                    type=str(e_type))
-            error = ErrorSchema(id="1234567890", code=2, message=str(traceback_model))
-            return make_response(error.to_json(), 400)
+            return ErrorSchema(id="1234567890", code=2, message=str(traceback_model)).as_response(400)
 
     def delete(self, id):
         """Remove a single process graph from the database"""
@@ -66,6 +63,5 @@ class ProcessGraphId(ResourceBase):
             del self.graph_db[id]
             return make_response(f"Process graph {id} have been successfully deleted", 204)
         else:
-            return make_response(ErrorSchema(id=str(uuid4()), code=400,
-                                             message=f"Process graph id {id} "
-                                                     f"not found").to_json(), 400)
+            return ErrorSchema(id=str(uuid4()), code=400,
+                               message=f"Process graph id {id} not found").as_response(400)

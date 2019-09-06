@@ -102,7 +102,7 @@ def get_process_list(node: Node):
     nmasks = len(node.get_parent_by_name("mask").output_names)
     ninputs = len(node.get_parent_by_name("data").output_names)
 
-    if nmasks > 1 and nmasks != nlayers:
+    if nmasks > 1 and nmasks != ninputs:
         raise Exception("Either a single mask or a separate mask for each layer is required.")
 
     mask_name = None

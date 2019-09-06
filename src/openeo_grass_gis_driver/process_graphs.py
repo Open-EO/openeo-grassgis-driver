@@ -38,7 +38,7 @@ class ProcessGraphs(ResourceBase):
 
             process_graphs.append(entry)
 
-        return make_response(ProcessGraphList(process_graphs=process_graphs).to_json(), 200)
+        return ProcessGraphList(process_graphs=process_graphs).as_response(http_status=200)
 
     def post(self):
         try:
@@ -57,8 +57,7 @@ class ProcessGraphs(ResourceBase):
             traceback_model = dict(message=str(e_value),
                                    traceback=traceback.format_tb(e_tb),
                                    type=str(e_type))
-            error = ErrorSchema(id="1234567890", code=2, message=str(traceback_model))
-            return make_response(error.to_json(), 400)
+            return ErrorSchema(id="1234567890", code=2, message=str(traceback_model)).as_response(http_status=400)
 
     def delete(self):
         """Clear the process graph database"""

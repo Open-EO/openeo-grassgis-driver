@@ -233,7 +233,7 @@ class JobInformation(JsonableObject):
         to null means there is no specified budget.
     """
 
-    def __init__(self, job_id: str, submitted: str,
+    def __init__(self, id: str, submitted: str,
                  process_graph: ProcessGraph, title: str = None,
                  description: str = None, status: str = "submitted",
                  updated: Optional[str] = None,
@@ -245,7 +245,7 @@ class JobInformation(JsonableObject):
         #    es = ErrorSchema(id=str(datetime.now()), code=400,
         #        message="The id MUST match the following pattern: %s" % pattern)
         #    return make_response(es.to_json(), 400)
-        self.job_id = job_id
+        self.id = id
         self.title = title
         self.description = description
         # Test Status

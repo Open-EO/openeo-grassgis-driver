@@ -87,14 +87,30 @@ def create_process_chain_entry(input_name, target_name, method, output_name):
     # TODO: a new GRASS addon that
     # 1. fetches a list of raster maps in a strds
     # 2. resamples each raster map with the selected method
+    
+    # translate openeo method to GRASS method
+    if method == "near":
+        method = "nearest"
+    if method == "cubic":
+        method = "bicubic"
+    if method == "max":
+        method = "maximum"
+    if method == "min":
+        method = "minimum"
+    if method == "med":
+        method = "median"
+    if method == "q1":
+        method = "quart1"
+    if method == "q3":
+        method = "quart3"
 
     pc = [
         {"id": "t_rast_series_%i" % rn,
-         "module": "t.rast.series",
+         "module": "t.rast.resample",
          "inputs": [{"param": "input", "value": input_name},
                     {"param": "method", "value": method},
                     {"param": "output", "value": output_name}],
-         "flags": "t"}
+         }
     ]
 
     return pc

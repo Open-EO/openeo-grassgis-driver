@@ -77,30 +77,17 @@ def create_process_chain_entry(input_name, newmin, newmax, output_name):
 
     rn = randint(0, 1000000)
 
-    # TODO: get min, max for input raster with r.info -r,
-    # these are oldmin, oldmax
-    iface = ActiniaInterface()
-    status_code, layer_data = iface.layer_info(layer_name=input_name)
-    if status_code != 200:
-        return make_response(jsonify({"description": "An internal error occurred "
-                                                     "while catching GRASS GIS layer information "
-                                                     "for layer <%s>!\n Error: %s"
-                                                     "" % (input_name, str(layer_data))}, 400))
-
-    oldmin = layer_data['min']
-    oldmax = layer_data['max']
-
-    pc = {"id": "r_mapcalc_%i" % rn,
-          "module": "r.mapcalc",
-          "inputs": [{"param": "expression",
-                      "value": "%(result)s = ((%(raw)s - %(rmin)s) / (%(rmax)s - %(rmin)s)) * "
-                               "(%(max)s - %(min)s) + %(min)s" % {"result": goutput_name,
-                                                                  "raw": ginput_name,
-                                                                  "rmin": str(oldmin),
-                                                                  "rmax": str(oldmax),
-                                                                  "min": str(newmin),
-                                                                  "max": str(newmax)}}]
-          }
+    pc = {"id": "r_scaleminmax_%i" % rn,
+          "module": "r.scaleminmax",
+          "inputs": [{"param": "input",
+                      "value": input_name},
+                     {"param": "output",
+                      "value": output_name},
+                     {"param": "min",
+                      "value": newmin},
+                     {"param": "max",
+                      "value": newmax},
+                    ]}
 
     return pc
 

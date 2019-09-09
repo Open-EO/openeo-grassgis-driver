@@ -10,6 +10,8 @@ from . import mask_invalid_values_process
 from . import mask_process
 from . import multilayer_mask_process
 from . import ndvi_process
+from . import evi_process
+from . import normalized_difference_process
 from . import map_algebra_process
 from . import multilayer_mask_process
 from . import percentile_time_process

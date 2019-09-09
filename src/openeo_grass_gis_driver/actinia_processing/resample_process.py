@@ -105,7 +105,7 @@ def create_process_chain_entry(input_name, target_name, method, output_name):
         method = "quart3"
 
     pc = [
-        {"id": "t_rast_series_%i" % rn,
+        {"id": "t_rast_resample_%i" % rn,
          "module": "t.rast.resample",
          "inputs": [{"param": "input", "value": input_name},
                     {"param": "method", "value": method},

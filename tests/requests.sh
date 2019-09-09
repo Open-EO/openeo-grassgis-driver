@@ -12,6 +12,6 @@ curl -X GET http://$HOST:5000/collections/nc_spm_08.landsat.raster.lsat7_2000_80
 # Processes
 curl -X GET http://$HOST:5000/processes
 # Processes process ids
-curl -X GET http://$HOST:5000/processes/NDVI
+curl -X GET http://$HOST:5000/processes/ndvi
 curl -X GET http://$HOST:5000/processes/filter_bbox
 curl -X GET http://$HOST:5000/processes/filter_daterange

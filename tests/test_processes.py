@@ -40,7 +40,7 @@ class ProcessesTestCase(TestBase):
         pprint(data)
 
     def test_process_NDVI(self):
-        response = self.app.get('/processes/NDVI', headers=self.auth)
+        response = self.app.get('/processes/ndvi', headers=self.auth)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         pprint(data)

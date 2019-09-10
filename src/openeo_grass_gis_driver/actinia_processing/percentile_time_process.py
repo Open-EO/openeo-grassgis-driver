@@ -43,7 +43,7 @@ def create_process_description():
                             description="Reduce the time dimension of a space-time raster dataset "
                                         "by getting the percentile.",
                             summary="Reduce the time dimension of a space-time raster dataset.",
-                            parameters={"imagery": p_data, "percentile": p_percentile},
+                            parameters={"data": p_data, "percentile": p_percentile},
                             returns=rv,
                             examples=examples)
 

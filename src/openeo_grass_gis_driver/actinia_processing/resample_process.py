@@ -61,7 +61,7 @@ def create_process_description():
                             description="Change the resolution of a space-time raster dataset "
                                         "with different methods.",
                             summary="Spatially resample a space-time raster dataset.",
-                            parameters={"imagery": p_data, "target": p_target, "method": p_method},
+                            parameters={"data": p_data, "target": p_target, "method": p_method},
                             returns=rv,
                             examples=examples)
 

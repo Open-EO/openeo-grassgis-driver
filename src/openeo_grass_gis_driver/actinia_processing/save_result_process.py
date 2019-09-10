@@ -67,10 +67,14 @@ def create_process_chain_entry(input_name):
     rn = randint(0, 1000000)
     pc = []
 
+    output_format = "GTiff"
+    if datatype in ("vector", "stvds"):
+        output_format = "GML"
+
     exporter = {
         "id": "save_result_%i" % rn,
         "module": "exporter",
-        "outputs": [{"export": {"type": "raster", "format": "GTiff"},
+        "outputs": [{"export": {"type": datatype, "format": output_format},
                      "param": "map",
                      "value": input_name}]}
 

@@ -42,7 +42,7 @@ def create_process_description():
                                         "the layers/bands gets value 1, pixels that have valid "
                                         "values in all layers/bands get value 0.",
                             summary="Create a multilayer mask from several raster datasets.",
-                            parameters={"imagery": p_data},
+                            parameters={"data": p_data},
                             returns=rv,
                             examples=examples)
 

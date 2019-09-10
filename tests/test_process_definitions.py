@@ -113,7 +113,7 @@ class ProcessDefinitionTestCase(TestBase):
         self.assertTrue(pc[1]["module"] == "t.info")
         self.assertTrue(pc[2]["module"] == "t.rast.mapcalc")
         self.assertTrue(pc[3]["module"] == "t.rast.colors")
-        self.assertTrue("lsat5_red_NDVI" in output_names)
+        self.assertTrue("lsat5_red_ndvi" in output_names)
 
     def test_raster_export(self):
 

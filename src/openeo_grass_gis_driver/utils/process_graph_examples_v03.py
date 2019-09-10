@@ -76,7 +76,7 @@ REDUCE_TIME_MIN = {
 
 NDVI_1 = {
     "process_graph": {
-        "process_id": "NDVI",
+        "process_id": "ndvi",
         "red": "lsat5_red",
         "nir": "lsat5_nir",
         "imagery": {
@@ -92,7 +92,7 @@ NDVI_1 = {
 
 NDVI_2 = {
     "process_graph": {
-        "process_id": "NDVI",
+        "process_id": "ndvi",
         "red": "S2A_B04",
         "nir": "S2A_B08",
         "imagery": {
@@ -244,7 +244,7 @@ OPENEO_USECASE_1A = {
         "process_id": "reduce_time",
         "method": "minimum",
         "imagery": {
-            "process_id": "NDVI",
+            "process_id": "ndvi",
             "red": "S2A_B04",
             "nir": "S2A_B08",
             "imagery": {

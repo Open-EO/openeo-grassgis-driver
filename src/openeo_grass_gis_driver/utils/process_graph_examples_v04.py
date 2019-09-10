@@ -241,7 +241,7 @@ NDVI_STRDS = {
     "description": "Compute the NDVI data from two space-time raster datasets",
     "process_graph": {
         "ndvi_1": {
-            "process_id": "NDVI",
+            "process_id": "ndvi",
             "arguments": {
                 "red": {"from_node": "get_red_data"},
                 "nir": {"from_node": "get_nir_data"},
@@ -343,7 +343,7 @@ USE_CASE_1 = {
             }
         },
         "ndvi_1": {
-            "process_id": "NDVI",
+            "process_id": "ndvi",
             "arguments": {
                 "red": {"from_node": "filter_bbox_red"},
                 "nir": {"from_node": "filter_bbox_nir"},

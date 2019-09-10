@@ -5,6 +5,7 @@ from . import filter_bbox_process
 from . import bbox_from_raster_process
 from . import filter_daterange_process
 from . import get_data_process
+from . import hants_process
 from . import load_collection_process
 from . import mask_invalid_values_process
 from . import mask_process

@@ -48,7 +48,7 @@ def create_process_description():
                             description="Reduce the time dimension of a space-time raster dataset "
                                         "with different reduce options.",
                             summary="Reduce the time dimension of a space-time raster dataset.",
-                            parameters={"imagery": p_data, "method": p_method},
+                            parameters={"data": p_data, "method": p_method},
                             returns=rv,
                             examples=examples)
 

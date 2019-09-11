@@ -13,8 +13,10 @@ class Config:
     HOST="https://actinia.mundialis.de"
     PORT=443
     LOCATIONS=["nc_spm_08", "utm32n", "latlong_wgs84"]
-    USER="demouser"
-    PASSWORD="gu3st!pa55w0rd"
+    #USER="demouser"
+    #PASSWORD="gu3st!pa55w0rd"
+    USER="openeo"
+    PASSWORD="EeMob0la"
     # The database file that stores the graphs
     GRAPH_DB="%s/.graph_db_file.sqlite"%os.environ["HOME"]
     # The database file that stores the jobs

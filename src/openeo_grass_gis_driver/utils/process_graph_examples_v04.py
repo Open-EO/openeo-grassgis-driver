@@ -105,11 +105,10 @@ DATERANGE = {
             }
         },
         "filter_daterange_1": {
-            "process_id": "filter_daterange",
+            "process_id": "filter_temporal",
             "arguments": {
                 "data": {"from_node": "get_strds_data"},
-                "from": "2015-01-01",
-                "to": "2016-01-01",
+                "extent": ["2015-01-01", "2016-01-01"],
             }
         }
     }

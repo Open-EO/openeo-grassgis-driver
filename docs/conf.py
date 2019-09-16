@@ -29,8 +29,6 @@ sys.path.insert(0, os.path.join(__location__, '../src'))
 # setup.py install" in the RTD Advanced Settings.
 # Additionally it helps us to avoid running apidoc manually
 
-from sphinx import apidoc
-
 output_dir = os.path.join(__location__, "api")
 module_dir = os.path.join(__location__, "../src/openeo_grass_gis_driver")
 try:
@@ -39,7 +37,6 @@ except FileNotFoundError:
     pass
 cmd_line_template = "sphinx-apidoc -f -o {outputdir} {moduledir}"
 cmd_line = cmd_line_template.format(outputdir=output_dir, moduledir=module_dir)
-apidoc.main(cmd_line.split(" "))
 
 # -- General configuration -----------------------------------------------------
 

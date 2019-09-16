@@ -130,7 +130,7 @@ html_theme = 'sphinxdoc'
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
 try:
-    from graas_openeo_core_wrapper import __version__ as version
+    from openeo_grass_gis_driver import __version__ as version
 except ImportError:
     pass
 else:

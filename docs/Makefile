@@ -7,8 +7,8 @@ SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build
 AUTODOCBUILD  = sphinx-apidoc
-PROJECT       = graas_openeo_core_wrapper
-MODULEDIR     = ../src/graas_openeo_core_wrapper
+PROJECT       = openeo_grass_gis_driver
+MODULEDIR     = ../src/openeo_grass_gis_driver
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $?), 1)

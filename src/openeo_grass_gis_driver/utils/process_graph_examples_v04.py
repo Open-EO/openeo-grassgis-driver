@@ -10,9 +10,9 @@ GET_DATA_1 = {
     "description": "This process is the source for a raster layer",
     "process_graph": {
         "get_elevation_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data": "nc_spm_08.PERMANENT.raster.elevation"
+                "id": "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -23,15 +23,15 @@ GET_DATA_2 = {
     "description": "This process graph is the source for three different layer: raster, vector and strds",
     "process_graph": {
         "get_lakes_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data": "nc_spm_08.PERMANENT.vector.lakes"
+                "id": "nc_spm_08.PERMANENT.vector.lakes"
             }
         },
         "get_elevation_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.PERMANENT.raster.elevation"
+                "id":  "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -42,9 +42,9 @@ GET_DATA_3 = {
     "description": "This process graph is the source for three different layer: raster, vector and strds",
     "process_graph": {
         "get_strds_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
+                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
             }
         }
     }
@@ -61,9 +61,9 @@ BBOX_FROM_RASTER = {
             }
         },
         "get_data_1": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.PERMANENT.raster.elevation"
+                "id":  "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -86,9 +86,9 @@ FILTER_BBOX = {
             }
         },
         "get_data_1": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.PERMANENT.raster.elevation"
+                "id":  "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -99,17 +99,16 @@ DATERANGE = {
     "description": "Filter the daterange of a single STRDS",
     "process_graph": {
         "get_strds_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
+                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
             }
         },
         "filter_daterange_1": {
-            "process_id": "filter_daterange",
+            "process_id": "filter_temporal",
             "arguments": {
                 "data": {"from_node": "get_strds_data"},
-                "from": "2015-01-01",
-                "to": "2016-01-01",
+                "extent": ["2015-01-01", "2016-01-01"],
             }
         }
     }
@@ -120,9 +119,9 @@ REDUCE_TIME_MIN = {
     "description": "Reduce the time dimension of a single STRDS",
     "process_graph": {
         "get_strds_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
+                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
             }
         },
         "reduce_time_1": {
@@ -150,15 +149,15 @@ MAP_ALGEBRA = {
             }
         },
         "get_red_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.landsat.raster.lsat7_2000_30"
+                "id":  "nc_spm_08.landsat.raster.lsat7_2000_30"
             }
         },
         "get_nir_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.landsat.raster.lsat7_2000_40"
+                "id":  "nc_spm_08.landsat.raster.lsat7_2000_40"
             }
         }
     }
@@ -181,15 +180,15 @@ TEMPORAL_ALGEBRA = {
             }
         },
         "get_red_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.landsat.strds.lsat5_red"
+                "id":  "nc_spm_08.landsat.strds.lsat5_red"
             }
         },
         "get_nir_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.landsat.strds.lsat5_nir"
+                "id":  "nc_spm_08.landsat.strds.lsat5_nir"
             }
         }
     }
@@ -215,21 +214,21 @@ RGB_RASTER_EXPORT = {
             }
         },
         "get_red_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.landsat.raster.lsat7_2000_30"
+                "id":  "nc_spm_08.landsat.raster.lsat7_2000_30"
             }
         },
         "get_green_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.landsat.raster.lsat7_2000_20"
+                "id":  "nc_spm_08.landsat.raster.lsat7_2000_20"
             }
         },
         "get_blue_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.landsat.raster.lsat7_2000_10"
+                "id":  "nc_spm_08.landsat.raster.lsat7_2000_10"
             }
         }
     }
@@ -248,15 +247,15 @@ NDVI_STRDS = {
             }
         },
         "get_red_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.landsat.strds.lsat5_red"
+                "id":  "nc_spm_08.landsat.strds.lsat5_red"
             }
         },
         "get_nir_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.landsat.strds.lsat5_nir"
+                "id":  "nc_spm_08.landsat.strds.lsat5_nir"
             }
         }
     }
@@ -273,9 +272,9 @@ RASTER_EXPORT = {
             }
         },
         "get_b08_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data": "nc_spm_08.PERMANENT.raster.elevation"
+                "id": "nc_spm_08.PERMANENT.raster.elevation"
             }
         }
     }
@@ -293,9 +292,9 @@ ZONAL_STATISTICS = {
             }
         },
         "get_b08_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
+                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
             }
         }
     }
@@ -307,15 +306,15 @@ USE_CASE_1 = {
     "description": "Compute the NDVI data from two space-time raster datasets and apply several filters in the data",
     "process_graph": {
         "get_red_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data":  "nc_spm_08.landsat.strds.lsat5_red"
+                "id":  "nc_spm_08.landsat.strds.lsat5_red"
             }
         },
         "get_nir_data": {
-            "process_id": "get_data",
+            "process_id": "load_collection",
             "arguments": {
-                "data": "nc_spm_08.landsat.strds.lsat5_nir"
+                "id": "nc_spm_08.landsat.strds.lsat5_nir"
             }
         },
         "filter_bbox_red": {
@@ -350,11 +349,10 @@ USE_CASE_1 = {
             }
         },
         "filter_daterange_ndvi": {
-            "process_id": "filter_daterange",
+            "process_id": "filter_temporal",
             "arguments": {
                 "data": {"from_node": "ndvi_1"},
-                "from": "2001-01-01",
-                "to": "2005-01-01",
+                "extent": ["2001-01-01", "2005-01-01"],
             }
         },
         "reduce_time_1": {
@@ -396,8 +394,7 @@ OPENEO_EXAMPLE_1 = {
                 "data": {
                     "from_node": "getcol1"
                 },
-                "from": "2017-01-01",
-                "to": "2017-01-31"
+                "extent": ["2017-01-01", "2017-01-31"]
             }
         },
         "filter2": {
@@ -406,8 +403,7 @@ OPENEO_EXAMPLE_1 = {
                 "data": {
                     "from_node": "getcol1"
                 },
-                "from": "2018-01-01",
-                "to": "2018-01-31"
+                "extent": ["2018-01-01", "2018-01-31"]
             }
         },
         "filter3": {

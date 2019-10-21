@@ -109,6 +109,8 @@ def create__process_chain_entry(input_name, start_time, end_time, output_name):
     if mapset is not None:
         input_name = layer_name + "@" + mapset
     base_name = "%s_extract" % layer_name
+    start_time = start_time.replace('T', ' ')
+    end_time = end_time.replace('T', ' ')
 
     # Get info about the time series to extract its resolution settings and bbox
     rn = randint(0, 1000000)

@@ -115,9 +115,9 @@ def get_process_list(node: Node):
         raise Exception("Process %s requires parameter <blue>" % PROCESS_NAME)
 
     # Get the red, green and blue data separately
-    red_input_names = node.get_parent_by_name(parent_name="red").output_names
-    green_input_names = node.get_parent_by_name(parent_name="green").output_names
-    blue_input_names = node.get_parent_by_name(parent_name="blue").output_names
+    red_input_names = node.get_parent_by_name(parent_name="red").output_objects
+    green_input_names = node.get_parent_by_name(parent_name="green").output_objects
+    blue_input_names = node.get_parent_by_name(parent_name="blue").output_objects
 
     if not red_input_names:
         raise Exception("Process %s requires an input raster for band <red>" % PROCESS_NAME)
@@ -137,7 +137,7 @@ def get_process_list(node: Node):
     rn = randint(0, 1000000)
     output_name = "red_green_blue_composite_%i" % rn
     output_names.append(output_name)
-    node.add_output(output_name=output_name)
+    node.add_output(output_object=output_name)
 
     pc = create_process_chain_entry(output_name=output_name, red_name=red_name,
                                     green_name=green_name, blue_name=blue_name)

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from random import randint
 import json
-from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, check_node_parents
+from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
+    check_node_parents, DataObject, GrassDataType
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
@@ -57,7 +58,7 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create__process_chain_entry(input_name, start_time, end_time, output_name):
+def create__process_chain_entry(input_object: DataObject, start_time: str, end_time: str, output_object: DataObject):
     """Create a Actinia command of the process chain that uses t.rast.extract to create a subset of a strds
 
     :param strds_name: The name of the strds
@@ -65,23 +66,18 @@ def create__process_chain_entry(input_name, start_time, end_time, output_name):
     :param end_time:
     :return: A Actinia process chain description
     """
-    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
-    input_name = layer_name
-    if mapset is not None:
-        input_name = layer_name + "@" + mapset
-    base_name = "%s_extract" % layer_name
 
     # Get info about the time series to extract its resolution settings and bbox
     rn = randint(0, 1000000)
 
     pc = {"id": "t_rast_extract_%i" % rn,
           "module": "t.rast.extract",
-          "inputs": [{"param": "input", "value": input_name},
+          "inputs": [{"param": "input", "value": input_object.grass_name()},
                      {"param": "where", "value": "start_time >= '%(start)s' "
                                                  "AND end_time <= '%(end)s'" % {"start": start_time, "end": end_time}},
-                     {"param": "output", "value": output_name},
-                     {"param": "expression", "value": "1.0 * %s" % input_name},
-                     {"param": "basename", "value": base_name},
+                     {"param": "output", "value": output_object.grass_name()},
+                     {"param": "expression", "value": "1.0 * %s" % input_object.grass_name()},
+                     {"param": "basename", "value": f"{input_object.name}_extract"},
                      {"param": "suffix", "value": "num"}]}
 
     return pc
@@ -92,24 +88,22 @@ def get_process_list(node: Node):
     strds that was filtered by start and end date
 
     :param node: The process node
-    :return: (output_names, actinia_process_list)
+    :return: (output_objects, actinia_process_list)
     """
 
-    input_names, process_list = check_node_parents(node=node)
-    output_names = []
+    input_objects, process_list = check_node_parents(node=node)
+    output_objects = []
 
-    for input_name in node.get_parent_by_name(parent_name="data").output_names:
-
-        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
+    for data_objects in node.get_parent_by_name(parent_name="data").output_objects:
 
         # Skip if the datatype is not a strds and put the input into the output
-        if datatype and datatype != "strds":
-            output_names.append(input_name)
+        if data_objects.is_strds() is False:
+            output_objects.append(data_objects)
             continue
 
-        output_name = "%s_%s" % (layer_name, PROCESS_NAME)
-        output_names.append(output_name)
-        node.add_output(output_name)
+        output_object = DataObject(name=f"{data_objects.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+        output_objects.append(output_object)
+        node.add_output(output_object=output_object)
 
         start_time = None
         end_time = None
@@ -119,13 +113,13 @@ def get_process_list(node: Node):
         if "to" in node.arguments:
             end_time = node.arguments["to"]
 
-        pc = create__process_chain_entry(input_name=input_name,
+        pc = create__process_chain_entry(input_object=data_objects,
                                          start_time=start_time,
                                          end_time=end_time,
-                                         output_name=output_name)
+                                         output_object=output_object)
         process_list.append(pc)
 
-    return output_names, process_list
+    return output_objects, process_list
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-
-from typing import Set, Dict, Optional, Tuple, Union
+from enum import Enum
+from typing import Set, Dict, Optional, Tuple, Union, List
 
 # This is the process dictionary that is used to store all processes of the Actinia wrapper
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 
 PROCESS_DESCRIPTION_DICT = {}
@@ -19,6 +21,55 @@ __email__ = "soerengebbert@googlemail.com"
 ###############################################################################
 ####### Version 0.4 of the API ################################################
 ###############################################################################
+
+
+class GrassDataType(Enum):
+
+    RASTER = "raster"
+    VECTOR = "vector"
+    STRDS = "strds"
+
+
+class DataObject:
+    """Data object that represents GRASS raster, vector and strds datatypes that can be defined in a process graph"""
+
+    def __init__(self, name: str, datatype: GrassDataType, mapset: str = None, location: str = None):
+
+        self.name = name
+        self.datatype = datatype
+        self.mapset = mapset
+        self.location = location
+
+    @staticmethod
+    def from_string(name: str):
+
+        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(name)
+
+        if GrassDataType.RASTER.value == datatype:
+            return DataObject(name=name, datatype=GrassDataType.RASTER, mapset=mapset, location=location)
+        elif GrassDataType.VECTOR.value == datatype:
+            return DataObject(name=name, datatype=GrassDataType.VECTOR, mapset=mapset, location=location)
+        elif GrassDataType.STRDS.value == datatype:
+            return DataObject(name=name, datatype=GrassDataType.STRDS, mapset=mapset, location=location)
+
+    def grass_name(self):
+
+        if self.mapset:
+            return f"{self.name}@{self.mapset}"
+        return self.name
+
+    def is_strds(self):
+
+        return self.datatype == GrassDataType.STRDS
+
+    def is_raster(self):
+
+        return self.datatype == GrassDataType.RASTER
+
+    def is_vector(self):
+
+        return self.datatype == GrassDataType.VECTOR
+
 
 class Node:
     """A single node in the process graph
@@ -37,10 +88,10 @@ class Node:
         self.child: Optional[Node] = None
         self._process_description = process_description
         self._was_processed = False
-        self.output_names = set()
+        self.output_objects: Set[DataObject] = set()
 
-    def add_output(self, output_name: str):
-        self.output_names.add(output_name)
+    def add_output(self, output_object: DataObject):
+        self.output_objects.add(output_object)
 
     def get_parent_by_name(self, parent_name: str) -> Optional['Node']:
         if parent_name in self.parents_dict.keys():
@@ -155,14 +206,14 @@ class Graph:
         """Compute the actinia process list traversing the tree from all root nodes"""
 
         full_process_list = list()
-        full_output_name_list = list()
+        full_output_object_list = list()
 
         for node in self.root_nodes:
-            output_name_list, process_list = process_node_to_actinia_process_chain(node=node)
+            output_object_list, process_list = process_node_to_actinia_process_chain(node=node)
             full_process_list.extend(process_list)
-            full_output_name_list.extend(output_name_list)
+            full_output_object_list.extend(output_object_list)
 
-        return full_output_name_list, full_process_list
+        return full_output_object_list, full_process_list
 
 
 def process_node_to_actinia_process_chain(node: Node) -> Tuple[list, list]:
@@ -173,34 +224,34 @@ def process_node_to_actinia_process_chain(node: Node) -> Tuple[list, list]:
     process converter and sets the node status to processed==True.
 
     :param node: A single process node
-    :return: (output_name_list, process_list)
+    :return: (output_oblect_list, process_list)
     """
 
     if node is None:
         raise Exception("Missing process node")
 
     process_list = []
-    output_name_list = []
+    output_oblect_list = []
 
     if node.process_id not in PROCESS_DICT:
         raise Exception("Unsupported process id, available processes: %s" % PROCESS_DICT.keys())
 
     outputs, processes = PROCESS_DICT[node.process_id](node)
     process_list.extend(processes)
-    output_name_list.extend(outputs)
+    output_oblect_list.extend(outputs)
 
     node.processed = True
 
-    return output_name_list, process_list
+    return output_oblect_list, process_list
 
 
 def check_node_parents(node: Node) -> Tuple[list, list]:
     process_list = []
-    input_names = []
+    input_objects = []
 
     for parent in node.parents:
         i, p = process_node_to_actinia_process_chain(parent)
         process_list.extend(p)
-        input_names.extend(i)
+        input_objects.extend(i)
 
-    return input_names, process_list
+    return input_objects, process_list

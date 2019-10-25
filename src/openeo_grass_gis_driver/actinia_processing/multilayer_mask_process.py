@@ -111,7 +111,7 @@ def get_process_list(node: Node):
 
     output_name = "%s_%s" % (input_names, PROCESS_NAME)
     output_names.append(output_name)
-    node.add_output(output_name=output_name)
+    node.add_output(output_object=output_name)
 
     pc = create_process_chain_entry(input_names, node.arguments["method"], output_name)
     process_list.append(pc)

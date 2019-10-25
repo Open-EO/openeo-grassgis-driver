@@ -91,7 +91,7 @@ def get_process_list(node: Node):
     output_names = []
 
     # Pipe the inputs to the outputs
-    for input_name in node.get_parent_by_name("data").output_names:
+    for input_name in node.get_parent_by_name("data").output_objects:
         output_name = input_name
         output_names.append(output_name)
 

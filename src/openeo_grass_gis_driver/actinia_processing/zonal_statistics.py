@@ -155,7 +155,7 @@ def get_process_list(node: Node):
 
         output_name = input_name
         output_names.append(output_name)
-        node.add_output(output_name=output_name)
+        node.add_output(output_object=output_name)
 
         if "polygons" in node.arguments:
             polygons = node.arguments["polygons"]

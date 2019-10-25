@@ -130,7 +130,7 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_names)
     output_name = "%s_%s" % (layer_name, PROCESS_NAME)
     output_names.append(output_name)
-    node.add_output(output_name=output_name)
+    node.add_output(output_object=output_name)
 
     pc = create_process_chain_entry(input_names, mask_names, mask_value, output_name)
     process_list.append(pc)

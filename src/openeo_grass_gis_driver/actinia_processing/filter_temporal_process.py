@@ -139,7 +139,7 @@ def get_process_list(node: Node):
     input_names, process_list = check_node_parents(node=node)
     output_names = []
 
-    for input_name in node.get_parent_by_name(parent_name="data").output_names:
+    for input_name in node.get_parent_by_name(parent_name="data").output_objects:
 
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
 

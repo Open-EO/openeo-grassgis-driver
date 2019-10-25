@@ -130,34 +130,34 @@ def get_process_list(node: Node):
     expression = node.arguments["expression"]
 
     if "a" in node.arguments:
-        a = list(node.get_parent_by_name(parent_name="a").output_names)[0]
+        a = list(node.get_parent_by_name(parent_name="a").output_objects)[0]
         A = ActiniaInterface.layer_def_to_grass_map_name(a)
         expression = expression.replace("$a", A)
     if "b" in node.arguments:
-        b = list(node.get_parent_by_name(parent_name="b").output_names)[0]
+        b = list(node.get_parent_by_name(parent_name="b").output_objects)[0]
         B = ActiniaInterface.layer_def_to_grass_map_name(b)
         expression = expression.replace("$b", B)
     if "c" in node.arguments:
-        c = list(node.get_parent_by_name(parent_name="c").output_names)[0]
+        c = list(node.get_parent_by_name(parent_name="c").output_objects)[0]
         C = ActiniaInterface.layer_def_to_grass_map_name(c)
         expression = expression.replace("$c", C)
     if "d" in node.arguments:
-        d = list(node.get_parent_by_name(parent_name="d").output_names)[0]
+        d = list(node.get_parent_by_name(parent_name="d").output_objects)[0]
         D = ActiniaInterface.layer_def_to_grass_map_name(d)
         expression = expression.replace("$d", D)
     if "e" in node.arguments:
-        e = list(node.get_parent_by_name(parent_name="e").output_names)[0]
+        e = list(node.get_parent_by_name(parent_name="e").output_objects)[0]
         E = ActiniaInterface.layer_def_to_grass_map_name(e)
         expression = expression.replace("$e", E)
     if "f" in node.arguments:
-        f = list(node.get_parent_by_name(parent_name="f").output_names)[0]
+        f = list(node.get_parent_by_name(parent_name="f").output_objects)[0]
         F = ActiniaInterface.layer_def_to_grass_map_name(f)
         expression = expression.replace("$f", F)
 
     expression = expression.replace("$result", result)
 
     output_names.append(result)
-    node.add_output(output_name=result)
+    node.add_output(output_object=result)
 
     pc = create_process_chain_entry(expression)
     process_list.extend(pc)

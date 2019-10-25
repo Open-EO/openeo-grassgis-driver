@@ -112,8 +112,8 @@ def get_process_list(node: Node):
         raise Exception("Process %s requires parameter <nir>" % PROCESS_NAME)
 
     # Get the red and nir data separately
-    red_input_names = node.get_parent_by_name(parent_name="red").output_names
-    nir_input_names = node.get_parent_by_name(parent_name="nir").output_names
+    red_input_names = node.get_parent_by_name(parent_name="red").output_objects
+    nir_input_names = node.get_parent_by_name(parent_name="nir").output_objects
 
     if not red_input_names:
         raise Exception("Process %s requires an input strds for band <red>" % PROCESS_NAME)
@@ -130,7 +130,7 @@ def get_process_list(node: Node):
     location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(red_stds)
     output_name = "%s_%s" % (layer_name, PROCESS_NAME)
     output_names.append(output_name)
-    node.add_output(output_name=output_name)
+    node.add_output(output_object=output_name)
 
     pc = create_process_chain_entry(nir_strds, red_stds, output_name)
     process_list.extend(pc)

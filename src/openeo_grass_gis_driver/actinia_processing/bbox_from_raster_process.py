@@ -4,7 +4,7 @@ from random import randint
 from typing import List, Tuple
 
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
-from openeo_grass_gis_driver.actinia_processing.base import check_node_parents
+from openeo_grass_gis_driver.actinia_processing.base import check_node_parents, DataObject
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
@@ -49,22 +49,18 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_name: str) -> dict:
+def create_process_chain_entry(data_object: DataObject) -> dict:
     """Create a Actinia command of the process chain that uses g.region to create a valid computational region
     for the provide input strds
 
-    :param input_name: name of the input raster map
+    :param data_object: Input raster map data object
     :return: A Actinia process chain description
     """
-    location, mapset, datatype, input_name = ActiniaInterface.layer_def_to_components(input_name)
-    if mapset is not None:
-        input_name = input_name + "@" + mapset
-
     rn = randint(0, 1000000)
 
     pc = {"id": "g_region_%i" % rn,
           "module": "g.region",
-          "inputs": [{"param": "raster", "value": str(input_name)}],
+          "inputs": [{"param": "raster", "value": str(data_object.grass_name())}],
           "flags": "p"}
 
     return pc
@@ -74,27 +70,27 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     """Analyse the process node and return the Actinia process chain and the name of the processing result
 
     :param node: The process node
-    :return: (output_names, actinia_process_list)
+    :return: (output_objects, actinia_process_list)
     """
 
     input_names, process_list = check_node_parents(node=node)
-    output_names = []
+    output_objects = []
 
     if "data" not in node.arguments:
         raise Exception("Process %s requires parameter <data>" % PROCESS_NAME)
 
     # Catch the first input
-    for input_name in node.get_parent_by_name(parent_name="data").output_names:
-        pc = create_process_chain_entry(input_name=input_name)
+    for data_object in node.get_parent_by_name(parent_name="data").output_objects:
+        pc = create_process_chain_entry(data_object=data_object)
         process_list.append(pc)
         break
 
-    for input_name in node.get_parent_by_name(parent_name="data").output_names:
-        output_name = input_name
-        output_names.append(output_name)
+    for data_object in node.get_parent_by_name(parent_name="data").output_objects:
+        output_name = data_object
+        output_objects.append(output_name)
         node.add_output(output_name)
 
-    return output_names, process_list
+    return output_objects, process_list
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

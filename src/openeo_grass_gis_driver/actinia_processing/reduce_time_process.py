@@ -95,13 +95,13 @@ def get_process_list(node: Node):
     if "method" not in node.arguments:
         raise Exception("Parameter method is required.")
 
-    for input_name in node.get_parent_by_name("data").output_names:
+    for input_name in node.get_parent_by_name("data").output_objects:
         # multiple strds as input ?
         # multiple raster layers as output !
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
         output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)
-        node.add_output(output_name=output_name)
+        node.add_output(output_object=output_name)
 
         pc = create_process_chain_entry(input_name, node.arguments["method"], output_name)
         process_list.append(pc)

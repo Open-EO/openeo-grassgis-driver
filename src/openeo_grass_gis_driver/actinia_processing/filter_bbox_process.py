@@ -111,11 +111,11 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     """Analyse the process node and return the Actinia process chain and the name of the processing result
 
     :param node: The process node
-    :return: (output_names, actinia_process_list)
+    :return: (output_objects, actinia_process_list)
     """
 
-    input_names, process_list = check_node_parents(node=node)
-    output_names = []
+    input_objects, process_list = check_node_parents(node=node)
+    output_objects = []
 
     if "data" not in node.arguments or \
             "left" not in node.arguments or \
@@ -139,13 +139,11 @@ def get_process_list(node: Node) -> Tuple[list, list]:
                                     height_res=height_res)
     process_list.append(pc)
 
-    for input_name in node.get_parent_by_name(parent_name="data").output_names:
-        # Create the output name based on the input name and method
-        output_name = input_name
-        output_names.append(output_name)
-        node.add_output(output_name)
+    for data_object in node.get_parent_by_name(parent_name="data").output_objects:
+        output_objects.append(data_object)
+        node.add_output(data_object)
 
-    return output_names, process_list
+    return output_objects, process_list
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

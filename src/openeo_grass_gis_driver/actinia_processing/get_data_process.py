@@ -4,9 +4,9 @@ import json
 
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph, ProcessGraphNode
 
-from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, check_node_parents
+from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
+    check_node_parents, DataObject
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -51,7 +51,7 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_name):
+def create_process_chain_entry(input_object: DataObject):
     """Create a Actinia process description that uses t.rast.series to create the minimum
     value of the time series.
 
@@ -60,29 +60,24 @@ def create_process_chain_entry(input_name):
     :return: A Actinia process chain description
     """
 
-    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
-    input_name = layer_name
-    if mapset is not None:
-        input_name = layer_name + "@" + mapset
-
     rn = randint(0, 1000000)
 
     pc = {}
 
-    if datatype == "raster":
+    if input_object.is_raster():
         pc = {"id": "r_info_%i" % rn,
               "module": "r.info",
-              "inputs": [{"param": "map", "value": input_name}, ],
+              "inputs": [{"param": "map", "value": input_object.grass_name()}, ],
               "flags": "g"}
-    elif datatype == "vector":
+    elif input_object.is_vector():
         pc = {"id": "v_info_%i" % rn,
               "module": "v.info",
-              "inputs": [{"param": "map", "value": input_name}, ],
+              "inputs": [{"param": "map", "value": input_object.grass_name()}, ],
               "flags": "g"}
-    elif datatype == "strds":
+    elif input_object.is_strds():
         pc = {"id": "t_info_%i" % rn,
               "module": "t.info",
-              "inputs": [{"param": "input", "value": input_name}, ],
+              "inputs": [{"param": "input", "value": input_object.grass_name()}, ],
               "flags": "g"}
     else:
         raise Exception("Unsupported datatype")
@@ -94,29 +89,27 @@ def get_process_list(node: Node):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
 
     :param node: The process node
-    :return: (output_names, actinia_process_list)
+    :return: (output_objects, actinia_process_list)
     """
 
-    input_names, process_list = check_node_parents(node=node)
-    output_names = []
+    input_objects, process_list = check_node_parents(node=node)
+    output_objects = []
 
     # First analyse the data entry
     if "data" not in node.arguments:
         raise Exception("Process %s requires parameter <data>" % PROCESS_NAME)
 
-    output_names.append(node.arguments["data"])
-    node.add_output(node.arguments["data"])
+    output_object = DataObject.from_string(node.arguments["data"])
+    output_objects.append(output_object)
+    node.add_output(output_object)
 
-    pc = create_process_chain_entry(input_name=node.arguments["data"])
+    pc = create_process_chain_entry(input_object=output_object)
     process_list.append(pc)
 
-    # Then add the input to the output
-    for input_name in input_names:
-        # Create the output name based on the input name and method
-        output_name = input_name
-        output_names.append(output_name)
+    for input_object in input_objects:
+        output_objects.append(input_object)
 
-    return output_names, process_list
+    return output_objects, process_list
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

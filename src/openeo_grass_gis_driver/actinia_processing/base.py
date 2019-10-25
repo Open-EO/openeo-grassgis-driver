@@ -52,6 +52,8 @@ class DataObject:
         elif GrassDataType.STRDS.value == datatype:
             return DataObject(name=name, datatype=GrassDataType.STRDS, mapset=mapset, location=location)
 
+        raise Exception(f"Unsupported object type <{datatype}>")
+
     def grass_name(self):
 
         if self.mapset:

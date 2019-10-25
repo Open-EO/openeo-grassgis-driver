@@ -61,11 +61,15 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 def create__process_chain_entry(input_object: DataObject, start_time: str, end_time: str, output_object: DataObject):
     """Create a Actinia command of the process chain that uses t.rast.extract to create a subset of a strds
 
-    :param strds_name: The name of the strds
+    :param input_object: The input strds object
     :param start_time:
     :param end_time:
+    :param output_object: The output strds object
     :return: A Actinia process chain description
     """
+
+    start_time = start_time.replace('T', ' ')
+    end_time = end_time.replace('T', ' ')
 
     # Get info about the time series to extract its resolution settings and bbox
     rn = randint(0, 1000000)
@@ -94,14 +98,14 @@ def get_process_list(node: Node):
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []
 
-    for data_objects in node.get_parent_by_name(parent_name="data").output_objects:
+    for data_object in node.get_parent_by_name(parent_name="data").output_objects:
 
         # Skip if the datatype is not a strds and put the input into the output
-        if data_objects.is_strds() is False:
-            output_objects.append(data_objects)
+        if data_object.is_strds() is False:
+            output_objects.append(data_object)
             continue
 
-        output_object = DataObject(name=f"{data_objects.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+        output_object = DataObject(name=f"{data_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)
 
@@ -113,7 +117,7 @@ def get_process_list(node: Node):
         if "to" in node.arguments:
             end_time = node.arguments["to"]
 
-        pc = create__process_chain_entry(input_object=data_objects,
+        pc = create__process_chain_entry(input_object=data_object,
                                          start_time=start_time,
                                          end_time=end_time,
                                          output_object=output_object)

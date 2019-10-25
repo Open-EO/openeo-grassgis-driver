@@ -4,7 +4,7 @@ import json
 
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
 
-from openeo_grass_gis_driver.actinia_processing.base import Node, check_node_parents
+from openeo_grass_gis_driver.actinia_processing.base import Node, check_node_parents, DataObject, GrassDataType
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
@@ -78,11 +78,11 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_name, nf, dod, fet, range_low, range_high, reject_low, reject_high, output_name):
+def create_process_chain_entry(input_object, nf, dod, fet, range_low, range_high, reject_low, reject_high, output_object):
     """Create a Actinia process description that uses t.rast.hants 
     to filter a time series with HANTS.
 
-    :param input_time_series: The input time series name
+    :param input_object: The input time series object
     :param nf: number of frequencies
     :param dod: degree of over-determination
     :param fet: fit-error tolerance
@@ -90,10 +90,9 @@ def create_process_chain_entry(input_name, nf, dod, fet, range_low, range_high, 
     :param range_high: upper limit of valid values
     :param reject_low: reject low outliers
     :param reject_high: reject high outliers
-    :param output_map: The name of the output raster map
+    :param output_object: The output time series object
     :return: A Actinia process chain description
     """
-    input_name = ActiniaInterface.layer_def_to_grass_map_name(input_name)
 
     rn = randint(0, 1000000)
 
@@ -108,22 +107,22 @@ def create_process_chain_entry(input_name, nf, dod, fet, range_low, range_high, 
     if len(flags) > 0:
         pc = {"id": "t_rast_hants_%i" % rn,
               "module": "t.rast.hants",
-              "inputs": [{"param": "input", "value": input_name},
+              "inputs": [{"param": "input", "value": input_object.grass_name()},
                          {"param": "nf", "value": nf},
                          {"param": "dod", "value": dod},
                          {"param": "fet", "value": fet},
                          {"param": "range", "value": hants_range},
-                         {"param": "output", "value": output_name}],
+                         {"param": "output", "value": output_object.grass_name()}],
               "flags": flags}
     else:
         pc = {"id": "t_rast_hants_%i" % rn,
               "module": "t.rast.hants",
-              "inputs": [{"param": "input", "value": input_name},
+              "inputs": [{"param": "input", "value": input_object.grass_name()},
                          {"param": "nf", "value": nf},
                          {"param": "dod", "value": dod},
                          {"param": "fet", "value": fet},
                          {"param": "range", "value": hants_range},
-                         {"param": "output", "value": output_name}]
+                         {"param": "output", "value": output_object.grass_name()}]
               }
 
     return pc
@@ -135,11 +134,11 @@ def get_process_list(node: Node):
     which is a single raster layer
 
     :param node: The process node
-    :return: (output_names, actinia_process_list)
+    :return: (output_objects, actinia_process_list)
     """
 
-    input_names, process_list = check_node_parents(node=node)
-    output_names = []
+    input_objects, process_list = check_node_parents(node=node)
+    output_objects = []
 
     if "nf" not in node.arguments:
         raise Exception("Parameter nf is required.")
@@ -163,20 +162,25 @@ def get_process_list(node: Node):
     if "reject_high" in node.arguments:
         reject_high = bool(node.arguments["reject_high"])
 
-    for input_name in node.get_parent_by_name("data").output_objects:
-        # multiple strds as input ?
-        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
-        output_name = "%s_%s" % (layer_name, PROCESS_NAME)
-        output_names.append(output_name)
-        node.add_output(output_object=output_name)
+    for data_object in node.get_parent_by_name("data").output_objects:
 
-        pc = create_process_chain_entry(input_name, nf, dod, fet,
+        # Skip if the datatype is not a strds and put the input into the output
+        if data_object.is_strds() is False:
+            output_objects.append(data_object)
+            continue
+
+        # multiple strds as input ?
+        output_object = DataObject(name=f"{data_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+        output_objects.append(output_object)
+        node.add_output(output_object=output_object)
+
+        pc = create_process_chain_entry(data_object, nf, dod, fet,
                                         range_low, range_high,
                                         reject_low, reject_high,
-                                        output_name)
+                                        output_object)
         process_list.append(pc)
 
-    return output_names, process_list
+    return output_objects, process_list
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

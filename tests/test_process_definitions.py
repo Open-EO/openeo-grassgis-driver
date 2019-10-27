@@ -19,7 +19,7 @@ class ProcessDefinitionTestCase(TestBase):
 
         g = Graph(GET_DATA_1)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
         self.assertEqual(len(pc), 1)
 
@@ -27,7 +27,7 @@ class ProcessDefinitionTestCase(TestBase):
 
         g = Graph(GET_DATA_2)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
         self.assertEqual(len(pc), 2)
 
@@ -35,7 +35,7 @@ class ProcessDefinitionTestCase(TestBase):
 
         g = Graph(GET_DATA_3)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
         self.assertTrue(pc[0]["module"] == "t.info")
         self.assertEqual(len(pc), 1)
@@ -44,7 +44,7 @@ class ProcessDefinitionTestCase(TestBase):
 
         g = Graph(FILTER_BBOX)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
         self.assertEqual(len(pc), 2)
         self.assertTrue(pc[0]["module"] == "r.info")
@@ -54,7 +54,7 @@ class ProcessDefinitionTestCase(TestBase):
 
         g = Graph(BBOX_FROM_RASTER)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
         self.assertEqual(len(pc), 2)
         self.assertTrue(pc[0]["module"] == "r.info")
@@ -64,7 +64,7 @@ class ProcessDefinitionTestCase(TestBase):
 
         g = Graph(DATERANGE)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
         self.assertEqual(len(pc), 2)
         self.assertTrue(pc[0]["module"] == "t.info")
@@ -74,7 +74,7 @@ class ProcessDefinitionTestCase(TestBase):
 
         g = Graph(MAP_ALGEBRA)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
         self.assertEqual(len(pc), 3)
         self.assertTrue(pc[0]["module"] == "r.info")
@@ -85,7 +85,7 @@ class ProcessDefinitionTestCase(TestBase):
 
         g = Graph(TEMPORAL_ALGEBRA)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
         self.assertEqual(len(pc), 3)
         self.assertTrue(pc[0]["module"] == "t.info")
@@ -106,49 +106,49 @@ class ProcessDefinitionTestCase(TestBase):
 
         g = Graph(NDVI_STRDS)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
         self.assertEqual(len(pc), 4)
         self.assertTrue(pc[0]["module"] == "t.info")
         self.assertTrue(pc[1]["module"] == "t.info")
         self.assertTrue(pc[2]["module"] == "t.rast.mapcalc")
         self.assertTrue(pc[3]["module"] == "t.rast.colors")
-        self.assertTrue("lsat5_red_ndvi" in output_names)
+        self.assertTrue("lsat5_red_ndvi" in [o.name for o in output_names])
 
     def test_raster_export(self):
 
         g = Graph(RASTER_EXPORT)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
-        self.assertTrue("nc_spm_08.PERMANENT.raster.elevation" in output_names)
+        self.assertTrue("nc_spm_08.PERMANENT.raster.elevation" in [o.full_name() for o in output_names])
         self.assertEqual(len(pc), 2)
 
     def test_rgb_raster_export(self):
 
         g = Graph(RGB_RASTER_EXPORT)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
-        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_10" in output_names)
-        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_20" in output_names)
-        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_30" in output_names)
+        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_10" in [o.full_name() for o in output_names])
+        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_20" in [o.full_name() for o in output_names])
+        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_30" in [o.full_name() for o in output_names])
         self.assertEqual(len(pc), 5)
 
     def test_zonal_statistics(self):
 
         g = Graph(ZONAL_STATISTICS)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
-        self.assertTrue('nc_spm_08.modis_lst.strds.LST_Day_monthly' in output_names)
+        self.assertTrue('nc_spm_08.modis_lst.strds.LST_Day_monthly' in [o.full_name() for o in output_names])
         self.assertEqual(len(pc), 8)
 
     def test_openeo_usecase_1(self):
 
         g = Graph(USE_CASE_1)
         output_names, pc = g.to_actinia_process_list()
-        pprint(output_names)
+        pprint([str(o) for o in output_names])
         pprint(pc)
         self.assertEqual(len(pc), 8)
 

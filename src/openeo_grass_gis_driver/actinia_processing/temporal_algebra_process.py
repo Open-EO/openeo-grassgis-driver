@@ -4,7 +4,8 @@ import json
 
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
 
-from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, check_node_parents
+from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
+    check_node_parents, DataObject, GrassDataType
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -121,11 +122,11 @@ def get_process_list(node: Node):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
 
     :param node: The process node
-    :return: (output_names, actinia_process_list)
+    :return: (output_objects, actinia_process_list)
     """
 
-    input_names, process_list = check_node_parents(node=node)
-    output_names = []
+    input_objects, process_list = check_node_parents(node=node)
+    output_objects = []
 
     if "result" not in node.arguments:
         raise Exception("The result name must be specified as parameter")
@@ -134,45 +135,39 @@ def get_process_list(node: Node):
     if "basename" not in node.arguments:
         raise Exception("The basename must be specified as parameter")
 
-    result = node.arguments["result"]
-    result = ActiniaInterface.layer_def_to_grass_map_name(result)
+    result = DataObject(name=node.arguments["result"], datatype=GrassDataType.STRDS)
+
     expression = node.arguments["expression"]
     basename = node.arguments["basename"]
 
     if "a" in node.arguments:
-        a = list(node.get_parent_by_name(parent_name="a").output_objects)[0]
-        A = ActiniaInterface.layer_def_to_grass_map_name(a)
-        expression = expression.replace("$a", A)
+        a = list(node.get_parent_by_name(parent_name="a").output_objects)[-1]
+        expression = expression.replace("$a", a.grass_name())
     if "b" in node.arguments:
-        b = list(node.get_parent_by_name(parent_name="b").output_objects)[0]
-        B = ActiniaInterface.layer_def_to_grass_map_name(b)
-        expression = expression.replace("$b", B)
+        b = list(node.get_parent_by_name(parent_name="b").output_objects)[-1]
+        expression = expression.replace("$b", b.grass_name())
     if "c" in node.arguments:
-        c = list(node.get_parent_by_name(parent_name="c").output_objects)[0]
-        C = ActiniaInterface.layer_def_to_grass_map_name(c)
-        expression = expression.replace("$c", C)
+        c = list(node.get_parent_by_name(parent_name="c").output_objects)[-1]
+        expression = expression.replace("$c", c.grass_name())
     if "d" in node.arguments:
-        d = list(node.get_parent_by_name(parent_name="d").output_objects)[0]
-        D = ActiniaInterface.layer_def_to_grass_map_name(d)
-        expression = expression.replace("$d", D)
+        d = list(node.get_parent_by_name(parent_name="d").output_objects)[-1]
+        expression = expression.replace("$d", d.grass_name())
     if "e" in node.arguments:
-        e = list(node.get_parent_by_name(parent_name="e").output_objects)[0]
-        E = ActiniaInterface.layer_def_to_grass_map_name(e)
-        expression = expression.replace("$e", E)
+        e = list(node.get_parent_by_name(parent_name="e").output_objects)[-1]
+        expression = expression.replace("$e", e.grass_name())
     if "f" in node.arguments:
-        f = list(node.get_parent_by_name(parent_name="f").output_objects)[0]
-        F = ActiniaInterface.layer_def_to_grass_map_name(f)
-        expression = expression.replace("$f", F)
+        f = list(node.get_parent_by_name(parent_name="f").output_objects)[-1]
+        expression = expression.replace("$f", f.grass_name())
 
-    expression = expression.replace("$result", result)
+    expression = expression.replace("$result", result.grass_name())
 
-    output_names.append(result)
+    output_objects.append(result)
     node.add_output(output_object=result)
 
     pc = create_process_chain_entry(expression=expression, basename=basename)
     process_list.extend(pc)
 
-    return output_names, process_list
+    return output_objects, process_list
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

@@ -4,7 +4,7 @@ import json
 
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
 
-from openeo_grass_gis_driver.actinia_processing.base import Node, check_node_parents
+from openeo_grass_gis_driver.actinia_processing.base import Node, check_node_parents, DataObject, GrassDataType
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
@@ -71,16 +71,14 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_name, target_name, method, output_name):
+def create_process_chain_entry(input_object: DataObject, method, output_object: DataObject):
     """Create a Actinia process description.
 
-    :param input_name: The input time series name
-    :param target_name: The input target raster name
+    :param input_object: The input time series name
     :param method: The method for time reduction
     :param output_map: The name of the output raster map
     :return: A Actinia process chain description
     """
-    input_name = ActiniaInterface.layer_def_to_grass_map_name(input_name)
 
     rn = randint(0, 1000000)
 
@@ -107,9 +105,9 @@ def create_process_chain_entry(input_name, target_name, method, output_name):
     pc = [
         {"id": "t_rast_resample_%i" % rn,
          "module": "t.rast.resample",
-         "inputs": [{"param": "input", "value": input_name},
+         "inputs": [{"param": "input", "value": input_object.grass_name()},
                     {"param": "method", "value": method},
-                    {"param": "output", "value": output_name}],
+                    {"param": "output", "value": output_object.grass_name()}],
          }
     ]
 
@@ -122,27 +120,26 @@ def get_process_list(node: Node):
     which is a single raster layer
 
     :param node: The process node
-    :return: (output_names, actinia_process_list)
+    :return: (output_objects, actinia_process_list)
     """
 
-    input_names, process_list = check_node_parents(node=node)
-    output_names = []
+    input_objects, process_list = check_node_parents(node=node)
+    output_objects = []
 
     if "method" not in node.arguments:
         raise Exception("Parameter method is required.")
 
-    for input_name in node.get_parent_by_name("data").output_objects:
+    for input_object in node.get_parent_by_name("data").output_objects:
         # multiple strds as input ?
         # multiple raster layers as output !
-        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
-        output_name = "%s_%s" % (layer_name, PROCESS_NAME)
-        output_names.append(output_name)
-        node.add_output(output_object=output_name)
+        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+        output_objects.append(output_object)
+        node.add_output(output_object=output_object)
 
-        pc = create_process_chain_entry(input_name, node.arguments["method"], output_name)
+        pc = create_process_chain_entry(input_object, node.arguments["method"], output_object)
         process_list.append(pc)
 
-    return output_names, process_list
+    return output_objects, process_list
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

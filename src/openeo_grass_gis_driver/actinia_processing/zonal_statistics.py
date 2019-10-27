@@ -5,7 +5,7 @@ import json
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
 
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, \
-    PROCESS_DESCRIPTION_DICT, Node, check_node_parents
+    PROCESS_DESCRIPTION_DICT, Node, check_node_parents, DataObject
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -55,22 +55,17 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_name, polygons):
+def create_process_chain_entry(input_object: DataObject, polygons: str):
     """Create a Actinia command of the process chain that computes the regional statistics based on a
     strds and a polygon.
 
     The computational region will be set to the vector map, the previous region will be saved and after processing
     restored. A mask will be set that uses the vector file as input. This mask will be removed in the end.
 
-    :param input_name: The name of the strds
+    :param input_object: The name of the strds
     :param polygons: The URL to the vector file that defines the regions of interest
     :return: A Actinia process chain description
     """
-
-    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
-    input_name = layer_name
-    if mapset is not None:
-        input_name = layer_name + "@" + mapset
 
     rn = randint(0, 1000000)
     pc = []
@@ -113,7 +108,7 @@ def create_process_chain_entry(input_name, polygons):
         "id": "t_rast_univar_%i" % rn,
         "module": "t.rast.univar",
         "inputs": [{"param": "input",
-                    "value": input_name}]
+                    "value": input_object.grass_name()}]
     }
 
     r_mask_2 = {
@@ -145,28 +140,27 @@ def get_process_list(node: Node):
     which is a single raster layer
 
     :param node: The process node
-    :return: (output_names, actinia_process_list)
+    :return: (output_objects, actinia_process_list)
     """
 
-    input_names, process_list = check_node_parents(node=node)
-    output_names = []
+    input_objects, process_list = check_node_parents(node=node)
+    output_objects = []
 
-    for input_name in input_names:
+    for input_object in input_objects:
 
-        output_name = input_name
-        output_names.append(output_name)
-        node.add_output(output_object=output_name)
+        output_objects.append(input_object)
+        node.add_output(output_object=input_object)
 
         if "polygons" in node.arguments:
             polygons = node.arguments["polygons"]
         else:
             raise Exception("The vector polygon is missing in the process description")
 
-        pc = create_process_chain_entry(input_name=input_name,
+        pc = create_process_chain_entry(input_object=input_object,
                                         polygons=polygons)
         process_list.extend(pc)
 
-    return output_names, process_list
+    return output_objects, process_list
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

@@ -5,7 +5,7 @@ import json
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
 
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
-    check_node_parents
+    check_node_parents, DataObject
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -51,18 +51,13 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_name):
+def create_process_chain_entry(data_object: DataObject):
     """Create a Actinia command of the process chain that computes the regional statistics based on a
     strds and a polygon.
 
-    :param input_name: The name of the raster layer
+    :param data_object: The name of the raster layer
     :return: A Actinia process chain description
     """
-
-    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
-    input_name = layer_name
-    if mapset is not None:
-        input_name = layer_name + "@" + mapset
 
     rn = randint(0, 1000000)
     pc = []
@@ -72,7 +67,7 @@ def create_process_chain_entry(input_name):
         "module": "exporter",
         "outputs": [{"export": {"type": "raster", "format": "GTiff"},
                      "param": "map",
-                     "value": input_name}]}
+                     "value": data_object.grass_name()}]}
 
     pc.append(exporter)
 
@@ -84,21 +79,24 @@ def get_process_list(node: Node):
     which is a single raster layer
 
     :param node: The process node
-    :return: (output_names, actinia_process_list)
+    :return: (output_objects, actinia_process_list)
     """
 
-    input_names, process_list = check_node_parents(node=node)
-    output_names = []
+    input_objects, process_list = check_node_parents(node=node)
+    output_objects = []
 
     # Pipe the inputs to the outputs
-    for input_name in node.get_parent_by_name("data").output_objects:
-        output_name = input_name
-        output_names.append(output_name)
+    for data_object in node.get_parent_by_name("data").output_objects:
 
-        pc = create_process_chain_entry(input_name=input_name)
-        process_list.extend(pc)
+        # Export raster maps
+        if data_object.is_raster():
+            output_objects.append(data_object)
+            node.add_output(output_object=data_object)
 
-    return output_names, process_list
+            pc = create_process_chain_entry(data_object=data_object)
+            process_list.extend(pc)
+
+    return output_objects, process_list
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

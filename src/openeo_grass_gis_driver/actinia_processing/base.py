@@ -40,17 +40,20 @@ class DataObject:
         self.mapset = mapset
         self.location = location
 
+    def __str__(self):
+        return f"{self.location}.{self.mapset}.{self.datatype.value}.{self.name}"
+
     @staticmethod
     def from_string(name: str):
 
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(name)
 
         if GrassDataType.RASTER.value == datatype:
-            return DataObject(name=name, datatype=GrassDataType.RASTER, mapset=mapset, location=location)
+            return DataObject(name=layer_name, datatype=GrassDataType.RASTER, mapset=mapset, location=location)
         elif GrassDataType.VECTOR.value == datatype:
-            return DataObject(name=name, datatype=GrassDataType.VECTOR, mapset=mapset, location=location)
+            return DataObject(name=layer_name, datatype=GrassDataType.VECTOR, mapset=mapset, location=location)
         elif GrassDataType.STRDS.value == datatype:
-            return DataObject(name=name, datatype=GrassDataType.STRDS, mapset=mapset, location=location)
+            return DataObject(name=layer_name, datatype=GrassDataType.STRDS, mapset=mapset, location=location)
 
         raise Exception(f"Unsupported object type <{datatype}>")
 
@@ -59,6 +62,9 @@ class DataObject:
         if self.mapset:
             return f"{self.name}@{self.mapset}"
         return self.name
+
+    def full_name(self):
+        return str(self)
 
     def is_strds(self):
 

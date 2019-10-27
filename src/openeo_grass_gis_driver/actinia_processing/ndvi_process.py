@@ -5,7 +5,7 @@ import json
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph, ProcessGraphNode
 
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
-    check_node_parents
+    check_node_parents, DataObject, GrassDataType
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
@@ -55,18 +55,15 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(nir_time_series, red_time_series, output_time_series):
+def create_process_chain_entry(nir_time_series: DataObject, red_time_series: DataObject,
+                               output_time_series: DataObject):
     """Create a Actinia process description that uses t.rast.mapcalc to create the NDVI time series
 
-    :param nir_time_series: The NIR band time series name
-    :param red_time_series: The RED band time series name
-    :param output_time_series: The name of the output time series
+    :param nir_time_series: The NIR band time series object
+    :param red_time_series: The RED band time series object
+    :param output_time_series: The object of the output time series
     :return: A list of Actinia process chain descriptions
     """
-    nir_time_series = ActiniaInterface.layer_def_to_grass_map_name(nir_time_series)
-    red_time_series = ActiniaInterface.layer_def_to_grass_map_name(red_time_series)
-    output_name = ActiniaInterface.layer_def_to_grass_map_name(output_time_series)
-
     rn = randint(0, 1000000)
 
     pc = [
@@ -74,20 +71,20 @@ def create_process_chain_entry(nir_time_series, red_time_series, output_time_ser
          "module": "t.rast.mapcalc",
          "inputs": [{"param": "expression",
                      "value": "%(result)s = float((%(nir)s - %(red)s)/"
-                              "(%(nir)s + %(red)s))" % {"result": output_name,
-                                                        "nir": nir_time_series,
-                                                        "red": red_time_series}},
+                              "(%(nir)s + %(red)s))" % {"result":  output_time_series.grass_name(),
+                                                        "nir": nir_time_series.grass_name(),
+                                                        "red": red_time_series.grass_name()}},
                     {"param": "inputs",
-                     "value": "%(nir)s,%(red)s" % {"nir": nir_time_series,
-                                                   "red": red_time_series}},
+                     "value": "%(nir)s,%(red)s" % {"nir": nir_time_series.grass_name(),
+                                                   "red": red_time_series.grass_name()}},
                     {"param": "basename",
                      "value": "ndvi"},
                     {"param": "output",
-                     "value": output_name}]},
+                     "value": output_time_series.grass_name()}]},
         {"id": "t_rast_color_%i" % rn,
          "module": "t.rast.colors",
          "inputs": [{"param": "input",
-                     "value": output_name},
+                     "value": output_time_series.grass_name()},
                     {"param": "color",
                      "value": "ndvi"}]}]
 
@@ -98,11 +95,11 @@ def get_process_list(node: Node):
     """Analyse the process description and return the Actinia process chain and the name of the processing result
 
     :param node: The process node
-    :return: (output_names, actinia_process_list)
+    :return: (output_objects, actinia_process_list)
     """
 
-    input_names, process_list = check_node_parents(node=node)
-    output_names = []
+    input_objects, process_list = check_node_parents(node=node)
+    output_objects = []
 
     # First analyse the data entries
     if "red" not in node.arguments:
@@ -112,30 +109,29 @@ def get_process_list(node: Node):
         raise Exception("Process %s requires parameter <nir>" % PROCESS_NAME)
 
     # Get the red and nir data separately
-    red_input_names = node.get_parent_by_name(parent_name="red").output_objects
-    nir_input_names = node.get_parent_by_name(parent_name="nir").output_objects
+    red_input_objects = node.get_parent_by_name(parent_name="red").output_objects
+    nir_input_objects = node.get_parent_by_name(parent_name="nir").output_objects
 
-    if not red_input_names:
+    if not red_input_objects:
         raise Exception("Process %s requires an input strds for band <red>" % PROCESS_NAME)
 
-    if not nir_input_names:
+    if not nir_input_objects:
         raise Exception("Process %s requires an input strds for band <nir>" % PROCESS_NAME)
 
-    red_stds = list(red_input_names)[-1]
-    nir_strds = list(nir_input_names)[-1]
+    red_stds = list(red_input_objects)[-1]
+    nir_strds = list(nir_input_objects)[-1]
 
-    output_names.extend(list(red_input_names))
-    output_names.extend(list(nir_input_names))
+    output_objects.extend(list(red_input_objects))
+    output_objects.extend(list(nir_input_objects))
 
-    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(red_stds)
-    output_name = "%s_%s" % (layer_name, PROCESS_NAME)
-    output_names.append(output_name)
-    node.add_output(output_object=output_name)
+    output_object = DataObject(name=f"{red_stds.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_objects.append(output_object)
+    node.add_output(output_object=output_object)
 
-    pc = create_process_chain_entry(nir_strds, red_stds, output_name)
+    pc = create_process_chain_entry(nir_strds, red_stds, output_object)
     process_list.extend(pc)
 
-    return output_names, process_list
+    return output_objects, process_list
 
 
 PROCESS_DICT[PROCESS_NAME] = get_process_list

@@ -86,9 +86,8 @@ def get_process_list(node: Node) -> Tuple[list, list]:
         break
 
     for data_object in node.get_parent_by_name(parent_name="data").output_objects:
-        output_name = data_object
-        output_objects.append(output_name)
-        node.add_output(output_name)
+        output_objects.append(data_object)
+        node.add_output(data_object)
 
     return output_objects, process_list
 

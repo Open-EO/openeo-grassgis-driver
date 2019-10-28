@@ -13,6 +13,7 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
+# not in the official list
 PROCESS_NAME = "apply_mask"
 
 

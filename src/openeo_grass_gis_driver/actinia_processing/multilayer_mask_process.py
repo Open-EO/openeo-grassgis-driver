@@ -17,6 +17,7 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
+# not in the official list
 PROCESS_NAME = "multilayer_mask"
 
 
@@ -65,6 +66,7 @@ def create_process_chain_entry(data_object: DataObject, output_object: DataObjec
 
     # get number of maps in input_time_series
     iface = ActiniaInterface()
+    # this is not working because the input object might not yet exist
     status_code, layer_data = iface.layer_info(layer_name=data_object.grass_name())
     if status_code != 200:
         return make_response(jsonify({"description": "An internal error occurred "

@@ -15,7 +15,7 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-PROCESS_NAME = "resample"
+PROCESS_NAME = "resample_cube_spatial"
 
 
 def create_process_description():
@@ -58,8 +58,8 @@ def create_process_description():
                                process_graph=graph)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Change the resolution of a space-time raster dataset "
-                                        "with different methods.",
+                            description="Resample the spatial dimensions (x,y) from a source data cube "
+                                        "to a target data cube and return the results as a new data cube.",
                             summary="Spatially resample a space-time raster dataset.",
                             parameters={"data": p_data, "target": p_target, "method": p_method},
                             returns=rv,

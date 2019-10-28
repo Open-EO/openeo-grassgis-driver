@@ -95,7 +95,7 @@ def get_process_list(node: Node):
 
     for input_object in node.get_parent_by_name("data").output_objects:
 
-        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.RASTER)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)
 

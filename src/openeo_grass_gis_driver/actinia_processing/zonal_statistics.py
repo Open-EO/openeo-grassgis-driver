@@ -84,21 +84,21 @@ def create_process_chain_entry(input_object: DataObject, polygons: str):
     }
 
     g_region_1 = {
-        "id": "g_region_%i" % rn,
+        "id": "g_region_1_%i" % rn,
         "module": "g.region",
         "inputs": [{"param": "save",
                     "value": "previous_region"}],
         "flags": "g"}
 
     g_region_2 = {
-        "id": "g_region_%i" % rn,
+        "id": "g_region_2_%i" % rn,
         "module": "g.region",
         "inputs": [{"param": "vector",
                     "value": "polygon"}],
         "flags": "g"}
 
     r_mask_1 = {
-        "id": "r_mask_%i" % rn,
+        "id": "r_mask_1_%i" % rn,
         "module": "r.mask",
         "inputs": [{"param": "vector",
                     "value": "polygon"}]
@@ -112,13 +112,13 @@ def create_process_chain_entry(input_object: DataObject, polygons: str):
     }
 
     r_mask_2 = {
-        "id": "r_mask_%i" % rn,
+        "id": "r_mask_2_%i" % rn,
         "module": "r.mask",
         "flags": "r"
     }
 
     g_region_3 = {
-        "id": "g_region_%i" % rn,
+        "id": "g_region_3_%i" % rn,
         "module": "g.region",
         "inputs": [{"param": "region",
                     "value": "previous_region"}],

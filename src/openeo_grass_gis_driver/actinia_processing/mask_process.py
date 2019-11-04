@@ -123,7 +123,7 @@ def get_process_list(node: Node) -> Tuple[list, list]:
 
     mask_value = node.arguments["value"]
 
-    # Get the red and nir data separately
+    # Get the input and mask data separately
     data_object = node.get_parent_by_name(parent_name="data").output_objects[0]
     mask_object = node.get_parent_by_name(parent_name="mask").output_objects[0]
 

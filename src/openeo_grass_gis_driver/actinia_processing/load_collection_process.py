@@ -54,11 +54,9 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_object: DataObject):
-    """Create a Actinia process description that uses t.rast.series to create the minimum
-    value of the time series.
+    """Create a Actinia process description that r.info, v.info, or t.info.
 
-    :param input_time_series: The input time series name
-    :param output_map: The name of the output map
+    :param input_object: The input object name
     :return: A Actinia process chain description
     """
 

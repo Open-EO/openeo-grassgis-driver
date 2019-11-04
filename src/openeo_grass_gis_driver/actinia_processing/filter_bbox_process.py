@@ -16,6 +16,8 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "filter_bbox"
 
+# does not conform to
+# https://open-eo.github.io/openeo-api/v/0.4.2/processreference/#filter_bbox
 
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "

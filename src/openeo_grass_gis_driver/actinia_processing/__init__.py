@@ -27,3 +27,4 @@ from . import scale_minmax_process
 from . import trim_process
 from . import zonal_statistics
 from . import temporal_algebra_process
+from . import reduce_process

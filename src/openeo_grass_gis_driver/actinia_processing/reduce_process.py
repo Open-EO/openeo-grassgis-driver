@@ -142,20 +142,28 @@ def construct_tree(obj):
                 else:
                     node['children'].append({'type': 'literal', 'value': arg})
             node['operator'] = config['process_id']
-            if config['result'] == True:
-                root = node
         else:
-            node['type'] = 'inputdata'
-            node['index'] = config['arguments']['index']
+            if config['process_id'] == 'array_element':
+                node['type'] = 'inputdata'
+                node['index'] = config['arguments']['index']
+            else:
+                node['operator'] = config['process_id']
+                node['children'] = []
+        if config['result'] == True:
+            root = node
     return root
 
 def serialize_tree(tree):
     if tree['type'] == 'node':
-        operator = OPERATOR_DICT[tree['operator']]
-        results = []
-        for node in tree['children']:
-            results.append(serialize_tree(node))
-        return '(' + (' ' + operator + ' ').join(results) + ')'
+        operator = tree['operator']
+        if operator in OPERATOR_DICT:
+            operator = OPERATOR_DICT[tree['operator']]
+            results = []
+            for node in tree['children']:
+                results.append(serialize_tree(node))
+            return '(' + (' ' + operator + ' ').join(results) + ')'
+        else:
+            return operator
     if tree['type'] == 'literal':
         return str(tree['value'])
     if tree['type'] == 'inputdata':

@@ -177,6 +177,7 @@ def get_process_list(node: Node):
     :param node: The process node
     :return: (output_objects, actinia_process_list)
     """
+    raise Exception('The reducer process is not fully supported yet.')
     tree = construct_tree(node.as_dict()['arguments']['reducer']['callback'])
     formula = serialize_tree(tree)
     print (formula)

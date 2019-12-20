@@ -11,8 +11,8 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import Actinia
 
 __license__ = "Apache License, Version 2.0"
 
-# not in the official list
 PROCESS_NAME = "reduce"
+
 OPERATOR_DICT = {
     'sum': '+',
     'subtract': '-',
@@ -21,7 +21,7 @@ OPERATOR_DICT = {
 }
 
 def create_process_description():
-    p_data = Parameter(description="Raster data qube",
+    p_data = Parameter(description="Raster data cube",
                        schema={"type": "object", "format": "raster-cube"},
                        required=True)
     p_reducer = Parameter(description="The reducer",
@@ -104,29 +104,115 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_object: DataObject, method, output_object: DataObject):
-    """Create a Actinia process description that uses t.rast.series to reduce a time series.
+def create_process_chain_entry(input_object: DataObject, dimtype, formula,
+                               operators, target_dimtype, output_object: DataObject):
+    """Create a Actinia process description.
 
     :param input_object: The input time series object
-    :param method: The method for time reduction
-    :param output_map: The name of the output raster object
+    :param dimension: dimension to reduce
+    :param output_object: The output time series or raster object
     :return: A Actinia process chain description
     """
+
+    # dimension is the name of the dimension. The name is arbitrary.
+    # Need to check the dimension name and get its type.
+    # Supported dimension types are "temporal" and "bands".
+    # Dimension type "spatial" should also be supported.
+    # We can not check dimension names of the input object here
+    # because the input object does not exist yet.
+    # Use a new GRASS addon t.rast.reduce ?
+    # There are no dimension names in GRASS, only dimension types
+    # -> deadlock: dimension names are openeo specific
+    #              we need the openeo object to get the dimension type
+    #              from the dimension name
+    #              BUT the openeo object does not exist yet
+    # implement openeo / STAC like dimensions in GRASS ?
+    
     rn = randint(0, 1000000)
-    print (input_object)
-    pc = {"id": "t_rast_series_%i" % rn,
-          "module": "t.rast.series",
-          "inputs": [{"param": "input", "value": input_object.grass_name()},
-                     {"param": "method", "value": method},
-                     {"param": "output", "value": output_object.grass_name()}],
-          "flags": "t"}
+
+    if dimtype == 'temporal':
+        # t.rast.series
+
+        # exactly one function: map openeo function to r.series method
+
+        method = operators[0]
+        if method == "mean":
+            method = "average"
+        elif method == "count":
+            method = "count"
+        elif method == "median":
+            method = "median"
+        elif method == "min":
+            method = "minimum"
+        elif method == "max":
+            method = "maximum"
+        elif method == "sd":
+            method = "stddev"
+        elif method == "sum":
+            method = "sum"
+        elif "variance" in formula:
+            method = "variance"
+        else :
+            raise Exception('Unsupported method <%s> for temporal reduction.' % (method))
+
+        # TODO: quantiles with openeo options probabilites (list of values between 0 and 1
+        # q as number of intervals to calculate quantiles for
+        
+        pc = {"id": "t_rast_series_%i" % rn,
+              "module": "t.rast.series",
+              "inputs": [{"param": "input", "value": input_object.grass_name()},
+                         {"param": "method", "value": method},
+                         {"param": "output", "value": output_object.grass_name()}],
+              "flags": "t"}
+
+    elif dimtype == 'bands':
+        # t.rast.mapcalc
+        
+        # t.rast.bandcalc needs the formula and translates 
+        # "data[<index>]" to appropriate band references
+        # with <index> being a number, 0 for first band
+        # the order of bands is obtained from g.bands
+
+        pc = {"id": "t_rast_bandcalc_%i" % rn,
+              "module": "t.rast.bandcalc",
+         "inputs": [{"param": "expression",
+                     "value": "%(formula)s" % {"formula": formula}},
+                    {"param": "inputs",
+                     "value": "%(input)s" % {"input": input_object.grass_name()}},
+                    {"param": "basename",
+                     "value": "reduce"},
+                    {"param": "output",
+                     "value": output_object.grass_name()}]}
+
+
 
     return pc
 
+def get_dimension_type(dimension_name):
+    """Guess dimension type from dimension name.
+    
+    Problem: name and type of dimensions must be stored with the data
+             and data do not exist yet, but we need the dimension type here
+             in order to parse the openeo reducer
+    """
+
+    dimtype = None
+
+    if dimension_name == 'temporal':
+        dimtype = 'temporal'
+    elif 'spectral' in dimension_name or 'band' in dimension_name:
+        dimtype = 'bands'
+    elif dimension_name in ('x', 'y', 'z', 'easting', 'northing', 'height'):
+        dimtype = 'spatial'
+
+    return dimtype
 
 def construct_tree(obj):
     nodes = dict()
     root = None
+    operators = []
+
+    # TODO: for process_id quantile, remember probabilities and q
 
     for name in obj:
         nodes[name] = {'type': 'node', 'children': []}
@@ -142,17 +228,20 @@ def construct_tree(obj):
                 else:
                     node['children'].append({'type': 'literal', 'value': arg})
             node['operator'] = config['process_id']
+            operators.append(node['operator'])
         else:
             if config['process_id'] == 'array_element':
                 node['type'] = 'inputdata'
                 node['index'] = config['arguments']['index']
             else:
                 node['operator'] = config['process_id']
+                operators.append(node['operator'])
                 node['children'] = []
         if config['result'] == True:
             root = node
-    return root
+    return root, operators
 
+# use only for dimension "bands"
 def serialize_tree(tree):
     if tree['type'] == 'node':
         operator = tree['operator']
@@ -163,7 +252,11 @@ def serialize_tree(tree):
                 results.append(serialize_tree(node))
             return '(' + (' ' + operator + ' ').join(results) + ')'
         else:
-            return operator
+            results = []
+            for node in tree['children']:
+                results.append(serialize_tree(node))
+            return operator + '(' + (', ').join(results) + ')'
+            #return operator
     if tree['type'] == 'literal':
         return str(tree['value'])
     if tree['type'] == 'inputdata':
@@ -177,23 +270,42 @@ def get_process_list(node: Node):
     :param node: The process node
     :return: (output_objects, actinia_process_list)
     """
-    raise Exception('The reducer process is not fully supported yet.')
-    tree = construct_tree(node.as_dict()['arguments']['reducer']['callback'])
-    formula = serialize_tree(tree)
-    print (formula)
+    # get dimension type
+    dimtype = get_dimension_type(node.arguments["dimension"])
+    if dimtype is None:
+        raise Exception('Unable to determine dimension type for dimension <%s>.' % (dimension))
+
+    target_dimtype = None
+    if "target_dimension" in node.arguments and node.arguments["target_dimension"] is not None:
+        target_dimtype = get_dimension_type(node.arguments["target_dimension"])
+
+    tree, operators = construct_tree(node.as_dict()['arguments']['reducer']['callback'])
+    #print (operators)
+    formula = None
+    output_datatype = GrassDataType.RASTER
+    if dimtype == 'bands':
+        formula = serialize_tree(tree)
+        #print (formula)
+        output_datatype = GrassDataType.STRDS
+    elif dimtype == 'temporal':
+        if len(operators) != 1:
+            raise Exception('Only one method is supported by reduce process on the temporal dimension.')
+
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []
 
-    if "method" not in node.arguments:
-        raise Exception("Parameter method is required.")
-
     for input_object in node.get_parent_by_name("data").output_objects:
 
-        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.RASTER)
+        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=output_datatype)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)
 
-        pc = create_process_chain_entry(input_object, node.arguments["method"], output_object)
+        pc = create_process_chain_entry(input_object,
+                                        dimtype,
+                                        formula,
+                                        operators,
+                                        target_dimtype,
+                                        output_object)
         process_list.append(pc)
 
     return output_objects, process_list

@@ -168,18 +168,15 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
     elif dimtype == 'bands':
         # t.rast.mapcalc
         
-        # TODO: new GRASS addon t.rast.bandcalc
-        #       this addon needs the formula and 
-        #       must translate "data[<index>]" to appropriate band numbers or names
-        #       with <index> being a number, 0 for first band
+        # t.rast.bandcalc needs the formula and translates 
+        # "data[<index>]" to appropriate band references
+        # with <index> being a number, 0 for first band
+        # the order of bands is obtained from g.bands
 
-        print (formula)
-        pc = {"id": "t_rast_mapcalc_%i" % rn,
-              "module": "t.rast.mapcalc",
+        pc = {"id": "t_rast_bandcalc_%i" % rn,
+              "module": "t.rast.bandcalc",
          "inputs": [{"param": "expression",
-                     "value": "%(result)s = %(formula)s" % {
-                                                        "result": output_object.grass_name(),
-                                                        "formula": formula}},
+                     "value": "%(formula)s" % {"formula": formula}},
                     {"param": "inputs",
                      "value": "%(input)s" % {"input": input_object.grass_name()}},
                     {"param": "basename",
@@ -215,7 +212,7 @@ def construct_tree(obj):
     root = None
     operators = []
 
-    # TODO: process_id quantile
+    # TODO: for process_id quantile, remember probabilities and q
 
     for name in obj:
         nodes[name] = {'type': 'node', 'children': []}
@@ -273,7 +270,6 @@ def get_process_list(node: Node):
     :param node: The process node
     :return: (output_objects, actinia_process_list)
     """
-    #raise Exception('The reducer process is not fully supported yet.')
     # get dimension type
     dimtype = get_dimension_type(node.arguments["dimension"])
     if dimtype is None:
@@ -284,16 +280,16 @@ def get_process_list(node: Node):
         target_dimtype = get_dimension_type(node.arguments["target_dimension"])
 
     tree, operators = construct_tree(node.as_dict()['arguments']['reducer']['callback'])
-    print (operators)
+    #print (operators)
     formula = None
     output_datatype = GrassDataType.RASTER
     if dimtype == 'bands':
         formula = serialize_tree(tree)
-        print (formula)
+        #print (formula)
         output_datatype = GrassDataType.STRDS
     elif dimtype == 'temporal':
         if len(operators) != 1:
-            raise Exception('Only one method is supported by reducer process on the temporal dimension.')
+            raise Exception('Only one method is supported by reduce process on the temporal dimension.')
 
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []

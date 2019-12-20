@@ -24,24 +24,76 @@ def create_process_description():
                                    "or space-time raster dataset",
                        schema={"type": "object", "format": "eodata"},
                        required=True)
-    p_left = Parameter(description="The left (western) border of the spatial extent",
-                       schema={"type": "object", "format": "float"},
-                       required=True)
-    p_right = Parameter(description="The right (eastern) border of the spatial extent",
-                        schema={"type": "object", "format": "float"},
-                        required=True)
-    p_top = Parameter(description="The top (northern) border of the spatial extent",
-                      schema={"type": "object", "format": "float"},
-                      required=True)
-    p_bottom = Parameter(description="The bottom (southern) border of the spatial extent",
-                         schema={"type": "object", "format": "float"},
-                         required=True)
-    p_width_res = Parameter(description="The width resolution of the spatial extent",
-                            schema={"type": "object", "format": "float"},
-                            required=True)
-    p_height_res = Parameter(description="The height resolution of the spatial extent",
-                             schema={"type": "object", "format": "float"},
-                             required=True)
+    p_extent = Parameter(description="A bounding box, which may include a vertical axis (see `base` and `height`).\n\nThe coordinate reference system of the extent must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
+                       schema={
+                                "type": "object",
+                                "format": "bounding-box",
+                                "required": [
+                                  "west",
+                                  "south",
+                                  "east",
+                                  "north"
+                                ],
+                                "properties": {
+                                  "west": {
+                                    "description": "West (lower left corner, coordinate axis 1).",
+                                    "type": "number"
+                                  },
+                                  "south": {
+                                    "description": "South (lower left corner, coordinate axis 2).",
+                                    "type": "number"
+                                  },
+                                  "east": {
+                                    "description": "East (upper right corner, coordinate axis 1).",
+                                    "type": "number"
+                                  },
+                                  "north": {
+                                    "description": "North (upper right corner, coordinate axis 2).",
+                                    "type": "number"
+                                  },
+                                  "base": {
+                                    "description": "Base (optional, lower left corner, coordinate axis 3).",
+                                    "type": [
+                                      "number",
+                                      "null"
+                                    ],
+                                    "default": "null"
+                                  },
+                                  "height": {
+                                    "description": "Height (optional, upper right corner, coordinate axis 3).",
+                                    "type": [
+                                      "number",
+                                      "null"
+                                    ],
+                                    "default": "null"
+                                  },
+                                  "crs": {
+                                    "description": "Coordinate reference system of the extent specified as EPSG code or PROJ definition. Whenever possible, it is recommended to use EPSG codes instead of PROJ definitions. Defaults to `4326` (EPSG code 4326) unless the client explicitly requests a different coordinate reference system.",
+                                    "schema": {
+                                      "anyOf": [
+                                        {
+                                          "title": "EPSG Code",
+                                          "type": "integer",
+                                          "format": "epsg-code",
+                                          "examples": [
+                                            7099
+                                          ]
+                                        },
+                                        {
+                                          "title": "PROJ definition",
+                                          "type": "string",
+                                          "format": "proj-definition",
+                                          "examples": [
+                                            "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+                                          ]
+                                        }
+                                      ],
+                                      "default": 4326
+                                    }
+                                  }
+                                }
+                            },
+                    required=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
@@ -49,12 +101,13 @@ def create_process_description():
     # Example
     arguments = {
                 "data": {"from_node": "get_data_1"},
-                "left": 630000,
-                "right": 645000,
-                "top": 228500,
-                "bottom": 215000,
-                "width_res": 10,
-                "height_res": 10,
+                "extent": {
+                    "north": 51.00226308446294,
+                    "crs": "EPSG:4326",
+                    "west": 3.057030657924054,
+                    "east": 3.058236553549667,
+                    "south": 50.99958367677388
+                },
             }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_bbox_1": node})
@@ -62,16 +115,10 @@ def create_process_description():
                                process_graph=graph)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Drops observations from raster data or raster time series data "
-                                        " that are located outside of a given bounding box.",
-                            summary="Filter raster based data by bounding box",
+                            description="Spatial filter using a bounding box",
+                            summary="Spatial filter using a bounding box",
                             parameters={"data": p_data,
-                                        "left": p_left,
-                                        "right": p_right,
-                                        "top": p_top,
-                                        "bottom": p_bottom,
-                                        "width_res": p_width_res,
-                                        "height_res": p_height_res},
+                                        "extent": p_extent},
                             returns=rv,
                             examples=examples)
 
@@ -81,30 +128,28 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(left: float, right: float, top: float,
-                               bottom: float, width_res: float, height_res: float) -> dict:
+def create_process_chain_entry(north: float, south: float, east: float,
+                               west: float, crs: str) -> dict:
     """Create a Actinia command of the process chain that uses g.region to create a valid computational region
     for the provide input strds
 
-    :param left:
-    :param right:
-    :param top:
-    :param bottom:
-    :param width_res:
-    :param height_res:
+    :param north:
+    :param south:
+    :param east:
+    :param west:
+    :param crs:
     :return: A Actinia process chain description
     """
 
     rn = randint(0, 1000000)
 
-    pc = {"id": "g_region_%i" % rn,
+    pc = {"id": "g_region_bbox_%i" % rn,
           "module": "g.region",
-          "inputs": [{"param": "n", "value": str(top)},
-                     {"param": "s", "value": str(bottom)},
-                     {"param": "e", "value": str(right)},
-                     {"param": "w", "value": str(left)},
-                     {"param": "ewres", "value": str(width_res)},
-                     {"param": "nsres", "value": str(height_res)}]}
+          "inputs": [{"param": "n", "value": str(north)},
+                     {"param": "s", "value": str(south)},
+                     {"param": "e", "value": str(east)},
+                     {"param": "w", "value": str(west)},
+                     {"param": "crs", "value": str(crs)},]}
 
     return pc
 
@@ -120,25 +165,23 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     output_objects = []
 
     if "data" not in node.arguments or \
-            "left" not in node.arguments or \
-            "right" not in node.arguments or \
-            "top" not in node.arguments or \
-            "bottom" not in node.arguments or \
-            "width_res" not in node.arguments or \
-            "height_res" not in node.arguments:
-        raise Exception("Process %s requires parameter data, left, right, top, bottom, "
-                        "width_res, height_res" % PROCESS_NAME)
+            "extent" not in node.arguments or \
+            "north" not in node.arguments["extent"] or \
+            "south" not in node.arguments["extent"] or \
+            "east" not in node.arguments["extent"] or \
+            "west" not in node.arguments["extent"] or \
+            "crs" not in node.arguments["extent"]:
+        raise Exception("Process %s requires parameter data and extent with north, south, east, west, "
+                        "crs" % PROCESS_NAME)
 
-    left = node.arguments["left"]
-    right = node.arguments["right"]
-    top = node.arguments["top"]
-    bottom = node.arguments["bottom"]
-    width_res = node.arguments["width_res"]
-    height_res = node.arguments["height_res"]
+    north = node.arguments["extent"]["north"]
+    south = node.arguments["extent"]["south"]
+    west = node.arguments["extent"]["west"]
+    east = node.arguments["extent"]["east"]
+    crs = node.arguments["extent"]["crs"]
 
-    pc = create_process_chain_entry(left=left, right=right, top=top,
-                                    bottom=bottom, width_res=width_res,
-                                    height_res=height_res)
+    pc = create_process_chain_entry(north=north, south=south, east=east,
+                                    west=west, crs=crs)
     process_list.append(pc)
 
     for data_object in node.get_parent_by_name(parent_name="data").output_objects:

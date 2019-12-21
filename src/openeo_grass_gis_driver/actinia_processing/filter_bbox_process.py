@@ -144,7 +144,7 @@ def create_process_chain_entry(north: float, south: float, east: float,
     rn = randint(0, 1000000)
 
     pc = {"id": "g_region_bbox_%i" % rn,
-          "module": "g.region",
+          "module": "g.region.bbox",
           "inputs": [{"param": "n", "value": str(north)},
                      {"param": "s", "value": str(south)},
                      {"param": "e", "value": str(east)},

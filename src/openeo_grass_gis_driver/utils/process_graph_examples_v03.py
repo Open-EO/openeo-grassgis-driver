@@ -38,13 +38,12 @@ FILTER_BOX = {
             "process_id": "get_data",
             "data_id": "nc_spm_08.PERMANENT.raster.elevation"
         },
-        "spatial_extent": {
-            "left": 630000,
-            "right": 645000,
-            "top": 228500,
-            "bottom": 215000,
-            "width_res": 10,
-            "height_res": 10,
+        "extent": {
+            "west": 630000,
+            "east": 645000,
+            "north": 228500,
+            "south": 215000,
+            "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +to_meter=1",
         }
     }
 }
@@ -204,13 +203,12 @@ OPENEO_USECASE_1 = {
                         "process_id": "get_data",
                         "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04",
                     },
-                    "spatial_extent": {
-                        "left": -40.5,
-                        "right": 75.5,
-                        "top": 75.5,
-                        "bottom": 25.25,
-                        "width_res": 0.1,
-                        "height_res": 0.1,
+                    "extent": {
+                        "west": -40.5,
+                        "east": 75.5,
+                        "north": 75.5,
+                        "south": 25.25,
+                        "crs": "+proj=longlat +no_defs +a=6378137 +rf=298.257223563 +towgs84=0.000,0.000,0.000",
                     }
                 }
             },
@@ -224,13 +222,12 @@ OPENEO_USECASE_1 = {
                         "process_id": "get_data",
                         "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08",
                     },
-                    "spatial_extent": {
-                        "left": -40.5,
-                        "right": 75.5,
-                        "top": 75.5,
-                        "bottom": 25.25,
-                        "width_res": 0.1,
-                        "height_res": 0.1,
+                    "extent": {
+                        "west": -40.5,
+                        "east": 75.5,
+                        "north": 75.5,
+                        "south": 25.25,
+                        "crs": "+proj=longlat +no_defs +a=6378137 +rf=298.257223563 +towgs84=0.000,0.000,0.000",
                     }
                 }
             }
@@ -261,13 +258,12 @@ OPENEO_USECASE_1A = {
                             "data_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08",
                         }
                     },
-                    "spatial_extent": {
-                        "left": -40.5,
-                        "right": 75.5,
-                        "top": 75.5,
-                        "bottom": 25.25,
-                        "width_res": 0.1,
-                        "height_res": 0.1,
+                    "extent": {
+                        "west": -40.5,
+                        "east": 75.5,
+                        "north": 75.5,
+                        "south": 25.25,
+                        "crs": "+proj=longlat +no_defs +a=6378137 +rf=298.257223563 +towgs84=0.000,0.000,0.000",
                     }
                 }
             }
@@ -289,13 +285,11 @@ OPENEO_USECASE_2 = \
                             "args": {
                                 "collections": [{"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"},
                                                 {"product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"}],
-                                "left": -5.0,
-                                "right": -4.7,
-                                "top": 39.3,
-                                "bottom": 39.0,
-                                "ewres": 0.1,
-                                "nsres": 0.1,
-                                "srs": "EPSG:4326"
+                                "west": -5.0,
+                                "east": -4.7,
+                                "north": 39.3,
+                                "south": 39.0,
+                                "crs": "EPSG:4326"
                             }
                         }],
                         "from": "1980-01-01 00:00:00",

@@ -77,12 +77,13 @@ FILTER_BBOX = {
             "process_id": "filter_bbox",
             "arguments": {
                 "data": {"from_node": "get_data_1"},
-                "left": 630000,
-                "right": 645000,
-                "top": 228500,
-                "bottom": 215000,
-                "width_res": 10,
-                "height_res": 10,
+                "extent": {
+                    "west": 630000,
+                    "east": 645000,
+                    "north": 228500,
+                    "south": 215000,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +to_meter=1",
+                }
             }
         },
         "get_data_1": {
@@ -321,24 +322,26 @@ USE_CASE_1 = {
             "process_id": "filter_bbox",
             "arguments": {
                 "data": {"from_node": "get_red_data"},
-                "left": 630000,
-                "right": 645000,
-                "top": 228500,
-                "bottom": 215000,
-                "width_res": 10,
-                "height_res": 10,
+                "extent": {
+                    "west": 630000,
+                    "east": 645000,
+                    "north": 228500,
+                    "south": 215000,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +to_meter=1",
+                }
             }
         },
         "filter_bbox_nir": {
             "process_id": "filter_bbox",
             "arguments": {
                 "data": {"from_node": "get_nir_data"},
-                "left": 630000,
-                "right": 645000,
-                "top": 228500,
-                "bottom": 215000,
-                "width_res": 10,
-                "height_res": 10,
+                "extent": {
+                    "west": 630000,
+                    "east": 645000,
+                    "north": 228500,
+                    "south": 215000,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +to_meter=1",
+                }
             }
         },
         "ndvi_1": {

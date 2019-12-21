@@ -48,7 +48,7 @@ class ProcessDefinitionTestCase(TestBase):
         pprint(pc)
         self.assertEqual(len(pc), 2)
         self.assertTrue(pc[0]["module"] == "r.info")
-        self.assertTrue(pc[1]["module"] == "g.region")
+        self.assertTrue(pc[1]["module"] == "g.region.bbox")
 
     def test_bbox_from_raster(self):
 

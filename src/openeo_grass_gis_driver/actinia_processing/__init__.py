@@ -18,6 +18,7 @@ from . import map_algebra_process
 from . import multilayer_mask_process
 from . import percentile_time_process
 from . import reduce_time_process
+from . import reduce_process
 # from . import udf_reduce_time
 from . import raster_exporter
 from . import save_result_process

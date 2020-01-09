@@ -178,7 +178,13 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     south = node.arguments["extent"]["south"]
     west = node.arguments["extent"]["west"]
     east = node.arguments["extent"]["east"]
-    crs = node.arguments["extent"]["crs"]
+    if "crs" in node.arguments["extent"]:
+        crs = node.arguments["extent"]["crs"]
+    else:
+        crs = "4326"
+
+    if crs.isnumeric():
+        crs = "EPSG:" + crs
 
     pc = create_process_chain_entry(north=north, south=south, east=east,
                                     west=west, crs=crs)

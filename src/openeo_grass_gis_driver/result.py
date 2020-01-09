@@ -50,7 +50,7 @@ class Result(ResourceBase):
 
             status, response = self.iface.async_ephemeral_processing_export(location=location,
                                                                             process_chain=process_chain)
-            status, response = self.wait_until_finished(response=response, max_time=10)
+            status, response = self.wait_until_finished(response=response, max_time=1000)
 
             if status == 200:
                 return make_response(jsonify({"job_id":response["resource_id"],

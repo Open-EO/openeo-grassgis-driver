@@ -20,29 +20,187 @@ PROCESS_NAME = "load_collection"
 
 def create_process_description():
 
-    p_data = Parameter(description="The identifier of a single raster-, vector- or space-time raster dataset",
+    p_data = Parameter(description="The collection identifier.",
                         schema={"type": "string",
-                                  "examples": ["nc_spm_08.landsat.raster.lsat5_1987_10",
-                                               "nc_spm_08.PERMANENT.vector.lakes",
-                                               "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]},
+                                "pattern": "^[A-Za-z0-9_\\-\\.~/]+$",
+                                "subtype": "collection-id",
+                                "examples": ["nc_spm_08.landsat.raster.lsat5_1987_10",
+                                             "nc_spm_08.PERMANENT.vector.lakes",
+                                             "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]},
                           required=True)
+    p_spatial = Parameter(description="Limits the data to load from the collection to the specified bounding box or polygons.\n\n"
+                                          "The coordinate reference system of the bounding box must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
+                       schema=[{
+                                "title": "Bounding Box",
+                                "type": "object",
+                                "format": "bounding-box",
+                                "required": [
+                                  "west",
+                                  "south",
+                                  "east",
+                                  "north"
+                                ],
+                                "properties": {
+                                  "west": {
+                                    "description": "West (lower left corner, coordinate axis 1).",
+                                    "type": "number"
+                                  },
+                                  "south": {
+                                    "description": "South (lower left corner, coordinate axis 2).",
+                                    "type": "number"
+                                  },
+                                  "east": {
+                                    "description": "East (upper right corner, coordinate axis 1).",
+                                    "type": "number"
+                                  },
+                                  "north": {
+                                    "description": "North (upper right corner, coordinate axis 2).",
+                                    "type": "number"
+                                  },
+                                  "base": {
+                                    "description": "Base (optional, lower left corner, coordinate axis 3).",
+                                    "type": [
+                                      "number",
+                                      "null"
+                                    ],
+                                    "default": "null"
+                                  },
+                                  "height": {
+                                    "description": "Height (optional, upper right corner, coordinate axis 3).",
+                                    "type": [
+                                      "number",
+                                      "null"
+                                    ],
+                                    "default": "null"
+                                  },
+                                  "crs": {
+                                    "description": "Coordinate reference system of the extent specified as EPSG code or PROJ definition. Whenever possible, it is recommended to use EPSG codes instead of PROJ definitions. Defaults to `4326` (EPSG code 4326) unless the client explicitly requests a different coordinate reference system.",
+                                    "schema": {
+                                      "anyOf": [
+                                        {
+                                          "title": "EPSG Code",
+                                          "type": "integer",
+                                          "format": "epsg-code",
+                                          "examples": [
+                                            7099
+                                          ]
+                                        },
+                                        {
+                                          "title": "PROJ definition",
+                                          "type": "string",
+                                          "format": "proj-definition",
+                                          "examples": [
+                                            "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+                                          ]
+                                        }
+                                      ],
+                                      "default": 4326
+                                    }
+                                  }
+                                },
+                                "subtype": "bounding-box"
+                            },
+                            {
+                              "title": "GeoJSON Polygon(s)",
+                              "type": "object",
+                              "subtype": "geojson"
+                            }
+                          ],
+                    required=True)
+    p_temporal = Parameter(description="Limits the data to load from the collection to the specified left-closed temporal interval. Applies to all temporal dimensions if there are multiple of them. Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.",
+                       schema={"type": "array",
+                               "format": "temporal-interval",
+                               "minItems": 2,
+                               "maxItems": 2,
+                               "items": {
+                                 "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  {
+                                  "type": "string",
+                                    "format": "date"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "format": "time"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "examples": [
+                                [
+                                  "2015-01-01",
+                                  "2016-01-01"
+                                ],
+                                [
+                                  "12:00:00Z",
+                                  "24:00:00Z"
+                                ]
+                              ],
+                              "subtype": "temporal-interval"
+                            },
+                       required=True)
+
+    p_bands = Parameter(description="Only adds the specified bands into the data cube so that bands that don't match the list of band names are not available. Applies to all dimensions of type `bands` if there are multiple of them.\n\nThe order of the specified array defines the order of the bands in the data cube.",
+                      schema=[
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "subtype": "band-name"
+                          }
+                        }])
+    p_properties = Parameter(description="Limits the data by metadata properties to include only data in the data cube which all given expressions return `true` for (AND operation).\n\nSpecify key-value-pairs with the keys being the name of the metadata property, which can be retrieved with the openEO Data Discovery for Collections. The values must be expressions to be evaluated against the collection metadata, see the example.\n\n**Note:** Back-ends may not pass the actual value to the expressions, but pass a proprietary index or a placeholder so that they can use the expressions to query against another data source. So debugging on the callback parameter `value` may lead to unexpected results.",
+              experimental=True,
+              schema=[
+                {
+                  "type": "object",
+                  "additionalProperties": {
+                  "type": "object",
+                  "parameters": {
+                  "value": {
+                  "description": "The property value. Any data type could be passed."
+                  }
+                },
+                "subtype": "callback"
+                }
+                }])
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "format": "eodata"})
 
     # Example
-    arguments = {"id": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m"}
+    arguments = {"id": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m",
+                 "spatial_extent": {
+                      "west": 16.1,
+                      "east": 16.6,
+                      "north": 48.6,
+                      "south": 47.2
+                    },
+                "temporal_extent": [
+                      "2018-01-01",
+                      "2019-01-01"
+                    ],
+                }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"load_strds_collection": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
                                process_graph=graph)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
-                            description="This process returns a raster-, a vector- or a space-time raster "
-                                        "datasets that is available in the /collections endpoint.",
-                            summary="Returns a single dataset that is available in "
-                                    "the /collections endpoint for processing",
-                            parameters={"id": p_data},
+                            description="Loads a collection from the current back-end by its id and "
+                                        "returns it as processable data cube.",
+                            summary="Load a collection",
+                            parameters={"id": p_data,
+                                        "spatial_extent": p_spatial,
+                                        "temporal_extent": p_temporal,
+                                        "bands": p_bands,
+                                        "properties": p_properties
+                                        },
                             returns=rv,
                             examples=examples)
 
@@ -53,34 +211,83 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 
-def create_process_chain_entry(input_object: DataObject):
+def create_process_chain_entry(input_object: DataObject,
+                               spatial_extent,
+                               temporal_extent,
+                               bands,
+                               output_object: DataObject):
     """Create a Actinia process description that r.info, v.info, or t.info.
 
     :param input_object: The input object name
+    :param spatial_extent: spatial filter
+    :param temporal_extent: temporal filter
+    :param bands: bands to extract
     :return: A Actinia process chain description
     """
 
     rn = randint(0, 1000000)
 
-    pc = {}
+    pc = []
 
     if input_object.is_raster():
-        pc = {"id": "r_info_%i" % rn,
+        importer = {"id": "r_info_%i" % rn,
               "module": "r.info",
               "inputs": [{"param": "map", "value": input_object.grass_name()}, ],
               "flags": "g"}
     elif input_object.is_vector():
-        pc = {"id": "v_info_%i" % rn,
+        importer = {"id": "v_info_%i" % rn,
               "module": "v.info",
               "inputs": [{"param": "map", "value": input_object.grass_name()}, ],
               "flags": "g"}
     elif input_object.is_strds():
-        pc = {"id": "t_info_%i" % rn,
+        importer = {"id": "t_info_%i" % rn,
               "module": "t.info",
               "inputs": [{"param": "input", "value": input_object.grass_name()}, ],
               "flags": "g"}
     else:
         raise Exception("Unsupported datatype")
+
+    pc.append(importer)
+
+    north = spatial_extent["north"]
+    south = spatial_extent["south"]
+    west = spatial_extent["west"]
+    east = spatial_extent["east"]
+    if "crs" in spatial_extent:
+        crs = spatial_extent["crs"]
+    else:
+        crs = "4326"
+
+    if crs.isnumeric():
+        crs = "EPSG:" + crs
+
+    region_bbox = {"id": "g_region_bbox_%i" % rn,
+          "module": "g.region.bbox",
+          "inputs": [{"param": "n", "value": str(north)},
+                     {"param": "s", "value": str(south)},
+                     {"param": "e", "value": str(east)},
+                     {"param": "w", "value": str(west)},
+                     {"param": "crs", "value": str(crs)},]}
+
+    pc.append(region_bbox)
+    
+    if input_object.is_strds():
+        start_time = temporal_extent[0].replace('T', ' ')
+        end_time = temporal_extent[1].replace('T', ' ')
+        wherestring = "start_time >= '%(start)s' AND end_time <= '%(end)s'" % {"start": start_time, "end": end_time}
+        if bands:
+            wherestring = wherestring + "AND band_reference in ('%(band_names)s')" % {band_names: (', ').join(bands)}
+
+        pc_strdsfilter = {"id": "t_rast_extract_%i" % rn,
+          "module": "t.rast.extract",
+          "inputs": [{"param": "input", "value": input_object.grass_name()},
+                     {"param": "where", "value": wherestring},
+                     {"param": "output", "value": output_object.grass_name()},
+                     {"param": "expression", "value": "1.0 * %s" % input_object.grass_name()},
+                     {"param": "basename", "value": f"{input_object.name}_extract"},
+                     {"param": "suffix", "value": "num"}]}
+
+        pc.append(pc_strdsfilter)
 
     return pc
 
@@ -99,15 +306,27 @@ def get_process_list(node: Node):
     if "id" not in node.arguments:
         raise Exception("Process %s requires parameter <data>" % PROCESS_NAME)
 
-    output_object = DataObject.from_string(node.arguments["id"])
+    input_object = DataObject.from_string(node.arguments["id"])
+    if input_object.is_strds():
+        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=input_object.datatype)
+    else:
+        output_object = input_object 
+
     output_objects.append(output_object)
     node.add_output(output_object)
+    
+    spatial_extent = node.arguments["spatial_extent"]
+    temporal_extent = node.arguments["temporal_extent"]
+    bands = None
+    if "bands" in node.arguments:
+        bands = node.arguments["bands"]
 
-    pc = create_process_chain_entry(input_object=output_object)
-    process_list.append(pc)
-
-    for input_object in input_objects:
-        output_objects.append(input_object)
+    pc = create_process_chain_entry(input_object,
+                                    spatial_extent,
+                                    temporal_extent,
+                                    bands,
+                                    output_object)
+    process_list.extend(pc)
 
     return output_objects, process_list
 

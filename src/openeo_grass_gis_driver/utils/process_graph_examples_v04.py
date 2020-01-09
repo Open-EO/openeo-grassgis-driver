@@ -12,7 +12,18 @@ GET_DATA_1 = {
         "get_elevation_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id": "nc_spm_08.PERMANENT.raster.elevation"
+                "id": "nc_spm_08.PERMANENT.raster.elevation",
+                "spatial_extent": {
+                    "west": 630000,
+                    "east": 645000,
+                    "north": 228500,
+                    "south": 215000,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2018-01-01",
+                    "2019-01-01"
+                    ],
             }
         }
     }
@@ -25,13 +36,35 @@ GET_DATA_2 = {
         "get_lakes_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id": "nc_spm_08.PERMANENT.vector.lakes"
+                "id": "nc_spm_08.PERMANENT.vector.lakes",
+                "spatial_extent": {
+                    "west": 610760.703856752,
+                    "east": 677118.419100839,
+                    "north": 258302.909848466,
+                    "south": 196084.815242403,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2018-01-01",
+                    "2019-01-01"
+                    ],
             }
         },
         "get_elevation_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.PERMANENT.raster.elevation"
+                "id":  "nc_spm_08.PERMANENT.raster.elevation",
+                "spatial_extent": {
+                    "west": 630000,
+                    "east": 645000,
+                    "north": 228500,
+                    "south": 215000,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2018-01-01",
+                    "2019-01-01"
+                    ],
             }
         }
     }
@@ -44,7 +77,18 @@ GET_DATA_3 = {
         "get_strds_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
+                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
+                "spatial_extent": {
+                    "west": -448265.535885,
+                    "east": 1550934.464115,
+                    "north": 760180.124115,
+                    "south": -415819.875885,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2015-01-01",
+                    "2017-01-01"
+                    ],
             }
         }
     }
@@ -63,7 +107,18 @@ BBOX_FROM_RASTER = {
         "get_data_1": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.PERMANENT.raster.elevation"
+                "id":  "nc_spm_08.PERMANENT.raster.elevation",
+                "spatial_extent": {
+                    "west": 630000,
+                    "east": 645000,
+                    "north": 228500,
+                    "south": 215000,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2018-01-01",
+                    "2019-01-01"
+                    ],
             }
         }
     }
@@ -89,7 +144,18 @@ FILTER_BBOX = {
         "get_data_1": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.PERMANENT.raster.elevation"
+                "id":  "nc_spm_08.PERMANENT.raster.elevation",
+                "spatial_extent": {
+                    "west": 630000,
+                    "east": 645000,
+                    "north": 228500,
+                    "south": 215000,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2018-01-01",
+                    "2019-01-01"
+                    ],
             }
         }
     }
@@ -102,7 +168,18 @@ DATERANGE = {
         "get_strds_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
+                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
+                "spatial_extent": {
+                    "west": -448265.535885,
+                    "east": 1550934.464115,
+                    "north": 760180.124115,
+                    "south": -415819.875885,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2015-01-01",
+                    "2017-01-01"
+                    ],
             }
         },
         "filter_daterange_1": {
@@ -122,7 +199,18 @@ REDUCE_TIME_MIN = {
         "get_strds_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
+                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
+                "spatial_extent": {
+                    "west": -448265.535885,
+                    "east": 1550934.464115,
+                    "north": 760180.124115,
+                    "south": -415819.875885,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2015-01-01",
+                    "2017-01-01"
+                    ],
             }
         },
         "reduce_time_1": {
@@ -152,13 +240,35 @@ MAP_ALGEBRA = {
         "get_red_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.raster.lsat7_2000_30"
+                "id":  "nc_spm_08.landsat.raster.lsat7_2000_30",
+                "spatial_extent": {
+                    "west": 629992.5,
+                    "east": 645012,
+                    "north": 228513,
+                    "south": 214975.5,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2015-01-01",
+                    "2017-01-01"
+                    ],
             }
         },
         "get_nir_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.raster.lsat7_2000_40"
+                "id":  "nc_spm_08.landsat.raster.lsat7_2000_40",
+                "spatial_extent": {
+                    "west": 629992.5,
+                    "east": 645012,
+                    "north": 228513,
+                    "south": 214975.5,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2015-01-01",
+                    "2017-01-01"
+                    ],
             }
         }
     }
@@ -183,13 +293,35 @@ TEMPORAL_ALGEBRA = {
         "get_red_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_red"
+                "id":  "nc_spm_08.landsat.strds.lsat5_1987_30",
+                "spatial_extent": {
+                    "west": 629992.5,
+                    "east": 645012,
+                    "north": 228513,
+                    "south": 214975.5,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "1987-01-01",
+                    "1988-01-01"
+                    ],
             }
         },
         "get_nir_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_nir"
+                "id":  "nc_spm_08.landsat.strds.lsat5_1987_40",
+                "spatial_extent": {
+                    "west": 629992.5,
+                    "east": 645012,
+                    "north": 228513,
+                    "south": 214975.5,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "1987-01-01",
+                    "1988-01-01"
+                    ],
             }
         }
     }
@@ -217,19 +349,52 @@ RGB_RASTER_EXPORT = {
         "get_red_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.raster.lsat7_2000_30"
+                "id":  "nc_spm_08.landsat.raster.lsat7_2000_30",
+                "spatial_extent": {
+                    "west": 629992.5,
+                    "east": 645012,
+                    "north": 228513,
+                    "south": 214975.5,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2015-01-01",
+                    "2017-01-01"
+                    ],
             }
         },
         "get_green_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.raster.lsat7_2000_20"
+                "id":  "nc_spm_08.landsat.raster.lsat7_2000_20",
+                "spatial_extent": {
+                    "west": 629992.5,
+                    "east": 645012,
+                    "north": 228513,
+                    "south": 214975.5,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2015-01-01",
+                    "2017-01-01"
+                    ],
             }
         },
         "get_blue_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.raster.lsat7_2000_10"
+                "id":  "nc_spm_08.landsat.raster.lsat7_2000_10",
+                "spatial_extent": {
+                    "west": 629992.5,
+                    "east": 645012,
+                    "north": 228513,
+                    "south": 214975.5,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2015-01-01",
+                    "2017-01-01"
+                    ],
             }
         }
     }
@@ -250,13 +415,35 @@ NDVI_STRDS = {
         "get_red_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_red"
+                "id":  "nc_spm_08.landsat.strds.lsat5_1987_30",
+                "spatial_extent": {
+                    "west": 629992.5,
+                    "east": 645012,
+                    "north": 228513,
+                    "south": 214975.5,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "1987-01-01",
+                    "1988-01-01"
+                    ],
             }
         },
         "get_nir_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_nir"
+                "id":  "nc_spm_08.landsat.strds.lsat5_1987_40",
+                "spatial_extent": {
+                    "west": 629992.5,
+                    "east": 645012,
+                    "north": 228513,
+                    "south": 214975.5,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "1987-01-01",
+                    "1988-01-01"
+                    ],
             }
         }
     }
@@ -275,7 +462,18 @@ RASTER_EXPORT = {
         "get_b08_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id": "nc_spm_08.PERMANENT.raster.elevation"
+                "id": "nc_spm_08.PERMANENT.raster.elevation",
+                "spatial_extent": {
+                    "west": 630000,
+                    "east": 645000,
+                    "north": 228500,
+                    "south": 215000,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2018-01-01",
+                    "2019-01-01"
+                    ],
             }
         }
     }
@@ -295,7 +493,18 @@ ZONAL_STATISTICS = {
         "get_b08_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
+                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
+                "spatial_extent": {
+                    "west": -448265.535885,
+                    "east": 1550934.464115,
+                    "north": 760180.124115,
+                    "south": -415819.875885,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "2015-01-01",
+                    "2017-01-01"
+                    ],
             }
         }
     }
@@ -309,13 +518,35 @@ USE_CASE_1 = {
         "get_red_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_red"
+                "id":  "nc_spm_08.landsat.strds.lsat5_1987_30",
+                "spatial_extent": {
+                    "west": 629992.5,
+                    "east": 645012,
+                    "north": 228513,
+                    "south": 214975.5,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "1987-01-01",
+                    "1988-01-01"
+                    ],
             }
         },
         "get_nir_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id": "nc_spm_08.landsat.strds.lsat5_nir"
+                "id": "nc_spm_08.landsat.strds.lsat5_1987_40",
+                "spatial_extent": {
+                    "west": 629992.5,
+                    "east": 645012,
+                    "north": 228513,
+                    "south": 214975.5,
+                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                "temporal_extent": [
+                    "1987-01-01",
+                    "1988-01-01"
+                    ],
             }
         },
         "filter_bbox_red": {

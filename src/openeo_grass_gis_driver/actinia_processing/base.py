@@ -47,6 +47,9 @@ class DataObject:
     def from_string(name: str):
 
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(name)
+        
+        if datatype is None:
+            raise Exception(f"Invalid collection id <{name}>")
 
         if GrassDataType.RASTER.value == datatype:
             return DataObject(name=layer_name, datatype=GrassDataType.RASTER, mapset=mapset, location=location)

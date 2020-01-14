@@ -83,9 +83,9 @@ An active internet connection is required. All requests to the openEO GRASS GIS 
 
    .. code-block:: bash
 
-      curl ${AUTH} https://localhost:5000/api/v0.4/
-      curl ${AUTH} https://localhost:5000/api/v0.4/collections
-      curl ${AUTH} https://localhost:5000/api/v0.4/processes
+      curl ${AUTH} https://openeo.mundialis.de/api/v0.4/
+      curl ${AUTH} https://openeo.mundialis.de/api/v0.4/collections
+      curl ${AUTH} https://openeo.mundialis.de/api/v0.4/processes
 
 4. Available endpoints
 

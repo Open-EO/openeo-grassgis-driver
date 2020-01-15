@@ -274,7 +274,8 @@ def create_process_chain_entry(input_object: DataObject,
     if input_object.is_strds():
         start_time = temporal_extent[0].replace('T', ' ')
         end_time = temporal_extent[1].replace('T', ' ')
-        wherestring = "start_time >= '%(start)s' AND end_time <= '%(end)s'" % {"start": start_time, "end": end_time}
+        # end_time can be null, use only start_time for filtering
+        wherestring = "start_time >= '%(start)s' AND start_time <= '%(end)s'" % {"start": start_time, "end": end_time}
         if bands:
             wherestring = wherestring + "AND band_reference in ('%(band_names)s')" % {band_names: (', ').join(bands)}
 

@@ -113,11 +113,12 @@ def create__process_chain_entry(input_object: DataObject, start_time: str, end_t
     # Get info about the time series to extract its resolution settings and bbox
     rn = randint(0, 1000000)
 
+    # end_time can be null, and we can not find out if end_time is set because the input does not exist yet
     pc = {"id": "t_rast_extract_%i" % rn,
       "module": "t.rast.extract",
       "inputs": [{"param": "input", "value": input_object.grass_name()},
                  {"param": "where", "value": "start_time >= '%(start)s' "
-                                             "AND end_time <= '%(end)s'" % {"start": start_time, "end": end_time}},
+                                             "AND start_time <= '%(end)s'" % {"start": start_time, "end": end_time}},
                  {"param": "output", "value": output_object.grass_name()},
                  {"param": "expression", "value": "1.0 * %s" % input_object.grass_name()},
                  {"param": "basename", "value": f"{input_object.name}_extract"},

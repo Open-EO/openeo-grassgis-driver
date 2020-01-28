@@ -261,13 +261,32 @@ def create_process_chain_entry(input_object: DataObject,
     if crs.isnumeric():
         crs = "EPSG:" + crs
 
-    region_bbox = {"id": "g_region_bbox_%i" % rn,
-          "module": "g.region.bbox",
-          "inputs": [{"param": "n", "value": str(north)},
-                     {"param": "s", "value": str(south)},
-                     {"param": "e", "value": str(east)},
-                     {"param": "w", "value": str(west)},
-                     {"param": "crs", "value": str(crs)},]}
+    if input_object.is_raster():
+        region_bbox = {"id": "g_region_bbox_%i" % rn,
+              "module": "g.region.bbox",
+              "inputs": [{"param": "n", "value": str(north)},
+                         {"param": "s", "value": str(south)},
+                         {"param": "e", "value": str(east)},
+                         {"param": "w", "value": str(west)},
+                         {"param": "crs", "value": str(crs)},
+                         {"param": "raster", "value": input_object.grass_name()},]}
+    elif input_object.is_strds():
+        region_bbox = {"id": "g_region_bbox_%i" % rn,
+              "module": "g.region.bbox",
+              "inputs": [{"param": "n", "value": str(north)},
+                         {"param": "s", "value": str(south)},
+                         {"param": "e", "value": str(east)},
+                         {"param": "w", "value": str(west)},
+                         {"param": "crs", "value": str(crs)},
+                         {"param": "strds", "value": input_object.grass_name()},]}
+    else:
+        region_bbox = {"id": "g_region_bbox_%i" % rn,
+              "module": "g.region.bbox",
+              "inputs": [{"param": "n", "value": str(north)},
+                         {"param": "s", "value": str(south)},
+                         {"param": "e", "value": str(east)},
+                         {"param": "w", "value": str(west)},
+                         {"param": "crs", "value": str(crs)},]}
 
     pc.append(region_bbox)
     

@@ -331,14 +331,7 @@ def get_process_list(node: Node):
         raise Exception("Process %s requires parameter <data>" % PROCESS_NAME)
 
     input_object = DataObject.from_string(node.arguments["id"])
-    if input_object.is_strds():
-        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=input_object.datatype)
-    else:
-        output_object = input_object 
 
-    output_objects.append(output_object)
-    node.add_output(output_object)
-    
     spatial_extent = None
     if "spatial_extent" in node.arguments:
         spatial_extent = node.arguments["spatial_extent"]
@@ -349,6 +342,15 @@ def get_process_list(node: Node):
     if "bands" in node.arguments:
         bands = node.arguments["bands"]
 
+    if input_object.is_strds() and \
+       (temporal_extent is not None or bands is not None):
+        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=input_object.datatype)
+    else:
+        output_object = input_object 
+
+    output_objects.append(output_object)
+    node.add_output(output_object)
+    
     pc = create_process_chain_entry(input_object,
                                     spatial_extent,
                                     temporal_extent,

@@ -79,7 +79,10 @@ class Jobs(ResourceBase):
         job_info = check_job(job=job, job_id=job_id)
         self.job_db[job_id] = job_info
 
-        return make_response(job_id, 201)
+        response = make_response(job_id, 201)
+        response.headers["openeo-identifier"] = job_id
+        
+        return response
 
     def delete(self):
         """Clear the job database"""

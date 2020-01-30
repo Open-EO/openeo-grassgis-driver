@@ -70,7 +70,7 @@ class JobsJobIdResults(ResourceBase):
                         self.job_db[job_id] = job
 
                 if (job.additional_info['urls'] and
-                    job.additional_info['urls']['resources']):
+                    "resources" in job.additional_info['urls']):
                     resource_links = job.additional_info['urls']['resources']
 
                     if job.links is None:

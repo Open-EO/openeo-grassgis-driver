@@ -2,7 +2,7 @@
 from uuid import uuid4
 from datetime import datetime
 from flask_restful import Resource
-from flask import make_response, jsonify, request
+from flask import make_response, jsonify, request, url_for
 
 from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
 from openeo_grass_gis_driver.authentication import ResourceBase
@@ -80,7 +80,10 @@ class Jobs(ResourceBase):
         self.job_db[job_id] = job_info
 
         response = make_response(job_id, 201)
-        response.headers["openeo-identifier"] = job_id
+        # add openeo-identifier
+        response.headers["OpenEO-Identifier"] = job_id
+        # add location, e.g. "https://openeo.org/api/v0.4/resource/<job_id>"
+        response.headers["Location"] = ("%s/%s") % (url_for(".jobs"), job_id)
         
         return response
 

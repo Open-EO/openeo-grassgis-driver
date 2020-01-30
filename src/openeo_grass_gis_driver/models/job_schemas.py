@@ -260,6 +260,7 @@ class JobInformation(JsonableObject):
         self.cost = cost
         self.budget = budget
         self.process_graph = process_graph
+        self.links = None
 
 
 class JobList(JsonableObject):

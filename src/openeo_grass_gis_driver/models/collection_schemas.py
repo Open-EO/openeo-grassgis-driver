@@ -51,6 +51,87 @@ class CollectionExtent(JsonableObject):
         self.spatial = spatial # TODO maxItems: 6
         self.temporal = temporal
 
+class CollectionProperties(JsonableObject):
+    """
+    (collection_properties)
+    
+    currently only STAC EO (electro-optical)
+    missing: STAC other extensions, STAC SAR, STAC Scientific
+             see https://open-eo.github.io/openeo-api/v/0.4.2/apireference/#tag/EO-Data-Discovery/paths/~1collections~1{collection_id}/get
+
+    eo:gsd
+        required
+        number
+        The nominal Ground Sample Distance for the data, as measured in 
+        meters on the ground. Since GSD can vary across a scene 
+        depending on projection, this should be the average or most 
+        commonly used GSD in the center of the image. If the data 
+        includes multiple bands with different GSD values, this should 
+        be the value for the greatest number or most common bands. For 
+        instance, Landsat optical and short-wave IR bands are all 30 
+        meters, but the panchromatic band is 15 meters. The eo:gsd 
+        should be 30 meters in this case since those are the bands most 
+        commonly used.
+    
+    eo:platform
+        required
+        string
+        Unique name of the specific platform the instrument is attached 
+        to. For satellites this would be the name of the satellite 
+        (e.g., landsat-8, sentinel-2A), whereas for drones this would 
+        be a unique name for the drone.
+
+    eo:constellation	
+        string
+        The name of the group of satellites that have similar payloads 
+        and have their orbits arranged in a way to increase the 
+        temporal resolution of acquisitions of data with similar 
+        geometric and radiometric characteristics. Examples are the 
+        Sentinel-2 constellation, which has S2A and S2B and RapidEye. 
+        This field allows users to search for Sentinel-2 data, for 
+        example, without needing to specify which specific platform the 
+        data came from.
+
+    eo:instrument
+        required
+        string
+        The name of the sensor used, although for Items which contain 
+        data from multiple sensors this could also name multiple 
+        sensors. For example, data from the Landsat-8 platform is 
+        collected with the OLI sensor as well as the TIRS sensor, but 
+        the data is distributed together and commonly referred to as 
+        OLI_TIRS.
+
+    eo:epsg	
+        number <epsg-code> Nullable
+        EPSG code of the datasource, null if no EPSG code.
+        A Coordinate Reference System (CRS) is the native reference 
+        system (sometimes called a 'projection') used by the data, and 
+        can usually be referenced using an EPSG code. If the data does 
+        not have a CRS, such as in the case of non-rectified imagery 
+        with Ground Control Points, eo:epsg should be set to null. It 
+        should also be set to null if a CRS exists, but for which there 
+        is no valid EPSG code.
+
+    eo:bands
+        required
+        Array of objects (STAC EO Band)
+        This is a list of the available bands where each item is a Band 
+        Object.
+    """
+
+    def __init__(
+            self, eo_gsd: float = None, eo_platform: str = None,
+            eo_constellation: str = None, eo_instrument: str = None,
+            eo_epsg: int = None, eo_bands = None):
+        self.eo___gsd = eo_gsd
+        self.eo___platform = eo_platform
+        self.eo___constellation = eo_constellation
+        self.eo___instrument = eo_instrument
+        self.eo___epsg = eo_epsg
+        self.eo___bands = eo_bands
+
+
 
 class EOBands(JsonableObject):
     """
@@ -548,14 +629,32 @@ class CollectionEntry(JsonableObject):
         Additional links related to this collection.
         Could reference to other meta data formats with additional
         information or a preview image.
+
+    properties:
+        required
+        STAC Other Extensions (object) or
+        STAC EO (Electro-Optical) (object) or
+        STAC SAR (object) or
+        STAC Scientific (object) (STAC Collection Properties).
+        A list of all metadata properties, which are common across the 
+        whole collection.
+
+    other_properties:
+        required
+        object (STAC Varying Collection Properties)
+        A list of all metadata properties, which don't have common 
+        values across the whole collection. Therefore it allows to 
+        specify a summary of the values as extent or set of values.
     """
+
     # TODO provider not required
     def __init__(self, providers: Optional[CollectionProviders] = None,
                  links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis"),],
                  extent: Optional[CollectionExtent] = CollectionExtent(),
                  title: str = None, description: str = None, license: str = "proprietary",
                  stac_version: str = "0.6.2", id: str = None, version: str = None,
-                 keywords: List[str] = None):
+                 keywords: List[str] = None,
+                 properties: Optional[CollectionProperties] = CollectionProperties()):
         self.title = title
         self.description = description
         self.license = license
@@ -572,6 +671,7 @@ class CollectionEntry(JsonableObject):
         self.keywords = keywords
         self.version = version
         self.providers = providers
+        self.properties = properties
 
 
 class Collection(JsonableObject):

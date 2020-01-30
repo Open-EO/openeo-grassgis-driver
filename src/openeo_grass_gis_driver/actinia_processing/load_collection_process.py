@@ -249,52 +249,56 @@ def create_process_chain_entry(input_object: DataObject,
 
     pc.append(importer)
 
-    north = spatial_extent["north"]
-    south = spatial_extent["south"]
-    west = spatial_extent["west"]
-    east = spatial_extent["east"]
-    if "crs" in spatial_extent:
-        crs = spatial_extent["crs"]
-    else:
-        crs = "4326"
+    if spatial_extent is not None:
+        north = spatial_extent["north"]
+        south = spatial_extent["south"]
+        west = spatial_extent["west"]
+        east = spatial_extent["east"]
+        if "crs" in spatial_extent:
+            crs = spatial_extent["crs"]
+        else:
+            crs = "4326"
 
-    if crs.isnumeric():
-        crs = "EPSG:" + crs
+        if crs.isnumeric():
+            crs = "EPSG:" + crs
 
-    if input_object.is_raster():
-        region_bbox = {"id": "g_region_bbox_%i" % rn,
-              "module": "g.region.bbox",
-              "inputs": [{"param": "n", "value": str(north)},
-                         {"param": "s", "value": str(south)},
-                         {"param": "e", "value": str(east)},
-                         {"param": "w", "value": str(west)},
-                         {"param": "crs", "value": str(crs)},
-                         {"param": "raster", "value": input_object.grass_name()},]}
-    elif input_object.is_strds():
-        region_bbox = {"id": "g_region_bbox_%i" % rn,
-              "module": "g.region.bbox",
-              "inputs": [{"param": "n", "value": str(north)},
-                         {"param": "s", "value": str(south)},
-                         {"param": "e", "value": str(east)},
-                         {"param": "w", "value": str(west)},
-                         {"param": "crs", "value": str(crs)},
-                         {"param": "strds", "value": input_object.grass_name()},]}
-    else:
-        region_bbox = {"id": "g_region_bbox_%i" % rn,
-              "module": "g.region.bbox",
-              "inputs": [{"param": "n", "value": str(north)},
-                         {"param": "s", "value": str(south)},
-                         {"param": "e", "value": str(east)},
-                         {"param": "w", "value": str(west)},
-                         {"param": "crs", "value": str(crs)},]}
+        if input_object.is_raster():
+            region_bbox = {"id": "g_region_bbox_%i" % rn,
+                  "module": "g.region.bbox",
+                  "inputs": [{"param": "n", "value": str(north)},
+                             {"param": "s", "value": str(south)},
+                             {"param": "e", "value": str(east)},
+                             {"param": "w", "value": str(west)},
+                             {"param": "crs", "value": str(crs)},
+                             {"param": "raster", "value": input_object.grass_name()},]}
+        elif input_object.is_strds():
+            region_bbox = {"id": "g_region_bbox_%i" % rn,
+                  "module": "g.region.bbox",
+                  "inputs": [{"param": "n", "value": str(north)},
+                             {"param": "s", "value": str(south)},
+                             {"param": "e", "value": str(east)},
+                             {"param": "w", "value": str(west)},
+                             {"param": "crs", "value": str(crs)},
+                             {"param": "strds", "value": input_object.grass_name()},]}
+        else:
+            region_bbox = {"id": "g_region_bbox_%i" % rn,
+                  "module": "g.region.bbox",
+                  "inputs": [{"param": "n", "value": str(north)},
+                             {"param": "s", "value": str(south)},
+                             {"param": "e", "value": str(east)},
+                             {"param": "w", "value": str(west)},
+                             {"param": "crs", "value": str(crs)},]}
 
-    pc.append(region_bbox)
+        pc.append(region_bbox)
     
-    if input_object.is_strds():
-        start_time = temporal_extent[0].replace('T', ' ')
-        end_time = temporal_extent[1].replace('T', ' ')
-        # end_time can be null, use only start_time for filtering
-        wherestring = "start_time >= '%(start)s' AND start_time <= '%(end)s'" % {"start": start_time, "end": end_time}
+    if input_object.is_strds() and \
+       (temporal_extent is not None or bands is not None):
+        wherestring = ""
+        if temporal_extent:
+            start_time = temporal_extent[0].replace('T', ' ')
+            end_time = temporal_extent[1].replace('T', ' ')
+            # end_time can be null, use only start_time for filtering
+            wherestring = "start_time >= '%(start)s' AND start_time <= '%(end)s'" % {"start": start_time, "end": end_time}
         if bands:
             wherestring = wherestring + "AND band_reference in ('%(band_names)s')" % {band_names: (', ').join(bands)}
 
@@ -335,8 +339,12 @@ def get_process_list(node: Node):
     output_objects.append(output_object)
     node.add_output(output_object)
     
-    spatial_extent = node.arguments["spatial_extent"]
-    temporal_extent = node.arguments["temporal_extent"]
+    spatial_extent = None
+    if "spatial_extent" in node.arguments:
+        spatial_extent = node.arguments["spatial_extent"]
+    temporal_extent = None
+    if "temporal_extent" in node.arguments:
+        temporal_extent = node.arguments["temporal_extent"]
     bands = None
     if "bands" in node.arguments:
         bands = node.arguments["bands"]

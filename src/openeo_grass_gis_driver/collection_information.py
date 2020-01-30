@@ -3,6 +3,7 @@ from flask_restful import Resource
 from flask import make_response, jsonify, request
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.models.collection_schemas import CollectionInformation, CollectionExtent, EoLinks
+from openeo_grass_gis_driver.models.collection_schemas import CollectionProperties, EOBands
 from osgeo import osr, ogr
 
 __license__ = "Apache License, Version 2.0"
@@ -133,6 +134,7 @@ class CollectionInformationResource(Resource):
                                   temporal=("1900-01-01T00:00:00", "2100-01-01T00:00:00"))
 
         title = "Raster dataset"
+        bands = []
         if datatype.lower() == "strds":
             title = "Space time raster dataset"
 
@@ -148,6 +150,24 @@ class CollectionInformationResource(Resource):
             extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
                                                float(layer_data["east"]), float(layer_data["north"])),
                                       temporal=(start_time, end_time))
+
+            # TODO: band_names must be in layer_data
+            if "number_of_bands" in layer_data:
+                if layer_data["number_of_bands"] == "13":
+                    bands.append(EOBands(name="S2_1", common_name="coastal"))
+                    bands.append(EOBands(name="S2_2", common_name="blue"))
+                    bands.append(EOBands(name="S2_3", common_name="green"))
+                    bands.append(EOBands(name="S2_4", common_name="red"))
+                    bands.append(EOBands(name="S2_5", common_name="rededge"))
+                    bands.append(EOBands(name="S2_6", common_name="rededge"))
+                    bands.append(EOBands(name="S2_7", common_name="rededge"))
+                    bands.append(EOBands(name="S2_8", common_name="nir"))
+                    bands.append(EOBands(name="S2_8A", common_name="nir08"))
+                    bands.append(EOBands(name="S2_9", common_name="nir09"))
+                    bands.append(EOBands(name="S2_10", common_name="cirrus"))
+                    bands.append(EOBands(name="S2_11", common_name="swir16"))
+                    bands.append(EOBands(name="S2_12", common_name="swir22"))
+
         if datatype.lower() == "vector":
             title = "Vector dataset"
 
@@ -156,8 +176,13 @@ class CollectionInformationResource(Resource):
 
         coorindate_transform_extent_to_EPSG_4326(crs=crs, extent=extent)
 
+        properties = (CollectionProperties(eo_platform="Sentinel-2",
+                                           eo_instrument="Sentinel-2",
+                                           eo_bands=bands))
+
         ci = CollectionInformation(id=name, title=title,
                                    description=description,
-                                   extent=extent)
+                                   extent=extent,
+                                   properties=properties)
 
         return ci.as_response(http_status=200)

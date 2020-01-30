@@ -122,16 +122,13 @@ class ProcessDefinitionTestCase(TestBase):
         output_names, pc = g.to_actinia_process_list()
         pprint([str(o) for o in output_names])
         pprint(pc)
-        self.assertEqual(len(pc), 8)
+        self.assertEqual(len(pc), 5)
         self.assertTrue(pc[0]["module"] == "t.info")
         self.assertTrue(pc[1]["module"] == "g.region.bbox")
         self.assertTrue(pc[2]["module"] == "t.rast.extract")
-        self.assertTrue(pc[3]["module"] == "t.info")
-        self.assertTrue(pc[4]["module"] == "g.region.bbox")
-        self.assertTrue(pc[5]["module"] == "t.rast.extract")
-        self.assertTrue(pc[6]["module"] == "t.rast.mapcalc")
-        self.assertTrue(pc[7]["module"] == "t.rast.colors")
-        self.assertTrue("lsat5_1987_30_load_collection_ndvi" in [o.name for o in output_names])
+        self.assertTrue(pc[3]["module"] == "t.rast.ndvi")
+        self.assertTrue(pc[4]["module"] == "t.rast.colors")
+        self.assertTrue("lsat5_1987_load_collection_ndvi" in [o.name for o in output_names])
 
     def test_raster_export(self):
 
@@ -168,7 +165,7 @@ class ProcessDefinitionTestCase(TestBase):
         output_names, pc = g.to_actinia_process_list()
         pprint([str(o) for o in output_names])
         pprint(pc)
-        self.assertEqual(len(pc), 12)
+        self.assertEqual(len(pc), 8)
 
 
 if __name__ == "__main__":

@@ -82,38 +82,32 @@ class GraphValidationTestCase(TestBase):
 
         pg = Graph(NDVI_STRDS)
 
-        print(pg.node_dict["get_nir_data"])
-        print(pg.node_dict["get_red_data"])
+        print(pg.node_dict["get_data"])
         print(pg.node_dict["ndvi_1"])
 
         self.assertEqual(1, len(pg.root_nodes))
-        self.assertEqual(3, len(pg.node_dict))
+        self.assertEqual(2, len(pg.node_dict))
 
         self.assertIsNone(pg.node_dict["ndvi_1"].child)
-        self.assertEqual(2, len(pg.node_dict["ndvi_1"].parents))
-        self.assertTrue(pg.node_dict["get_nir_data"] in pg.node_dict["ndvi_1"].parents)
-        self.assertTrue(pg.node_dict["get_red_data"] in pg.node_dict["ndvi_1"].parents)
+        self.assertEqual(1, len(pg.node_dict["ndvi_1"].parents))
+        self.assertTrue(pg.node_dict["get_data"] in pg.node_dict["ndvi_1"].parents)
 
-        self.assertEqual(pg.node_dict["ndvi_1"], pg.node_dict["get_nir_data"].child)
-        self.assertEqual(pg.node_dict["ndvi_1"], pg.node_dict["get_red_data"].child)
+        self.assertEqual(pg.node_dict["ndvi_1"], pg.node_dict["get_data"].child)
 
-        self.assertEqual(pg.node_dict["ndvi_1"].parents_dict["red"], pg.node_dict["get_red_data"])
-        self.assertEqual(pg.node_dict["ndvi_1"].parents_dict["nir"], pg.node_dict["get_nir_data"])
+        self.assertEqual(pg.node_dict["ndvi_1"].parents_dict["data"], pg.node_dict["get_data"])
 
     def test_graph_creation_graph_use_case_1(self):
 
         pg = Graph(USE_CASE_1)
 
-        print(pg.node_dict["get_nir_data"])
-        print(pg.node_dict["get_red_data"])
-        print(pg.node_dict["filter_bbox_red"])
-        print(pg.node_dict["filter_bbox_nir"])
+        print(pg.node_dict["get_data"])
+        print(pg.node_dict["filter_bbox"])
         print(pg.node_dict["ndvi_1"])
         print(pg.node_dict["filter_daterange_ndvi"])
         print(pg.node_dict["reduce_time_1"])
 
         self.assertEqual(1, len(pg.root_nodes))
-        self.assertEqual(7, len(pg.node_dict))
+        self.assertEqual(5, len(pg.node_dict))
 
 if __name__ == "__main__":
     unittest.main()

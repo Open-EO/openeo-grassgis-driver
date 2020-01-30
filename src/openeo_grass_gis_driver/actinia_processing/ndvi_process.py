@@ -19,13 +19,7 @@ PROCESS_NAME = "ndvi"
 
 
 def create_process_description():
-    p_red = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
-                                  "that contains the RED band for NDVI computation.",
-                      schema={"type": "object", "format": "eodata"},
-                      required=True)
-
-    p_nir = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
-                                  "that contains the NIR band for NDVI computation.",
+    p_data = Parameter(description="A raster data cube with two bands that have the common names red and nir assigned.",
                       schema={"type": "object", "format": "eodata"},
                       required=True)
 
@@ -34,8 +28,7 @@ def create_process_description():
 
     # Example
     arguments = {
-        "red": {"from_node": "get_red_data"},
-        "nir": {"from_node": "get_nir_data"},
+        "data": {"from_node": "get_data"},
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"ndvi_1": node})
@@ -43,9 +36,13 @@ def create_process_description():
                                process_graph=graph)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Compute the NDVI based on the red and nir bands of the input datasets.",
-                            summary="Compute the NDVI based on the red and nir bands of the input datasets.",
-                            parameters={"red": p_red, "nir": p_nir},
+                            description="The data parameter expects a raster data cube with two bands "
+                                        "that have the common names red and nir assigned. The process returns "
+                                        "a raster data cube with two bands being replaced with a new band "
+                                        "that holds the computed values. ",
+                            summary="Computes the Normalized Difference Vegetation Index (NDVI). "
+                                    "The NDVI is computed as (nir - red) / (nir + red).",
+                            parameters={"data": p_data},
                             returns=rv,
                             examples=examples)
 
@@ -55,28 +52,21 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(nir_time_series: DataObject, red_time_series: DataObject,
+def create_process_chain_entry(input_time_series: DataObject,
                                output_time_series: DataObject):
-    """Create a Actinia process description that uses t.rast.mapcalc to create the NDVI time series
+    """Create a Actinia process description that uses t.rast.ndvi to create the NDVI time series
 
-    :param nir_time_series: The NIR band time series object
-    :param red_time_series: The RED band time series object
+    :param input_time_series: The input time series object with red and nir bands
     :param output_time_series: The object of the output time series
     :return: A list of Actinia process chain descriptions
     """
     rn = randint(0, 1000000)
 
     pc = [
-        {"id": "t_rast_mapcalc_%i" % rn,
-         "module": "t.rast.mapcalc",
-         "inputs": [{"param": "expression",
-                     "value": "%(result)s = float((%(nir)s - %(red)s)/"
-                              "(%(nir)s + %(red)s))" % {"result":  output_time_series.grass_name(),
-                                                        "nir": nir_time_series.grass_name(),
-                                                        "red": red_time_series.grass_name()}},
-                    {"param": "inputs",
-                     "value": "%(nir)s,%(red)s" % {"nir": nir_time_series.grass_name(),
-                                                   "red": red_time_series.grass_name()}},
+        {"id": "t_rast_ndvi_%i" % rn,
+         "module": "t.rast.ndvi",
+         "inputs": [{"param": "input",
+                     "value": "%(input)s" % {"input": input_time_series.grass_name()}},
                     {"param": "basename",
                      "value": "ndvi"},
                     {"param": "output",
@@ -101,34 +91,18 @@ def get_process_list(node: Node):
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []
 
-    # First analyse the data entries
-    if "red" not in node.arguments:
-        raise Exception("Process %s requires parameter <red>" % PROCESS_NAME)
+    # Get the input data
+    input_objects = node.get_parent_by_name(parent_name="data").output_objects
 
-    if "nir" not in node.arguments:
-        raise Exception("Process %s requires parameter <nir>" % PROCESS_NAME)
+    input_strds = list(input_objects)[-1]
 
-    # Get the red and nir data separately
-    red_input_objects = node.get_parent_by_name(parent_name="red").output_objects
-    nir_input_objects = node.get_parent_by_name(parent_name="nir").output_objects
+    output_objects.extend(list(input_objects))
 
-    if not red_input_objects:
-        raise Exception("Process %s requires an input strds for band <red>" % PROCESS_NAME)
-
-    if not nir_input_objects:
-        raise Exception("Process %s requires an input strds for band <nir>" % PROCESS_NAME)
-
-    red_stds = list(red_input_objects)[-1]
-    nir_strds = list(nir_input_objects)[-1]
-
-    output_objects.extend(list(red_input_objects))
-    output_objects.extend(list(nir_input_objects))
-
-    output_object = DataObject(name=f"{red_stds.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(name=f"{input_strds.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
     node.add_output(output_object=output_object)
 
-    pc = create_process_chain_entry(nir_strds, red_stds, output_object)
+    pc = create_process_chain_entry(input_strds, output_object)
     process_list.extend(pc)
 
     return output_objects, process_list

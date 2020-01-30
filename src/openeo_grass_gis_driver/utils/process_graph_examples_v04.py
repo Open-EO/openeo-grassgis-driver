@@ -408,14 +408,13 @@ NDVI_STRDS = {
         "ndvi_1": {
             "process_id": "ndvi",
             "arguments": {
-                "red": {"from_node": "get_red_data"},
-                "nir": {"from_node": "get_nir_data"},
+                "data": {"from_node": "get_data"},
             }
         },
-        "get_red_data": {
+        "get_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_1987_30",
+                "id":  "nc_spm_08.landsat.strds.lsat5_1987",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,
@@ -429,23 +428,6 @@ NDVI_STRDS = {
                     ],
             }
         },
-        "get_nir_data": {
-            "process_id": "load_collection",
-            "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_1987_40",
-                "spatial_extent": {
-                    "west": 629992.5,
-                    "east": 645012,
-                    "north": 228513,
-                    "south": 214975.5,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
-                    },
-                "temporal_extent": [
-                    "1987-01-01",
-                    "1988-01-01"
-                    ],
-            }
-        }
     }
 }
 
@@ -515,10 +497,10 @@ USE_CASE_1 = {
     "title": "Compute the NDVI based on two STRDS",
     "description": "Compute the NDVI data from two space-time raster datasets and apply several filters in the data",
     "process_graph": {
-        "get_red_data": {
+        "get_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_1987_30",
+                "id":  "nc_spm_08.landsat.strds.lsat5_1987",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,
@@ -532,40 +514,10 @@ USE_CASE_1 = {
                     ],
             }
         },
-        "get_nir_data": {
-            "process_id": "load_collection",
-            "arguments": {
-                "id": "nc_spm_08.landsat.strds.lsat5_1987_40",
-                "spatial_extent": {
-                    "west": 629992.5,
-                    "east": 645012,
-                    "north": 228513,
-                    "south": 214975.5,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
-                    },
-                "temporal_extent": [
-                    "1987-01-01",
-                    "1988-01-01"
-                    ],
-            }
-        },
-        "filter_bbox_red": {
+        "filter_bbox": {
             "process_id": "filter_bbox",
             "arguments": {
-                "data": {"from_node": "get_red_data"},
-                "extent": {
-                    "west": 630000,
-                    "east": 645000,
-                    "north": 228500,
-                    "south": 215000,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +to_meter=1",
-                }
-            }
-        },
-        "filter_bbox_nir": {
-            "process_id": "filter_bbox",
-            "arguments": {
-                "data": {"from_node": "get_nir_data"},
+                "data": {"from_node": "get_data"},
                 "extent": {
                     "west": 630000,
                     "east": 645000,
@@ -578,8 +530,7 @@ USE_CASE_1 = {
         "ndvi_1": {
             "process_id": "ndvi",
             "arguments": {
-                "red": {"from_node": "filter_bbox_red"},
-                "nir": {"from_node": "filter_bbox_nir"},
+                "data": {"from_node": "filter_bbox"},
             }
         },
         "filter_daterange_ndvi": {

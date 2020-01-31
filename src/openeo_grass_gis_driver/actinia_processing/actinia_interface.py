@@ -220,6 +220,22 @@ class ActiniaInterface(object):
                                                                                           "layer": layer}
         return self._send_get_request(url)
 
+    def get_resource(self, url: str) -> Tuple[int, dict]:
+        """Get a resource from actinia pointed to by url, e.g. a GeoTIFF
+        
+            !!!THIS IS DANGEROUS!!!
+            it will load the whole resource into RAM
+        """
+        
+        r = requests.get(url=url, auth=self.auth)
+
+        #import pdb; pdb.set_trace()
+
+        if r.status_code == 200:
+            return r
+
+        return None
+
     def check_layer_exists(self, layer_name: str) -> bool:
         """Return True if the strds exists, False otherwise
 

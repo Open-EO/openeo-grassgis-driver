@@ -2,7 +2,7 @@
 import time
 import sys
 import traceback
-from flask import make_response, jsonify, request
+from flask import make_response, jsonify, request, Response
 from openeo_grass_gis_driver.actinia_processing.base import Graph
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
@@ -53,6 +53,19 @@ class Result(ResourceBase):
             status, response = self.wait_until_finished(response=response, max_time=1000)
 
             if status == 200:
+                result_url = response["urls"]["resources"]
+                if len(result_url) == 1:
+                    # attempt to return an image
+                    result_data = self.iface.get_resource(result_url[0])
+                    if result_url[0][-4:] in ("tiff", ".tif"):
+                        mimetype = "image/tiff"
+                    else:
+                        mimetype = "unknown"
+
+                    return Response(result_data.content,
+                                    mimetype=mimetype,
+                                    direct_passthrough=True)
+
                 return make_response(jsonify({"job_id":response["resource_id"],
                                               "job_info":response}), status)
             else:

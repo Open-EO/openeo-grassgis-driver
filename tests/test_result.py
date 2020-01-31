@@ -84,8 +84,8 @@ class PreviewTestCase(TestBase):
         """
         response = self.app.post('/result', data=json.dumps(RASTER_EXPORT), content_type="application/json", headers=self.auth)
 
-        data = json.loads(response.data.decode())
-        pprint.pprint(data)
+        #data = json.loads(response.data.decode())
+        #pprint.pprint(data)
 
         self.assertEqual(200, response.status_code)
 
@@ -94,8 +94,8 @@ class PreviewTestCase(TestBase):
         """
         response = self.app.post('/result', data=json.dumps(RGB_RASTER_EXPORT), content_type="application/json", headers=self.auth)
 
-        data = json.loads(response.data.decode())
-        pprint.pprint(data)
+        #data = json.loads(response.data.decode())
+        #pprint.pprint(data)
 
         self.assertEqual(200, response.status_code)
 

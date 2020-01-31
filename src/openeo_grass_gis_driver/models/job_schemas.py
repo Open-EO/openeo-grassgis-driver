@@ -239,7 +239,7 @@ class JobInformation(JsonableObject):
                  updated: Optional[str] = None,
                  plan: str = None, cost: float=None, budget: float = None):
         # Test id
-        pattern = "^[A-Za-z0-9_\-\.~]+$"
+        #pattern = "^[A-Za-z0-9_\-\.~]+$"
         #x = re.search(pattern, job_id)
         #if not x:
         #    es = ErrorSchema(id=str(datetime.now()), code=400,

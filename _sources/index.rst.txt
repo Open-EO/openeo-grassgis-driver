@@ -2,11 +2,16 @@
 The OpenEO GRASS GIS driver
 ===========================
 
-This software implements the openEO Core API interface for the GRASS GIS as a Service (GRaaS) software solution
-for parallel, large scale geodata processing.
-GRaaS is a highly scalable open source REST interface to process geodata with the GRASS GIS in a distributed environment.
-It is deployed on **openeo.mundialis.de** and will be used for processing all openEO API calls taht are send to
-the te OpenEO GRASS GIS driver.
+The OpenEO GRASS GIS driver implements the openEO Core API interface for the GRASS GIS as a Service
+(Actinia Core; available from https://github.com/mundialis/actinia_core) software solution for parallel,
+large scale geodata processing.
+
+It is a highly scalable REST interface to process geodata with the GRASS GIS in a distributed environment.
+GRASS GIS is a free and open source software package providing geospatial processing engines in a single
+integrated environment for raster, vector, and 3D-voxel processing as well as image processing capabilities.
+
+It is deployed on **openeo.mundialis.de** and will be used for processing all openEO API calls that are send to
+the the OpenEO GRASS GIS driver.
 
 What is openEO?
 
@@ -14,56 +19,38 @@ What is openEO?
     and Front-End Applications is an H2020 project funded under call EO-2-2017:
     EO Big Data Shift, under grant number 776242. The project runs from Oct 2017 to Sept 2020.
 
-    http://openeo.org/
+    https://openeo.org/
 
-This document demonstrates the application of the openEO GRaaS wrapper to solve the three use cases
-that were defined by the development group for the first prototype.
+Purpose of this document
 
-    https://open-eo.github.io/openeo-api-poc/poc/index.html#proof-of-concept
+    This document demonstrates the application of the openEO Actinia Core wrapper to solve the three use cases
+    that were defined by the development group for the first prototype:
 
+    https://open-eo.github.io/openeo-api/v/0.4.0/examples-poc/
+
+    Documentation reference page: https://open-eo.github.io/openeo-grassgis-driver/
 
 Installation
 ============
 
-An active internet connection is required. All requests to the openEO GRASS GIS driver will be send and processed on the **openeo.mundialis.de** server.
+An active internet connection is required. All requests to the openEO GRASS GIS driver will be send to the **openeo.mundialis.de** server and processed on the **actinia.mundialis.de** backend.
 
 1. Deploy the openEO GRASS GIS driver locally:
 
-    1. Create directory that should contain the code and the virtual environment and switch the environment.
-       It is preferred to run the openEO GRaaS wrapper in a virtual python environment:
+    1. Clone the openEO GRASS GIS driver and install the required Python packages. It is preferred to run the openEO actinia_core wrapper in a virtual python environment:
 
        .. code-block:: bash
 
-          mkdir openEO
-          cd openEO
-          virtualenv -p python3.5 venv
-          source venv/bin/activate
-       ..
-
-    2. Clone the official python based openEO reference implementation repository and install
-       the required Python packages into the virtual environment:
-
-       .. code-block:: bash
-
-          git clone https://bitbucket.org/huhabla/openeo_core.git openeo_core
-          cd openeo_core
+          git clone https://github.com/Open-EO/openeo-grassgis-driver.git
+          cd openeo-grassgis-driver
+          virtualenv -p python3 venv
+          . venv/bin/activate
           pip install -r requirements.txt
           python setup.py install
-          cd ..
+
        ..
 
-    3. After installing the official python based openEO reference implementation, the openEO GRASS GIS driver
-       must be installed, since it is based on the openEO reference implementation.
-
-       .. code-block:: bash
-
-          git clone https://github.com/Open-EO/openeo-grassgis-driver.git graas_openeo_core_wrapper
-          cd graas_openeo_core_wrapper
-          pip install -r requirements.txt
-          python setup.py install
-       ..
-
-    4. Run the openEO GRASS GIS driver test suite (openEO wrapper test):
+    2. Run the openEO GRASS GIS driver test suite:
 
        .. code-block:: bash
 
@@ -74,221 +61,1471 @@ An active internet connection is required. All requests to the openEO GRASS GIS 
 
           .. image:: OpenEO_GRaaS_Wrapper_Testsuite.png
 
-    5. Run the server locally:
+    3. Run the server locally:
 
        .. code-block:: bash
 
-          python -m graas_openeo_core_wrapper.main
+          python -m openeo_grass_gis_driver.main
        ..
 
 2. Alternatively use the docker deployment located in the **docker** directory of this repository
 
-    1. Make sure the GRaaS deployment is reachable by the openEO GRASS GIS driver container
-    2. use the **build.sh** in the **docker** directory to build the image
-    3. Deploy the openEO GRaaS docker container
+    1. Make sure the actinia deployment is reachable by the openEO GRASS GIS driver container
+    2. Deploy the openEO GRASS GIS driver docker container
 
         .. code-block:: bash
 
-            cd graas_openeo_core_wrapper/docker
-            docker build -t graas_openeo_core_wrapper .
-            docker run --name=graas_wrapper -p 5000:5000 graas_openeo_core_wrapper
+            docker build -t openeo_grass_gis_driver docker
+            docker run --name=openeo_grass_gis_driver -p 5000:5000 openeo_grass_gis_driver
         ..
 
-3. Get the swagger.json API description using curl:
+3. Explore the capabilities, data and processes that are available (see below for openeo.mundialis.de server examples):
 
    .. code-block:: bash
 
-      curl -X GET http://openeo.mundialis.de:5000/api/v0/swagger.json
+      curl ${AUTH} https://openeo.mundialis.de/api/v0.4/
+      curl ${AUTH} https://openeo.mundialis.de/api/v0.4/collections
+      curl ${AUTH} https://openeo.mundialis.de/api/v0.4/processes
 
-4. Explore the capabilities, data and processes that are available:
+4. Available endpoints
 
-   .. code-block:: bash
-
-      curl http://openeo.mundialis.de:5000/capabilities
-      curl http://openeo.mundialis.de:5000/data
-      curl http://openeo.mundialis.de:5000/processes
+    * endpoint: "/credentials/basic"
+    * endpoint: "/result"
+    * endpoint: "/collections"
+    * endpoint: "/collections/{collection_id}"
+    * endpoint: "/processes"
+    * endpoint: "/processes/{process_id}"
+    * endpoint: "/validation"
+    * endpoint: "/process_graphs"
+    * endpoint: "/process_graphs/{process_graph_id}"
+    * endpoint: "/output_formats"
+    * endpoint: "/jobs"
+    * endpoint: "/jobs/{job_id}"
+    * endpoint: "/jobs/{job_id}/results"
 
 
 ====================
-The openEO use cases
+The openEO use cases - ATTENTION - below requires further updates to reflect API v0.4
 ====================
 
-First list all available data in the GRaaS database, the list was shortened, since aver 120 raster layer are
+First list all available data in the actinia database, the list was shortened, since aver 120 raster layer are
 in the database:
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/data
+      export ACTINIA_USER='demouser'
+      export ACTINIA_PASSWORD='gu3st!pa55w0rd'
+      export actinia="https://actinia.mundialis.de"
+      export AUTH="-u $ACTINIA_USER:$ACTINIA_PASSWORD"
+      
+      curl ${AUTH} https://openeo.mundialis.de/collections
 
-   .. code-block:: json
-
-        [
-          {
-            "description": "Space time raster dataset",
-            "product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04",
-            "source": "GRASS GIS location/mapset path: /LL/sentinel2A_openeo_subset"
-          },
-          {
-            "description": "Space time raster dataset",
-            "product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08",
-            "source": "GRASS GIS location/mapset path: /LL/sentinel2A_openeo_subset"
-          },
-          {
-            "description": "Raster dataset",
-            "product_id": "LL.sentinel2A_openeo_subset.raster.S2A_MSIL1C_20170412T110621_N0204_R137_T30SUJ_20170412T111708_B04",
-            "source": "GRASS GIS location/mapset path: /LL/sentinel2A_openeo_subset"
-          },
-          {
-            "description": "Raster dataset",
-            "product_id": "LL.sentinel2A_openeo_subset.raster.S2B_MSIL1C_20170904T110619_N0205_R137_T30SUJ_20170904T111825_B08",
-            "source": "GRASS GIS location/mapset path: /LL/sentinel2A_openeo_subset"
-          },
-          {
-            "description": "Space time raster dataset",
-            "product_id": "ECAD.PERMANENT.strds.precipitation_1950_2013_yearly_mm",
-            "source": "GRASS GIS location/mapset path: /ECAD/PERMANENT"
-          },
-          {
-            "description": "Space time raster dataset",
-            "product_id": "ECAD.PERMANENT.strds.temperature_mean_1950_2013_yearly_celsius",
-            "source": "GRASS GIS location/mapset path: /ECAD/PERMANENT"
-          },
-          {
-            "description": "Raster dataset",
-            "product_id": "ECAD.PERMANENT.raster.precipitation_yearly_mm_0",
-            "source": "GRASS GIS location/mapset path: /ECAD/PERMANENT"
-          },
-          {
-            "description": "Raster dataset",
-            "product_id": "ECAD.PERMANENT.raster.precipitation_yearly_mm_62",
-            "source": "GRASS GIS location/mapset path: /ECAD/PERMANENT"
-          },
-          {
-            "description": "Raster dataset",
-            "product_id": "ECAD.PERMANENT.raster.temperature_mean_yearly_celsius_0",
-            "source": "GRASS GIS location/mapset path: /ECAD/PERMANENT"
-          },
-          {
-            "description": "Raster dataset",
-            "product_id": "ECAD.PERMANENT.raster.temperature_mean_yearly_celsius_62",
-            "source": "GRASS GIS location/mapset path: /ECAD/PERMANENT"
-          },
-        ]
-
-
-Get information about band 04 of the sentinel2a  time series:
-
-   .. code-block:: bash
-
-      curl http://openeo.mundialis.de:5000/data/LL.sentinel2A_openeo_subset.strds.S2A_B04
+It will give the following (shortened here) output:
 
    .. code-block:: json
 
         {
-          "aggregation_type": "None",
-          "bands": {
-            "band_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04"
-          },
-          "creation_time": "2018-02-13 23:43:42.579243",
-          "description": "Space time raster dataset",
-          "ewres_max": "0.0001",
-          "ewres_min": "0.0001",
-          "extent": {
-            "bottom": 38.738166,
-            "left": -5.333682,
-            "right": -4.038089,
-            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]\n",
-            "top": 39.745573
-          },
-          "granularity": "1 second",
-          "location": "LL",
-          "map_time": "interval",
-          "mapset": "sentinel2A_openeo_subset",
-          "max_max": "22259.0",
-          "max_min": "13773.0",
-          "min_max": "0.0",
-          "min_min": "0.0",
-          "modification_time": "2018-02-13 23:43:43.126555",
-          "nsres_max": "0.0001",
-          "nsres_min": "0.0001",
-          "number_of_maps": "7",
-          "product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B04",
-          "source": "GRASS GIS location/mapset path: /LL/sentinel2A_openeo_subset",
-          "temporal_type": "2017-04-12 11:17:08",
-          "time": {
-            "from": "2017-04-12 11:17:08",
-            "to": "2017-09-04 11:18:26"
-          }
+          "collections": [
+            {
+              "title": "Space time raster dataset",
+              "description": "Space time raster dataset GRASS GIS location/mapset path: /nc_spm_08/modis_lst",
+              "license": "proprietary",
+              "extent": {
+                "spatial": [
+                  -180,
+                  -90,
+                  180,
+                  90
+                ],
+                "temporal": [
+                  "1900-01-01T00:00:00",
+                  "2100-01-01T00:00:00"
+                ]
+              },
+              "links": [
+                {
+                  "href": "http://www.mundialis.de",
+                  "title": "mundialis"
+                }
+              ],
+              "stac_version": "0.6.2",
+              "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly"
+            },
+            {
+              "title": "Raster dataset",
+              "description": "Raster dataset GRASS GIS location/mapset path: /nc_spm_08/modis_lst",
+              "license": "proprietary",
+              "extent": {
+                "spatial": [
+                  -180,
+                  -90,
+                  180,
+                  90
+                ],
+                "temporal": [
+                  "1900-01-01T00:00:00",
+                  "2100-01-01T00:00:00"
+                ]
+              },
+              "links": [
+                {
+                  "href": "http://www.mundialis.de",
+                  "title": "mundialis"
+                }
+              ],
+              "stac_version": "0.6.2",
+              "id": "nc_spm_08.modis_lst.raster.MOD11B3.A2015001.h11v05.single_LST_Day_6km"
+            },
+            {
+              "title": "Raster dataset",
+              "description": "Raster dataset GRASS GIS location/mapset path: /nc_spm_08/modis_lst",
+              "license": "proprietary",
+              "extent": {
+                "spatial": [
+                  -180,
+                  -90,
+                  180,
+                  90
+                ],
+                "temporal": [
+                  "1900-01-01T00:00:00",
+                  "2100-01-01T00:00:00"
+                ]
+              },
+              "links": [
+                {
+                  "href": "http://www.mundialis.de",
+                  "title": "mundialis"
+                }
+              ],
+              "stac_version": "0.6.2",
+              "id": "nc_spm_08.modis_lst.raster.MOD11B3.A2015032.h11v05.single_LST_Day_6km"
+            },
+            {
+              "title": "Raster dataset",
+              "description": "Raster dataset GRASS GIS location/mapset path: /nc_spm_08/modis_lst",
+              "license": "proprietary",
+              "extent": {
+                "spatial": [
+                  -180,
+                  -90,
+                  180,
+                  90
+                ],
+                "temporal": [
+                  "1900-01-01T00:00:00",
+                  "2100-01-01T00:00:00"
+                ]
+              },
+              "links": [
+                {
+                  "href": "http://www.mundialis.de",
+                  "title": "mundialis"
+                }
+              ],
+              "stac_version": "0.6.2",
+              "id": "nc_spm_08.modis_lst.raster.MOD11B3.A2015060.h11v05.single_LST_Day_6km"
+            },
+          ],
+          "links": [
+            {
+              "href": "http://www.mundialis.de",
+              "title": "mundialis"
+            }
+          ]
         }
 
-Get information about band 08 of the sentinel2a  time series:
+
+Get information about band 04 of the Sentinel-2A time series:
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/data/LL.sentinel2A_openeo_subset.strds.S2A_B08
+      curl ${AUTH} https://openeo.mundialis.de/collections/latlong_wgs84.sentinel2A_openeo_subset.strds.S2A_B04
 
    .. code-block:: json
 
         {
-          "aggregation_type": "None",
-          "bands": {
-            "band_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08"
-          },
-          "creation_time": "2018-02-13 23:43:43.581281",
-          "description": "Space time raster dataset",
-          "ewres_max": "0.0001",
-          "ewres_min": "0.0001",
+          "title": "Space time raster dataset",
+          "description": "GRASS GIS location/mapset path: /latlong_wgs84/sentinel2A_openeo_subset",
+          "license": "proprietary",
           "extent": {
-            "bottom": 38.738166,
-            "left": -5.333682,
-            "right": -4.038089,
-            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]\n",
-            "top": 39.745573
+            "spatial": [
+              -5.333682,
+              38.738166,
+              -4.038089,
+              39.745573
+            ],
+            "temporal": [
+              "2017-04-12T11:17:08",
+              "2017-09-04T11:18:26"
+            ]
           },
-          "granularity": "1 second",
-          "location": "LL",
-          "map_time": "interval",
-          "mapset": "sentinel2A_openeo_subset",
-          "max_max": "23033.0",
-          "max_min": "20256.0",
-          "min_max": "0.0",
-          "min_min": "0.0",
-          "modification_time": "2018-02-13 23:43:44.111735",
-          "nsres_max": "0.0001",
-          "nsres_min": "0.0001",
-          "number_of_maps": "7",
-          "product_id": "LL.sentinel2A_openeo_subset.strds.S2A_B08",
-          "source": "GRASS GIS location/mapset path: /LL/sentinel2A_openeo_subset",
-          "temporal_type": "2017-04-12 11:17:08",
-          "time": {
-            "from": "2017-04-12 11:17:08",
-            "to": "2017-09-04 11:18:26"
-          }
+          "links": [
+            {
+              "href": "http://www.mundialis.de",
+              "title": "mundialis"
+            }
+          ],
+          "stac_version": "0.6.2",
+          "id": "latlong_wgs84.sentinel2A_openeo_subset.strds.S2A_B04"
+        }
+
+Get information about band 08 of the Sentinel-2A time series:
+
+   .. code-block:: bash
+
+      curl ${AUTH} https://openeo.mundialis.de/collections/latlong_wgs84.sentinel2A_openeo_subset.strds.S2A_B08
+
+   .. code-block:: json
+
+        {
+          "title": "Space time raster dataset",
+          "description": "GRASS GIS location/mapset path: /latlong_wgs84/sentinel2A_openeo_subset",
+          "license": "proprietary",
+          "extent": {
+            "spatial": [
+              -5.333682,
+              38.738166,
+              -4.038089,
+              39.745573
+            ],
+            "temporal": [
+              "2017-04-12T11:17:08",
+              "2017-09-04T11:18:26"
+            ]
+          },
+          "links": [
+            {
+              "href": "http://www.mundialis.de",
+              "title": "mundialis"
+            }
+          ],
+          "stac_version": "0.6.2",
+          "id": "latlong_wgs84.sentinel2A_openeo_subset.strds.S2A_B08"
         }
 
 List process information about all processes that are available for computation:
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/processes
+      curl ${AUTH} https://openeo.mundialis.de/processes
 
    .. code-block:: json
 
-        [
-          "raster_exporter",
-          "filter_bbox",
-          "udf_reduce_time",
-          "filter_daterange",
-          "NDVI",
-          "min_time",
-          "zonal_statistics"
-        ]
+        {
+          "links": [], 
+          "processes": [
+            {
+              "deprecated": false, 
+              "description": "Applies a mask to an EO dataset. Each pixel that is 0 or nodata in the mask is set to nodata. See also multilayer_mask.", 
+              "experimental": false, 
+              "id": "apply_mask", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or a space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "mask": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or a space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Masked EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Apply a mask to an EO dataset."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Drops observations from raster data or raster time series data  that are located outside of a given bounding box.", 
+              "experimental": false, 
+              "id": "filter_bbox", 
+              "links": [], 
+              "parameters": {
+                "bottom": {
+                  "depricated": false, 
+                  "description": "The bottom (southern) border of the spatial extent", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }, 
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "height_res": {
+                  "depricated": false, 
+                  "description": "The height resolution of the spatial extent", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }, 
+                "left": {
+                  "depricated": false, 
+                  "description": "The left (western) border of the spatial extent", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }, 
+                "right": {
+                  "depricated": false, 
+                  "description": "The right (eastern) border of the spatial extent", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }, 
+                "top": {
+                  "depricated": false, 
+                  "description": "The top (northern) border of the spatial extent", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }, 
+                "width_res": {
+                  "depricated": false, 
+                  "description": "The width resolution of the spatial extent", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Filter raster based data by bounding box"
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Sets the computational bounding box for downstream computation from raster layer.", 
+              "experimental": false, 
+              "id": "bbox_from_raster", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Sets the computational bounding box for downstream computation from raster layer."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Limits the data cube to the specified interval of dates and/or times.", 
+              "experimental": false, 
+              "id": "filter_temporal", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "dimension": {
+                  "depricated": false, 
+                  "description": "The temporal dimension to filter on. If the dimension is not set or is set to `null`, the data cube is expected to only have one temporal dimension. Fails with a `TooManyDimensions` error if it has more dimensions. Fails with a `DimensionNotAvailable` error if the specified dimension does not exist.\n\n**Note:** The default dimensions a data cube provides are described in the collection's metadata field `cube:dimensions`.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "default": "null", 
+                    "type": [
+                      "string", 
+                      "null"
+                    ]
+                  }
+                }, 
+                "extent": {
+                  "depricated": false, 
+                  "description": "Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "examples": [
+                      [
+                        "2015-01-01", 
+                        "2016-01-01"
+                      ], 
+                      [
+                        "12:00:00Z", 
+                        "24:00:00Z"
+                      ]
+                    ], 
+                    "format": "temporal-interval", 
+                    "items": {
+                      "anyOf": [
+                        {
+                          "format": "date-time", 
+                          "type": "string"
+                        }, 
+                        {
+                          "format": "date", 
+                          "type": "string"
+                        }, 
+                        {
+                          "format": "time", 
+                          "type": "string"
+                        }, 
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }, 
+                    "maxItems": 2, 
+                    "minItems": 2, 
+                    "type": "array"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Temporal filter for a date and/or time interval"
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Apply Harmonic Analysis of Time-Series (HANTS) to a space-time raster dataset.", 
+              "experimental": false, 
+              "id": "hants", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "dod": {
+                  "depricated": false, 
+                  "description": "Degree of over-determination", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "integer", 
+                    "type": "object"
+                  }
+                }, 
+                "fet": {
+                  "depricated": false, 
+                  "description": "Fit error tolerance when filtering outliers", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }, 
+                "nf": {
+                  "depricated": false, 
+                  "description": "The number of frequencies to use", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "integer", 
+                    "type": "object"
+                  }
+                }, 
+                "range_high": {
+                  "depricated": false, 
+                  "description": "Ignore values above this limit", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }, 
+                "range_low": {
+                  "depricated": false, 
+                  "description": "Ignore values below this limit", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }, 
+                "reject_high": {
+                  "depricated": false, 
+                  "description": "Reject high outliers", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "boolean", 
+                    "type": "object"
+                  }
+                }, 
+                "reject_low": {
+                  "depricated": false, 
+                  "description": "Reject low outliers", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "boolean", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Apply HANTS to a space-time raster dataset."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "This process returns a raster-, a vector- or a space-time raster datasets that is available in the /collections endpoint.", 
+              "experimental": false, 
+              "id": "load_collection", 
+              "links": [], 
+              "parameters": {
+                "id": {
+                  "depricated": false, 
+                  "description": "The identifier of a single raster-, vector- or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "examples": [
+                      "nc_spm_08.landsat.raster.lsat5_1987_10", 
+                      "nc_spm_08.PERMANENT.vector.lakes", 
+                      "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"
+                    ], 
+                    "type": "string"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Returns a single dataset that is available in the /collections endpoint for processing"
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Drops observations from raster data or raster time series data  that are outside of the specified interval.", 
+              "experimental": false, 
+              "id": "mask_invalid_values", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "max": {
+                  "depricated": false, 
+                  "description": "Maximum allowed value", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }, 
+                "min": {
+                  "depricated": false, 
+                  "description": "Minimum allowed value", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Filter raster based data on the specified interval"
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Applies a mask to a raster data cube  replacing values in data that are not null in mask with the new value.", 
+              "experimental": false, 
+              "id": "mask", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "mask": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "value": {
+                  "depricated": false, 
+                  "description": "The value used to replace non-zero and `true` values with", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "string", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Applies a mask to a raster data cube"
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Creates a mask using several bands of an EO dataset. Each pixel that has nodata or invalid value in any of the layers/bands gets value 1, pixels that have valid values in all layers/bands get value 0.", 
+              "experimental": false, 
+              "id": "multilayer_mask", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or a space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Multilayer mask as EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Create a multilayer mask from several raster datasets."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Compute the NDVI based on the red and nir bands of the input datasets.", 
+              "experimental": false, 
+              "id": "ndvi", 
+              "links": [], 
+              "parameters": {
+                "nir": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets that contains the NIR band for NDVI computation.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "red": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets that contains the RED band for NDVI computation.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Compute the NDVI based on the red and nir bands of the input datasets."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Compute the EVI based on the red, nir, and blue bands of the input datasets.", 
+              "experimental": false, 
+              "id": "evi", 
+              "links": [], 
+              "parameters": {
+                "blue": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets that contains the BLUE band for EVI computation.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "nir": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets that contains the NIR band for EVI computation.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "red": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets that contains the RED band for EVI computation.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "scale": {
+                  "depricated": false, 
+                  "description": "Scale factor to convert band values", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Compute the EVI based on the red, nir, and blue bands of the input datasets."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "The normalized difference is computed as *(band1 - band2) / (band1 + band2).", 
+              "experimental": false, 
+              "id": "normalized_difference", 
+              "links": [], 
+              "parameters": {
+                "band1": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets that contains the first band for normalized difference computation.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "band2": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets that contains the second band for normalized difference computation.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "The normalized difference is computed as *(band1 - band2) / (band1 + band2)."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Use a r.macalc expression to compute a new raster dataset from up to 6 existing raster datasets.", 
+              "experimental": false, 
+              "id": "map_algebra", 
+              "links": [], 
+              "parameters": {
+                "a": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single raster datasets identified as $a in the r.mapcalc expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "b": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single raster datasets identified as $b in the r.mapcalc expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "c": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single raster datasets identified as $c in the r.mapcalc expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "d": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single raster datasets identified as $d in the r.mapcalc expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "e": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single raster datasets identified as $e in the r.mapcalc expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "expression": {
+                  "depricated": false, 
+                  "description": "The r.mapcalc expression", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "examples": [
+                      "$result = ($a + $b / ($a - $b))"
+                    ], 
+                    "type": "string"
+                  }
+                }, 
+                "f": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single raster datasets identified as $f in the r.mapcalc expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "result": {
+                  "depricated": false, 
+                  "description": "An openEO process object identified as RESULT in the r.mapcalc expression.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Apply a r.mapcalc expression with up to 6 raster datasets."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Reduce the time dimension of a space-time raster dataset by getting the percentile.", 
+              "experimental": false, 
+              "id": "percentile_time", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "percentile": {
+                  "depricated": false, 
+                  "description": "The percentile to get from a space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Reduce the time dimension of a space-time raster dataset."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Reduce the time dimension of a space-time raster dataset with different reduce options.", 
+              "experimental": false, 
+              "id": "reduce_time", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "method": {
+                  "depricated": false, 
+                  "description": "The method to reduce the time dimension of a space-time raster dataset", 
+                  "enum": [
+                    "average", 
+                    "count", 
+                    "median", 
+                    "mode", 
+                    "minimum", 
+                    "min_raster", 
+                    "maximum", 
+                    "max_raster", 
+                    "stddev", 
+                    "range,sum", 
+                    "variance", 
+                    "diversity", 
+                    "slope", 
+                    "offset", 
+                    "detcoeff", 
+                    "quart1", 
+                    "quart3", 
+                    "perc90", 
+                    "skewness", 
+                    "kurtosis"
+                  ], 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Reduce the time dimension of a space-time raster dataset."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "This process exports an arbitrary number of raster map layers using the region specified upstream.", 
+              "experimental": false, 
+              "id": "raster_exporter", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "format": {
+                  "depricated": false, 
+                  "description": "The format of the export. Default is GeotTiff format.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "default": "GTiff", 
+                    "type": "string"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Exports raster map layers using the region specified upstream."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "This process exports an arbitrary number of raster map layers using the region specified upstream.", 
+              "experimental": false, 
+              "id": "save_result", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "format": {
+                  "depricated": false, 
+                  "description": "The format of the export. Default is GeotTiff format.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "default": "GTiff", 
+                    "type": "string"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Exports raster map layers using the region specified upstream."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "This process exports three raster map layers as a single RGB image using the region specified upstream.", 
+              "experimental": false, 
+              "id": "rgb_raster_exporter", 
+              "links": [], 
+              "parameters": {
+                "blur": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster dataset that should be used as the blue channel in the resulting GRB image.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "green": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster dataset that should be used as the green channel in the resulting GRB image.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "red": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster dataset that should be used as the red channel in the resulting GRB image.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Exports three RGB raster map layers using the region specified upstream."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Change the resolution of a space-time raster dataset with different methods.", 
+              "experimental": false, 
+              "id": "resample", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "method": {
+                  "depricated": false, 
+                  "description": "The resampling method to use", 
+                  "enum": [
+                    "near", 
+                    "bilinear", 
+                    "cubic", 
+                    "lanczos", 
+                    "average", 
+                    "mode", 
+                    "max", 
+                    "min", 
+                    "med", 
+                    "q1", 
+                    "q3"
+                  ], 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "type": "string"
+                  }
+                }, 
+                "target": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Spatially resample a space-time raster dataset."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Scales the image values between specified min and max values.", 
+              "experimental": false, 
+              "id": "scale_minmax", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "max": {
+                  "depricated": false, 
+                  "description": "New maximum value", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }, 
+                "min": {
+                  "depricated": false, 
+                  "description": "New minimum value", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "float", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Rescale raster data based on interval"
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Compute the zonal statistics of a time series using a vector polygon. The following parameters are computed: mean, min, max, mean_of_abs, stddev, variance, coeff_var, sum, null_cells, cells", 
+              "experimental": false, 
+              "id": "zonal_statistics", 
+              "links": [], 
+              "parameters": {
+                "data": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "polygons": {
+                  "depricated": false, 
+                  "description": "URL to a publicly accessible polygon file readable by OGR", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Compute the zonal statistics of a time series using a vector polygon."
+            }, 
+            {
+              "deprecated": false, 
+              "description": "Use a t.rast.algebra expression to compute a new space-time raster dataset from up to 6 existing space-time raster datasets.", 
+              "experimental": false, 
+              "id": "temporal_algebra", 
+              "links": [], 
+              "parameters": {
+                "a": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets identified as $a in the t.rast.algebra expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "b": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets identified as $b in the t.rast.algebra expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "basename": {
+                  "depricated": false, 
+                  "description": "Basename of the new generated raster datasets in the resulting space-time raster datasets", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "examples": [
+                      "ndvi_base"
+                    ], 
+                    "type": "string"
+                  }
+                }, 
+                "c": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets identified as $c in the t.rast.algebra expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "d": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets identified as $d in the t.rast.algebra expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "e": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets identified as $e in the t.rast.algebra expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "expression": {
+                  "depricated": false, 
+                  "description": "The t.rast.algebra expression", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "examples": [
+                      "$result = ($a + $b / ($a - $b))"
+                    ], 
+                    "type": "string"
+                  }
+                }, 
+                "f": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets identified as $f in the t.rast.algebra expression.", 
+                  "experimental": false, 
+                  "required": false, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }, 
+                "result": {
+                  "depricated": false, 
+                  "description": "Any openEO process object that returns a single space-time raster datasets identified as RESULT in the t.rast.algebra expression.", 
+                  "experimental": false, 
+                  "required": true, 
+                  "schema": {
+                    "format": "eodata", 
+                    "type": "object"
+                  }
+                }
+              }, 
+              "returns": {
+                "description": "Processed EO data.", 
+                "media_type": "application/json", 
+                "schema": {
+                  "format": "eodata", 
+                  "type": "object"
+                }
+              }, 
+              "summary": "Apply a t.rast.algebra expression with up to 6 space-time raster datasets."
+            }
+          ]
+        }
+
 
 Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/processes/raster_exporter
+      curl ${AUTH} https://openeo.mundialis.de/processes/raster_exporter
 
    .. code-block:: json
 
@@ -304,7 +1541,7 @@ Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/processes/udf_reduce_time
+      curl ${AUTH} https://openeo.mundialis.de/processes/udf_reduce_time
 
    .. code-block:: json
 
@@ -323,7 +1560,7 @@ Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/processes/min_time
+      curl ${AUTH} https://openeo.mundialis.de/processes/min_time
 
    .. code-block:: json
 
@@ -339,7 +1576,7 @@ Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/processes/NDVI
+      curl ${AUTH} https://openeo.mundialis.de/processes/ndvi
 
    .. code-block:: json
 
@@ -356,12 +1593,12 @@ Get information about each available process:
           }
         },
         "description": "Compute the NDVI based on the red and nir bands of the input dataset.",
-        "process_id": "NDVI"
+        "process_id": "ndvi"
       }
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/processes/filter_daterange
+      curl ${AUTH} https://openeo.mundialis.de/processes/filter_temporal
 
    .. code-block:: json
 
@@ -378,12 +1615,12 @@ Get information about each available process:
           }
         },
         "description": "Drops observations from a collection that have been captured before a start or after a given end date.",
-        "process_id": "filter_daterange"
+        "process_id": "filter_temporal"
       }
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/processes/filter_bbox
+      curl ${AUTH} https://openeo.mundialis.de/processes/filter_bbox
 
    .. code-block:: json
 
@@ -426,7 +1663,7 @@ Get information about each available process:
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/processes/zonal_statistics
+      curl ${AUTH} https://openeo.mundialis.de/processes/zonal_statistics
 
    .. code-block:: json
 
@@ -447,8 +1684,8 @@ Get information about each available process:
 openEO use case 1
 =================
 
-Use case one can be addressed in different ways using the eopenEO GRaaS wrapper. There are **POST** and **PUT**
-calls for job creation that reflects the concept of persistent and ephemeral processing in GRaaS databases.
+Use case one can be addressed in different ways using the openEO GRASS GIS driver wrapper. There are **POST** and **PUT**
+calls for job creation that reflects the concept of persistent and ephemeral processing in actinia databases.
 
 Persistent database approach
 ----------------------------
@@ -467,7 +1704,7 @@ Create the process graph as JSON code and send it via **curl** to the backend as
               "process_id": "min_time",
               "args": {
                   "collections": [{
-                      "process_id": "NDVI",
+                      "process_id": "ndvi",
                       "args": {
                           "collections": [{
                               "process_id": "filter_daterange",
@@ -526,7 +1763,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
 
       JSON='{...}'
 
-      curl -H "Content-Type: application/json" -X PUT -d "${JSON}" http://openeo.mundialis.de:5000/jobs
+      curl -H "Content-Type: application/json" -X PUT -d "${JSON}" https://openeo.mundialis.de/jobs
 
    .. code-block:: json
 
@@ -538,8 +1775,8 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
             "api_info": {
               "endpoint": "asyncpersistentresource",
               "method": "POST",
-              "path": "/locations/LL/mapsets/openeo_mapset_0/processing_async",
-              "request_url": "http://openeo.mundialis.de:8080/locations/LL/mapsets/openeo_mapset_0/processing_async"
+              "path": "/locations/latlong_wgs84/mapsets/openeo_mapset_0/processing_async",
+              "request_url": "http://openeo.mundialis.de:8080/locations/latlong_wgs84/mapsets/openeo_mapset_0/processing_async"
             },
             "datetime": "2018-03-06 12:43:24.788535",
             "http_code": 200,
@@ -561,7 +1798,7 @@ We need to poll for the final result using the job id, since the request is asyn
 
    .. code-block:: bash
 
-      curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
+      curl -X GET https://openeo.mundialis.de/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
 
    .. code-block:: json
 
@@ -574,8 +1811,8 @@ We need to poll for the final result using the job id, since the request is asyn
             "api_info": {
               "endpoint": "asyncpersistentresource",
               "method": "POST",
-              "path": "/locations/LL/mapsets/openeo_mapset_0/processing_async",
-              "request_url": "http://openeo.mundialis.de:8080/locations/LL/mapsets/openeo_mapset_0/processing_async"
+              "path": "/locations/latlong_wgs84/mapsets/openeo_mapset_0/processing_async",
+              "request_url": "http://openeo.mundialis.de:8080/locations/latlong_wgs84/mapsets/openeo_mapset_0/processing_async"
             },
             "datetime": "2018-03-06 12:43:30.601449",
             "http_code": 200,
@@ -658,7 +1895,7 @@ We need to poll for the final result using the job id, since the request is asyn
                       "nir": "S2A_B08",
                       "red": "S2A_B04"
                     },
-                    "process_id": "NDVI"
+                    "process_id": "ndvi"
                   }
                 ]
               },
@@ -676,7 +1913,7 @@ The final response will look like this:
 
    .. code-block:: bash
 
-      curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
+      curl -X GET https://openeo.mundialis.de/jobs/resource_id-af2ee1e7-71a4-48f0-953c-e3dacbf9c8c2
 
    .. code-block:: json
 
@@ -689,8 +1926,8 @@ The final response will look like this:
             "api_info": {
               "endpoint": "asyncpersistentresource",
               "method": "POST",
-              "path": "/locations/LL/mapsets/openeo_mapset_0/processing_async",
-              "request_url": "http://openeo.mundialis.de:8080/locations/LL/mapsets/openeo_mapset_0/processing_async"
+              "path": "/locations/latlong_wgs84/mapsets/openeo_mapset_0/processing_async",
+              "request_url": "http://openeo.mundialis.de:8080/locations/latlong_wgs84/mapsets/openeo_mapset_0/processing_async"
             },
             "datetime": "2018-03-06 12:43:51.238708",
             "http_code": 200,
@@ -730,9 +1967,9 @@ The final response will look like this:
                   "driver: sqlite",
                   "database: $GISDBASE/$LOCATION_NAME/$MAPSET/tgis/sqlite.db",
                   "WARNING: Temporal database connection defined as:",
-                  "/graas/workspace/temp_db/gisdbase_0e7883deea584a8b8cb5e823390bfa7e/LL/openeo_mapset_0/tgis/sqlite.db",
+                  "/graas/workspace/temp_db/gisdbase_0e7883deea584a8b8cb5e823390bfa7e/latlong_wgs84/openeo_mapset_0/tgis/sqlite.db",
                   "But database file does not exist.",
-                  "Creating temporal database: /graas/workspace/temp_db/gisdbase_0e7883deea584a8b8cb5e823390bfa7e/LL/openeo_mapset_0/tgis/sqlite.db",
+                  "Creating temporal database: /graas/workspace/temp_db/gisdbase_0e7883deea584a8b8cb5e823390bfa7e/latlong_wgs84/openeo_mapset_0/tgis/sqlite.db",
                   "0..0..100",
                   ""
                 ],
@@ -909,7 +2146,7 @@ The final response will look like this:
                       "nir": "S2A_B08",
                       "red": "S2A_B04"
                     },
-                    "process_id": "NDVI"
+                    "process_id": "ndvi"
                   }
                 ]
               },
@@ -927,7 +2164,7 @@ rime series and the resulting NDVI raster layer:
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/data
+      curl ${AUTH} https://openeo.mundialis.de/collections
 
    .. code-block:: json
 
@@ -935,22 +2172,22 @@ rime series and the resulting NDVI raster layer:
           {
             "description": "Space time raster dataset",
             "product_id": "LL.openeo_mapset_0.strds.S2A_B04_filter_daterange",
-            "source": "GRASS GIS location/mapset path: /LL/openeo_mapset_0"
+            "source": "GRASS GIS location/mapset path: /latlong_wgs84/openeo_mapset_0"
           },
           {
             "description": "Space time raster dataset",
             "product_id": "LL.openeo_mapset_0.strds.S2A_B08_filter_daterange",
-            "source": "GRASS GIS location/mapset path: /LL/openeo_mapset_0"
+            "source": "GRASS GIS location/mapset path: /latlong_wgs84/openeo_mapset_0"
           },
           {
             "description": "Space time raster dataset",
             "product_id": "LL.openeo_mapset_0.strds.S2A_B08_filter_daterange_NDVI",
-            "source": "GRASS GIS location/mapset path: /LL/openeo_mapset_0"
+            "source": "GRASS GIS location/mapset path: /latlong_wgs84/openeo_mapset_0"
           },
           {
             "description": "Raster dataset",
             "product_id": "LL.openeo_mapset_0.raster.S2A_B08_filter_daterange_NDVI_min_time",
-            "source": "GRASS GIS location/mapset path: /LL/openeo_mapset_0"
+            "source": "GRASS GIS location/mapset path: /latlong_wgs84/openeo_mapset_0"
           }
       ]
 
@@ -958,7 +2195,7 @@ We inspect the new NDVI time series:
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/data/LL.openeo_mapset_0.strds.S2A_B08_filter_daterange_NDVI
+      curl ${AUTH} https://openeo.mundialis.de/collections/latlong_wgs84.openeo_mapset_0.strds.S2A_B08_filter_daterange_NDVI
 
    .. code-block:: json
 
@@ -991,7 +2228,7 @@ We inspect the new NDVI time series:
           "nsres_min": "0.0001",
           "number_of_maps": "7",
           "product_id": "LL.openeo_mapset_0.strds.S2A_B08_filter_daterange_NDVI",
-          "source": "GRASS GIS location/mapset path: /LL/openeo_mapset_0",
+          "source": "GRASS GIS location/mapset path: /latlong_wgs84/openeo_mapset_0",
           "temporal_type": "2017-04-12 11:17:08",
           "time": {
             "from": "2017-04-12 11:17:08",
@@ -1004,14 +2241,14 @@ Information about the time reduced NDVI raster layer:
 
    .. code-block:: bash
 
-      curl http://openeo.mundialis.de:5000/data/LL.openeo_mapset_0.raster.S2A_B08_filter_daterange_NDVI_min_time
+      curl ${AUTH} https://openeo.mundialis.de/collections/latlong_wgs84.openeo_mapset_0.raster.S2A_B08_filter_daterange_NDVI_min_time
 
    .. code-block:: json
 
         {
           "cells": "4000000",
           "cols": "2000",
-          "comments": "\"r.series --overwrite file=\"/graas/workspace/temp_db/gisdbase_0e7883d\\eea584a8b8cb5e823390bfa7e/LL/openeo_mapset_0/.tmp/ba884fb4a052/44602\\.0\" output=\"S2A_B08_filter_daterange_NDVI_min_time\" method=\"minimum\"\\ quantile=\"",
+          "comments": "\"r.series --overwrite file=\"/graas/workspace/temp_db/gisdbase_0e7883d\\eea584a8b8cb5e823390bfa7e/latlong_wgs84/openeo_mapset_0/.tmp/ba884fb4a052/44602\\.0\" output=\"S2A_B08_filter_daterange_NDVI_min_time\" method=\"minimum\"\\ quantile=\"",
           "datatype": "DCELL",
           "description": "Raster dataset",
           "ewres": "0.0001",
@@ -1027,7 +2264,7 @@ Information about the time reduced NDVI raster layer:
           "nsres": "0.000100000000000001",
           "product_id": "LL.openeo_mapset_0.raster.S2A_B08_filter_daterange_NDVI_min_time",
           "rows": "2000",
-          "source": "GRASS GIS location/mapset path: /LL/openeo_mapset_0",
+          "source": "GRASS GIS location/mapset path: /latlong_wgs84/openeo_mapset_0",
           "title": "\"S2A_B08_filter_daterange_NDVI_min_time\""
         }
 
@@ -1051,7 +2288,7 @@ as JSON code and send a POST API call via **curl** to the backend as a processin
                         "process_id": "min_time",
                         "args": {
                             "collections": [{
-                                "process_id": "NDVI",
+                                "process_id": "ndvi",
                                 "args": {
                                     "collections": [{
                                         "process_id": "filter_daterange",
@@ -1090,7 +2327,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
 
       JSON='{...}'
 
-      curl -H "Content-Type: application/json" -X POST -d "${JSON}" http://openeo.mundialis.de:5000/jobs
+      curl -H "Content-Type: application/json" -X POST -d "${JSON}" https://openeo.mundialis.de/jobs
 
    .. code-block:: json
 
@@ -1102,8 +2339,8 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
             "api_info": {
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
-              "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
+              "path": "/locations/latlong_wgs84/processing_async_export_gcs",
+              "request_url": "http://openeo.mundialis.de:8080/locations/latlong_wgs84/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 12:46:16.940197",
             "http_code": 200,
@@ -1125,7 +2362,7 @@ We need to poll for the final result using the job id, since the request is asyn
 
    .. code-block:: bash
 
-      curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4
+      curl -X GET https://openeo.mundialis.de/jobs/resource_id-1d10265d-e435-4463-a913-e65e1a2cafe4
 
    .. code-block:: json
 
@@ -1138,8 +2375,8 @@ We need to poll for the final result using the job id, since the request is asyn
             "api_info": {
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
-              "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
+              "path": "/locations/latlong_wgs84/processing_async_export_gcs",
+              "request_url": "http://openeo.mundialis.de:8080/locations/latlong_wgs84/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 12:47:10.480688",
             "http_code": 200,
@@ -1196,9 +2433,9 @@ We need to poll for the final result using the job id, since the request is asyn
                   "driver: sqlite",
                   "database: $GISDBASE/$LOCATION_NAME/$MAPSET/tgis/sqlite.db",
                   "WARNING: Temporal database connection defined as:",
-                  "/graas/workspace/temp_db/gisdbase_89a821176c0b4702b36c27fe00575afc/LL/mapset_89a821176c0b4702b36c27fe00575afc/tgis/sqlite.db",
+                  "/graas/workspace/temp_db/gisdbase_89a821176c0b4702b36c27fe00575afc/latlong_wgs84/mapset_89a821176c0b4702b36c27fe00575afc/tgis/sqlite.db",
                   "But database file does not exist.",
-                  "Creating temporal database: /graas/workspace/temp_db/gisdbase_89a821176c0b4702b36c27fe00575afc/LL/mapset_89a821176c0b4702b36c27fe00575afc/tgis/sqlite.db",
+                  "Creating temporal database: /graas/workspace/temp_db/gisdbase_89a821176c0b4702b36c27fe00575afc/latlong_wgs84/mapset_89a821176c0b4702b36c27fe00575afc/tgis/sqlite.db",
                   "0..0..100",
                   ""
                 ],
@@ -1363,7 +2600,7 @@ We need to poll for the final result using the job id, since the request is asyn
                             "nir": "S2A_B08",
                             "red": "S2A_B04"
                           },
-                          "process_id": "NDVI"
+                          "process_id": "ndvi"
                         }
                       ]
                     },
@@ -1453,7 +2690,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
 
       JSON='{...}'
 
-      curl -H "Content-Type: application/json" -X POST -d "${JSON}" http://openeo.mundialis.de:5000/jobs
+      curl -H "Content-Type: application/json" -X POST -d "${JSON}" https://openeo.mundialis.de/jobs
 
    .. code-block:: JSON
 
@@ -1465,8 +2702,8 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
             "api_info": {
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
-              "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
+              "path": "/locations/latlong_wgs84/processing_async_export_gcs",
+              "request_url": "http://openeo.mundialis.de:8080/locations/latlong_wgs84/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 13:06:38.039900",
             "http_code": 200,
@@ -1487,7 +2724,7 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
 
    .. code-block:: bash
 
-      curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74
+      curl -X GET https://openeo.mundialis.de/jobs/resource_id-d5d6ef2a-2a84-49a4-beea-d7514c90af74
 
    .. code-block:: JSON
 
@@ -1500,8 +2737,8 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
             "api_info": {
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
-              "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
+              "path": "/locations/latlong_wgs84/processing_async_export_gcs",
+              "request_url": "http://openeo.mundialis.de:8080/locations/latlong_wgs84/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 13:07:21.924437",
             "http_code": 200,
@@ -1571,9 +2808,9 @@ The JSON code must be stored in a shell variable and passed to the **curl** comm
                   "driver: sqlite",
                   "database: $GISDBASE/$LOCATION_NAME/$MAPSET/tgis/sqlite.db",
                   "WARNING: Temporal database connection defined as:",
-                  "/graas/workspace/temp_db/gisdbase_ef7a7c01ba1d4715a8323c44aca9457b/LL/mapset_ef7a7c01ba1d4715a8323c44aca9457b/tgis/sqlite.db",
+                  "/graas/workspace/temp_db/gisdbase_ef7a7c01ba1d4715a8323c44aca9457b/latlong_wgs84/mapset_ef7a7c01ba1d4715a8323c44aca9457b/tgis/sqlite.db",
                   "But database file does not exist.",
-                  "Creating temporal database: /graas/workspace/temp_db/gisdbase_ef7a7c01ba1d4715a8323c44aca9457b/LL/mapset_ef7a7c01ba1d4715a8323c44aca9457b/tgis/sqlite.db",
+                  "Creating temporal database: /graas/workspace/temp_db/gisdbase_ef7a7c01ba1d4715a8323c44aca9457b/latlong_wgs84/mapset_ef7a7c01ba1d4715a8323c44aca9457b/tgis/sqlite.db",
                   "0..0..100",
                   ""
                 ],
@@ -1735,7 +2972,7 @@ The process graph has the following form:
 
       JSON='{...}'
 
-      curl -H "Content-Type: application/json" -X POST -d "${JSON}" http://openeo.mundialis.de:5000/jobs
+      curl -H "Content-Type: application/json" -X POST -d "${JSON}" https://openeo.mundialis.de/jobs
 
    .. code-block:: JSON
 
@@ -1747,8 +2984,8 @@ The process graph has the following form:
             "api_info": {
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
-              "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
+              "path": "/locations/latlong_wgs84/processing_async_export_gcs",
+              "request_url": "http://openeo.mundialis.de:8080/locations/latlong_wgs84/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 13:32:48.580963",
             "http_code": 200,
@@ -1768,7 +3005,7 @@ The process graph has the following form:
 
    .. code-block:: bash
 
-      curl -X GET http://openeo.mundialis.de:5000/jobs/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e
+      curl -X GET https://openeo.mundialis.de/jobs/resource_id-a8694233-3daf-4549-87bd-aeee16bbb44e
 
    .. code-block:: JSON
 
@@ -1781,8 +3018,8 @@ The process graph has the following form:
             "api_info": {
               "endpoint": "asyncephemeralexportgcsresource",
               "method": "POST",
-              "path": "/locations/LL/processing_async_export_gcs",
-              "request_url": "http://openeo.mundialis.de:8080/locations/LL/processing_async_export_gcs"
+              "path": "/locations/latlong_wgs84/processing_async_export_gcs",
+              "request_url": "http://openeo.mundialis.de:8080/locations/latlong_wgs84/processing_async_export_gcs"
             },
             "datetime": "2018-03-06 13:32:57.976511",
             "http_code": 200,
@@ -1853,9 +3090,9 @@ The process graph has the following form:
                   "driver: sqlite",
                   "database: $GISDBASE/$LOCATION_NAME/$MAPSET/tgis/sqlite.db",
                   "WARNING: Temporal database connection defined as:",
-                  "/graas/workspace/temp_db/gisdbase_6018e16171a642ac9c549543e98ecd28/LL/mapset_6018e16171a642ac9c549543e98ecd28/tgis/sqlite.db",
+                  "/graas/workspace/temp_db/gisdbase_6018e16171a642ac9c549543e98ecd28/latlong_wgs84/mapset_6018e16171a642ac9c549543e98ecd28/tgis/sqlite.db",
                   "But database file does not exist.",
-                  "Creating temporal database: /graas/workspace/temp_db/gisdbase_6018e16171a642ac9c549543e98ecd28/LL/mapset_6018e16171a642ac9c549543e98ecd28/tgis/sqlite.db",
+                  "Creating temporal database: /graas/workspace/temp_db/gisdbase_6018e16171a642ac9c549543e98ecd28/latlong_wgs84/mapset_6018e16171a642ac9c549543e98ecd28/tgis/sqlite.db",
                   "0..0..100",
                   ""
                 ],

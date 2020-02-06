@@ -35,4 +35,4 @@ deploy:
   keep-history: true
   github-token: $GITHUB_TOKEN
   on:
-    branch: travis
+    branch: master

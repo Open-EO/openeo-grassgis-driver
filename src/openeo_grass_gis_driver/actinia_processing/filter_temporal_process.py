@@ -19,27 +19,25 @@ PROCESS_NAME = "filter_temporal"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
 
     p_extent = Parameter(description="Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.",
                        schema={"type": "array",
-                               "format": "temporal-interval",
+                               "subtype": "temporal-interval",
                                "minItems": 2,
                                "maxItems": 2,
                                "items": {
                                  "anyOf": [
                                   {
                                     "type": "string",
-                                    "format": "date-time"
+                                    "format": "date-time",
+                                    "subtype": "date-time"
                                   },
                                   {
                                   "type": "string",
-                                    "format": "date"
-                                  },
-                                  {
-                                    "type": "string",
-                                    "format": "time"
+                                    "format": "date",
+                                    "subtype": "date"
                                   },
                                   {
                                     "type": "null"
@@ -48,12 +46,12 @@ def create_process_description():
                               },
                               "examples": [
                                 [
-                                  "2015-01-01",
-                                  "2016-01-01"
+                                  "2015-01-01T00:00:00Z",
+                                  "2016-01-01T00:00:00Z"
                                 ],
                                 [
-                                  "12:00:00Z",
-                                  "24:00:00Z"
+                                  "2015-01-01",
+                                  "2016-01-01"
                                 ]
                               ]},
                        required=True)

@@ -33,7 +33,7 @@ def create_process_description():
                        schema=[{
                                 "title": "Bounding Box",
                                 "type": "object",
-                                "format": "bounding-box",
+                                "subtype": "bounding-box",
                                 "required": [
                                   "west",
                                   "south",
@@ -74,7 +74,7 @@ def create_process_description():
                                     "default": "null"
                                   },
                                   "crs": {
-                                    "description": "Coordinate reference system of the extent specified as EPSG code or PROJ definition. Whenever possible, it is recommended to use EPSG codes instead of PROJ definitions. Defaults to `4326` (EPSG code 4326) unless the client explicitly requests a different coordinate reference system.",
+                                    "description": "Coordinate reference system of the extent, specified as as [EPSG code](http://www.epsg-registry.org/), [WKT2 (ISO 19162) string](http://docs.opengeospatial.org/is/18-010r7/18-010r7.html) or [PROJ definition (deprecated)](https://proj.org/usage/quickstart.html). Defaults to `4326` (EPSG code 4326) unless the client explicitly requests a different coordinate reference system.",
                                     "schema": {
                                       "anyOf": [
                                         {
@@ -86,19 +86,21 @@ def create_process_description():
                                           ]
                                         },
                                         {
-                                          "title": "PROJ definition",
+                                          "title": "WKT2",
                                           "type": "string",
-                                          "format": "proj-definition",
-                                          "examples": [
-                                            "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
-                                          ]
+                                          "subtype": "wkt2-definition"
+                                        },
+                                        {
+                                      "title": "PROJ definition",
+                                      "type": "string",
+                                      "subtype": "proj-definition",
+                                      "deprecated": true
                                         }
                                       ],
                                       "default": 4326
                                     }
                                   }
-                                },
-                                "subtype": "bounding-box"
+                                }
                             },
                             {
                               "title": "GeoJSON Polygon(s)",
@@ -109,22 +111,24 @@ def create_process_description():
                     required=True)
     p_temporal = Parameter(description="Limits the data to load from the collection to the specified left-closed temporal interval. Applies to all temporal dimensions if there are multiple of them. Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.",
                        schema={"type": "array",
-                               "format": "temporal-interval",
+                               "subtype": "temporal-interval",
                                "minItems": 2,
                                "maxItems": 2,
                                "items": {
                                  "anyOf": [
                                   {
                                     "type": "string",
-                                    "format": "date-time"
-                                  },
-                                  {
-                                  "type": "string",
-                                    "format": "date"
+                                    "format": "date-time",
+                                    "subtype": "date-time"
                                   },
                                   {
                                     "type": "string",
-                                    "format": "time"
+                                    "format": "date",
+                                    "subtype": "date"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "subtype": "time"
                                   },
                                   {
                                     "type": "null"
@@ -140,8 +144,7 @@ def create_process_description():
                                   "12:00:00Z",
                                   "24:00:00Z"
                                 ]
-                              ],
-                              "subtype": "temporal-interval"
+                              ]
                             },
                        required=True)
 
@@ -171,7 +174,7 @@ def create_process_description():
                 }])
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {"id": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m",

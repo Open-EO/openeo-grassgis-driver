@@ -11,7 +11,7 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import Actinia
 
 __license__ = "Apache License, Version 2.0"
 
-PROCESS_NAME = "reduce"
+PROCESS_NAME = "reduce_dimension"
 
 OPERATOR_DICT = {
     'sum': '+',
@@ -255,6 +255,7 @@ def serialize_tree(tree):
             results = []
             for node in tree['children']:
                 results.append(serialize_tree(node))
+            # TODO: normalized_difference(x, y) -> (x - y) / (x + y)
             return operator + '(' + (', ').join(results) + ')'
             #return operator
     if tree['type'] == 'literal':

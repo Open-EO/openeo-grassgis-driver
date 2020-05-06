@@ -22,22 +22,22 @@ PROCESS_NAME = "filter_polygon"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
     p_poly = Parameter(description="One or more polygons used for filtering",
                        schema={"anyOf": [
                                   {
                                     "type": "object",
-                                    "format": "geojson"
+                                    "subtype": "geojson"
                                   },
                                   {
                                     "type": "object",
-                                    "format": "vector-cube"
+                                    "subtype": "vector-cube"
                                   }]},
                        required=True)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {

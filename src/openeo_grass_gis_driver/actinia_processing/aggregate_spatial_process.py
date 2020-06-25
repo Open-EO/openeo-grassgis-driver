@@ -21,7 +21,7 @@ PROCESS_NAME = "aggregate_spatial"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                          schema={"type": "object", "subtype": "raster-cube"},
+                          schema={"type": "object", "format": "raster-cube"},
                           required=True)
 
     p_geometries = Parameter(description="Geometries as GeoJSON on which the aggregation will be based.",
@@ -61,7 +61,7 @@ def create_process_description():
                            required=False)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "subtype": "vector-cube"})
+                     schema={"type": "object", "format": "vector-cube"})
 
     # Example
     arguments = {"data": {"from_node": "get_b08_data"},

@@ -22,11 +22,11 @@ PROCESS_NAME = "trim"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "format": "raster-cube"},
                        required=True)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "format": "raster-cube"})
 
     # Example
     arguments = {
@@ -86,9 +86,8 @@ def get_process_list(node: Node):
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []
 
-    if "data" not in node.arguments or \
-            "polygons" not in node.arguments:
-        raise Exception("Process %s requires parameter data, polygons" % PROCESS_NAME)
+    if "data" not in node.arguments:
+        raise Exception("Process %s requires parameter data" % PROCESS_NAME)
 
     input_objects = node.get_parent_by_name(parent_name="data").output_objects
 

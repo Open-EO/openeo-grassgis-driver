@@ -22,7 +22,7 @@ PROCESS_NAME = "hants"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "format": "raster-cube"},
                        required=True)
     p_nf = Parameter(description="The number of frequencies to use",
                              schema={"type": "object", "format": "integer"},
@@ -47,7 +47,7 @@ def create_process_description():
                              required=False)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "format": "raster-cube"})
 
     # Example
     arguments = {"data": {"from_node": "get_strds_data"},

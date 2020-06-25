@@ -20,17 +20,17 @@ PROCESS_NAME = "ndvi"
 
 def create_process_description():
     p_data = Parameter(description="A raster data cube with two bands that have the common names red and nir assigned.",
-                      schema={"type": "object", "subtype": "raster-cube"},
+                      schema={"type": "object", "format": "raster-cube"},
                       required=True)
     p_nir = Parameter(description="The name of the NIR band. Defaults to the band that has the common name `nir` assigned.",
-                      schema={"type": "string", "subtype": "band-name"},
+                      schema={"type": "string", "format": "band-name"},
                       required=False)
     p_red = Parameter(description="The name of the red band. Defaults to the band that has the common name `red` assigned.",
                       schema={"type": "string", "subtype": "band-name"},
                       required=False)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "format": "raster-cube"})
 
     # Example
     arguments = {

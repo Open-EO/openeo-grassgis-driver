@@ -16,13 +16,10 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "filter_polygon"
 
-# does not conform to
-# https://open-eo.github.io/openeo-api/v/0.4.2/processreference/#filter_bbox
-
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
+                       schema={"type": "object", "format": "raster-cube"},
                        required=True)
     p_poly = Parameter(description="One or more polygons used for filtering",
                        schema={"anyOf": [
@@ -32,12 +29,12 @@ def create_process_description():
                                   },
                                   {
                                     "type": "object",
-                                    "subtype": "vector-cube"
+                                    "format": "vector-cube"
                                   }]},
                        required=True)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "subtype": "raster-cube"})
+                     schema={"type": "object", "format": "raster-cube"})
 
     # Example
     arguments = {

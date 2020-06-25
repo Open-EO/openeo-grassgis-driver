@@ -22,7 +22,7 @@ PROCESS_NAME = "mask_invalid_values"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "format": "raster-cube"},
                        required=True)
     p_min = Parameter(description="Minimum allowed value",
                        schema={"type": "object", "format": "float"},
@@ -32,7 +32,7 @@ def create_process_description():
                         required=True)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "format": "raster-cube"})
 
     examples = {
         "mask_invalid_values_1": {

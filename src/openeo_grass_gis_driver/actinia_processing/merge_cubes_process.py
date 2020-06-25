@@ -22,11 +22,11 @@ PROCESS_NAME = "merge_cubes"
 def create_process_description():
     p_data1 = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
+                       schema={"type": "object", "format": "raster-cube"},
                        required=True)
     p_data2 = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
+                       schema={"type": "object", "format": "raster-cube"},
                        required=True)
     # the overlap_resolver is not supported by us
     p_resolver = Parameter(description="A reduction operator that resolves the conflict if the data overlaps",
@@ -61,7 +61,7 @@ def create_process_description():
                        required=False)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "subtype": "raster-cube"})
+                     schema={"type": "object", "format": "raster-cube"})
 
     # Example
     arguments = {

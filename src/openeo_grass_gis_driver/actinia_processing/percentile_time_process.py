@@ -22,7 +22,7 @@ PROCESS_NAME = "percentile_time"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "format": "raster-cube"},
                        required=True)
     p_percentile = Parameter(description="The percentile to get from a "
                                          "space-time raster dataset",
@@ -30,7 +30,7 @@ def create_process_description():
                              required=True)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "format": "raster-cube"})
 
     # Example
     arguments = {"data": {"from_node": "get_strds_data"},

@@ -21,19 +21,19 @@ PROCESS_NAME = "rgb_raster_exporter"
 def create_process_description():
     p_red = Parameter(description="Any openEO process object that returns raster dataset that should be used as "
                                   "the red channel in the resulting GRB image.",
-                      schema={"type": "object", "format": "eodata"},
+                      schema={"type": "object", "format": "raster-cube"},
                       required=True)
     p_green = Parameter(description="Any openEO process object that returns raster dataset that should be used as "
                                     "the green channel in the resulting GRB image.",
-                        schema={"type": "object", "format": "eodata"},
+                        schema={"type": "object", "format": "raster-cube"},
                         required=True)
     p_blue = Parameter(description="Any openEO process object that returns raster dataset that should be used as "
                                    "the blue channel in the resulting GRB image.",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "format": "raster-cube"},
                        required=True)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "format": "raster-cube"})
 
      # Example
     arguments = {"red": {"from_node": "get_red_data"},

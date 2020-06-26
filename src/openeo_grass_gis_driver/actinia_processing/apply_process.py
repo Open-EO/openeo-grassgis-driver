@@ -30,12 +30,12 @@ FN_DICT = {
 
 def create_process_description():
     p_data = Parameter(description="Raster data cube",
-                       schema={"type": "object", "format": "raster-cube"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
     p_uprocess = Parameter(description="A process (callback) to be applied on each value. "
                                        "The specified process must be unary meaning that it must work on a single value.",
                            schema={"type": "object",
-                                   "format": "callback",
+                                   "subtype": "callback",
                                    "parameters": {
                                      "x": {
                                        "description": "A value of any type could be passed."
@@ -45,7 +45,7 @@ def create_process_description():
                            required=True)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "raster-cube"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {

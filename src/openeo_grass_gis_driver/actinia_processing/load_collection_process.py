@@ -16,14 +16,14 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "load_collection"
 
-# based on get_data, updated to OpenEO API v0.4
+# based on get_data, updated to OpenEO API v0.4, then to v1.0
 
 def create_process_description():
 
     p_data = Parameter(description="The collection identifier.",
                         schema={"type": "string",
-                                "pattern": "^[A-Za-z0-9_\\-\\.~/]+$",
                                 "subtype": "collection-id",
+                                "pattern": "^[A-Za-z0-9_\\-\\.~/]+$",
                                 "examples": ["nc_spm_08.landsat.raster.lsat5_1987_10",
                                              "nc_spm_08.PERMANENT.vector.lakes",
                                              "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]},
@@ -91,10 +91,10 @@ def create_process_description():
                                           "subtype": "wkt2-definition"
                                         },
                                         {
-                                      "title": "PROJ definition",
-                                      "type": "string",
-                                      "subtype": "proj-definition",
-                                      "deprecated": true
+                                          "title": "PROJ definition",
+                                          "type": "string",
+                                          "subtype": "proj-definition",
+                                          "deprecated": "true"
                                         }
                                       ],
                                       "default": 4326
@@ -169,7 +169,7 @@ def create_process_description():
                   "description": "The property value. Any data type could be passed."
                   }
                 },
-                "subtype": "callback"
+                "subtype": "process-graph"
                 }
                 }])
 

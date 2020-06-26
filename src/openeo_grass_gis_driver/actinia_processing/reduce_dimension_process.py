@@ -22,7 +22,7 @@ OPERATOR_DICT = {
 
 def create_process_description():
     p_data = Parameter(description="Raster data cube",
-                       schema={"type": "object", "format": "raster-cube"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
     p_reducer = Parameter(description="A reducer to apply on the specified dimension.",
                           schema={"type": "object",
@@ -62,7 +62,7 @@ def create_process_description():
                             required=False)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "raster-cube"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {

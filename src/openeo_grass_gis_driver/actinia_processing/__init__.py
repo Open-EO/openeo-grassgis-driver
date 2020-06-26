@@ -3,14 +3,16 @@
 # from . import aggregate_spatial_process.py
 # from . import apply_mask_process
 from . import apply_process
-from . import filter_bbox_process
 #from . import bbox_from_raster_process
-#from . import filter_polygon_process
+#from . import filter_bands_process
+from . import filter_bbox_process
+from . import filter_spatial_process
 from . import filter_temporal_process
 #from . import hants_process
 from . import load_collection_process
 #from . import mask_invalid_values_process
 from . import mask_process
+from . import mask_polygon_process
 from . import merge_cubes_process
 #from . import multilayer_mask_process
 from . import ndvi_process

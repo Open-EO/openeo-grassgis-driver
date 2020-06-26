@@ -16,13 +16,10 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "filter_bbox"
 
-# does not conform to
-# https://open-eo.github.io/openeo-api/v/0.4.2/processreference/#filter_bbox
-
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "raster-cube"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
     p_extent = Parameter(description="A bounding box, which may include a vertical axis (see `base` and `height`).\n\nThe coordinate reference system of the extent must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
                        schema={
@@ -80,16 +77,16 @@ def create_process_description():
                                           ]
                                         },
                                         {
-					  "title": "WKT2",
-					  "type": "string",
-					  "subtype": "wkt2-definition"
+                                          "title": "WKT2",
+                                          "type": "string",
+                                          "subtype": "wkt2-definition"
                                         },
-				        {
-					  "title": "PROJ definition",
-					  "type": "string",
-					  "subtype": "proj-definition",
-					  "deprecated": true
-				        }
+                                        {
+                                      "title": "PROJ definition",
+                                      "type": "string",
+                                      "subtype": "proj-definition",
+                                      "deprecated": true
+                                        }
                                       ],
                                       "default": 4326
                                     }
@@ -99,7 +96,7 @@ def create_process_description():
                     required=True)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "raster-cube"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {

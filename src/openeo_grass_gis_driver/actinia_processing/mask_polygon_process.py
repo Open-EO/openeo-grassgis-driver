@@ -87,7 +87,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
     pc = []
 
     importer = {"id": "v_in_geojson_%i" % rn,
-             "module": "v_in_geojson",
+             "module": "v.in.geojson",
              "inputs": [{"param": "input",
                          "value": vector_object},
                         {"param": "output",

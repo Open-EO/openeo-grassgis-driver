@@ -103,16 +103,13 @@ def create_process_chain_entry(input_object: DataObject, geometries: str):
     pc = []
 
     importer = {
-        "id": "importer_%i" % rn,
-        "module": "importer",
-        "inputs": [{
-            "import_descr": {
-                "source": geometries,
-                "type": "vector"
-            },
-            "param": "map",
-            "value": "geometries"
-        }]
+        "id": "v_in_geojson_%i" % rn,
+        "module": "v.in.geojson",
+        "inputs": [{"param": "input",
+                    "value": geometries},
+                   {"param": "output",
+                    "value": "geometries"},
+                  ]}
     }
 
     g_region_1 = {

@@ -80,7 +80,7 @@ def create_process_description():
                                         {
                                           "title": "EPSG Code",
                                           "type": "integer",
-                                          "format": "epsg-code",
+                                          "subtype": "epsg-code",
                                           "examples": [
                                             7099
                                           ]
@@ -103,7 +103,7 @@ def create_process_description():
                                 }
                             },
                             {
-                              "title": "GeoJSON Polygon(s)",
+                              "title": "GeoJSON",
                               "type": "object",
                               "subtype": "geojson"
                             }
@@ -252,6 +252,7 @@ def create_process_chain_entry(input_object: DataObject,
 
     pc.append(importer)
 
+    # TODO: spatial extent can also be a GeoJSON object
     if spatial_extent is not None:
         north = spatial_extent["north"]
         south = spatial_extent["south"]

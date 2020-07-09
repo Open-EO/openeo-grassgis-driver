@@ -21,17 +21,8 @@ def create_process_description():
                        schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
 
-    p_bands = Parameter(description="A list of band names.",
-                        schema={
-                                "type": "array",
-                                "items": {
-                                  "type": "string",
-                                  "subtype": "band-name"
-                                }
-                            },
-                    required=False)
-
-    p_common_names = Parameter(description="A list of common band names.",
+    p_bands = Parameter(description="A list of band names. "
+                                           "Either the unique band name or one of the common band names.",
                                schema={
                                        "type": "array",
                                        "items": {
@@ -89,7 +80,6 @@ def create_process_description():
                             summary="Filter the bands by name",
                             parameters={"data": p_data,
                                         "bands": p_bands,
-                                        "common_names": p_common_names,
                                         "wavelengths": p_wavelengths},
                             returns=rv,
                             examples=examples)
@@ -101,7 +91,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_time_series: DataObject,
-                               bands, common_names, wavelengths,
+                               bands, wavelengths,
                                output_time_series: DataObject):
     """Create a Actinia command of the process chain that uses g.region to create a valid computational region
     for the provide input strds
@@ -125,8 +115,6 @@ def create_process_chain_entry(input_time_series: DataObject,
                      "value": "%(input)s" % {"input": input_time_series.grass_name()}},
                     {"param": "bands",
                      "value": "%(bands)s" % {"bands": (',').join(bands)}},
-                    {"param": "common_names",
-                     "value": "%(common_names)s" % {"common_names": (',').join(common_names)}},
                     {"param": "wavelengths",
                      "value": "%(wavelengths)s" % {"wavelengths": wvstring}},
                     {"param": "output",
@@ -148,17 +136,13 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     # at least one of bands, common_names, wavelengths must be given 
     if "data" not in node.arguments or \
             ("bands" not in node.arguments and \
-            "common_names" not in node.arguments and \
             "wavelengths" not in node.arguments):
-        raise Exception("Process %s requires parameter data and at east one of "
-                        "bands, common_names, wavelengths" % PROCESS_NAME)
+        raise Exception("Process %s requires parameter data and at least one of "
+                        "bands, wavelengths" % PROCESS_NAME)
 
     bands = None
     if "bands" in node.arguments:
         bands = node.arguments["bands"]
-    common_names = None
-    if "common_names" in node.arguments:
-        common_names = node.arguments["common_names"]
     wavelengths = None
     if "wavelengths" in node.arguments:
         wavelengths = node.arguments["wavelengths"]
@@ -169,7 +153,7 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     output_objects.append(output_object)
     node.add_output(output_object=output_object)
 
-    pc = create_process_chain_entry(data_object, bands, common_names, wavelengths,
+    pc = create_process_chain_entry(data_object, bands, wavelengths,
                                     output_object)
     process_list.append(pc)
 

@@ -35,18 +35,15 @@ class ProcessGraphId(ResourceBase):
         else:
             return ErrorSchema(id=str(uuid4()), code=400, message=f"Process graph id {id} not found").as_response(400)
 
-    def patch(self, id):
+    # PATCH and POST have been removed from the openeo API
+    def put(self, id):
         try:
-            """Update a process graph in the graph database"""
+            """Store and replace custom process-graphs"""
             # TODO: Implement user specific database access
 
-            if id in self.graph_db:
-                process_graph = request.get_json()
-                self.graph_db[id] = process_graph
-                return make_response(id, 204)
-            else:
-                return ErrorSchema(id="123456678", code=404,
-                                   message=f"Process graph with id {id} not found in database.").as_response(404)
+            process_graph = request.get_json()
+            self.graph_db[id] = process_graph
+            return make_response(id, 204)
         except Exception:
 
             e_type, e_value, e_tb = sys.exc_info()

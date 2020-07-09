@@ -85,7 +85,7 @@ def create_process_description():
                                       "title": "PROJ definition",
                                       "type": "string",
                                       "subtype": "proj-definition",
-                                      "deprecated": true
+                                      "deprecated": True
                                         }
                                       ],
                                       "default": 4326

@@ -31,7 +31,7 @@ def create_process_description():
     # the overlap_resolver is not supported by us
     p_resolver = Parameter(description="A reduction operator that resolves the conflict if the data overlaps",
                        schema={"type": "object",
-                               "subtype": "process-graph"
+                               "subtype": "process-graph",
                                 "parameters": [
                                   {
                                     "name": "x",
@@ -53,7 +53,7 @@ def create_process_description():
                                     "schema": {
                                       "description": "Any data type."
                                     },
-                                    required=False,
+                                    "required": False,
                                     "default": "null"
                                   }
                                 ]

@@ -30,7 +30,7 @@ OUTPUT_FORMATS = {
       {
         "href": "https://www.gdal.org/frmt_gtiff.html",
         "rel": "about",
-        "title": "GDAL on the GeoTiff file format andstorage options"
+        "title": "GDAL on the GeoTiff file format and storage options"
       }
     ]
   }

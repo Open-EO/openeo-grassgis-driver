@@ -22,32 +22,32 @@ PROCESS_NAME = "hants"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
     p_nf = Parameter(description="The number of frequencies to use",
-                             schema={"type": "object", "format": "integer"},
+                             schema={"type": "object", "subtype": "integer"},
                              required=True)
     p_dod = Parameter(description="Degree of over-determination",
-                             schema={"type": "object", "format": "integer"},
+                             schema={"type": "object", "subtype": "integer"},
                              required=False)
     p_fet = Parameter(description="Fit error tolerance when filtering outliers",
-                             schema={"type": "object", "format": "float"},
+                             schema={"type": "object", "subtype": "float"},
                              required=False)
     p_rangelo = Parameter(description="Ignore values below this limit",
-                             schema={"type": "object", "format": "float"},
+                             schema={"type": "object", "subtype": "float"},
                              required=False)
     p_rangehi = Parameter(description="Ignore values above this limit",
-                             schema={"type": "object", "format": "float"},
+                             schema={"type": "object", "subtype": "float"},
                              required=False)
     p_rejlo = Parameter(description="Reject low outliers",
-                             schema={"type": "object", "format": "boolean"},
+                             schema={"type": "object", "subtype": "boolean"},
                              required=False)
     p_rejhi = Parameter(description="Reject high outliers",
-                             schema={"type": "object", "format": "boolean"},
+                             schema={"type": "object", "subtype": "boolean"},
                              required=False)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {"data": {"from_node": "get_strds_data"},

@@ -15,7 +15,7 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-PROCESS_NAME = "resample_cube_spatial"
+PROCESS_NAME = "resample_spatial"
 
 
 def create_process_description():
@@ -23,10 +23,10 @@ def create_process_description():
 
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
     p_target = Parameter(description="Any openEO process object that returns a raster dataset",
-                         schema={"type": "object", "format": "eodata"},
+                         schema={"type": "object", "subtype": "raster-cube"},
                          required=True)
     p_method = Parameter(description="The resampling method to use",
                          schema={"type": "string"},
@@ -46,7 +46,7 @@ def create_process_description():
                      ]
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {"data": {"from_node": "get_strds_data_1"},

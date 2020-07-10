@@ -22,37 +22,37 @@ PROCESS_NAME = "map_algebra"
 def create_process_description():
     p_a = Parameter(description="Any openEO process object that returns a single raster datasets identified as $a "
                                 "in the r.mapcalc expression.",
-                    schema={"type": "object", "format": "eodata"},
+                    schema={"type": "object", "subtype": "raster-cube"},
                     required=False)
 
     p_b = Parameter(description="Any openEO process object that returns a single raster datasets identified as $b "
                                 "in the r.mapcalc expression.",
-                    schema={"type": "object", "format": "eodata"},
+                    schema={"type": "object", "subtype": "raster-cube"},
                     required=False)
 
     p_c = Parameter(description="Any openEO process object that returns a single raster datasets identified as $c "
                                 "in the r.mapcalc expression.",
-                    schema={"type": "object", "format": "eodata"},
+                    schema={"type": "object", "subtype": "raster-cube"},
                     required=False)
 
     p_d = Parameter(description="Any openEO process object that returns a single raster datasets identified as $d "
                                 "in the r.mapcalc expression.",
-                    schema={"type": "object", "format": "eodata"},
+                    schema={"type": "object", "subtype": "raster-cube"},
                     required=False)
 
     p_e = Parameter(description="Any openEO process object that returns a single raster datasets identified as $e "
                                 "in the r.mapcalc expression.",
-                    schema={"type": "object", "format": "eodata"},
+                    schema={"type": "object", "subtype": "raster-cube"},
                     required=False)
 
     p_f = Parameter(description="Any openEO process object that returns a single raster datasets identified as $f "
                                 "in the r.mapcalc expression.",
-                    schema={"type": "object", "format": "eodata"},
+                    schema={"type": "object", "subtype": "raster-cube"},
                     required=False)
 
     p_result = Parameter(description="An openEO process object "
                                      "identified as RESULT in the r.mapcalc expression.",
-                         schema={"type": "object", "format": "eodata"},
+                         schema={"type": "object", "subtype": "raster-cube"},
                          required=True)
 
     p_expression = Parameter(description="The r.mapcalc expression",
@@ -61,14 +61,14 @@ def create_process_description():
                              required=True)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {
                 "a": {"from_node": "get_a_data"},
                 "b": {"from_node": "get_b_data"},
                 "result": "ndvi",
-                "expression": "$result = ($a + $b / ($a - $b))"
+                "expression": "$result = ($a - $b / ($a + $b))"
             }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"mapcalc_1": node})

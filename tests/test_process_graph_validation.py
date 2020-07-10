@@ -3,7 +3,7 @@ import pprint
 import unittest
 from flask import json
 from openeo_grass_gis_driver.test_base import TestBase
-from openeo_grass_gis_driver.utils.process_graph_examples_v04 import *
+from openeo_grass_gis_driver.utils.process_graph_examples_v10 import *
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -44,19 +44,19 @@ class GraphValidationTestCase(TestBase):
         response = self.app.post('/validation', data=json.dumps(DATERANGE), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
-    def test_6_graph_zonal_statistics(self):
+    def no_support_test_6_graph_zonal_statistics(self):
         """Run the validation test
         """
         response = self.app.post('/validation', data=json.dumps(ZONAL_STATISTICS), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
-    def test_9_graph_raster_export(self):
+    def no_support_test_9_graph_raster_export(self):
         """Run the validation test
         """
         response = self.app.post('/validation', data=json.dumps(RASTER_EXPORT), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 204)
 
-    def test_10_graph_map_algebra(self):
+    def no_support_test_10_graph_map_algebra(self):
         """Run the validation test
         """
         response = self.app.post('/validation', data=json.dumps(MAP_ALGEBRA), content_type="application/json", headers=self.auth)

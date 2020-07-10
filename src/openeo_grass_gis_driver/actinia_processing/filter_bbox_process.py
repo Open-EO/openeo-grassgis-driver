@@ -16,18 +16,15 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "filter_bbox"
 
-# does not conform to
-# https://open-eo.github.io/openeo-api/v/0.4.2/processreference/#filter_bbox
-
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
     p_extent = Parameter(description="A bounding box, which may include a vertical axis (see `base` and `height`).\n\nThe coordinate reference system of the extent must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
                        schema={
                                 "type": "object",
-                                "format": "bounding-box",
+                                "subtype": "bounding-box",
                                 "required": [
                                   "west",
                                   "south",
@@ -68,24 +65,27 @@ def create_process_description():
                                     "default": "null"
                                   },
                                   "crs": {
-                                    "description": "Coordinate reference system of the extent specified as EPSG code or PROJ definition. Whenever possible, it is recommended to use EPSG codes instead of PROJ definitions. Defaults to `4326` (EPSG code 4326) unless the client explicitly requests a different coordinate reference system.",
+                                    "description": "Coordinate reference system of the extent, specified as as [EPSG code](http://www.epsg-registry.org/), [WKT2 (ISO 19162) string](http://docs.opengeospatial.org/is/18-010r7/18-010r7.html) or [PROJ definition (deprecated)](https://proj.org/usage/quickstart.html). Defaults to `4326` (EPSG code 4326) unless the client explicitly requests a different coordinate reference system.",
                                     "schema": {
                                       "anyOf": [
                                         {
                                           "title": "EPSG Code",
                                           "type": "integer",
-                                          "format": "epsg-code",
+                                          "subtype": "epsg-code",
                                           "examples": [
                                             7099
                                           ]
                                         },
                                         {
-                                          "title": "PROJ definition",
+                                          "title": "WKT2",
                                           "type": "string",
-                                          "format": "proj-definition",
-                                          "examples": [
-                                            "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
-                                          ]
+                                          "subtype": "wkt2-definition"
+                                        },
+                                        {
+                                      "title": "PROJ definition",
+                                      "type": "string",
+                                      "subtype": "proj-definition",
+                                      "deprecated": True
                                         }
                                       ],
                                       "default": 4326
@@ -96,7 +96,7 @@ def create_process_description():
                     required=True)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {

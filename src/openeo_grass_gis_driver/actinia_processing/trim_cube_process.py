@@ -14,7 +14,7 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-PROCESS_NAME = "filter_polygon"
+PROCESS_NAME = "trim"
 
 # does not conform to
 # https://open-eo.github.io/openeo-api/v/0.4.2/processreference/#filter_bbox
@@ -22,40 +22,26 @@ PROCESS_NAME = "filter_polygon"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
-                       required=True)
-    p_poly = Parameter(description="One or more polygons used for filtering",
-                       schema={"anyOf": [
-                                  {
-                                    "type": "object",
-                                    "format": "geojson"
-                                  },
-                                  {
-                                    "type": "object",
-                                    "format": "vector-cube"
-                                  }]},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {
-                "data": {"from_node": "get_data_1"},
-                "polygons": {"from_node": "get_data_2"},
+                "data": {"from_node": "get_data_1"}
             }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"filter_polygon_1": node})
+    graph = ProcessGraph(title="title", description="description", process_graph={"trim_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
                                process_graph=graph)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Limits the data cube over the spatial dimensions to the specified polygons.\n\nThe filter retains "
-                             "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
-                             "defined in the Simple Features standard by the OGC).",
-                            summary="Spatial filter using polygons",
-                            parameters={"data": p_data,
-                                        "polygons": p_poly},
+                            description="Removes slices solely containing no-data values. "
+                                        "If the dimension is irregular categorical then slices in the middle can be removed.",
+                            summary="Remove slices with no-data values",
+                            parameters={"data": p_data},
                             returns=rv,
                             examples=examples)
 
@@ -65,7 +51,7 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_object: DataObject, vector_object: DataObject,
+def create_process_chain_entry(input_object: DataObject,
                                output_object: DataObject):
     """Create a Actinia command of the process chain
 
@@ -76,25 +62,15 @@ def create_process_chain_entry(input_object: DataObject, vector_object: DataObje
 
     rn = randint(0, 1000000)
 
-    pc = [{"id": "v_to_rast_%i" % rn,
-          "module": "v.to.rast",
-          "inputs": [{"param": "input", "value": vector_object.grass_name()},
-                     {"param": "output", "value": "MASK"},
-                     {"param": "type", "value": "area"},
-                     {"param": "use", "value": "val"},
-                     ]},
-        {"id": "t_rast_algebra_%i" % rn,
+    pc = [{"id": "t_rast_algebra_%i" % rn,
          "module": "t.rast.algebra",
          "inputs": [{"param": "expression",
                      "value": "%(result)s = 1 * %(input)s" % 
                               {"result":  output_object.grass_name(),
                                "input": input_object.grass_name()}},
                     {"param": "basename",
-                     "value": "filter_polygon"},
+                     "value": "trim"},
                     ]},
-        {"id": "r_mask_%i" % rn,
-         "module": "r_mask",
-         "inputs": {"flags": "r"}}
          ]
 
     return pc
@@ -110,26 +86,20 @@ def get_process_list(node: Node):
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []
 
-    if "data" not in node.arguments or \
-            "polygons" not in node.arguments:
-        raise Exception("Process %s requires parameter data, polygons" % PROCESS_NAME)
+    if "data" not in node.arguments:
+        raise Exception("Process %s requires parameter data" % PROCESS_NAME)
 
     input_objects = node.get_parent_by_name(parent_name="data").output_objects
-    vector_objects = node.get_parent_by_name(parent_name="polygons").output_objects
 
     if not input_objects:
         raise Exception("Process %s requires an input strds" % PROCESS_NAME)
 
-    if not vector_objects:
-        raise Exception("Process %s requires an input vector" % PROCESS_NAME)
-
     input_object = list(input_objects)[-1]
-    vector_object = list(vector_objects)[-1]
 
     output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
-    pc = create_process_chain_entry(input_object, vector_object, output_object)
+    pc = create_process_chain_entry(input_object, output_object)
     process_list.append(pc)
 
     return output_objects, process_list

@@ -11,7 +11,7 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import Actinia
 
 __license__ = "Apache License, Version 2.0"
 
-PROCESS_NAME = "reduce"
+PROCESS_NAME = "reduce_dimension"
 
 OPERATOR_DICT = {
     'sum': '+',
@@ -22,70 +22,52 @@ OPERATOR_DICT = {
 
 def create_process_description():
     p_data = Parameter(description="Raster data cube",
-                       schema={"type": "object", "format": "raster-cube"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
-    p_reducer = Parameter(description="The reducer",
-                         schema={
-                "anyOf": [
-                    {
-                        "title": "Unary behaviour",
-                        "description": "Passes an array to the reducer.",
-                        "type": "object",
-                        "format": "callback",
-                        "parameters": {
-                            "data": {
-                                "description": "An array with elements of any data type.",
-                                "type": "array",
-                                "items": {
-                                    "description": "Any data type."
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "title": "Binary behaviour",
-                        "description": "Passes two values to the reducer.",
-                        "type": "object",
-                        "format": "callback",
-                        "parameters": {
-                            "x": {
-                                "description": "The first value. Any data type could be passed."
-                            },
-                            "y": {
-                                "description": "The second value. Any data type could be passed."
-                            }
-                        }
-                    },
-                    {
-                        "title": "No operation behaviour",
-                        "description": "Specifying `null` works only on dimensions with a single dimension value left. In this case the remaining value is treated like a reduction result and the dimension gets dropped.",
-                        "type": "null"
-                    }
-                ],
-                "default": "null"
-            },
+    p_reducer = Parameter(description="A reducer to apply on the specified dimension.",
+                          schema={"type": "object",
+                                "subtype": "process-graph",
+                                "parameters": [
+                                  {
+                                    "name": "data",
+                                    "description": "A labeled array with elements of any type.",
+                                    "schema": {
+                                      "type": "array",
+                                      "subtype": "labeled-array",
+                                      "items": {
+                                        "description": "Any data type."
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "context",
+                                    "description": "Additional data passed by the user.",
+                                    "schema": {
+                                      "description": "Any data type."
+                                    },
+                                    "optional": "true",
+                                    "default": "null"
+                                   }
+                                   ]
+                                },
                          required=True)
 
-    p_dimension = Parameter(description="The dimension",
+    p_dimension = Parameter(description="The name of the dimension over which to reduce.",
                        schema={"type": "string"},
                        required=True)
 
-    p_target_dimension = Parameter(description="The target dimension",
-                       schema={"type": ["string", "null"],
-                            "default": "null"})
-
-    p_binary = Parameter(description="If binary",
-                       schema={"type": "boolean",
-                            "default": False})
+    p_context = Parameter(description="Additional data to be passed to the reducer.",
+                       schema={"description": "Any data type.",
+                            "default": "null"},
+                            required=False)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "raster-cube"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {
                 "data": {"from_node": "get_strds_data"},
                 "dimension": "spatial",
-                "target_dimension": "spatial",
                 "reducer": "null"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"reduce1": node})
@@ -94,7 +76,10 @@ def create_process_description():
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Reduce",
                             summary="Reduce",
-                            parameters={"data": p_data, "reducer": p_reducer, "dimension": p_dimension, "target_dimension": p_target_dimension, "binary": p_binary},
+                            parameters={"data": p_data,
+                                        "reducer": p_reducer,
+                                        "dimension": p_dimension,
+                                        "context": p_context,},
                             returns=rv,
                             examples=examples)
 
@@ -105,7 +90,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_object: DataObject, dimtype, formula,
-                               operators, target_dimtype, output_object: DataObject):
+                               operators, output_object: DataObject):
     """Create a Actinia process description.
 
     :param input_object: The input time series object
@@ -127,7 +112,7 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
     #              from the dimension name
     #              BUT the openeo object does not exist yet
     # implement openeo / STAC like dimensions in GRASS ?
-    
+
     rn = randint(0, 1000000)
 
     if dimtype == 'temporal':
@@ -157,7 +142,7 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
 
         # TODO: quantiles with openeo options probabilites (list of values between 0 and 1
         # q as number of intervals to calculate quantiles for
-        
+
         pc = {"id": "t_rast_series_%i" % rn,
               "module": "t.rast.series",
               "inputs": [{"param": "input", "value": input_object.grass_name()},
@@ -184,9 +169,8 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
                     {"param": "output",
                      "value": output_object.grass_name()}]}
 
-
-
     return pc
+
 
 def get_dimension_type(dimension_name):
     """Guess dimension type from dimension name.
@@ -206,6 +190,7 @@ def get_dimension_type(dimension_name):
         dimtype = 'spatial'
 
     return dimtype
+
 
 def construct_tree(obj):
     nodes = dict()
@@ -237,9 +222,10 @@ def construct_tree(obj):
                 node['operator'] = config['process_id']
                 operators.append(node['operator'])
                 node['children'] = []
-        if config['result'] == True:
+        if config['result'] is True:
             root = node
     return root, operators
+
 
 # use only for dimension "bands"
 def serialize_tree(tree):
@@ -255,12 +241,14 @@ def serialize_tree(tree):
             results = []
             for node in tree['children']:
                 results.append(serialize_tree(node))
+            # TODO: normalized_difference(x, y) -> (x - y) / (x + y)
             return operator + '(' + (', ').join(results) + ')'
-            #return operator
+            # return operator
     if tree['type'] == 'literal':
         return str(tree['value'])
     if tree['type'] == 'inputdata':
         return 'data[' + str(tree['index']) + ']'
+
 
 def get_process_list(node: Node):
     """Analyse the process description and return the Actinia process chain
@@ -275,12 +263,8 @@ def get_process_list(node: Node):
     if dimtype is None:
         raise Exception('Unable to determine dimension type for dimension <%s>.' % (dimension))
 
-    target_dimtype = None
-    if "target_dimension" in node.arguments and node.arguments["target_dimension"] is not None:
-        target_dimtype = get_dimension_type(node.arguments["target_dimension"])
-
     tree, operators = construct_tree(node.as_dict()['arguments']['reducer']['callback'])
-    #print (operators)
+    # print (operators)
     formula = None
     output_datatype = GrassDataType.RASTER
     if dimtype == 'bands':
@@ -304,7 +288,6 @@ def get_process_list(node: Node):
                                         dimtype,
                                         formula,
                                         operators,
-                                        target_dimtype,
                                         output_object)
         process_list.append(pc)
 

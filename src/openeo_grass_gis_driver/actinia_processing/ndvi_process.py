@@ -20,15 +20,23 @@ PROCESS_NAME = "ndvi"
 
 def create_process_description():
     p_data = Parameter(description="A raster data cube with two bands that have the common names red and nir assigned.",
-                      schema={"type": "object", "format": "eodata"},
+                      schema={"type": "object", "subtype": "raster-cube"},
                       required=True)
+    p_nir = Parameter(description="The name of the NIR band. Defaults to the band that has the common name `nir` assigned.",
+                      schema={"type": "string", "subtype": "band-name"},
+                      required=False)
+    p_red = Parameter(description="The name of the red band. Defaults to the band that has the common name `red` assigned.",
+                      schema={"type": "string", "subtype": "band-name"},
+                      required=False)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {
         "data": {"from_node": "get_data"},
+        "nir": "S2_8",
+        "red": "S2_4"        
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"ndvi_1": node})
@@ -42,7 +50,9 @@ def create_process_description():
                                         "that holds the computed values. ",
                             summary="Computes the Normalized Difference Vegetation Index (NDVI). "
                                     "The NDVI is computed as (nir - red) / (nir + red).",
-                            parameters={"data": p_data},
+                            parameters={"data": p_data,
+                                        "nir": p_nir,
+                                        "red": p_red},
                             returns=rv,
                             examples=examples)
 
@@ -53,6 +63,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_time_series: DataObject,
+                               nir_band, red_band, 
                                output_time_series: DataObject):
     """Create a Actinia process description that uses t.rast.ndvi to create the NDVI time series
 
@@ -61,6 +72,9 @@ def create_process_chain_entry(input_time_series: DataObject,
     :return: A list of Actinia process chain descriptions
     """
     rn = randint(0, 1000000)
+
+    # TODO: adjust t.rast.ndvi to accept nir band and red band names
+    #       pass nir_band and red_band to t.rast.ndvi
 
     pc = [
         {"id": "t_rast_ndvi_%i" % rn,
@@ -96,13 +110,24 @@ def get_process_list(node: Node):
 
     input_strds = list(input_objects)[-1]
 
+    nir_band = None
+    red_band = None
+    if "nir" in node.arguments and \
+       node.arguments["nir"] is not None and \
+       node.arguments["nir"] != "null":
+        nir_band = node.arguments["nir"]
+    if "red" in node.arguments and \
+       node.arguments["red"] is not None and \
+       node.arguments["red"] != "null":
+        nir_band = node.arguments["red"]
+
     output_objects.extend(list(input_objects))
 
     output_object = DataObject(name=f"{input_strds.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
     node.add_output(output_object=output_object)
 
-    pc = create_process_chain_entry(input_strds, output_object)
+    pc = create_process_chain_entry(input_strds, nir_band, red_band, output_object)
     process_list.extend(pc)
 
     return output_objects, process_list

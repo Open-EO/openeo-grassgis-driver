@@ -22,15 +22,46 @@ PROCESS_NAME = "merge_cubes"
 def create_process_description():
     p_data1 = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
     p_data2 = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
+    # the overlap_resolver is not supported by us
+    p_resolver = Parameter(description="A reduction operator that resolves the conflict if the data overlaps",
+                       schema={"type": "object",
+                               "subtype": "process-graph",
+                                "parameters": [
+                                  {
+                                    "name": "x",
+                                    "description": "The first value.",
+                                    "schema": {
+                                      "description": "Any data type."
+                                    }
+                                  },
+                                  {
+                                    "name": "y",
+                                    "description": "The second value.",
+                                    "schema": {
+                                      "description": "Any data type."
+                                    }
+                                  },
+                                  {
+                                    "name": "context",
+                                    "description": "Additional data passed by the user.",
+                                    "schema": {
+                                      "description": "Any data type."
+                                    },
+                                    "required": False,
+                                    "default": "null"
+                                  }
+                                ]
+                              },
+                       required=False)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {
@@ -46,7 +77,8 @@ def create_process_description():
                             description="The data cubes have to be compatible. A merge is the inverse of a split if there is no overlap.",
                             summary="Merging two data cubes",
                             parameters={"cube1": p_data1,
-                                        "cube2": p_data2},
+                                        "cube2": p_data2,
+                                        "overlap_resolver": p_resolver},
                             returns=rv,
                             examples=examples)
 
@@ -66,6 +98,8 @@ def create_process_chain_entry(cube1_object: DataObject, cube2_object: DataObjec
     """
 
     rn = randint(0, 1000000)
+
+    # t.merge does not have a method to resolve overlaps
 
     pc = [{"id": "t_merge_%i" % rn,
          "module": "t.merge",
@@ -94,6 +128,11 @@ def get_process_list(node: Node):
 
     cube1_objects = node.get_parent_by_name(parent_name="cube1").output_objects
     cube2_objects = node.get_parent_by_name(parent_name="cube2").output_objects
+
+    if "overlap_resolver" in node.arguments and \
+        (node.arguments["overlap_resolver"] is not None or
+        node.arguments["overlap_resolver"] != "null"):
+        raise Exception("Process %s does not support yet the parameter \"overlap_resolver\"" % PROCESS_NAME)
 
     if not cube1_objects:
         raise Exception("Process %s requires two input strds's" % PROCESS_NAME)

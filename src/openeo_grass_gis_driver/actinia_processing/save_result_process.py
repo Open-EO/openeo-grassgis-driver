@@ -21,14 +21,14 @@ PROCESS_NAME = "save_result"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
     p_format = Parameter(description="The format of the export. Default is GeotTiff format.",
                          schema={"type": "string", "default": "GTiff"},
                          required=False)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {"data": {"from_node": "get_b08_data"},

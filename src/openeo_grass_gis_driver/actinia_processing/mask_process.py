@@ -21,24 +21,24 @@ PROCESS_NAME = "mask"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
     p_mask = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                       schema={"type": "object", "format": "eodata"},
+                       schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
     p_value = Parameter(description="The value used to replace non-zero and `true` values with",
-                       schema={"type": "object", "format": "string"},
-                       required=True)
+                       schema={"type": "object", "subtype": "string"},
+                       required=False)
 
     rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "format": "eodata"})
+                     schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {
                 "data": {"from_node": "get_data_1"},
                 "mask": {"from_node": "get_data_2"},
-                "value": "null",
+                "replacement": "null",
             }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"mask_1": node})
@@ -47,11 +47,11 @@ def create_process_description():
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Applies a mask to a raster data cube "
-                                        " replacing values in data that are not null in mask with the new value.",
+                                        " replacing pixels in data that are not null in mask with the new value.",
                             summary="Applies a mask to a raster data cube",
                             parameters={"data": p_data,
                                         "mask": p_mask,
-                                        "value": p_value},
+                                        "replacement": p_value},
                             returns=rv,
                             examples=[examples])
 
@@ -117,11 +117,13 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     output_objects = []
 
     if "data" not in node.arguments or \
-            "mask" not in node.arguments or \
-            "value" not in node.arguments:
-        raise Exception("Process %s requires parameter data, mask, value" % PROCESS_NAME)
+            "mask" not in node.arguments:
+        raise Exception("Process %s requires parameter data, mask" % PROCESS_NAME)
 
-    mask_value = node.arguments["value"]
+    if "replacement" in node.arguments:
+        mask_value = node.arguments["replacement"]
+    else:
+        mask_value = "null"
 
     # Get the input and mask data separately
     data_object = node.get_parent_by_name(parent_name="data").output_objects[0]

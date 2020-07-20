@@ -76,7 +76,7 @@ def create_process_description():
                             summary="Zonal statistics for geometries.",
                             parameters={"data": p_data,
                                         "geometries": p_geometries,
-                                        "reducer": p_reducer
+                                        "reducer": p_reducer,
                                         "context": p_context},
                             returns=rv,
                             examples=examples)
@@ -109,7 +109,7 @@ def create_process_chain_entry(input_object: DataObject, geometries: str):
                     "value": geometries},
                    {"param": "output",
                     "value": "geometries"},
-                  ]}
+                  ]
     }
 
     g_region_1 = {

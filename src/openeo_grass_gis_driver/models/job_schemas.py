@@ -82,7 +82,7 @@ class Argument(JsonableObject):
 class OutputFormat(JsonableObject):
     """Describes a specific output format. The key of the entry is
     the output format name.
-    https://open-eo.github.io/openeo-api/v/0.4.0/apireference/#tag/Batch-Job-Management/paths/~1output_formats/get
+    https://open-eo.github.io/openeo-api/#operation/list-file-types
 
     gis_data_types:
         required
@@ -153,7 +153,8 @@ class JobError(JsonableObject):
     def __init__(self, code: int, message: str,
                  links: List[Optional[EoLinks]] = list(), id: str = None):
 
-        # Standardized status codes: https://open-eo.github.io/openeo-api/v/0.4.0/errors/index.html
+        # Standardized status codes:
+        # https://open-eo.github.io/openeo-api/#section/API-Principles/Error-Handling
         standardized_status_codes = {
             200: "OK",
             201: "Created",
@@ -173,7 +174,7 @@ class JobError(JsonableObject):
 
 class JobInformation(JsonableObject):
     """Information about a job
-    https://open-eo.github.io/openeo-api/v/0.4.0/apireference/#tag/Batch-Job-Management/paths/~1jobs/get{job_id}/get
+    https://open-eo.github.io/openeo-api/#operation/describe-job
 
     id:
         required
@@ -266,7 +267,7 @@ class JobInformation(JsonableObject):
 class JobList(JsonableObject):
     """A collection of job description entries
 
-    https://open-eo.github.io/openeo-api/v/0.3.0/apireference/#tag/Job-Management/paths/~1jobs/get
+    https://open-eo.github.io/openeo-api/#operation/list-jobs
     """
 
     def __init__(self, jobs: List[JobInformation],

@@ -24,6 +24,9 @@ class WellKnown(Resource):
         version_list.append({"url": host_url + "api/v0.4/",
                              "api_version": "0.4.0",
                              "production": False})
+        version_list.append({"url": host_url + "api/v1.0/",
+                             "api_version": "1.0.0",
+                             "production": False})
 
         resp = dict()
         resp['versions'] = version_list

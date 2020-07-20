@@ -82,7 +82,7 @@ class Jobs(ResourceBase):
         response = make_response(job_id, 201)
         # add openeo-identifier
         response.headers["OpenEO-Identifier"] = job_id
-        # add location, e.g. "https://openeo.org/api/v0.4/resource/<job_id>"
+        # add location, e.g. "https://openeo.org/api/v1.0/resource/<job_id>"
         response.headers["Location"] = ("%s/%s") % (url_for(".jobs"), job_id)
         
         return response

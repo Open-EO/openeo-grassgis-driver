@@ -10,7 +10,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 CAPABILITIES = {
     "api_version": "1.0.0",
-    "backend_version": "0.1.0",
+    "backend_version": "0.2.0",
     "title": "GRASS GIS Driver",
     "description": "GRASS GIS Driver",
     # "components": {

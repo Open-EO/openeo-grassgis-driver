@@ -27,6 +27,8 @@ def create_endpoints():
     """
     flask_api.add_resource(Capabilities, '/')
     flask_api.add_resource(Authentication, '/credentials/basic')
+    # /credentials/oidc: OpenID Connect authentication
+    # /me: User profiles
     flask_api.add_resource(ServiceTypes, '/service_types')
 
     flask_api.add_resource(Collections, '/collections')
@@ -40,9 +42,15 @@ def create_endpoints():
     flask_api.add_resource(ProcessGraphs, '/process_graphs')
     flask_api.add_resource(ProcessGraphId, '/process_graphs/<string:id>')
 
-    flask_api.add_resource(OutputFormats, '/output_formats')
+    flask_api.add_resource(OutputFormats, '/file_formats')
     flask_api.add_resource(Jobs, '/jobs')
     flask_api.add_resource(JobsJobId, '/jobs/<string:job_id>')
     flask_api.add_resource(JobsJobIdResults, '/jobs/<string:job_id>/results')
+
+    # File storage
+    # /files: Overview
+    # get /files/{path}: Downloading
+    # put /files/{path}: Uploading
+    # delete /files/{path}: Deleting
 
     flask_api.add_resource(WellKnown, '/.well-known/openeo')

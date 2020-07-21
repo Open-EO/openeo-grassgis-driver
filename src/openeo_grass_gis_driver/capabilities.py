@@ -8,9 +8,13 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
+
+# https://open-eo.github.io/openeo-api/#operation/capabilities
 CAPABILITIES = {
     "api_version": "1.0.0",
     "backend_version": "0.2.0",
+    "stac_version": "0.9.0",
+    "id": "grass-gis-driver",
     "title": "GRASS GIS Driver",
     "description": "GRASS GIS Driver",
     # "components": {
@@ -87,7 +91,7 @@ CAPABILITIES = {
             ]
         },
         {
-            "path": "/output_formats",
+            "path": "/file_formats",
             "methods": [
                 "GET"
             ]
@@ -110,6 +114,20 @@ CAPABILITIES = {
                 "GET", "POST", "DELETE"
             ]
         }
+    ],
+    "links": [
+        {
+            "href": "https://openeo.mundialis.de/.well-known/openeo",
+            "rel": "version-history",
+            "type": "application/json",
+            "title": "List of supported openEO versions"
+        },
+        {
+            "href": "https://openeo.mundialis.de/api/v1.0/collections",
+            "rel": "data",
+            "type": "application/json",
+            "title": "List of Datasets"
+        }
     ]
 }
 
@@ -120,6 +138,7 @@ class Capabilities(Resource):
         return make_response(jsonify(CAPABILITIES), 200)
 
 
+# https://open-eo.github.io/openeo-api/#operation/list-service-types
 SERVICE_TYPES = {}
 
 

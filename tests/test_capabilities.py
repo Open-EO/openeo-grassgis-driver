@@ -22,7 +22,7 @@ class CapabilitiesTestCase(TestBase):
                          CAPABILITIES)
 
     def test_ouput_formats(self):
-        response = self.app.get('/output_formats', headers=self.auth)
+        response = self.app.get('/file_formats', headers=self.auth)
         print(response.data)
 
         self.assertEqual(json.loads(response.data.decode()),

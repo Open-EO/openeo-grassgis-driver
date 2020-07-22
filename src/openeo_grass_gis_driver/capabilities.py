@@ -87,7 +87,7 @@ CAPABILITIES = {
         {
             "path": "/process_graphs/{process_graph_id}",
             "methods": [
-                "GET", "PATCH", "DELETE"
+                "GET", "PUT", "DELETE"
             ]
         },
         {
@@ -146,3 +146,14 @@ class ServiceTypes(Resource):
 
     def get(self, ):
         return make_response(jsonify(SERVICE_TYPES), 200)
+
+
+# https://open-eo.github.io/openeo-api/#operation/list-service-types
+SERVICES = []
+
+
+class Services(Resource):
+
+    def get(self, ):
+        response = dict(services=SERVICES, links=[])
+        return make_response(jsonify(response), 200)

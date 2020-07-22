@@ -16,6 +16,10 @@ class Processes(Resource):
         Resource.__init__(self)
 
     def get(self):
+        
+        # can have a query parameter 'limit' to enable pagination
+        # get the value of limit (i.e. ?limit=10)
+        # limit = request.args.get('limit')
 
         pd_list = list()
         for key in PROCESS_DESCRIPTION_DICT:

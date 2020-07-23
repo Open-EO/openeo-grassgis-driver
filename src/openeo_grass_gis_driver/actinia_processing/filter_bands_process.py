@@ -16,21 +16,22 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "filter_bands"
 
+
 def create_process_description():
     p_data = Parameter(description="A data cube with bands.",
                        schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
 
     p_bands = Parameter(description="A list of band names. "
-                                           "Either the unique band name or one of the common band names.",
-                               schema={
-                                       "type": "array",
-                                       "items": {
-                                         "type": "string",
-                                         "subtype": "band-name"
-                                       }
-                                  },
-                         required=False)
+                                    "Either the unique band name or one of the common band names.",
+                        schema={
+                               "type": "array",
+                               "items": {
+                                 "type": "string",
+                                 "subtype": "band-name"
+                               }
+                        },
+                        required=False)
 
     p_wavelengths = Parameter(description="A list of sub-lists with each sub-list consisting of two elements. "
                                           "The first element is the minimum wavelength and the second element "
@@ -58,7 +59,7 @@ def create_process_description():
                                           ]
                                         }
                                   },
-                         required=False)
+                              required=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -67,8 +68,8 @@ def create_process_description():
     arguments = {
                 "data": {"from_node": "get_data_1"},
                 "bands": ["red", "nir"]
-                },
-            }
+                }
+
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_bands_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
@@ -108,17 +109,19 @@ def create_process_chain_entry(input_time_series: DataObject,
 
     # convert wavelengths to a string
     wvstring = None
+    if wavelengths:
+        wvstring = (',').join(wavelengths)
 
     pc = {"id": "t_rast_filterbands_%i" % rn,
-         "module": "t.rast.filterbands",
-         "inputs": [{"param": "input",
-                     "value": "%(input)s" % {"input": input_time_series.grass_name()}},
-                    {"param": "bands",
-                     "value": "%(bands)s" % {"bands": (',').join(bands)}},
-                    {"param": "wavelengths",
-                     "value": "%(wavelengths)s" % {"wavelengths": wvstring}},
-                    {"param": "output",
-                     "value": output_time_series.grass_name()}}
+          "module": "t.rast.filterbands",
+          "inputs": [{"param": "input",
+                      "value": "%(input)s" % {"input": input_time_series.grass_name()}},
+                     {"param": "bands",
+                      "value": "%(bands)s" % {"bands": (',').join(bands)}},
+                     {"param": "wavelengths",
+                      "value": "%(wavelengths)s" % {"wavelengths": wvstring}},
+                     {"param": "output",
+                      "value": output_time_series.grass_name()}]}
 
     return pc
 
@@ -133,10 +136,10 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []
 
-    # at least one of bands, common_names, wavelengths must be given 
+    # at least one of bands, common_names, wavelengths must be given
     if "data" not in node.arguments or \
             ("bands" not in node.arguments and \
-            "wavelengths" not in node.arguments):
+             "wavelengths" not in node.arguments):
         raise Exception("Process %s requires parameter data and at least one of "
                         "bands, wavelengths" % PROCESS_NAME)
 

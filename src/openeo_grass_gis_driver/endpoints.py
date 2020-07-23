@@ -11,6 +11,8 @@ from openeo_grass_gis_driver.jobs import Jobs, OutputFormats
 from openeo_grass_gis_driver.jobs_job_id import JobsJobId
 from openeo_grass_gis_driver.process_graph_validation import GraphValidation
 from openeo_grass_gis_driver.result import Result
+from openeo_grass_gis_driver.jobs_job_id_estimate import JobsJobIdEstimate
+from openeo_grass_gis_driver.jobs_job_id_logs import JobsJobIdLogs
 from openeo_grass_gis_driver.jobs_job_id_results import JobsJobIdResults
 from openeo_grass_gis_driver.process_graphs import ProcessGraphs
 from openeo_grass_gis_driver.process_graphs_id import ProcessGraphId
@@ -61,8 +63,8 @@ def create_endpoints():
     flask_api.add_resource(Result, '/result')
     flask_api.add_resource(Jobs, '/jobs')
     flask_api.add_resource(JobsJobId, '/jobs/<string:job_id>')
-    # /jobs/{job_id}/estimate
-    # /jobs/{job_id}/logs
+    flask_api.add_resource(JobsJobIdEstimate, '/jobs/<string:job_id>/estimate')
+    flask_api.add_resource(JobsJobIdLogs, '/jobs/<string:job_id>/logs')
     flask_api.add_resource(JobsJobIdResults, '/jobs/<string:job_id>/results')
 
     # Batch Jobs

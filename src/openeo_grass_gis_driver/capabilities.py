@@ -37,7 +37,43 @@ CAPABILITIES = {
             ]
         },
         {
+            "path": "/udf_runtimes",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/service_types",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/services",
+            "methods": [
+                "GET", "POST"
+            ]
+        },
+        {
+            "path": "/services/{service_id}",
+            "methods": [
+                "GET", "PATCH", "DELETE"
+            ]
+        },
+        {
+            "path": "/credentials/oidc",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
             "path": "/credentials/basic",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/me",
             "methods": [
                 "GET"
             ]
@@ -109,9 +145,33 @@ CAPABILITIES = {
             ]
         },
         {
+            "path": "/jobs/{job_id}/estimate",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/jobs/{job_id}/logs",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
             "path": "/jobs/{job_id}/results",
             "methods": [
                 "GET", "POST", "DELETE"
+            ]
+        },
+        {
+            "path": "/files",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/files/{path}",
+            "methods": [
+                "GET", "PUT", "DELETE"
             ]
         }
     ],

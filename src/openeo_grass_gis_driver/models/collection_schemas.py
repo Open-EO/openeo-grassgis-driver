@@ -57,7 +57,7 @@ class CollectionProperties(JsonableObject):
     
     currently only STAC EO (electro-optical)
     missing: STAC other extensions, STAC SAR, STAC Scientific
-             see https://open-eo.github.io/openeo-api/v/0.4.2/apireference/#tag/EO-Data-Discovery/paths/~1collections~1{collection_id}/get
+             see https://open-eo.github.io/openeo-api/#operation/describe-collection
 
     eo:gsd
         required

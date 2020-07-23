@@ -87,7 +87,7 @@ class ProcessGraph(JsonableObject):
 
 class ProcessGraphListEntry(JsonableObject):
     """An entry in the process graph list
-    https://open-eo.github.io/openeo-api/v/0.4.0/apireference/#tag/Process-Graph-Management/paths/~1process_graphs/get
+    https://open-eo.github.io/openeo-api/#operation/describe-custom-process
     -> Responses
 
     id:
@@ -121,7 +121,7 @@ class ProcessGraphListEntry(JsonableObject):
 
 class ProcessGraphList(JsonableObject):
     """A list of process graph definitions
-    https://open-eo.github.io/openeo-api/v/0.4.0/apireference/#tag/Process-Graph-Management/paths/~1process_graphs/get
+    https://open-eo.github.io/openeo-api/#operation/list-custom-processes
     --> Responses
 
     List of ProcessGraphListEntry

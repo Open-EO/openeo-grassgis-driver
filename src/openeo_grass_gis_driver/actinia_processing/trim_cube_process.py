@@ -14,10 +14,8 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-PROCESS_NAME = "trim"
+PROCESS_NAME = "trim_cube"
 
-# does not conform to
-# https://open-eo.github.io/openeo-api/v/0.4.2/processreference/#filter_bbox
 
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "

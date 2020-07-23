@@ -27,6 +27,7 @@ class JobsJobIdResults(ResourceBase):
     def __init__(self):
         ResourceBase.__init__(self)
         self.iface = ActiniaInterface()
+        # really use ActiniaConfig user + pw ?
         self.iface.set_auth(ActiniaConfig.USER, ActiniaConfig.PASSWORD)
         self.db = GraphDB()
         self.job_db = JobDB()

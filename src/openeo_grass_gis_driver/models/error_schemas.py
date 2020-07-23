@@ -14,7 +14,7 @@ class ErrorSchema(JsonableObject):
     """This is the error response schema
     An error object declares addtional information about a client-side
     or server-side error. The openEO documentation
-    (https://open-eo.github.io/openeo-api/v/0.4.0/errors/index.html)
+    (https://open-eo.github.io/openeo-api/#section/API-Principles/Error-Handling)
     provides additional information regarding error handling and a
     list of potential error codes.
 
@@ -54,7 +54,8 @@ class ErrorSchema(JsonableObject):
     def __init__(self, code: int, message: str,
                  links: List[Optional[EoLinks]] = list(), id: str = None):
 
-        # Standardized status codes: https://open-eo.github.io/openeo-api/v/0.4.0/errors/index.html
+        # Standardized status codes:
+        # https://open-eo.github.io/openeo-api/#section/API-Principles/Error-Handling
         standardized_status_codes = {
             200: "OK",
             201: "Created",

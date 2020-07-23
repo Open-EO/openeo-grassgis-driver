@@ -16,13 +16,16 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "filter_bbox"
 
+
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
                        schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
-    p_extent = Parameter(description="A bounding box, which may include a vertical axis (see `base` and `height`).\n\nThe coordinate reference system of the extent must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
-                       schema={
+    p_extent = Parameter(description="A bounding box, which may include a vertical axis (see `base` and `height`).\n\n"
+                                     "The coordinate reference system of the extent must be specified as "
+                                     "[EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
+                        schema={
                                 "type": "object",
                                 "subtype": "bounding-box",
                                 "required": [

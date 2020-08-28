@@ -22,6 +22,7 @@ from . import ndvi_process
 #from . import percentile_time_process
 #from . import reduce_time_process
 from . import reduce_dimension_process
+from . import rename_labels_process
 from . import resample_spatial_process
 # from . import udf_reduce_time
 from . import raster_exporter

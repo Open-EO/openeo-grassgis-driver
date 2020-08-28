@@ -18,6 +18,13 @@ OPERATOR_DICT = {
     'subtract': '-',
     'product': '*',
     'divide': '/'
+    'eq': '==',
+    'neq': '!=',
+    'gt': '>',
+    'gte': '>=',
+    'lt': '<',
+    'lte': '<=',
+    'and': '&&'
 }
 
 def create_process_description():
@@ -241,7 +248,9 @@ def serialize_tree(tree):
             results = []
             for node in tree['children']:
                 results.append(serialize_tree(node))
-            # TODO: normalized_difference(x, y) -> (x - y) / (x + y)
+            # normalized_difference(x, y) -> (x - y) / (x + y)
+            if operator == "normalized_difference":
+                return "((%s - %s) / (%s + %s))" % (results[0], results[1], results[0], results[1])
             return operator + '(' + (', ').join(results) + ')'
             # return operator
     if tree['type'] == 'literal':

@@ -188,7 +188,7 @@ def create_process_description():
                      "2018-01-01",
                      "2019-01-01"
                  ],
-        }
+                 }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"load_strds_collection": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

@@ -58,7 +58,7 @@ def create_process_description():
                                             ]
                                           ]
                                         }
-                                  },
+                              },
                               required=False)
 
     rv = ReturnValue(description="Processed EO data.",

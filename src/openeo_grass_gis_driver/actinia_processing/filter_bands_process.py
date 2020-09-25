@@ -57,7 +57,7 @@ def create_process_description():
                                               ]
                                             ]
                                           ]
-                                      }
+                                  }
                               },
                               required=False)
 

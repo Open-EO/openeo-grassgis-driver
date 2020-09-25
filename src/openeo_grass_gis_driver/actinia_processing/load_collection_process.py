@@ -39,7 +39,7 @@ def create_process_description():
                                "south",
                                "east",
                                "north"
-                               ],
+                           ],
                            "properties": {
                                "west": {
                                    "description": "West (lower left corner, coordinate axis 1).",
@@ -100,7 +100,7 @@ def create_process_description():
                                       "default": 4326
                                     }
                                   }
-                               }
+                           }
                        },
                            {
                            "title": "GeoJSON",

@@ -137,7 +137,7 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
             method = "sum"
         elif "variance" in formula:
             method = "variance"
-        else :
+        else:
             raise Exception('Unsupported method <%s> for temporal reduction.' % (method))
 
         # TODO: quantiles with openeo options probabilites (list of values between 0 and 1

@@ -91,11 +91,11 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 def create__process_chain_entry(input_object: DataObject, start_time: str, end_time: str, output_object: DataObject):
     """Create a Actinia command of the process chain that uses t.rast.extract to create a subset of a strds
-       The filter checks whether the temporal dimension value is 
-       greater than or equal to the lower boundary (start date/time) 
-       and the temporal dimension value is less than the value of the 
-       upper boundary (end date/time). This corresponds to a 
-       left-closed interval, which contains the lower boundary but not 
+       The filter checks whether the temporal dimension value is
+       greater than or equal to the lower boundary (start date/time)
+       and the temporal dimension value is less than the value of the
+       upper boundary (end date/time). This corresponds to a
+       left-closed interval, which contains the lower boundary but not
        the upper boundary.
 
     :param input_object: The input strds object

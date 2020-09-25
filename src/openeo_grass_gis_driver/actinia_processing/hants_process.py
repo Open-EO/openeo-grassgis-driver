@@ -80,7 +80,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_object, nf, dod, fet, range_low, range_high, reject_low, reject_high, output_object):
-    """Create a Actinia process description that uses t.rast.hants 
+    """Create a Actinia process description that uses t.rast.hants
     to filter a time series with HANTS.
 
     :param input_object: The input time series object

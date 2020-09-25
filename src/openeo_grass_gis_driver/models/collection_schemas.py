@@ -62,61 +62,61 @@ class CollectionProperties(JsonableObject):
     eo:gsd
         required
         number
-        The nominal Ground Sample Distance for the data, as measured in 
-        meters on the ground. Since GSD can vary across a scene 
-        depending on projection, this should be the average or most 
-        commonly used GSD in the center of the image. If the data 
-        includes multiple bands with different GSD values, this should 
-        be the value for the greatest number or most common bands. For 
-        instance, Landsat optical and short-wave IR bands are all 30 
-        meters, but the panchromatic band is 15 meters. The eo:gsd 
-        should be 30 meters in this case since those are the bands most 
+        The nominal Ground Sample Distance for the data, as measured in
+        meters on the ground. Since GSD can vary across a scene
+        depending on projection, this should be the average or most
+        commonly used GSD in the center of the image. If the data
+        includes multiple bands with different GSD values, this should
+        be the value for the greatest number or most common bands. For
+        instance, Landsat optical and short-wave IR bands are all 30
+        meters, but the panchromatic band is 15 meters. The eo:gsd
+        should be 30 meters in this case since those are the bands most
         commonly used.
     
     eo:platform
         required
         string
-        Unique name of the specific platform the instrument is attached 
-        to. For satellites this would be the name of the satellite 
-        (e.g., landsat-8, sentinel-2A), whereas for drones this would 
+        Unique name of the specific platform the instrument is attached
+        to. For satellites this would be the name of the satellite
+        (e.g., landsat-8, sentinel-2A), whereas for drones this would
         be a unique name for the drone.
 
-    eo:constellation	
+    eo:constellation
         string
-        The name of the group of satellites that have similar payloads 
-        and have their orbits arranged in a way to increase the 
-        temporal resolution of acquisitions of data with similar 
-        geometric and radiometric characteristics. Examples are the 
-        Sentinel-2 constellation, which has S2A and S2B and RapidEye. 
-        This field allows users to search for Sentinel-2 data, for 
-        example, without needing to specify which specific platform the 
+        The name of the group of satellites that have similar payloads
+        and have their orbits arranged in a way to increase the
+        temporal resolution of acquisitions of data with similar
+        geometric and radiometric characteristics. Examples are the
+        Sentinel-2 constellation, which has S2A and S2B and RapidEye.
+        This field allows users to search for Sentinel-2 data, for
+        example, without needing to specify which specific platform the
         data came from.
 
     eo:instrument
         required
         string
-        The name of the sensor used, although for Items which contain 
-        data from multiple sensors this could also name multiple 
-        sensors. For example, data from the Landsat-8 platform is 
-        collected with the OLI sensor as well as the TIRS sensor, but 
-        the data is distributed together and commonly referred to as 
+        The name of the sensor used, although for Items which contain
+        data from multiple sensors this could also name multiple
+        sensors. For example, data from the Landsat-8 platform is
+        collected with the OLI sensor as well as the TIRS sensor, but
+        the data is distributed together and commonly referred to as
         OLI_TIRS.
 
-    eo:epsg	
+    eo:epsg
         number <epsg-code> Nullable
         EPSG code of the datasource, null if no EPSG code.
-        A Coordinate Reference System (CRS) is the native reference 
-        system (sometimes called a 'projection') used by the data, and 
-        can usually be referenced using an EPSG code. If the data does 
-        not have a CRS, such as in the case of non-rectified imagery 
-        with Ground Control Points, eo:epsg should be set to null. It 
-        should also be set to null if a CRS exists, but for which there 
+        A Coordinate Reference System (CRS) is the native reference
+        system (sometimes called a 'projection') used by the data, and
+        can usually be referenced using an EPSG code. If the data does
+        not have a CRS, such as in the case of non-rectified imagery
+        with Ground Control Points, eo:epsg should be set to null. It
+        should also be set to null if a CRS exists, but for which there
         is no valid EPSG code.
 
     eo:bands
         required
         Array of objects (STAC EO Band)
-        This is a list of the available bands where each item is a Band 
+        This is a list of the available bands where each item is a Band
         Object.
     """
 
@@ -636,14 +636,14 @@ class CollectionEntry(JsonableObject):
         STAC EO (Electro-Optical) (object) or
         STAC SAR (object) or
         STAC Scientific (object) (STAC Collection Properties).
-        A list of all metadata properties, which are common across the 
+        A list of all metadata properties, which are common across the
         whole collection.
 
     other_properties:
         required
         object (STAC Varying Collection Properties)
-        A list of all metadata properties, which don't have common 
-        values across the whole collection. Therefore it allows to 
+        A list of all metadata properties, which don't have common
+        values across the whole collection. Therefore it allows to
         specify a summary of the values as extent or set of values.
     """
 

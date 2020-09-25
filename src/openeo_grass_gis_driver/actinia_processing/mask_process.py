@@ -63,7 +63,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 def create_process_chain_entry(input_object: DataObject, mask_object: DataObject,
                                mask_value, output_object: DataObject):
-    """Create a Actinia command of the process chain that uses t.rast.mapcalc 
+    """Create a Actinia command of the process chain that uses t.rast.mapcalc
     to mask raster values based on a mask dataset and a replacement value
 
     :param input_object: The input time series name

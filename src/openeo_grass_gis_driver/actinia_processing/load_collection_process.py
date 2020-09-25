@@ -352,7 +352,7 @@ def get_process_list(node: Node):
        (temporal_extent is not None or bands is not None):
         output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=input_object.datatype)
     else:
-        output_object = input_object 
+        output_object = input_object
 
     output_objects.append(output_object)
     node.add_output(output_object)

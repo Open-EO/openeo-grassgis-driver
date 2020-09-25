@@ -19,7 +19,7 @@ def as_dict_without_nones(o):
     for key in d:
         if d[key] is None:
             continue
-        # ___ is a placeholder for : as in eo:bands 
+        # ___ is a placeholder for : as in eo:bands
         r[key.replace("___", ":")] = d[key]
 
     return r

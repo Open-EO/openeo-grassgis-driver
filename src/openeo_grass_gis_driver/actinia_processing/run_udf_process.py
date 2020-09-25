@@ -126,7 +126,7 @@ def create_process_description():
 
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
-def create_process_chain_entry(input_object, python_file_url, 
+def create_process_chain_entry(input_object, python_file_url,
                                udf_runtime, udf_version, output_object):
     """Create a Actinia command of the process chain that uses t.rast.udf
 

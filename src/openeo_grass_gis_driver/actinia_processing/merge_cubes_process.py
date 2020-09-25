@@ -55,7 +55,7 @@ def create_process_description():
                                     "default": "null"
                                   }
                                 ]
-                              },
+                               },
                        required=False)
 
     rv = ReturnValue(description="Processed EO data.",
@@ -105,7 +105,7 @@ def create_process_chain_entry(cube1_object: DataObject, cube2_object: DataObjec
                      "value": "%(cube1)s,%(cube2)s" % {"cube1": cube1_object.grass_name(), "cube2": cube2_object.grass_name()}},
                     {"param": "output",
                      "value": output_object.grass_name()}]}
-         ]
+          ]
 
     return pc
 

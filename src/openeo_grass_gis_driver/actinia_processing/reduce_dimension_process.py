@@ -48,8 +48,8 @@ def create_process_description():
                                     "optional": "true",
                                     "default": "null"
                                    }
-                                   ]
-                                },
+                                  ]
+                                  },
                          required=True)
 
     p_dimension = Parameter(description="The name of the dimension over which to reduce.",

@@ -41,7 +41,7 @@ def create_process_description():
                                        "description": "A value of any type could be passed."
                                        }
                                     }
-                                  },
+                                   },
                            required=True)
 
     rv = ReturnValue(description="Processed EO data.",

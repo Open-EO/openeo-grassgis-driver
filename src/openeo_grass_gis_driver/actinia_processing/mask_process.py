@@ -87,7 +87,7 @@ def create_process_chain_entry(input_object: DataObject, mask_object: DataObject
                          "value": "masked"},
                         {"param": "output",
                          "value": output_object.grass_name()},
-                       ]}
+                        ]}
     else:
         pc = {"id": "t_rast_mapcalc_%i" % rn,
              "module": "t.rast.mapcalc",
@@ -101,7 +101,7 @@ def create_process_chain_entry(input_object: DataObject, mask_object: DataObject
                          "value": "masked"},
                         {"param": "output",
                          "value": output_object.grass_name()},
-                       ]}
+                        ]}
 
     return pc
 

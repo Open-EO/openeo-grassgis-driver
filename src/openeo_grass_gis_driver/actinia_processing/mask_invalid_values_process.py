@@ -97,7 +97,7 @@ def create_process_chain_entry(input_object: DataObject, vmin: float, vmax: floa
                      "value": "masked_invalid"},
                     {"param": "output",
                      "value": output_object.grass_name()},
-                   ]}
+                    ]}
 
     return pc
 

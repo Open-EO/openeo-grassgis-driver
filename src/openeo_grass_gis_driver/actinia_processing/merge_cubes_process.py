@@ -64,7 +64,7 @@ def create_process_description():
     # Example
     arguments = {
         "cube1": {"from_node": "get_data_1"},
-                "cube2": {"from_node": "get_data_2"},
+        "cube2": {"from_node": "get_data_2"},
         }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"merge_cubes_1": node})

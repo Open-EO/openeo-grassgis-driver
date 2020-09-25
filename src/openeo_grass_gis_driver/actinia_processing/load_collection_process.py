@@ -32,9 +32,9 @@ def create_process_description():
                                           "The coordinate reference system of the bounding box must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
                        schema=[{
                            "title": "Bounding Box",
-                                "type": "object",
-                                "subtype": "bounding-box",
-                                "required": [
+                           "type": "object",
+                           "subtype": "bounding-box",
+                           "required": [
                                   "west",
                                   "south",
                                   "east",
@@ -104,8 +104,8 @@ def create_process_description():
                            },
                            {
                            "title": "GeoJSON",
-                              "type": "object",
-                              "subtype": "geojson"
+                           "type": "object",
+                           "subtype": "geojson"
                            }
                           ],
                     required=True)
@@ -180,13 +180,13 @@ def create_process_description():
     arguments = {"id": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m",
                  "spatial_extent": {
                      "west": 16.1,
-                      "east": 16.6,
-                      "north": 48.6,
-                      "south": 47.2
+                     "east": 16.6,
+                     "north": 48.6,
+                     "south": 47.2
                     },
                 "temporal_extent": [
                      "2018-01-01",
-                      "2019-01-01"
+                     "2019-01-01"
                 ],
         }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)

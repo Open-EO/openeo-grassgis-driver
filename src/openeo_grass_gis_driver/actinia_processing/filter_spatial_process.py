@@ -25,11 +25,11 @@ def create_process_description():
                        schema={"anyOf": [
                            {
                                "type": "object",
-                                    "subtype": "geojson"
+                               "subtype": "geojson"
                                },
                            {
                                "type": "object",
-                                    "subtype": "vector-cube"
+                               "subtype": "vector-cube"
                                }]},
                        required=True)
 
@@ -39,7 +39,7 @@ def create_process_description():
     # Example
     arguments = {
         "data": {"from_node": "get_data_1"},
-                "polygons": {"from_node": "get_data_2"},
+        "polygons": {"from_node": "get_data_2"},
         }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_polygon_1": node})

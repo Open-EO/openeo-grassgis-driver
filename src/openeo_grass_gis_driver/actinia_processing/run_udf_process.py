@@ -29,7 +29,7 @@ def create_process_description():
                                "type": "array",
                                "minItems": 1,
                                "items": {
-                                    "description": "Any data type."
+                                   "description": "Any data type."
                                   }
                            },
                            {

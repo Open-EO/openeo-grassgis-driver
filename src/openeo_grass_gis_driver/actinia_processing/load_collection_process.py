@@ -35,46 +35,46 @@ def create_process_description():
                            "type": "object",
                            "subtype": "bounding-box",
                            "required": [
-                                  "west",
+                               "west",
                                   "south",
                                   "east",
                                   "north"
-                                ],
+                               ],
                            "properties": {
-                                  "west": {
-                                    "description": "West (lower left corner, coordinate axis 1).",
+                               "west": {
+                                   "description": "West (lower left corner, coordinate axis 1).",
                                     "type": "number"
                                   },
-                                  "south": {
-                                    "description": "South (lower left corner, coordinate axis 2).",
+                               "south": {
+                                   "description": "South (lower left corner, coordinate axis 2).",
                                     "type": "number"
                                   },
-                                  "east": {
-                                    "description": "East (upper right corner, coordinate axis 1).",
+                               "east": {
+                                   "description": "East (upper right corner, coordinate axis 1).",
                                     "type": "number"
                                   },
-                                  "north": {
-                                    "description": "North (upper right corner, coordinate axis 2).",
+                               "north": {
+                                   "description": "North (upper right corner, coordinate axis 2).",
                                     "type": "number"
                                   },
-                                  "base": {
-                                    "description": "Base (optional, lower left corner, coordinate axis 3).",
+                               "base": {
+                                   "description": "Base (optional, lower left corner, coordinate axis 3).",
                                     "type": [
                                       "number",
                                       "null"
                                     ],
-                                    "default": "null"
+                                   "default": "null"
                                   },
-                                  "height": {
-                                    "description": "Height (optional, upper right corner, coordinate axis 3).",
+                               "height": {
+                                   "description": "Height (optional, upper right corner, coordinate axis 3).",
                                     "type": [
                                       "number",
                                       "null"
                                     ],
-                                    "default": "null"
+                                   "default": "null"
                                   },
-                                  "crs": {
-                                    "description": "Coordinate reference system of the extent, specified as as [EPSG code](http://www.epsg-registry.org/), [WKT2 (ISO 19162) string](http://docs.opengeospatial.org/is/18-010r7/18-010r7.html) or [PROJ definition (deprecated)](https://proj.org/usage/quickstart.html). Defaults to `4326` (EPSG code 4326) unless the client explicitly requests a different coordinate reference system.",
+                               "crs": {
+                                   "description": "Coordinate reference system of the extent, specified as as [EPSG code](http://www.epsg-registry.org/), [WKT2 (ISO 19162) string](http://docs.opengeospatial.org/is/18-010r7/18-010r7.html) or [PROJ definition (deprecated)](https://proj.org/usage/quickstart.html). Defaults to `4326` (EPSG code 4326) unless the client explicitly requests a different coordinate reference system.",
                                     "schema": {
                                       "anyOf": [
                                         {
@@ -100,7 +100,7 @@ def create_process_description():
                                       "default": 4326
                                     }
                                   }
-                                }
+                               }
                        },
                            {
                            "title": "GeoJSON",
@@ -108,7 +108,7 @@ def create_process_description():
                            "subtype": "geojson"
                        }
                           ],
-                    required=True)
+        required=True)
     p_temporal = Parameter(description="Limits the data to load from the collection to the specified left-closed temporal interval. Applies to all temporal dimensions if there are multiple of them. Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.",
                        schema={"type": "array",
                                "subtype": "temporal-interval",

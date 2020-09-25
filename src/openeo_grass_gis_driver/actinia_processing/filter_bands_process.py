@@ -27,7 +27,7 @@ def create_process_description():
                         schema={
                             "type": "array",
                             "items": {
-                                 "type": "string",
+                                "type": "string",
                                  "subtype": "band-name"
                                }
                         },
@@ -45,7 +45,7 @@ def create_process_description():
                                           "items": {
                                             "type": "number"
                                           },
-                                          "examples": [
+                                      "examples": [
                                             [
                                               [
                                                 0.45,
@@ -57,7 +57,7 @@ def create_process_description():
                                               ]
                                             ]
                                           ]
-                                        }
+                                      }
                               },
                               required=False)
 

@@ -17,7 +17,7 @@ OPERATOR_DICT = {
     'sum': '+',
     'subtract': '-',
     'product': '*',
-    'divide': '/'
+    'divide': '/',
     'eq': '==',
     'neq': '!=',
     'gt': '>',
@@ -224,7 +224,10 @@ def construct_tree(obj):
         else:
             if config['process_id'] == 'array_element':
                 node['type'] = 'inputdata'
-                node['index'] = config['arguments']['index']
+                if 'index' in config['arguments']:
+                    node['index'] = config['arguments']['index']
+                elif 'label' in config['arguments']:
+                    node['label'] = config['arguments']['label']
             else:
                 node['operator'] = config['process_id']
                 operators.append(node['operator'])
@@ -256,7 +259,10 @@ def serialize_tree(tree):
     if tree['type'] == 'literal':
         return str(tree['value'])
     if tree['type'] == 'inputdata':
-        return 'data[' + str(tree['index']) + ']'
+        if 'index' in tree:
+            return 'data[' + str(tree['index']) + ']'
+        else:
+            return 'data.' + str(tree['label'])
 
 
 def get_process_list(node: Node):

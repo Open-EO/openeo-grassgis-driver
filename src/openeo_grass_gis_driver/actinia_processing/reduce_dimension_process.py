@@ -17,7 +17,14 @@ OPERATOR_DICT = {
     'sum': '+',
     'subtract': '-',
     'product': '*',
-    'divide': '/'
+    'divide': '/',
+    'eq': '==',
+    'neq': '!=',
+    'gt': '>',
+    'gte': '>=',
+    'lt': '<',
+    'lte': '<=',
+    'and': '&&'
 }
 
 def create_process_description():
@@ -217,7 +224,10 @@ def construct_tree(obj):
         else:
             if config['process_id'] == 'array_element':
                 node['type'] = 'inputdata'
-                node['index'] = config['arguments']['index']
+                if 'index' in config['arguments']:
+                    node['index'] = config['arguments']['index']
+                elif 'label' in config['arguments']:
+                    node['label'] = config['arguments']['label']
             else:
                 node['operator'] = config['process_id']
                 operators.append(node['operator'])
@@ -241,13 +251,18 @@ def serialize_tree(tree):
             results = []
             for node in tree['children']:
                 results.append(serialize_tree(node))
-            # TODO: normalized_difference(x, y) -> (x - y) / (x + y)
+            # normalized_difference(x, y) -> (x - y) / (x + y)
+            if operator == "normalized_difference":
+                return "((%s - %s) / (%s + %s))" % (results[0], results[1], results[0], results[1])
             return operator + '(' + (', ').join(results) + ')'
             # return operator
     if tree['type'] == 'literal':
         return str(tree['value'])
     if tree['type'] == 'inputdata':
-        return 'data[' + str(tree['index']) + ']'
+        if 'index' in tree:
+            return 'data[' + str(tree['index']) + ']'
+        else:
+            return 'data.' + str(tree['label'])
 
 
 def get_process_list(node: Node):

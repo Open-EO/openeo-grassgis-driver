@@ -26,11 +26,11 @@ def create_process_description():
                            {
                                "type": "object",
                                "subtype": "geojson"
-                               },
+                           },
                            {
                                "type": "object",
                                "subtype": "vector-cube"
-                               }]},
+                           }]},
                        required=True)
 
     rv = ReturnValue(description="Processed EO data.",
@@ -40,7 +40,7 @@ def create_process_description():
     arguments = {
         "data": {"from_node": "get_data_1"},
         "polygons": {"from_node": "get_data_2"},
-        }
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_polygon_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
@@ -99,7 +99,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
         {"id": "r_mask_%i" % rn,
          "module": "r_mask",
          "inputs": {"flags": "r"}}
-        ]
+    ]
 
     return pc
 

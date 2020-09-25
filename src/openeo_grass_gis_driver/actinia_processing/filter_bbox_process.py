@@ -33,7 +33,7 @@ def create_process_description():
                                   "south",
                                   "east",
                                   "north"
-                                ],
+                            ],
                             "properties": {
                                   "west": {
                                     "description": "West (lower left corner, coordinate axis 1).",
@@ -94,7 +94,7 @@ def create_process_description():
                                       "default": 4326
                                     }
                                   }
-                                }
+                            }
                         },
         required=True)
 
@@ -110,8 +110,8 @@ def create_process_description():
                     "west": 3.057030657924054,
                     "east": 3.058236553549667,
                     "south": 50.99958367677388
-            },
-        }
+        },
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_bbox_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

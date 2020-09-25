@@ -29,7 +29,7 @@ def create_process_description():
     # Example
     arguments = {
         "data": {"from_node": "get_data_1"}
-        }
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"trim_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

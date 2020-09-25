@@ -31,7 +31,7 @@ def create_process_description():
     p_spatial = Parameter(description="Limits the data to load from the collection to the specified bounding box or polygons.\n\n"
                                           "The coordinate reference system of the bounding box must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
                        schema=[{
-                                "title": "Bounding Box",
+                           "title": "Bounding Box",
                                 "type": "object",
                                 "subtype": "bounding-box",
                                 "required": [
@@ -40,7 +40,7 @@ def create_process_description():
                                   "east",
                                   "north"
                                 ],
-                                "properties": {
+                           "properties": {
                                   "west": {
                                     "description": "West (lower left corner, coordinate axis 1).",
                                     "type": "number"
@@ -101,12 +101,12 @@ def create_process_description():
                                     }
                                   }
                                 }
-                            },
-                            {
-                              "title": "GeoJSON",
+                           },
+                           {
+                           "title": "GeoJSON",
                               "type": "object",
                               "subtype": "geojson"
-                            }
+                           }
                           ],
                     required=True)
     p_temporal = Parameter(description="Limits the data to load from the collection to the specified left-closed temporal interval. Applies to all temporal dimensions if there are multiple of them. Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.",
@@ -179,16 +179,16 @@ def create_process_description():
     # Example
     arguments = {"id": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m",
                  "spatial_extent": {
-                      "west": 16.1,
+                     "west": 16.1,
                       "east": 16.6,
                       "north": 48.6,
                       "south": 47.2
                     },
                 "temporal_extent": [
-                      "2018-01-01",
+                     "2018-01-01",
                       "2019-01-01"
                 ],
-                }
+        }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"load_strds_collection": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

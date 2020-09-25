@@ -26,7 +26,7 @@ def create_process_description():
                                      "The coordinate reference system of the extent must be specified as "
                                      "[EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
                         schema={
-                                "type": "object",
+                            "type": "object",
                                 "subtype": "bounding-box",
                                 "required": [
                                   "west",
@@ -34,7 +34,7 @@ def create_process_description():
                                   "east",
                                   "north"
                                 ],
-                                "properties": {
+                            "properties": {
                                   "west": {
                                     "description": "West (lower left corner, coordinate axis 1).",
                                     "type": "number"
@@ -96,22 +96,22 @@ def create_process_description():
                                   }
                                 }
                         },
-                    required=True)
+        required=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {
-                "data": {"from_node": "get_data_1"},
+        "data": {"from_node": "get_data_1"},
                 "extent": {
                     "north": 51.00226308446294,
                     "crs": "EPSG:4326",
                     "west": 3.057030657924054,
                     "east": 3.058236553549667,
                     "south": 50.99958367677388
-                },
-            }
+            },
+        }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_bbox_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

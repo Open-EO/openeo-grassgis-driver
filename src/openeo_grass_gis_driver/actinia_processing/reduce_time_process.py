@@ -39,7 +39,7 @@ def create_process_description():
 
     # Example
     arguments = {
-                "data": {"from_node": "get_strds_data"},
+        "data": {"from_node": "get_strds_data"},
                 "method": "minimum"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"reduce_time_1": node})

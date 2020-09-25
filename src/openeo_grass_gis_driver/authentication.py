@@ -107,4 +107,3 @@ class UserInfo(Resource):
         return make_response(jsonify({
             'user_id': auth.username
         }), 200)
-        

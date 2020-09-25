@@ -53,7 +53,7 @@ GET_DATA_2 = {
         "get_elevation_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.PERMANENT.raster.elevation",
+                "id": "nc_spm_08.PERMANENT.raster.elevation",
                 "spatial_extent": {
                     "west": 630000,
                     "east": 645000,
@@ -147,7 +147,7 @@ FILTER_BBOX = {
         "get_data_1": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.PERMANENT.raster.elevation",
+                "id": "nc_spm_08.PERMANENT.raster.elevation",
                 "spatial_extent": {
                     "west": 630000,
                     "east": 645000,
@@ -439,7 +439,7 @@ NDVI_STRDS = {
         "get_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_1987",
+                "id": "nc_spm_08.landsat.strds.lsat5_1987",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,
@@ -531,7 +531,7 @@ USE_CASE_1 = {
         "get_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_1987",
+                "id": "nc_spm_08.landsat.strds.lsat5_1987",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,

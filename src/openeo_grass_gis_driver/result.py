@@ -79,7 +79,7 @@ class Result(ResourceBase):
                                    type=str(e_type))
             return ErrorSchema(id="1234567890", code=404, message=str(traceback_model)).as_response(404)
 
-    def wait_until_finished(self, response, max_time: int=10):
+    def wait_until_finished(self, response, max_time: int = 10):
         """Poll the status of a resource and assert its finished HTTP status
 
         The response will be checked if the resource was accepted. Hence it must always be HTTP 200 status.

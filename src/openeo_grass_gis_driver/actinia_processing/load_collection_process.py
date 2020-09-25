@@ -36,30 +36,30 @@ def create_process_description():
                            "subtype": "bounding-box",
                            "required": [
                                "west",
-                                  "south",
-                                  "east",
-                                  "north"
+                               "south",
+                               "east",
+                               "north"
                                ],
                            "properties": {
                                "west": {
                                    "description": "West (lower left corner, coordinate axis 1).",
-                                    "type": "number"
+                                   "type": "number"
                                   },
                                "south": {
                                    "description": "South (lower left corner, coordinate axis 2).",
-                                    "type": "number"
+                                   "type": "number"
                                   },
                                "east": {
                                    "description": "East (upper right corner, coordinate axis 1).",
-                                    "type": "number"
+                                   "type": "number"
                                   },
                                "north": {
                                    "description": "North (upper right corner, coordinate axis 2).",
-                                    "type": "number"
+                                   "type": "number"
                                   },
                                "base": {
                                    "description": "Base (optional, lower left corner, coordinate axis 3).",
-                                    "type": [
+                                   "type": [
                                       "number",
                                       "null"
                                     ],
@@ -67,7 +67,7 @@ def create_process_description():
                                   },
                                "height": {
                                    "description": "Height (optional, upper right corner, coordinate axis 3).",
-                                    "type": [
+                                   "type": [
                                       "number",
                                       "null"
                                     ],
@@ -75,7 +75,7 @@ def create_process_description():
                                   },
                                "crs": {
                                    "description": "Coordinate reference system of the extent, specified as as [EPSG code](http://www.epsg-registry.org/), [WKT2 (ISO 19162) string](http://docs.opengeospatial.org/is/18-010r7/18-010r7.html) or [PROJ definition (deprecated)](https://proj.org/usage/quickstart.html). Defaults to `4326` (EPSG code 4326) unless the client explicitly requests a different coordinate reference system.",
-                                    "schema": {
+                                   "schema": {
                                       "anyOf": [
                                         {
                                           "title": "EPSG Code",

@@ -30,9 +30,9 @@ def create_process_description():
                             "subtype": "bounding-box",
                             "required": [
                                 "west",
-                                  "south",
-                                  "east",
-                                  "north"
+                                "south",
+                                "east",
+                                "north"
                             ],
                             "properties": {
                                 "west": {
@@ -106,10 +106,10 @@ def create_process_description():
         "data": {"from_node": "get_data_1"},
         "extent": {
             "north": 51.00226308446294,
-                    "crs": "EPSG:4326",
-                    "west": 3.057030657924054,
-                    "east": 3.058236553549667,
-                    "south": 50.99958367677388
+            "crs": "EPSG:4326",
+            "west": 3.057030657924054,
+            "east": 3.058236553549667,
+            "south": 50.99958367677388
         },
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)

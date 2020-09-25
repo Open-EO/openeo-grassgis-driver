@@ -28,7 +28,7 @@ def create_process_description():
                             "type": "array",
                             "items": {
                                 "type": "string",
-                                 "subtype": "band-name"
+                                "subtype": "band-name"
                                }
                         },
                         required=False)

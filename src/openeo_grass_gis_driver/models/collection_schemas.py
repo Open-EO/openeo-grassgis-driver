@@ -318,7 +318,7 @@ class SarBands(JsonableObject):
 #        pattern = "^(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?![%"#? ])\S)+)$"
 #        x = re.search(pattern, doi)
 #        if not x:
-#            es = ErrorSchema(id=str(datetime.now()), code=400,
+#            es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
 #                message="The doi MUST match the following pattern: %s" % pattern)
 #            return make_response(es.to_json(), 400)
 #         self.doi = doi
@@ -564,7 +564,7 @@ class CollectionProviders(JsonableObject):
         #if roles:
         #    for role in roles:
         #        if role not in ["producer", "licensor", "processor", "host"]:
-        #            es = ErrorSchema(id=str(datetime.now()), code=400,
+        #            es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #                message="The provider's role(s) can be one or more of the following elements: producer, licensor, processor, host")
         #            return make_response(es.to_json(), 400)
         self.roles = roles
@@ -664,7 +664,7 @@ class CollectionEntry(JsonableObject):
         #pattern = "^[A-Za-z0-9_\-\.~\/]+$"
         #x = re.search(pattern, id)
         #if not x:
-        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The id MUST match the following pattern: %s" % pattern)
         #    return make_response(es.to_json(), 400)
         self.id = id

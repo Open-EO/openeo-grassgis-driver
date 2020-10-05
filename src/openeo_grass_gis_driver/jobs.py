@@ -21,19 +21,20 @@ __email__ = "soerengebbert@googlemail.com"
 
 
 OUTPUT_FORMATS = {
-  "GTiff": {
-    "gis_data_types": [
-      "raster"
-    ],
-    "parameters": {},
-    "links": [
-      {
+  "output": {
+    "GTiff": {
+      "gis_data_types": [
+        "raster"
+      ],
+      "parameters": {},
+      "links": [{
         "href": "https://www.gdal.org/frmt_gtiff.html",
         "rel": "about",
         "title": "GDAL on the GeoTiff file format and storage options"
-      }
-    ]
-  }
+      }]
+    }
+  },
+  "input": {}
 }
 
 class OutputFormats(Resource):
@@ -59,21 +60,22 @@ class Jobs(ResourceBase):
 
         for key in self.job_db:
             job = self.job_db[key]
-            job.process_graph = None
+            job.process = None
             jobs.append(job)
 
-        job_list = JobList(jobs=jobs)
+        job_list = JobList(jobs=jobs, links = [])
         return job_list.as_response(http_status=200)
 
     def post(self):
         """Submit a new job to the job database"""
         # TODO: Implement user specific database access
 
-        job_id = f"user-job::{str(uuid4())}"
+        job_id = f"user-job-{str(uuid4())}"
+        # job_id = str(uuid4())
         job = request.get_json()
 
-        if "process_graph" not in job:
-            job = {"process_graph": job}
+        if "process" not in job:
+            job = {"process": job}
             # return ErrorSchema(id=uuid4(), message="A process graph is required in the request").as_response(400)
 
         job_info = check_job(job=job, job_id=job_id)
@@ -102,13 +104,13 @@ def check_job(job, job_id):
     if "description" in job:
         description = job["description"]
 
-    process_graph = ProcessGraph(title=title, description=description, process_graph=job["process_graph"])
+    process = ProcessGraph(title=title, description=description, process_graph=job["process"])
 
-    submitted = str(datetime.now())
+    created = str(datetime.now().isoformat())
 
     job_info = JobInformation(id=job_id, title=title,
                               description=description,
-                              process_graph=process_graph, updated=None,
-                              submitted=submitted, status="submitted")
+                              process=process, updated=None,
+                              created=created, status="created")
 
     return job_info

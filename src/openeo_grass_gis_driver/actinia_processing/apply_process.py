@@ -36,11 +36,13 @@ def create_process_description():
                                        "The specified process must be unary meaning that it must work on a single value.",
                            schema={"type": "object",
                                    "subtype": "callback",
-                                   "parameters": {
-                                     "x": {
-                                       "description": "A value of any type could be passed."
-                                       }
-                                    }
+                                   "parameters": [{
+                                       "name": "x",
+                                       "description": "The value to process.",
+                                       "schema": {
+                                          "description": "Any data type."
+                                         }
+                                      }]
                                   },
                            required=True)
 

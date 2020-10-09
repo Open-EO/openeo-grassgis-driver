@@ -60,7 +60,10 @@ class Parameter(JsonableObject):
                  required: bool = False,
                  depricated: bool = False,
                  experimental: bool = False,
-                 mime_type: Optional[str] = None):
+                 mime_type: Optional[str] = None,
+                 name: Optional[str] = None):
+        # name is set later on in ProcessDescription
+        self.name = None
         self.description = description
         self.schema = schema
         self.required = required
@@ -400,7 +403,14 @@ class ProcessDescription(JsonableObject):
         #        es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #            message="The keys of the parameters MUST match the following pattern: %s" % pattern)
         #        return make_response(es.to_json(), 400)
-        self.parameters = parameters
+
+        #self.parameters = parameters
+        plist = list()
+        for key in parameters:
+            parameters[key].name = key
+            plist.append(parameters[key])
+        self.parameters = plist
+
         self.returns = returns
         self.links = links
         self.summary = summary

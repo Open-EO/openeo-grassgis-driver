@@ -193,6 +193,9 @@ class Graph:
         :return: The set of child nodes that are the roots of the process graph
         """
 
+        if "process_graph" in process_graph:
+            process_graph = process_graph["process_graph"]
+
         for key in process_graph.keys():
             process_description = process_graph[key]
             node = Node(id=key, process_description=process_description)

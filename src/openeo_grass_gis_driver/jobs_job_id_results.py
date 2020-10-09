@@ -133,7 +133,7 @@ class JobsJobIdResults(ResourceBase):
         try:
             # Empty the process location
             ActiniaInterface.PROCESS_LOCATION = {}
-            graph = Graph(job.process.ProcessGraph)
+            graph = Graph(job.process)
             result_name, process_list = graph.to_actinia_process_list()
 
             if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:

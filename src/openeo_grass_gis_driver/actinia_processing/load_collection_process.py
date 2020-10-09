@@ -164,12 +164,16 @@ def create_process_description():
                   "type": "object",
                   "additionalProperties": {
                   "type": "object",
-                  "parameters": {
-                  "value": {
-                  "description": "The property value. Any data type could be passed."
-                  }
-                },
-                "subtype": "process-graph"
+                  "subtype": "process-graph",
+                  "parameters": [
+                    {
+                      "name": "value",
+                      "description": "The property value to be checked against.",
+                      "schema": {
+                        "description": "Any data type."
+                      }
+                    }
+                  ]
                 }
                 }])
 

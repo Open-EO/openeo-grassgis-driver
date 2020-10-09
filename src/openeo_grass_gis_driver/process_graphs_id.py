@@ -16,7 +16,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 
 class ProcessGraphId(ResourceBase):
-    """The /jobs endpoint implementation"""
+    """The /process_graphs/{process_graph_id} endpoint implementation"""
 
     def __init__(self):
         ResourceBase.__init__(self)

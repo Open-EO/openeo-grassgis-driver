@@ -139,7 +139,7 @@ class ProcessGraphList(JsonableObject):
     """
 
     def __init__(self, process_graphs: List[ProcessGraphListEntry],
-                 links: Optional[EoLinks] = None):
+                 links: Optional[EoLinks] = []):
 
-        self.process_graphs = process_graphs
+        self.processes = process_graphs
         self.links = links

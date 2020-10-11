@@ -43,7 +43,7 @@ class ProcessGraphId(ResourceBase):
 
             process_graph = request.get_json()
             self.graph_db[id] = process_graph
-            return make_response(id, 204)
+            return make_response(id, 200)
         except Exception:
 
             e_type, e_value, e_tb = sys.exc_info()

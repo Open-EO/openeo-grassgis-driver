@@ -51,10 +51,8 @@ def create_process_description():
                                     "description": "Additional data passed by the user.",
                                     "schema": {
                                       "description": "Any data type."
-                                    },
-                                    "optional": "true",
-                                    "default": "null"
-                                   }
+                                    }
+                                    }
                                    ]
                                 },
                          required=True)

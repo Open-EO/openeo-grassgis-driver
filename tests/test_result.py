@@ -41,7 +41,7 @@ class PreviewTestCase(TestBase):
         """
 
         fbox = FILTER_BBOX
-        fbox["process_graph"]["get_data_1"]["arguments"]["id"] = "nc_spm_08.PERMANENT.raster.elevation_nonon"
+        fbox["process"]["process_graph"]["get_data_1"]["arguments"]["id"] = "nc_spm_08.PERMANENT.raster.elevation_nonon"
         response = self.app.post('/result', data=json.dumps(fbox), content_type="application/json", headers=self.auth)
 
         data = json.loads(response.data.decode())

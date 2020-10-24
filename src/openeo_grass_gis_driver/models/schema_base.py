@@ -19,8 +19,16 @@ def as_dict_without_nones(o):
     for key in d:
         if d[key] is None:
             continue
+        # allow nullable but required keys
+        value = d[key]
+        if value == "json:null":
+            value = None
+        elif  value == "json:true":
+            value = True
+        elif  value == "json:false":
+            value = False
         # ___ is a placeholder for : as in eo:bands 
-        r[key.replace("___", ":")] = d[key]
+        r[key.replace("___", ":")] = value
 
     return r
 

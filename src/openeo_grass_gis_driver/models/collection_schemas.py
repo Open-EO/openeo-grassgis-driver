@@ -19,7 +19,7 @@ class CollectionExtent(JsonableObject):
     (collection_extent)
     spatial:
         required
-        Array of number
+        Array of array of number
         The potential spatial extent covered by the collection.
         The bounding box is provided as four or six numbers, depending on whether
         the coordinate reference system includes a vertical axis (height or depth):
@@ -34,7 +34,7 @@ class CollectionExtent(JsonableObject):
 
     temporal:
         required
-        Array of string <date-time>
+        Array of array of string <date-time>
         Potential temporal extent covered by the collection.
         The temporal extent specified by a start and an end time,
         each formatted as a RFC 3339 date-time. Open date ranges are
@@ -46,10 +46,18 @@ class CollectionExtent(JsonableObject):
     def __init__(self,
                  spatial: Tuple[float, float, float, float] = (-180, -90, 180, 90),
                  temporal: Optional[Tuple[str, Optional[str]]] = ("1900-01-01T00:00:00", "2100-01-01T00:00:00")):
+
         # This is soooo stupid, why is the temporal extent required? There is data that has no temporal extent
         # So we trick here to set an arbitrary extent of 200 years
-        self.spatial = spatial # TODO maxItems: 6
-        self.temporal = temporal
+        
+        # list of bboxes !
+        bbox = []
+        bbox.append(spatial)    # TODO maxItems: 6
+        self.spatial = {"bbox": bbox}
+        # list of intervals !
+        interval = []
+        interval.append(temporal)
+        self.temporal = {"interval": interval}
 
 class CollectionProperties(JsonableObject):
     """
@@ -318,7 +326,7 @@ class SarBands(JsonableObject):
 #        pattern = "^(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?![%"#? ])\S)+)$"
 #        x = re.search(pattern, doi)
 #        if not x:
-#            es = ErrorSchema(id=str(datetime.now()), code=400,
+#            es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
 #                message="The doi MUST match the following pattern: %s" % pattern)
 #            return make_response(es.to_json(), 400)
 #         self.doi = doi
@@ -564,7 +572,7 @@ class CollectionProviders(JsonableObject):
         #if roles:
         #    for role in roles:
         #        if role not in ["producer", "licensor", "processor", "host"]:
-        #            es = ErrorSchema(id=str(datetime.now()), code=400,
+        #            es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #                message="The provider's role(s) can be one or more of the following elements: producer, licensor, processor, host")
         #            return make_response(es.to_json(), 400)
         self.roles = roles
@@ -649,7 +657,7 @@ class CollectionEntry(JsonableObject):
 
     # TODO provider not required
     def __init__(self, providers: Optional[CollectionProviders] = None,
-                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis"),],
+                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis", rel="external"),],
                  extent: Optional[CollectionExtent] = CollectionExtent(),
                  title: str = None, description: str = None, license: str = "proprietary",
                  stac_version: str = "0.6.2", id: str = None, version: str = None,
@@ -664,7 +672,7 @@ class CollectionEntry(JsonableObject):
         #pattern = "^[A-Za-z0-9_\-\.~\/]+$"
         #x = re.search(pattern, id)
         #if not x:
-        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The id MUST match the following pattern: %s" % pattern)
         #    return make_response(es.to_json(), 400)
         self.id = id
@@ -672,6 +680,20 @@ class CollectionEntry(JsonableObject):
         self.version = version
         self.providers = providers
         self.properties = properties
+        self.cube___dimensions = {"x": {
+                                        "type": "spatial",
+                                        "axis": "x"
+                                        },
+                                  "y": {
+                                        "type": "spatial",
+                                        "axis": "x"
+                                        },
+                                 }
+        # STAC Common Metadata: A list of commonly used fields throughout all domains
+        # https://github.com/radiantearth/stac-spec/tree/v0.9.0/item-spec/common-metadata.md
+        # Content Extensions: Domain-specific fields for domains such as EO, SAR and point clouds.
+        # https://github.com/radiantearth/stac-spec/tree/v0.9.0/extensions/README.md#list-of-content-extensions
+        self.summaries = {}
 
 
 class Collection(JsonableObject):
@@ -679,7 +701,7 @@ class Collection(JsonableObject):
     """
 
     def __init__(self, collections: List[CollectionEntry],
-                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis"),]):
+                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis", rel="external"),]):
         self.collections = collections
         self.links = links
 

@@ -75,7 +75,7 @@ raster_example = {
 }
 
 
-def coorindate_transform_extent_to_EPSG_4326(crs: str, extent: CollectionExtent):
+def coordinate_transform_extent_to_EPSG_4326(crs: str, extent: CollectionExtent):
     """Tranfor the extent coordinates to lat/lon
 
     :param crs:
@@ -91,9 +91,9 @@ def coorindate_transform_extent_to_EPSG_4326(crs: str, extent: CollectionExtent)
 
     transform = osr.CoordinateTransformation(source, target)
 
-    lower_left = ogr.CreateGeometryFromWkt(f"POINT ({extent.spatial[0]} {extent.spatial[1]})")
+    lower_left = ogr.CreateGeometryFromWkt(f"POINT ({extent.spatial['bbox'][0][0]} {extent.spatial['bbox'][0][1]})")
     lower_left.Transform(transform)
-    upper_right = ogr.CreateGeometryFromWkt(f"POINT ({extent.spatial[2]} {extent.spatial[3]})")
+    upper_right = ogr.CreateGeometryFromWkt(f"POINT ({extent.spatial['bbox'][0][2]} {extent.spatial['bbox'][0][3]})")
     upper_right.Transform(transform)
 
     a0 = lower_left.GetPoint()[0]
@@ -101,7 +101,7 @@ def coorindate_transform_extent_to_EPSG_4326(crs: str, extent: CollectionExtent)
     a2 = upper_right.GetPoint()[0]
     a3 = upper_right.GetPoint()[1]
 
-    extent.spatial = (a0, a1, a2, a3)
+    extent.spatial['bbox'][0] = (a0, a1, a2, a3)
     return extent
 
 
@@ -174,7 +174,7 @@ class CollectionInformationResource(Resource):
         description = "GRASS GIS location/mapset path: /%s/%s" % (location, mapset)
         crs = mapset_info["projection"]
 
-        coorindate_transform_extent_to_EPSG_4326(crs=crs, extent=extent)
+        coordinate_transform_extent_to_EPSG_4326(crs=crs, extent=extent)
 
         properties = (CollectionProperties(eo_platform="Sentinel-2",
                                            eo_instrument="Sentinel-2",

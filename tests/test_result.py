@@ -16,15 +16,15 @@ __email__ = "soerengebbert@googlemail.com"
 
 class PreviewTestCase(TestBase):
 
-#    def test_graph_bbox_from_raster_nc_job_ephemeral(self):
-#        """Test the bbox from raster process
-#        """
-#        response = self.app.post('/result', data=json.dumps(BBOX_FROM_RASTER), content_type="application/json", headers=self.auth)
-#
-#        data = json.loads(response.data.decode())
-#        pprint.pprint(data)
-#
-#        self.assertEqual(200, response.status_code)
+    #    def test_graph_bbox_from_raster_nc_job_ephemeral(self):
+    #        """Test the bbox from raster process
+    #        """
+    #        response = self.app.post('/result', data=json.dumps(BBOX_FROM_RASTER), content_type="application/json", headers=self.auth)
+    #
+    #        data = json.loads(response.data.decode())
+    #        pprint.pprint(data)
+    #
+    #        self.assertEqual(200, response.status_code)
 
     def test_graph_filter_bbox_nc_job_ephemeral(self):
         """Test the filter box process

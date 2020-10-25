@@ -19,66 +19,66 @@ PROCESS_NAME = "run_udf"
 def create_process_description():
     p_data = Parameter(description="The data to be passed to the UDF as array or raster data cube.",
                        schema={[
-                                {
-                                  "title": "Raster data cube",
-                                  "type": "object",
-                                  "subtype": "raster-cube"
-                                },
-                                {
-                                  "title": "Array",
-                                  "type": "array",
-                                  "minItems": 1,
-                                  "items": {
+                           {
+                               "title": "Raster data cube",
+                               "type": "object",
+                               "subtype": "raster-cube"
+                           },
+                           {
+                               "title": "Array",
+                               "type": "array",
+                               "minItems": 1,
+                               "items": {
                                     "description": "Any data type."
                                   }
-                                },
-                                {
-                                  "title": "Single Value",
-                                  "description": "A single value of any data type."
-                                }
-                              ]},
+                           },
+                           {
+                               "title": "Single Value",
+                               "description": "A single value of any data type."
+                           }
+                       ]},
                        required=True)
     p_udf = Parameter(description="Either source code, an absolute URL or a path to an UDF script.",
                       schema={[
-                                {
+                          {
                                   "description": "URI to an UDF",
                                   "type": "string",
                                   "format": "uri",
                                   "subtype": "uri"
-                                },
-                                {
-                                  "description": "Path to an UDF uploaded to the server.",
-                                  "type": "string",
-                                  "subtype": "file-path"
-                                },
-                                {
-                                  "description": "Source code as string",
-                                  "type": "string",
-                                  "subtype": "udf-code"
-                                }
-                              ]
-                            },
+                          },
+                          {
+                              "description": "Path to an UDF uploaded to the server.",
+                              "type": "string",
+                              "subtype": "file-path"
+                          },
+                          {
+                              "description": "Source code as string",
+                              "type": "string",
+                              "subtype": "udf-code"
+                          }
+                      ]
+                      },
                          required=True)
 
     p_runtime = Parameter(description="An UDF runtime identifier available at the back-end.",
                           schema={"type": "string",
                                   "subtype": "udf-runtime"
-                                 },
+                                  },
                           required=True)
 
     p_version = Parameter(description="An UDF runtime version. If set to `null`, "
                                       "the default runtime version specified for each runtime is used.",
                           schema={[
-                                    {
+                              {
                                       "type": "string",
                                       "subtype": "udf-runtime-version"
-                                    },
-                                    {
-                                      "title": "Default runtime version",
-                                      "type": "null"
-                                    }
-                                  ]
-                                 },
+                              },
+                              {
+                                  "title": "Default runtime version",
+                                  "type": "null"
+                              }
+                          ]
+                          },
                           required=False)
 
     p_context = Parameter(description="Additional data such as configuration options "
@@ -91,21 +91,21 @@ def create_process_description():
                                   "passed for `data`, the returned value is defined by the context "
                                   "and is exactly what the UDF returned.",
                      schema={[
-                              {
-                                "title": "Raster data cube",
-                                "type": "object",
-                                "subtype": "raster-cube"
-                              },
-                              {
-                                "title": "Any",
-                                "description": "Any data type."
-                              }
-                            ]})
+                         {
+                             "title": "Raster data cube",
+                             "type": "object",
+                             "subtype": "raster-cube"
+                         },
+                         {
+                             "title": "Any",
+                             "description": "Any data type."
+                         }
+                     ]})
 
     # Example
     arguments = {
-                "data": {"from_node": "get_strds_data"},
-                "udf": "some source code"}
+        "data": {"from_node": "get_strds_data"},
+        "udf": "some source code"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"run_udf1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
@@ -126,7 +126,7 @@ def create_process_description():
 
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
-def create_process_chain_entry(input_object, python_file_url, 
+def create_process_chain_entry(input_object, python_file_url,
                                udf_runtime, udf_version, output_object):
     """Create a Actinia command of the process chain that uses t.rast.udf
 

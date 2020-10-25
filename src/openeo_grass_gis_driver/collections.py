@@ -72,7 +72,7 @@ class Collections(Resource):
                                          title="Vector dataset",
                                          license="proprietary",
                                          description="Raster Vector GRASS GIS location/mapset path: /%s/%s" % (
-                                         location, mapset))
+                                             location, mapset))
                     dataset_list.append(ds)
 
         c = Collection(collections=dataset_list)

@@ -47,10 +47,10 @@ def create_process_description():
 
     # Example
     arguments = {
-                "data": {"from_node": "get_data_1"},
-                "mask": {"from_node": "get_data_2"},
-                "value": "null",
-            }
+        "data": {"from_node": "get_data_1"},
+        "mask": {"from_node": "get_data_2"},
+        "value": "null",
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"mask_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
@@ -73,11 +73,11 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_object: DataObject, vmin: float, vmax: float, output_object: DataObject):
-    """Create a Actinia command of the process chain that uses t.rast.mapcalc 
+    """Create a Actinia command of the process chain that uses t.rast.mapcalc
     to filter raster values by the specified interval
 
     :param input_object: The input time series object
-    :param min: smallest allowed value 
+    :param min: smallest allowed value
     :param max: largest allowed value
     :param output_object: The output time series object
     :return: A Actinia process chain description
@@ -97,7 +97,7 @@ def create_process_chain_entry(input_object: DataObject, vmin: float, vmax: floa
                      "value": "masked_invalid"},
                     {"param": "output",
                      "value": output_object.grass_name()},
-                   ]}
+                    ]}
 
     return pc
 

@@ -51,7 +51,7 @@ def create_process_description():
                                         "default": "null"
                                       }
                                     ]
-                               },
+                                   },
                            required=True)
     p_target_dimension = Parameter(description="The new dimension name to be used for storing the results. Defaults to `result`.",
                            schema={"type": "string"},
@@ -109,7 +109,7 @@ def create_process_chain_entry(input_object: DataObject, geometries: str):
                     "value": geometries},
                    {"param": "output",
                     "value": "geometries"},
-                  ]
+                   ]
     }
 
     g_region_1 = {

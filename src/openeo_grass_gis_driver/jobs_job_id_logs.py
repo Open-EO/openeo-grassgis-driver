@@ -74,7 +74,7 @@ class JobsJobIdLogs(ResourceBase):
 
                 links = []
                 if (job.additional_info['urls'] and
-                    "resources" in job.additional_info['urls']):
+                        "resources" in job.additional_info['urls']):
                     resource_links = job.additional_info['urls']['resources']
 
                     for link in resource_links:

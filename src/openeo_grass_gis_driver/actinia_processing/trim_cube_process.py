@@ -28,8 +28,8 @@ def create_process_description():
 
     # Example
     arguments = {
-                "data": {"from_node": "get_data_1"}
-            }
+        "data": {"from_node": "get_data_1"}
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"trim_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
@@ -63,13 +63,13 @@ def create_process_chain_entry(input_object: DataObject,
     pc = [{"id": "t_rast_algebra_%i" % rn,
          "module": "t.rast.algebra",
          "inputs": [{"param": "expression",
-                     "value": "%(result)s = 1 * %(input)s" % 
-                              {"result":  output_object.grass_name(),
+                     "value": "%(result)s = 1 * %(input)s" %
+                              {"result": output_object.grass_name(),
                                "input": input_object.grass_name()}},
                     {"param": "basename",
                      "value": "trim"},
                     ]},
-         ]
+          ]
 
     return pc
 

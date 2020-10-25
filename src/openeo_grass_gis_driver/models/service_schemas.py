@@ -133,7 +133,7 @@ class Service(JsonableObject):
         self.budget = budget
 
         # Test id in pattern
-        pattern = "^[A-Za-z0-9_\-\.~]+$"
+        pattern = r"^[A-Za-z0-9_\-\.~]+$"
         x = re.search(pattern, id)
         if not x:
             es = ErrorSchema(id=str(datetime.now()), code=400,

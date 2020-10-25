@@ -52,9 +52,9 @@ def create_process_description():
                                     "schema": {
                                       "description": "Any data type."
                                     }
-                                    }
-                                   ]
-                                },
+                                  }
+                                  ]
+                                  },
                          required=True)
 
     p_dimension = Parameter(description="The name of the dimension over which to reduce.",
@@ -71,9 +71,9 @@ def create_process_description():
 
     # Example
     arguments = {
-                "data": {"from_node": "get_strds_data"},
-                "dimension": "spatial",
-                "reducer": "null"}
+        "data": {"from_node": "get_strds_data"},
+        "dimension": "spatial",
+        "reducer": "null"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"reduce1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
@@ -142,7 +142,7 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
             method = "sum"
         elif "variance" in formula:
             method = "variance"
-        else :
+        else:
             raise Exception('Unsupported method <%s> for temporal reduction.' % (method))
 
         # TODO: quantiles with openeo options probabilites (list of values between 0 and 1
@@ -158,7 +158,7 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
     elif dimtype == 'bands':
         # t.rast.mapcalc
         
-        # t.rast.bandcalc needs the formula and translates 
+        # t.rast.bandcalc needs the formula and translates
         # "data[<index>]" to appropriate band references
         # with <index> being a number, 0 for first band
         # the order of bands is obtained from g.bands

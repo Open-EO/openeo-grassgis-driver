@@ -65,11 +65,11 @@ def create_process_description():
 
     # Example
     arguments = {
-                "a": {"from_node": "get_a_data"},
-                "b": {"from_node": "get_b_data"},
-                "result": "ndvi",
-                "expression": "$result = ($a - $b / ($a + $b))"
-            }
+        "a": {"from_node": "get_a_data"},
+        "b": {"from_node": "get_b_data"},
+        "result": "ndvi",
+        "expression": "$result = ($a - $b / ($a + $b))"
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"mapcalc_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

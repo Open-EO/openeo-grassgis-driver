@@ -33,9 +33,9 @@ def create_process_description():
 
     # Example
     arguments = {
-                "data": {"from_node": "get_strds_data"},
-                "mask": {"from_node": "get_mask_data"},
-            }
+        "data": {"from_node": "get_strds_data"},
+        "mask": {"from_node": "get_mask_data"},
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"apply_mask_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
@@ -57,7 +57,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input: DataObject, mask: DataObject, output: DataObject):
-    """Create a Actinia process description that uses r.mapcalc 
+    """Create a Actinia process description that uses r.mapcalc
        to apply a mask.
        
        NOTE: according to multilayer_mask, 0 means not masked, 1 means masked
@@ -78,7 +78,7 @@ def create_process_chain_entry(input: DataObject, mask: DataObject, output: Data
                               "null(), %(raw)s)" % {"result": output.grass_name(),
                                                     "raw": input.grass_name(),
                                                     "mask": mask.grass_name()}}
-                   ]}
+                    ]}
 
     return pc
 

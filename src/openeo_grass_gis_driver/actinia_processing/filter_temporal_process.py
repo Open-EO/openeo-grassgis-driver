@@ -35,15 +35,15 @@ def create_process_description():
                                     "subtype": "date-time"
                                   },
                                   {
-                                  "type": "string",
-                                    "format": "date",
-                                    "subtype": "date"
+                                      "type": "string",
+                                      "format": "date",
+                                      "subtype": "date"
                                   },
                                   {
                                     "type": "null"
                                   }
-                                ]
-                              },
+                                     ]
+                                   },
                               "examples": [
                                 [
                                   "2015-01-01T00:00:00Z",
@@ -53,24 +53,24 @@ def create_process_description():
                                   "2015-01-01",
                                   "2016-01-01"
                                 ]
-                              ]},
+                                   ]},
                        required=True)
 
     p_dim = Parameter(description="The temporal dimension to filter on. If the dimension is not set or is set to `null`, the data cube is expected to only have one temporal dimension. Fails with a `TooManyDimensions` error if it has more dimensions. Fails with a `DimensionNotAvailable` error if the specified dimension does not exist.\n\n**Note:** The default dimensions a data cube provides are described in the collection's metadata field `cube:dimensions`.",
                       schema={"type": [
-                                "string",
-                                "null"
-                              ],
-                              "default": "null"})
+                          "string",
+                          "null"
+                      ],
+                          "default": "null"})
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {
-                "data": {"from_node": "get_strds_data"},
-                "extent": ["2001-01-01", "2005-01-01"],
-            }
+        "data": {"from_node": "get_strds_data"},
+        "extent": ["2001-01-01", "2005-01-01"],
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_daterange_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
@@ -91,11 +91,11 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 def create__process_chain_entry(input_object: DataObject, start_time: str, end_time: str, output_object: DataObject):
     """Create a Actinia command of the process chain that uses t.rast.extract to create a subset of a strds
-       The filter checks whether the temporal dimension value is 
-       greater than or equal to the lower boundary (start date/time) 
-       and the temporal dimension value is less than the value of the 
-       upper boundary (end date/time). This corresponds to a 
-       left-closed interval, which contains the lower boundary but not 
+       The filter checks whether the temporal dimension value is
+       greater than or equal to the lower boundary (start date/time)
+       and the temporal dimension value is less than the value of the
+       upper boundary (end date/time). This corresponds to a
+       left-closed interval, which contains the lower boundary but not
        the upper boundary.
 
     :param input_object: The input strds object

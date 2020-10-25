@@ -36,7 +36,7 @@ def create_process_description():
     arguments = {
         "data": {"from_node": "get_data"},
         "nir": "S2_8",
-        "red": "S2_4"        
+        "red": "S2_4"
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"ndvi_1": node})
@@ -63,7 +63,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_time_series: DataObject,
-                               nir_band, red_band, 
+                               nir_band, red_band,
                                output_time_series: DataObject):
     """Create a Actinia process description that uses t.rast.ndvi to create the NDVI time series
 

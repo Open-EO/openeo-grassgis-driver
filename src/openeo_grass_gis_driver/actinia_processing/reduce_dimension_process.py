@@ -158,7 +158,7 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
     elif dimtype == 'bands':
         # t.rast.mapcalc
         
-        # t.rast.bandcalc needs the formula and translates 
+        # t.rast.bandcalc needs the formula and translates
         # "data[<index>]" to appropriate band references
         # with <index> being a number, 0 for first band
         # the order of bands is obtained from g.bands

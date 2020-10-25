@@ -256,7 +256,7 @@ REDUCE_TIME_MIN = {
 
 # map_algebra no longer exists
 # TODO: replace with reduce_dimension
-""" 
+"""
 MAP_ALGEBRA = {
     "title": "Compute the NDVI based on two raster layers with map algebra",
     "description": "Compute the NDVI based on two raster layers with map algebra",
@@ -310,7 +310,7 @@ MAP_ALGEBRA = {
 
 # temporal_algebra no longer exists
 # TODO: replace with reduce_dimension
-""" 
+"""
 TEMPORAL_ALGEBRA = {
     "title": "Compute the NDVI based on two strds with temporal algebra",
     "description": "Compute the NDVI based on two strds with temporal algebra",
@@ -361,7 +361,7 @@ TEMPORAL_ALGEBRA = {
         }
     }
 }
-""" 
+"""
 
 # rgb_raster_exporter does not exist
 """

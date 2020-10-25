@@ -54,7 +54,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(data_object: DataObject, output_object: DataObject):
-    """Create a Actinia process description that uses t.rast.series 
+    """Create a Actinia process description that uses t.rast.series
        and r.mapcalc to create a multilayer mask.
 
     :param data_object: The input time series object

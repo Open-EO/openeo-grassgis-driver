@@ -53,7 +53,7 @@ GET_DATA_2 = {
         "get_elevation_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.PERMANENT.raster.elevation",
+                "id": "nc_spm_08.PERMANENT.raster.elevation",
                 "spatial_extent": {
                     "west": 630000,
                     "east": 645000,
@@ -107,7 +107,7 @@ BBOX_FROM_RASTER = {
         "get_data_1": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.PERMANENT.raster.elevation",
+                "id": "nc_spm_08.PERMANENT.raster.elevation",
                 "spatial_extent": {
                     "west": 630000,
                     "east": 645000,
@@ -144,7 +144,7 @@ FILTER_BBOX = {
         "get_data_1": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.PERMANENT.raster.elevation",
+                "id": "nc_spm_08.PERMANENT.raster.elevation",
                 "spatial_extent": {
                     "west": 630000,
                     "east": 645000,
@@ -240,7 +240,7 @@ MAP_ALGEBRA = {
         "get_red_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.raster.lsat7_2000_30",
+                "id": "nc_spm_08.landsat.raster.lsat7_2000_30",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,
@@ -257,7 +257,7 @@ MAP_ALGEBRA = {
         "get_nir_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.raster.lsat7_2000_40",
+                "id": "nc_spm_08.landsat.raster.lsat7_2000_40",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,
@@ -293,7 +293,7 @@ TEMPORAL_ALGEBRA = {
         "get_red_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_1987_30",
+                "id": "nc_spm_08.landsat.strds.lsat5_1987_30",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,
@@ -310,7 +310,7 @@ TEMPORAL_ALGEBRA = {
         "get_nir_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_1987_40",
+                "id": "nc_spm_08.landsat.strds.lsat5_1987_40",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,
@@ -349,7 +349,7 @@ RGB_RASTER_EXPORT = {
         "get_red_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.raster.lsat7_2000_30",
+                "id": "nc_spm_08.landsat.raster.lsat7_2000_30",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,
@@ -366,7 +366,7 @@ RGB_RASTER_EXPORT = {
         "get_green_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.raster.lsat7_2000_20",
+                "id": "nc_spm_08.landsat.raster.lsat7_2000_20",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,
@@ -383,7 +383,7 @@ RGB_RASTER_EXPORT = {
         "get_blue_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.raster.lsat7_2000_10",
+                "id": "nc_spm_08.landsat.raster.lsat7_2000_10",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,
@@ -414,7 +414,7 @@ NDVI_STRDS = {
         "get_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_1987",
+                "id": "nc_spm_08.landsat.strds.lsat5_1987",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,
@@ -500,7 +500,7 @@ USE_CASE_1 = {
         "get_data": {
             "process_id": "load_collection",
             "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_1987",
+                "id": "nc_spm_08.landsat.strds.lsat5_1987",
                 "spatial_extent": {
                     "west": 629992.5,
                     "east": 645012,

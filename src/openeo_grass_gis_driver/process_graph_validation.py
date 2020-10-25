@@ -57,4 +57,4 @@ class GraphValidation(ResourceBase):
                                    message=str(response)).as_response(http_status=status)
 
         except Exception as e:
-                return ErrorSchema(id=str(datetime.now().isoformat()), code=400, message=str(e)).as_response(http_status=400)
+            return ErrorSchema(id=str(datetime.now().isoformat()), code=400, message=str(e)).as_response(http_status=400)

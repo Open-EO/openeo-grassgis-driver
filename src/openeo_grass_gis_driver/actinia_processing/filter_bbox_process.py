@@ -27,8 +27,8 @@ def create_process_description():
                                      "[EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
                         schema={
                             "type": "object",
-                                "subtype": "bounding-box",
-                                "required": [
+                            "subtype": "bounding-box",
+                            "required": [
                                   "west",
                                   "south",
                                   "east",
@@ -104,7 +104,7 @@ def create_process_description():
     # Example
     arguments = {
         "data": {"from_node": "get_data_1"},
-                "extent": {
+        "extent": {
                     "north": 51.00226308446294,
                     "crs": "EPSG:4326",
                     "west": 3.057030657924054,

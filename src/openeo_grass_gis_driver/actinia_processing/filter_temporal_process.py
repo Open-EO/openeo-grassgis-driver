@@ -36,8 +36,8 @@ def create_process_description():
                                   },
                                   {
                                       "type": "string",
-                                    "format": "date",
-                                    "subtype": "date"
+                                      "format": "date",
+                                      "subtype": "date"
                                   },
                                   {
                                     "type": "null"
@@ -59,7 +59,7 @@ def create_process_description():
     p_dim = Parameter(description="The temporal dimension to filter on. If the dimension is not set or is set to `null`, the data cube is expected to only have one temporal dimension. Fails with a `TooManyDimensions` error if it has more dimensions. Fails with a `DimensionNotAvailable` error if the specified dimension does not exist.\n\n**Note:** The default dimensions a data cube provides are described in the collection's metadata field `cube:dimensions`.",
                       schema={"type": [
                           "string",
-                                "null"
+                          "null"
                       ],
                           "default": "null"})
 
@@ -69,7 +69,7 @@ def create_process_description():
     # Example
     arguments = {
         "data": {"from_node": "get_strds_data"},
-                "extent": ["2001-01-01", "2005-01-01"],
+        "extent": ["2001-01-01", "2005-01-01"],
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_daterange_1": node})

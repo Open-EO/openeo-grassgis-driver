@@ -21,20 +21,20 @@ def create_process_description():
                        schema={[
                            {
                                "title": "Raster data cube",
-                                  "type": "object",
-                                  "subtype": "raster-cube"
+                               "type": "object",
+                               "subtype": "raster-cube"
                            },
                            {
                                "title": "Array",
-                                  "type": "array",
-                                  "minItems": 1,
-                                  "items": {
+                               "type": "array",
+                               "minItems": 1,
+                               "items": {
                                     "description": "Any data type."
                                   }
                            },
                            {
                                "title": "Single Value",
-                                  "description": "A single value of any data type."
+                               "description": "A single value of any data type."
                            }
                        ]},
                        required=True)
@@ -48,13 +48,13 @@ def create_process_description():
                           },
                           {
                               "description": "Path to an UDF uploaded to the server.",
-                                  "type": "string",
-                                  "subtype": "file-path"
+                              "type": "string",
+                              "subtype": "file-path"
                           },
                           {
                               "description": "Source code as string",
-                                  "type": "string",
-                                  "subtype": "udf-code"
+                              "type": "string",
+                              "subtype": "udf-code"
                           }
                       ]
                       },
@@ -75,7 +75,7 @@ def create_process_description():
                               },
                               {
                                   "title": "Default runtime version",
-                                      "type": "null"
+                                  "type": "null"
                               }
                           ]
                           },
@@ -93,19 +93,19 @@ def create_process_description():
                      schema={[
                          {
                              "title": "Raster data cube",
-                                "type": "object",
-                                "subtype": "raster-cube"
+                             "type": "object",
+                             "subtype": "raster-cube"
                          },
                          {
                              "title": "Any",
-                                "description": "Any data type."
+                             "description": "Any data type."
                          }
                      ]})
 
     # Example
     arguments = {
         "data": {"from_node": "get_strds_data"},
-                "udf": "some source code"}
+        "udf": "some source code"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"run_udf1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

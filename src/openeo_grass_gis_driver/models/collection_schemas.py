@@ -682,11 +682,11 @@ class CollectionEntry(JsonableObject):
         self.properties = properties
         self.cube___dimensions = {"x": {
             "type": "spatial",
-                                        "axis": "x"
+            "axis": "x"
         },
             "y": {
             "type": "spatial",
-                                        "axis": "x"
+            "axis": "x"
         },
         }
         # STAC Common Metadata: A list of commonly used fields throughout all domains

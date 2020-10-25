@@ -26,7 +26,7 @@ def create_process_description():
                                     "Either the unique band name or one of the common band names.",
                         schema={
                             "type": "array",
-                               "items": {
+                            "items": {
                                  "type": "string",
                                  "subtype": "band-name"
                                }
@@ -38,7 +38,7 @@ def create_process_description():
                                           "is the maximum wavelength. Wavelengths are specified in micrometres (μm).",
                               schema={
                                   "type": "array",
-                                        "items": {
+                                  "items": {
                                           "type": "array",
                                           "minItems": 2,
                                           "maxItems": 2,
@@ -67,7 +67,7 @@ def create_process_description():
     # Example
     arguments = {
         "data": {"from_node": "get_data_1"},
-                "bands": ["red", "nir"]
+        "bands": ["red", "nir"]
     }
 
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)

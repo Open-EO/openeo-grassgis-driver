@@ -72,8 +72,8 @@ def create_process_description():
     # Example
     arguments = {
         "data": {"from_node": "get_strds_data"},
-                "dimension": "spatial",
-                "reducer": "null"}
+        "dimension": "spatial",
+        "reducer": "null"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"reduce1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

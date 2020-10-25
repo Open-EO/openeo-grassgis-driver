@@ -69,7 +69,7 @@ def create_process_chain_entry(input_object: DataObject,
                     {"param": "basename",
                      "value": "trim"},
                     ]},
-         ]
+          ]
 
     return pc
 

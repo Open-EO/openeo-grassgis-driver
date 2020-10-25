@@ -85,7 +85,7 @@ def create_process_chain_entry(input_object, newmin, newmax, output_object):
                       "value": newmin},
                      {"param": "max",
                       "value": newmax},
-                    ]}
+                     ]}
 
     return pc
 

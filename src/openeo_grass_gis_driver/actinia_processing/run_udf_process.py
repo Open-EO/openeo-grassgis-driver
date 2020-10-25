@@ -57,13 +57,13 @@ def create_process_description():
                                   "subtype": "udf-code"
                                 }
                               ]
-                            },
+                              },
                          required=True)
 
     p_runtime = Parameter(description="An UDF runtime identifier available at the back-end.",
                           schema={"type": "string",
                                   "subtype": "udf-runtime"
-                                 },
+                                  },
                           required=True)
 
     p_version = Parameter(description="An UDF runtime version. If set to `null`, "
@@ -78,7 +78,7 @@ def create_process_description():
                                       "type": "null"
                                     }
                                   ]
-                                 },
+                                  },
                           required=False)
 
     p_context = Parameter(description="Additional data such as configuration options "

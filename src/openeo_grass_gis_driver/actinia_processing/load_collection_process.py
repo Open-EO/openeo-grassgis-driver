@@ -145,7 +145,7 @@ def create_process_description():
                                   "24:00:00Z"
                                 ]
                                    ]
-                            },
+                               },
                        required=True)
 
     p_bands = Parameter(description="Only adds the specified bands into the data cube so that bands that don't match the list of band names are not available. Applies to all dimensions of type `bands` if there are multiple of them.\n\nThe order of the specified array defines the order of the bands in the data cube.",

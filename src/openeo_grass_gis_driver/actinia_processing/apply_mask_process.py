@@ -78,7 +78,7 @@ def create_process_chain_entry(input: DataObject, mask: DataObject, output: Data
                               "null(), %(raw)s)" % {"result": output.grass_name(),
                                                     "raw": input.grass_name(),
                                                     "mask": mask.grass_name()}}
-                   ]}
+                    ]}
 
     return pc
 

@@ -45,7 +45,7 @@ class JobsJobIdEstimate(ResourceBase):
         # optional: downloads_included, expires
         if job_id in self.job_db:
             estimate = {"costs": 0
-                       }
+                        }
 
             return make_response(jsonify(estimate), 200)
         else:

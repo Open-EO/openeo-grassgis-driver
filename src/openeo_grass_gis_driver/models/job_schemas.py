@@ -238,7 +238,7 @@ class JobInformation(JsonableObject):
                  process: ProcessGraph, title: str = None,
                  description: str = None, status: str = "created",
                  updated: Optional[str] = None,
-                 plan: str = None, cost: float=None, budget: float = None):
+                 plan: str = None, cost: float = None, budget: float = None):
         # Test id
         #pattern = "^[A-Za-z0-9_\-\.~]+$"
         #x = re.search(pattern, job_id)

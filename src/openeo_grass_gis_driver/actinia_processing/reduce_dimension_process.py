@@ -52,7 +52,7 @@ def create_process_description():
                                     "schema": {
                                       "description": "Any data type."
                                     }
-                                    }
+                                  }
                                    ]
                                 },
                          required=True)

@@ -171,10 +171,10 @@ def create_process_description():
                               "description": "The property value to be checked against.",
                               "schema": {
                                   "description": "Any data type."
-                                  }
                               }
-                          ]
-                      }
+                          }
+                      ]
+                  }
                 }])
 
     rv = ReturnValue(description="Processed EO data.",
@@ -191,7 +191,7 @@ def create_process_description():
                 "temporal_extent": [
                       "2018-01-01",
                       "2019-01-01"
-                    ],
+                ],
                 }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"load_strds_collection": node})

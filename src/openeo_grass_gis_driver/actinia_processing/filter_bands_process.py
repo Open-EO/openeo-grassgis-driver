@@ -138,7 +138,7 @@ def get_process_list(node: Node) -> Tuple[list, list]:
 
     # at least one of bands, common_names, wavelengths must be given
     if "data" not in node.arguments or \
-            ("bands" not in node.arguments and \
+            ("bands" not in node.arguments and
              "wavelengths" not in node.arguments):
         raise Exception("Process %s requires parameter data and at least one of "
                         "bands, wavelengths" % PROCESS_NAME)

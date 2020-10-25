@@ -35,7 +35,7 @@ def create_process_description():
     arguments = {
         "data": {"from_node": "get_strds_data"},
                 "mask": {"from_node": "get_mask_data"},
-        }
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"apply_mask_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

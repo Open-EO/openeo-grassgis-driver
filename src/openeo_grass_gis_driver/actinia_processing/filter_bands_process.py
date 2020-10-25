@@ -68,7 +68,7 @@ def create_process_description():
     arguments = {
         "data": {"from_node": "get_data_1"},
                 "bands": ["red", "nir"]
-        }
+    }
 
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_bands_1": node})

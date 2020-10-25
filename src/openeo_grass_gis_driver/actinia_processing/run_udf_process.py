@@ -23,7 +23,7 @@ def create_process_description():
                                "title": "Raster data cube",
                                   "type": "object",
                                   "subtype": "raster-cube"
-                               },
+                           },
                            {
                                "title": "Array",
                                   "type": "array",
@@ -31,12 +31,12 @@ def create_process_description():
                                   "items": {
                                     "description": "Any data type."
                                   }
-                               },
+                           },
                            {
                                "title": "Single Value",
                                   "description": "A single value of any data type."
-                               }
-                           ]},
+                           }
+                       ]},
                        required=True)
     p_udf = Parameter(description="Either source code, an absolute URL or a path to an UDF script.",
                       schema={[
@@ -45,19 +45,19 @@ def create_process_description():
                                   "type": "string",
                                   "format": "uri",
                                   "subtype": "uri"
-                              },
+                          },
                           {
                               "description": "Path to an UDF uploaded to the server.",
                                   "type": "string",
                                   "subtype": "file-path"
-                              },
+                          },
                           {
                               "description": "Source code as string",
                                   "type": "string",
                                   "subtype": "udf-code"
-                              }
-                          ]
-                          },
+                          }
+                      ]
+                      },
                          required=True)
 
     p_runtime = Parameter(description="An UDF runtime identifier available at the back-end.",
@@ -72,13 +72,13 @@ def create_process_description():
                               {
                                       "type": "string",
                                       "subtype": "udf-runtime-version"
-                                  },
+                              },
                               {
                                   "title": "Default runtime version",
                                       "type": "null"
-                                  }
-                              ]
-                              },
+                              }
+                          ]
+                          },
                           required=False)
 
     p_context = Parameter(description="Additional data such as configuration options "
@@ -95,12 +95,12 @@ def create_process_description():
                              "title": "Raster data cube",
                                 "type": "object",
                                 "subtype": "raster-cube"
-                             },
+                         },
                          {
                              "title": "Any",
                                 "description": "Any data type."
-                             }
-                         ]})
+                         }
+                     ]})
 
     # Example
     arguments = {

@@ -73,7 +73,7 @@ def create_process_description():
                 "result": "ndvi",
                 "basename": "ndvi_base",
                 "expression": "$result = ($a + $b / ($a - $b))"
-        }
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"t_rast_algebra_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

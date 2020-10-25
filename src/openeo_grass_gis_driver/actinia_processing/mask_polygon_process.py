@@ -26,11 +26,11 @@ def create_process_description():
                            {
                                "type": "object",
                                     "subtype": "geojson"
-                               },
+                           },
                            {
                                "type": "object",
                                     "subtype": "vector-cube"
-                               }]},
+                           }]},
                        required=True)
     p_value = Parameter(description="The value used to replace non-zero and `true` values with",
                        schema={"type": "object", "subtype": "string"},
@@ -48,7 +48,7 @@ def create_process_description():
         "data": {"from_node": "get_data_1"},
                 "mask": "some geojson",
                 "replacement": "null",
-        }
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_polygon_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

@@ -681,14 +681,14 @@ class CollectionEntry(JsonableObject):
         self.providers = providers
         self.properties = properties
         self.cube___dimensions = {"x": {
-                                        "type": "spatial",
+            "type": "spatial",
                                         "axis": "x"
-                                        },
-                                  "y": {
-                                        "type": "spatial",
+            },
+            "y": {
+            "type": "spatial",
                                         "axis": "x"
-                                        },
-                                  }
+            },
+            }
         # STAC Common Metadata: A list of commonly used fields throughout all domains
         # https://github.com/radiantearth/stac-spec/tree/v0.9.0/item-spec/common-metadata.md
         # Content Extensions: Domain-specific fields for domains such as EO, SAR and point clouds.

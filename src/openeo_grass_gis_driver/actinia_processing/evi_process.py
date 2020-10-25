@@ -86,7 +86,7 @@ def create_process_chain_entry(nir_time_series: DataObject, red_time_series: Dat
          "inputs": [{"param": "expression",
                      "value": "%(result)s = float(2.5 * %(scale)s * (%(nir)s - %(red)s)/"
                               "(%(nir)s * %(scale)s + 6.0 * %(red)s * %(scale)s -7.5 * %(blue)s * %(scale)s + 1.0))" % {
-                                                        "result": output_time_series.grass_name(),
+                                  "result": output_time_series.grass_name(),
                                                         "nir": nir_time_series.grass_name(),
                                                         "red": red_time_series.grass_name(),
                                                         "blue": blue_time_series.grass_name(),

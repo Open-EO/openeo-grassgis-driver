@@ -85,10 +85,10 @@ def create_process_description():
                                           "subtype": "wkt2-definition"
                                         },
                                         {
-                                      "title": "PROJ definition",
-                                      "type": "string",
-                                      "subtype": "proj-definition",
-                                      "deprecated": True
+                                            "title": "PROJ definition",
+                                            "type": "string",
+                                            "subtype": "proj-definition",
+                                            "deprecated": True
                                         }
                                       ],
                                       "default": 4326

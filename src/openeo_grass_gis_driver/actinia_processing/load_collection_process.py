@@ -133,8 +133,8 @@ def create_process_description():
                                   {
                                     "type": "null"
                                   }
-                                ]
-                              },
+                                     ]
+                                   },
                               "examples": [
                                 [
                                   "2015-01-01",
@@ -144,7 +144,7 @@ def create_process_description():
                                   "12:00:00Z",
                                   "24:00:00Z"
                                 ]
-                              ]
+                                   ]
                             },
                        required=True)
 
@@ -163,18 +163,18 @@ def create_process_description():
                 {
                   "type": "object",
                   "additionalProperties": {
-                  "type": "object",
-                  "subtype": "process-graph",
-                  "parameters": [
-                    {
-                      "name": "value",
-                      "description": "The property value to be checked against.",
-                      "schema": {
-                        "description": "Any data type."
+                      "type": "object",
+                      "subtype": "process-graph",
+                      "parameters": [
+                          {
+                              "name": "value",
+                              "description": "The property value to be checked against.",
+                              "schema": {
+                                  "description": "Any data type."
+                                  }
+                              }
+                          ]
                       }
-                    }
-                  ]
-                }
                 }])
 
     rv = ReturnValue(description="Processed EO data.",

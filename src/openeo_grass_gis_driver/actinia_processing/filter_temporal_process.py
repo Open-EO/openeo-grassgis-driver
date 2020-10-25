@@ -35,15 +35,15 @@ def create_process_description():
                                     "subtype": "date-time"
                                   },
                                   {
-                                  "type": "string",
+                                      "type": "string",
                                     "format": "date",
                                     "subtype": "date"
                                   },
                                   {
                                     "type": "null"
                                   }
-                                ]
-                              },
+                                     ]
+                                   },
                               "examples": [
                                 [
                                   "2015-01-01T00:00:00Z",
@@ -53,7 +53,7 @@ def create_process_description():
                                   "2015-01-01",
                                   "2016-01-01"
                                 ]
-                              ]},
+                                   ]},
                        required=True)
 
     p_dim = Parameter(description="The temporal dimension to filter on. If the dimension is not set or is set to `null`, the data cube is expected to only have one temporal dimension. Fails with a `TooManyDimensions` error if it has more dimensions. Fails with a `DimensionNotAvailable` error if the specified dimension does not exist.\n\n**Note:** The default dimensions a data cube provides are described in the collection's metadata field `cube:dimensions`.",

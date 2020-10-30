@@ -60,7 +60,10 @@ class Parameter(JsonableObject):
                  required: bool = False,
                  depricated: bool = False,
                  experimental: bool = False,
-                 mime_type: Optional[str] = None):
+                 mime_type: Optional[str] = None,
+                 name: Optional[str] = None):
+        # name is set later on in ProcessDescription
+        self.name = None
         self.description = description
         self.schema = schema
         self.required = required
@@ -175,7 +178,7 @@ class ProcessException(JsonableObject):
 #                 and not hasattr(value, 'from_argument')
 #                 and not hasattr(value, 'callback')))):
 #
-#             es = ErrorSchema(id=str(datetime.now()), code=400,
+#             es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
 #                 message="A string, number, boolean, array of process argument values or an object with from_node, from_argument or callback attribute have to be set.")
 #             return make_response(es.to_json(), 400)
 #         self.value = value
@@ -237,7 +240,7 @@ class Variable(JsonableObject):
         # pattern = "^[a-z0-9_]+$"
         # x = re.search(pattern, variable_id)
         # if not x:
-        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The variable_id MUST match the following pattern: %s" % pattern)
         #    return make_response(es.to_json(), 400)
         self.variable_id = variable_id
@@ -250,7 +253,7 @@ class Variable(JsonableObject):
         #        and not isinstance(default, bool)
         #        and not isinstance(default, object)
         #        and not isinstance(default, ProcessGraph)):
-        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The default values MUST be from type \"string\", \"number\", \"array\", \"boolean\", \"object\", \"process_graph\"")
         #    return make_response(es.to_json(), 400)
 
@@ -288,7 +291,7 @@ class ProcessExample(JsonableObject):
         self.title = title
         self.description = description
         # if (process_graph and arguments) or (not process_graph and not arguments):
-        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="Either process_graph or arguments must be set, never both.")
         #    return make_response(es.to_json(), 400)
         self.process_graph = process_graph
@@ -387,7 +390,7 @@ class ProcessDescription(JsonableObject):
         # pattern = "^[A-Za-z0-9_]+$"
         # x = re.search(pattern, id)
         # if not x:
-        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The process_id MUST match the following pattern: %s" % pattern)
         #    return make_response(es.to_json(), 400)
         self.id = id
@@ -397,10 +400,17 @@ class ProcessDescription(JsonableObject):
         # for key in parameters:
         #    x = re.search(pattern, key)
         #    if not x:
-        #        es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #            message="The keys of the parameters MUST match the following pattern: %s" % pattern)
         #        return make_response(es.to_json(), 400)
-        self.parameters = parameters
+
+        #self.parameters = parameters
+        plist = list()
+        for key in parameters:
+            parameters[key].name = key
+            plist.append(parameters[key])
+        self.parameters = plist
+
         self.returns = returns
         self.links = links
         self.summary = summary
@@ -414,7 +424,7 @@ class ProcessDescription(JsonableObject):
         # if parameter_order:
         #    x = re.search(pattern, parameter_order)
         #    if not x:
-        #        es = ErrorSchema(id=str(datetime.now()), code=400,
+        #        es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #            message="The parameter_order MUST match the following pattern: %s" % pattern)
         #        return make_response(es.to_json(), 400)
         #    self.parameter_order = parameter_order

@@ -35,7 +35,7 @@ def create_process_description():
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
 
-     # Example
+    # Example
     arguments = {"red": {"from_node": "get_red_data"},
                  "green": {"from_node": "get_green_data"},
                  "blue": {"from_node": "get_blue_data"}}

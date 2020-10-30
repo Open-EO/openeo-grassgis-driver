@@ -39,7 +39,7 @@ class GraphValidation(ResourceBase):
             if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
                 msg = "Processes can only be defined for a single location!"
                 status = 400
-                es = ErrorSchema(id=str(datetime.now()), code=status, message=str(msg))
+                es = ErrorSchema(id=str(datetime.now().isoformat()), code=status, message=str(msg))
                 return make_response(es.to_json(), status)
 
             location = ActiniaInterface.PROCESS_LOCATION.keys()
@@ -53,8 +53,8 @@ class GraphValidation(ResourceBase):
             if status == 200:
                 return make_response("", 204)
             else:
-                return ErrorSchema(id=str(datetime.now()), code=status,
+                return ErrorSchema(id=str(datetime.now().isoformat()), code=status,
                                    message=str(response)).as_response(http_status=status)
 
         except Exception as e:
-                return ErrorSchema(id=str(datetime.now()), code=400, message=str(e)).as_response(http_status=400)
+            return ErrorSchema(id=str(datetime.now().isoformat()), code=400, message=str(e)).as_response(http_status=400)

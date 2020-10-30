@@ -45,7 +45,7 @@ class ProcessGraphNode(JsonableObject):
         #pattern = "^[A-Za-z0-9_]+$"
         #x = re.search(pattern, id)
         #if not x:
-        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The process_id MUST match the following pattern: %s" % pattern)
         #    return make_response(es.to_json(), 400)
         self.process_id = process_id
@@ -114,7 +114,7 @@ class ProcessGraphListEntry(JsonableObject):
         #pattern = "^[A-Za-z0-9_\-\.~]+$"
         #x = re.search(pattern, id)
         #if not x:
-        #    es = ErrorSchema(id=str(datetime.now()), code=400,
+        #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The id MUST match the following pattern: %s" % pattern)
         self.id = id
 
@@ -139,7 +139,7 @@ class ProcessGraphList(JsonableObject):
     """
 
     def __init__(self, process_graphs: List[ProcessGraphListEntry],
-                 links: Optional[EoLinks] = None):
+                 links: Optional[EoLinks] = []):
 
-        self.process_graphs = process_graphs
+        self.processes = process_graphs
         self.links = links

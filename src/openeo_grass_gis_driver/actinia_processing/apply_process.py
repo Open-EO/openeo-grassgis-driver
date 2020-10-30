@@ -36,12 +36,14 @@ def create_process_description():
                                        "The specified process must be unary meaning that it must work on a single value.",
                            schema={"type": "object",
                                    "subtype": "callback",
-                                   "parameters": {
-                                     "x": {
-                                       "description": "A value of any type could be passed."
-                                       }
-                                    }
-                                  },
+                                   "parameters": [{
+                                       "name": "x",
+                                       "description": "The value to process.",
+                                       "schema": {
+                                          "description": "Any data type."
+                                         }
+                                      }]
+                                   },
                            required=True)
 
     rv = ReturnValue(description="Processed EO data.",
@@ -49,8 +51,8 @@ def create_process_description():
 
     # Example
     arguments = {
-                "data": {"from_node": "get_strds_data"},
-                "process": "null"}
+        "data": {"from_node": "get_strds_data"},
+        "process": "null"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"apply1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

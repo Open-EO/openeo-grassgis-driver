@@ -41,12 +41,10 @@ class JobsJobIdEstimate(ResourceBase):
         """
 
         # TODO
+        # at least one of costs, duration, size must be specified
+        # optional: downloads_included, expires
         if job_id in self.job_db:
-            estimate = {"costs": "NA",
-                        "duration": "NA",
-                        "size": "NA",
-                        "downloads_included": "NA",
-                        "expires": "NA"
+            estimate = {"costs": 0
                         }
 
             return make_response(jsonify(estimate), 200)

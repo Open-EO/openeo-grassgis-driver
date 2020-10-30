@@ -18,7 +18,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 
 class ProcessGraphs(ResourceBase):
-    """The /jobs endpoint implementation"""
+    """The /process_graphs endpoint implementation"""
 
     def __init__(self):
         ResourceBase.__init__(self)
@@ -35,18 +35,25 @@ class ProcessGraphs(ResourceBase):
         for key in self.graph_db:
             graph = self.graph_db[key]
 
-            entry = ProcessGraphListEntry(title=graph["title"], description=graph["description"], id=key)
+            title = None
+            if "title" in graph:
+                title = graph["title"]
+            description = None
+            if "description" in graph:
+                description = graph["description"]
+            entry = ProcessGraphListEntry(title=title, description=description, id=key)
 
             process_graphs.append(entry)
 
         return ProcessGraphList(process_graphs=process_graphs).as_response(http_status=200)
 
+    # no longer supported, replaced by ProcessGraphId
     def post(self):
         try:
             """Store a process graph in the graph database"""
             # TODO: Implement user specific database access
 
-            process_graph_id = f"user-graph::{str(uuid4())}"
+            process_graph_id = f"user-graph-{str(uuid4())}"
 
             process_graph = request.get_json()
             self.graph_db[process_graph_id] = process_graph

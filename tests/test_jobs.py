@@ -15,7 +15,7 @@ __email__ = "soerengebbert@googlemail.com"
 JOB_TEMPLATE = {
     "title": "The title of the job",
     "description": "The description of the job",
-    "process_graph": None,
+    "process": None,
 }
 
 
@@ -29,7 +29,7 @@ class JobsTestCase(TestBase):
     def test_job_creation_1(self):
         """Run the test in the ephemeral database
         """
-        JOB_TEMPLATE["process_graph"] = FILTER_BBOX["process_graph"]
+        JOB_TEMPLATE["process"] = FILTER_BBOX["process"]
 
         response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE),
                                  content_type="application/json", headers=self.auth)
@@ -57,7 +57,7 @@ class JobsTestCase(TestBase):
     def test_job_creation_2(self):
         """Run the test in the ephemeral database
         """
-        JOB_TEMPLATE["process_graph"] = NDVI_STRDS["process_graph"]
+        JOB_TEMPLATE["process"] = NDVI_STRDS["process"]
 
         response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json", headers=self.auth)
         self.assertEqual(201, response.status_code)
@@ -76,7 +76,7 @@ class JobsTestCase(TestBase):
     def test_job_creation_deletion_1(self):
         """Run the test in the ephemeral database
         """
-        JOB_TEMPLATE["process_graph"] = NDVI_STRDS["process_graph"]
+        JOB_TEMPLATE["process"] = NDVI_STRDS["process"]
 
         response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json", headers=self.auth)
         self.assertEqual(201, response.status_code)
@@ -105,7 +105,7 @@ class JobsTestResultsCase(TestBase):
     def test_job_creation_and_processing_filter_box(self):
         """Run the test in the ephemeral database
         """
-        JOB_TEMPLATE["process_graph"] = FILTER_BBOX["process_graph"]
+        JOB_TEMPLATE["process"] = FILTER_BBOX["process"]
 
         response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json", headers=self.auth)
         self.assertEqual(201, response.status_code)
@@ -175,7 +175,7 @@ class JobsTestResultsCase(TestBase):
         """Run job creation and patch test
         """
         # as of openeo API 1.0, patch is no longer supported
-        JOB_TEMPLATE["process_graph"] = FILTER_BBOX["process_graph"]
+        JOB_TEMPLATE["process"] = FILTER_BBOX["process"]
 
         response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json",
                                  headers=self.auth)
@@ -189,7 +189,7 @@ class JobsTestResultsCase(TestBase):
         print(data)
         self.assertEqual(200, response.status_code)
 
-        JOB_TEMPLATE["process_graph"] = NDVI_STRDS["process_graph"]
+        JOB_TEMPLATE["process"] = NDVI_STRDS["process"]
 
         response = self.app.patch(f'/jobs/{job_id}', data=json.dumps(JOB_TEMPLATE), content_type="application/json",
                                   headers=self.auth)

@@ -8,22 +8,24 @@ __email__ = "soerengebbert@googlemail.com"
 GET_DATA_1 = {
     "title": "Get a raster layer",
     "description": "This process is the source for a raster layer",
-    "process_graph": {
-        "get_elevation_data": {
-            "process_id": "load_collection",
-            "arguments": {
-                "id": "nc_spm_08.PERMANENT.raster.elevation",
-                "spatial_extent": {
-                    "west": 630000,
-                    "east": 645000,
-                    "north": 228500,
-                    "south": 215000,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+    "process": {
+        "process_graph": {
+            "get_elevation_data": {
+                "process_id": "load_collection",
+                "arguments": {
+                    "id": "nc_spm_08.PERMANENT.raster.elevation",
+                    "spatial_extent": {
+                        "west": 630000,
+                        "east": 645000,
+                        "north": 228500,
+                        "south": 215000,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
                     },
-                "temporal_extent": [
-                    "2018-01-01",
-                    "2019-01-01"
+                    "temporal_extent": [
+                        "2018-01-01",
+                        "2019-01-01"
                     ],
+                }
             }
         }
     }
@@ -32,39 +34,41 @@ GET_DATA_1 = {
 GET_DATA_2 = {
     "title": "Get three different data sources",
     "description": "This process graph is the source for three different layer: raster, vector and strds",
-    "process_graph": {
-        "get_lakes_data": {
-            "process_id": "load_collection",
-            "arguments": {
-                "id": "nc_spm_08.PERMANENT.vector.lakes",
-                "spatial_extent": {
-                    "west": 610760.703856752,
-                    "east": 677118.419100839,
-                    "north": 258302.909848466,
-                    "south": 196084.815242403,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+    "process": {
+        "process_graph": {
+            "get_lakes_data": {
+                "process_id": "load_collection",
+                "arguments": {
+                    "id": "nc_spm_08.PERMANENT.vector.lakes",
+                    "spatial_extent": {
+                        "west": 610760.703856752,
+                        "east": 677118.419100839,
+                        "north": 258302.909848466,
+                        "south": 196084.815242403,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
                     },
-                "temporal_extent": [
-                    "2018-01-01",
-                    "2019-01-01"
+                    "temporal_extent": [
+                        "2018-01-01",
+                        "2019-01-01"
                     ],
-            }
-        },
-        "get_elevation_data": {
-            "process_id": "load_collection",
-            "arguments": {
-                "id":  "nc_spm_08.PERMANENT.raster.elevation",
-                "spatial_extent": {
-                    "west": 630000,
-                    "east": 645000,
-                    "north": 228500,
-                    "south": 215000,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                }
+            },
+            "get_elevation_data": {
+                "process_id": "load_collection",
+                "arguments": {
+                    "id": "nc_spm_08.PERMANENT.raster.elevation",
+                    "spatial_extent": {
+                        "west": 630000,
+                        "east": 645000,
+                        "north": 228500,
+                        "south": 215000,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
                     },
-                "temporal_extent": [
-                    "2018-01-01",
-                    "2019-01-01"
+                    "temporal_extent": [
+                        "2018-01-01",
+                        "2019-01-01"
                     ],
+                }
             }
         }
     }
@@ -73,22 +77,24 @@ GET_DATA_2 = {
 GET_DATA_3 = {
     "title": "Get three different data sources",
     "description": "This process graph is the source for three different layer: raster, vector and strds",
-    "process_graph": {
-        "get_strds_data": {
-            "process_id": "load_collection",
-            "arguments": {
-                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
-                "spatial_extent": {
-                    "west": -448265.535885,
-                    "east": 1550934.464115,
-                    "north": 760180.124115,
-                    "south": -415819.875885,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+    "process": {
+        "process_graph": {
+            "get_strds_data": {
+                "process_id": "load_collection",
+                "arguments": {
+                    "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
+                    "spatial_extent": {
+                        "west": -448265.535885,
+                        "east": 1550934.464115,
+                        "north": 760180.124115,
+                        "south": -415819.875885,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
                     },
-                "temporal_extent": [
-                    "2015-01-01",
-                    "2017-01-01"
+                    "temporal_extent": [
+                        "2015-01-01",
+                        "2017-01-01"
                     ],
+                }
             }
         }
     }
@@ -130,35 +136,37 @@ BBOX_FROM_RASTER = {
 FILTER_BBOX = {
     "title": "Bounding box filtering of raster layer elevation",
     "description": "This process graph applies the bounding box filter to a raster layer",
-    "process_graph": {
-        "filter_bbox_1": {
-            "process_id": "filter_bbox",
-            "arguments": {
-                "data": {"from_node": "get_data_1"},
-                "extent": {
-                    "west": 630000,
-                    "east": 645000,
-                    "north": 228500,
-                    "south": 215000,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +to_meter=1",
+    "process": {
+        "process_graph": {
+            "filter_bbox_1": {
+                "process_id": "filter_bbox",
+                "arguments": {
+                    "data": {"from_node": "get_data_1"},
+                    "extent": {
+                        "west": 630000,
+                        "east": 645000,
+                        "north": 228500,
+                        "south": 215000,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +to_meter=1",
+                    }
                 }
-            }
-        },
-        "get_data_1": {
-            "process_id": "load_collection",
-            "arguments": {
-                "id":  "nc_spm_08.PERMANENT.raster.elevation",
-                "spatial_extent": {
-                    "west": 630000,
-                    "east": 645000,
-                    "north": 228500,
-                    "south": 215000,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+            },
+            "get_data_1": {
+                "process_id": "load_collection",
+                "arguments": {
+                    "id": "nc_spm_08.PERMANENT.raster.elevation",
+                    "spatial_extent": {
+                        "west": 630000,
+                        "east": 645000,
+                        "north": 228500,
+                        "south": 215000,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
                     },
-                "temporal_extent": [
-                    "2018-01-01",
-                    "2019-01-01"
+                    "temporal_extent": [
+                        "2018-01-01",
+                        "2019-01-01"
                     ],
+                }
             }
         }
     }
@@ -167,29 +175,31 @@ FILTER_BBOX = {
 DATERANGE = {
     "title": "Filter the daterange of a single STRDS",
     "description": "Filter the daterange of a single STRDS",
-    "process_graph": {
-        "get_strds_data": {
-            "process_id": "load_collection",
-            "arguments": {
-                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
-                "spatial_extent": {
-                    "west": -448265.535885,
-                    "east": 1550934.464115,
-                    "north": 760180.124115,
-                    "south": -415819.875885,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+    "process": {
+        "process_graph": {
+            "get_strds_data": {
+                "process_id": "load_collection",
+                "arguments": {
+                    "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
+                    "spatial_extent": {
+                        "west": -448265.535885,
+                        "east": 1550934.464115,
+                        "north": 760180.124115,
+                        "south": -415819.875885,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
                     },
-                "temporal_extent": [
-                    "2015-01-01",
-                    "2017-01-01"
+                    "temporal_extent": [
+                        "2015-01-01",
+                        "2017-01-01"
                     ],
-            }
-        },
-        "filter_daterange_1": {
-            "process_id": "filter_temporal",
-            "arguments": {
-                "data": {"from_node": "get_strds_data"},
-                "extent": ["2015-01-01", "2016-01-01"],
+                }
+            },
+            "filter_daterange_1": {
+                "process_id": "filter_temporal",
+                "arguments": {
+                    "data": {"from_node": "get_strds_data"},
+                    "extent": ["2015-01-01", "2016-01-01"],
+                }
             }
         }
     }
@@ -198,42 +208,44 @@ DATERANGE = {
 REDUCE_TIME_MIN = {
     "title": "Reduce the time dimension of a single STRDS",
     "description": "Reduce the time dimension of a single STRDS",
-    "process_graph": {
-        "get_strds_data": {
-            "process_id": "load_collection",
-            "arguments": {
-                "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
-                "spatial_extent": {
-                    "west": -448265.535885,
-                    "east": 1550934.464115,
-                    "north": 760180.124115,
-                    "south": -415819.875885,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+    "process": {
+        "process_graph": {
+            "get_strds_data": {
+                "process_id": "load_collection",
+                "arguments": {
+                    "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
+                    "spatial_extent": {
+                        "west": -448265.535885,
+                        "east": 1550934.464115,
+                        "north": 760180.124115,
+                        "south": -415819.875885,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
                     },
-                "temporal_extent": [
-                    "2015-01-01",
-                    "2017-01-01"
+                    "temporal_extent": [
+                        "2015-01-01",
+                        "2017-01-01"
                     ],
-            }
-        },
-        "reduce_time_1": {
-            "process_id": "reduce_dimension",
-            "arguments": {
-                "data": {"from_node": "get_strds_data"},
-                "dimension": "temporal",
-                "reducer": {
-                    "callback": {
-                        "min1": {
-                            "process_id": "min",
-                            "arguments": {
-                                "data": {
-                                    "from_argument": "data"
+                }
+            },
+            "reduce_time_1": {
+                "process_id": "reduce_dimension",
+                "arguments": {
+                    "data": {"from_node": "get_strds_data"},
+                    "dimension": "temporal",
+                    "reducer": {
+                        "callback": {
+                            "min1": {
+                                "process_id": "min",
+                                "arguments": {
+                                    "data": {
+                                        "from_argument": "data"
+                                    },
+                                    "dimension": {
+                                        "from_argument": "dimension"
+                                    }
                                 },
-                                "dimension": {
-                                    "from_argument": "dimension"
-                                }
-                            },
-                            "result": True
+                                "result": True
+                            }
                         }
                     }
                 }
@@ -244,7 +256,7 @@ REDUCE_TIME_MIN = {
 
 # map_algebra no longer exists
 # TODO: replace with reduce_dimension
-""" 
+"""
 MAP_ALGEBRA = {
     "title": "Compute the NDVI based on two raster layers with map algebra",
     "description": "Compute the NDVI based on two raster layers with map algebra",
@@ -298,7 +310,7 @@ MAP_ALGEBRA = {
 
 # temporal_algebra no longer exists
 # TODO: replace with reduce_dimension
-""" 
+"""
 TEMPORAL_ALGEBRA = {
     "title": "Compute the NDVI based on two strds with temporal algebra",
     "description": "Compute the NDVI based on two strds with temporal algebra",
@@ -349,7 +361,7 @@ TEMPORAL_ALGEBRA = {
         }
     }
 }
-""" 
+"""
 
 # rgb_raster_exporter does not exist
 """
@@ -429,30 +441,32 @@ RGB_RASTER_EXPORT = {
 NDVI_STRDS = {
     "title": "Compute the NDVI based on two STRDS",
     "description": "Compute the NDVI data from two space-time raster datasets",
-    "process_graph": {
-        "ndvi_1": {
-            "process_id": "ndvi",
-            "arguments": {
-                "data": {"from_node": "get_data"},
-            }
-        },
-        "get_data": {
-            "process_id": "load_collection",
-            "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_1987",
-                "spatial_extent": {
-                    "west": 629992.5,
-                    "east": 645012,
-                    "north": 228513,
-                    "south": 214975.5,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+    "process": {
+        "process_graph": {
+            "ndvi_1": {
+                "process_id": "ndvi",
+                "arguments": {
+                    "data": {"from_node": "get_data"},
+                }
+            },
+            "get_data": {
+                "process_id": "load_collection",
+                "arguments": {
+                    "id": "nc_spm_08.landsat.strds.lsat5_1987",
+                    "spatial_extent": {
+                        "west": 629992.5,
+                        "east": 645012,
+                        "north": 228513,
+                        "south": 214975.5,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
                     },
-                "temporal_extent": [
-                    "1987-01-01",
-                    "1988-01-01"
+                    "temporal_extent": [
+                        "1987-01-01",
+                        "1988-01-01"
                     ],
+                }
             }
-        },
+        }
     }
 }
 
@@ -527,68 +541,70 @@ ZONAL_STATISTICS = {
 USE_CASE_1 = {
     "title": "Compute the NDVI based on two STRDS",
     "description": "Compute the NDVI data from two space-time raster datasets and apply several filters in the data",
-    "process_graph": {
-        "get_data": {
-            "process_id": "load_collection",
-            "arguments": {
-                "id":  "nc_spm_08.landsat.strds.lsat5_1987",
-                "spatial_extent": {
-                    "west": 629992.5,
-                    "east": 645012,
-                    "north": 228513,
-                    "south": 214975.5,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+    "process": {
+        "process_graph": {
+            "get_data": {
+                "process_id": "load_collection",
+                "arguments": {
+                    "id": "nc_spm_08.landsat.strds.lsat5_1987",
+                    "spatial_extent": {
+                        "west": 629992.5,
+                        "east": 645012,
+                        "north": 228513,
+                        "south": 214975.5,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
                     },
-                "temporal_extent": [
-                    "1987-01-01",
-                    "1988-01-01"
+                    "temporal_extent": [
+                        "1987-01-01",
+                        "1988-01-01"
                     ],
-            }
-        },
-        "filter_bbox": {
-            "process_id": "filter_bbox",
-            "arguments": {
-                "data": {"from_node": "get_data"},
-                "extent": {
-                    "west": 630000,
-                    "east": 645000,
-                    "north": 228500,
-                    "south": 215000,
-                    "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +to_meter=1",
                 }
-            }
-        },
-        "ndvi_1": {
-            "process_id": "ndvi",
-            "arguments": {
-                "data": {"from_node": "filter_bbox"},
-            }
-        },
-        "filter_daterange_ndvi": {
-            "process_id": "filter_temporal",
-            "arguments": {
-                "data": {"from_node": "ndvi_1"},
-                "extent": ["2001-01-01", "2005-01-01"],
-            }
-        },
-        "reduce_time_1": {
-            "process_id": "reduce_dimension",
-            "arguments": {
-                "data": {"from_node": "filter_daterange_ndvi"},
-                "dimension": "temporal",
-                "reducer": {
-                    "callback": {
-                        "min1": {
-                            "process_id": "min",
-                            "arguments": {
-                                "data": {
-                                    "from_argument": "data"
+            },
+            "filter_bbox": {
+                "process_id": "filter_bbox",
+                "arguments": {
+                    "data": {"from_node": "get_data"},
+                    "extent": {
+                        "west": 630000,
+                        "east": 645000,
+                        "north": 228500,
+                        "south": 215000,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +to_meter=1",
+                    }
+                }
+            },
+            "ndvi_1": {
+                "process_id": "ndvi",
+                "arguments": {
+                    "data": {"from_node": "filter_bbox"},
+                }
+            },
+            "filter_daterange_ndvi": {
+                "process_id": "filter_temporal",
+                "arguments": {
+                    "data": {"from_node": "ndvi_1"},
+                    "extent": ["2001-01-01", "2005-01-01"],
+                }
+            },
+            "reduce_time_1": {
+                "process_id": "reduce_dimension",
+                "arguments": {
+                    "data": {"from_node": "filter_daterange_ndvi"},
+                    "dimension": "temporal",
+                    "reducer": {
+                        "callback": {
+                            "min1": {
+                                "process_id": "min",
+                                "arguments": {
+                                    "data": {
+                                        "from_argument": "data"
+                                    },
+                                    "dimension": {
+                                        "from_argument": "dimension"
+                                    }
                                 },
-                                "dimension": {
-                                    "from_argument": "dimension"
-                                }
-                            },
-                            "result": True
+                                "result": True
+                            }
                         }
                     }
                 }
@@ -601,140 +617,142 @@ USE_CASE_1 = {
 OPENEO_EXAMPLE_1 = {
     "title": "NDVI based on Sentinel 2",
     "description": "Deriving minimum NDVI measurements over pixel time series of Sentinel 2",
-    "process_graph": {
-        "export1": {
-            "process_id": "export",
-            "arguments": {
-                "data": {
-                    "from_node": "mergec1"
-                },
-                "format": "png"
-            }
-        },
-        "export2": {
-            "process_id": "export",
-            "arguments": {
-                "data": {
-                    "from_node": "reduce2"
-                },
-                "format": "png"
+    "process": {
+        "process_graph": {
+            "export1": {
+                "process_id": "export",
+                "arguments": {
+                    "data": {
+                        "from_node": "mergec1"
+                    },
+                    "format": "png"
+                }
             },
-            "result": True
-        },
-        "filter1": {
-            "process_id": "filter_temporal",
-            "arguments": {
-                "data": {
-                    "from_node": "getcol1"
+            "export2": {
+                "process_id": "export",
+                "arguments": {
+                    "data": {
+                        "from_node": "reduce2"
+                    },
+                    "format": "png"
                 },
-                "extent": ["2017-01-01", "2017-01-31"]
-            }
-        },
-        "filter2": {
-            "process_id": "filter_temporal",
-            "arguments": {
-                "data": {
-                    "from_node": "getcol1"
-                },
-                "extent": ["2018-01-01", "2018-01-31"]
-            }
-        },
-        "filter3": {
-            "process_id": "filter_bands",
-            "arguments": {
-                "bands": [
-                    "nir",
-                    "red"
-                ],
-                "data": {
-                    "from_node": "reduce1"
+                "result": True
+            },
+            "filter1": {
+                "process_id": "filter_temporal",
+                "arguments": {
+                    "data": {
+                        "from_node": "getcol1"
+                    },
+                    "extent": ["2017-01-01", "2017-01-31"]
                 }
-            }
-        },
-        "getcol1": {
-            "process_id": "get_collection",
-            "arguments": {
-                "name": "Sentinel-1"
-            }
-        },
-        "mergec1": {
-            "process_id": "merge_cubes",
-            "arguments": {
-                "data1": {
-                    "from_node": "filter1"
-                },
-                "data2": {
-                    "from_node": "filter2"
+            },
+            "filter2": {
+                "process_id": "filter_temporal",
+                "arguments": {
+                    "data": {
+                        "from_node": "getcol1"
+                    },
+                    "extent": ["2018-01-01", "2018-01-31"]
                 }
-            }
-        },
-        "reduce1": {
-            "process_id": "reduce_dimension",
-            "arguments": {
-                "data": {
-                    "from_node": "mergec1"
-                },
-                "dimension": "temporal",
-                "reducer": {
-                    "callback": {
-                        "min1": {
-                            "process_id": "min",
-                            "arguments": {
-                                "data": {
-                                    "from_argument": "data"
+            },
+            "filter3": {
+                "process_id": "filter_bands",
+                "arguments": {
+                    "bands": [
+                        "nir",
+                        "red"
+                    ],
+                    "data": {
+                        "from_node": "reduce1"
+                    }
+                }
+            },
+            "getcol1": {
+                "process_id": "get_collection",
+                "arguments": {
+                    "name": "Sentinel-1"
+                }
+            },
+            "mergec1": {
+                "process_id": "merge_cubes",
+                "arguments": {
+                    "data1": {
+                        "from_node": "filter1"
+                    },
+                    "data2": {
+                        "from_node": "filter2"
+                    }
+                }
+            },
+            "reduce1": {
+                "process_id": "reduce_dimension",
+                "arguments": {
+                    "data": {
+                        "from_node": "mergec1"
+                    },
+                    "dimension": "temporal",
+                    "reducer": {
+                        "callback": {
+                            "min1": {
+                                "process_id": "min",
+                                "arguments": {
+                                    "data": {
+                                        "from_argument": "data"
+                                    },
+                                    "dimension": {
+                                        "from_argument": "dimension"
+                                    }
                                 },
-                                "dimension": {
-                                    "from_argument": "dimension"
-                                }
-                            },
-                            "result": True
+                                "result": True
+                            }
                         }
                     }
                 }
-            }
-        },
-        "reduce2": {
-            "process_id": "reduce_dimension",
-            "arguments": {
-                "data": {
-                    "from_node": "filter3"
-                },
-                "dimension": "spectral",
-                "reducer": {
-                    "callback": {
-                        "divide1": {
-                            "process_id": "divide",
-                            "arguments": {
-                                "x": {
-                                    "from_node": "substr1"
+            },
+            "reduce2": {
+                "process_id": "reduce_dimension",
+                "arguments": {
+                    "data": {
+                        "from_node": "filter3"
+                    },
+                    "dimension": "spectral",
+                    "reducer": {
+                        "callback": {
+                            "divide1": {
+                                "process_id": "divide",
+                                "arguments": {
+                                    "x": {
+                                        "from_node": "substr1"
+                                    },
+                                    "y": {
+                                        "from_node": "sum1"
+                                    }
                                 },
-                                "y": {
-                                    "from_node": "sum1"
+                                "result": True
+                            },
+                            "output1": {
+                                "process_id": "output",
+                                "arguments": {
+                                    "data": {
+                                        "from_node": "divide1"
+                                    }
                                 }
                             },
-                            "result": True
-                        },
-                        "output1": {
-                            "process_id": "output",
-                            "arguments": {
-                                "data": {
-                                    "from_node": "divide1"
+                            "substr1": {
+                                "process_id": "subtract",
+                                "arguments": {
+                                    "data": {
+                                        "from_argument": "dimension_data"
+                                    }
                                 }
-                            }
-                        },
-                        "substr1": {
-                            "process_id": "subtract",
-                            "arguments": {
-                                "data": {
-                                    "from_argument": "dimension_data"
-                                }
-                            }
-                        },
-                        "sum1": {
-                            "process_id": "sum",
-                            "arguments": {
-                                "data": {
-                                    "from_argument": "dimension_data"
+                            },
+                            "sum1": {
+                                "process_id": "sum",
+                                "arguments": {
+                                    "data": {
+                                        "from_argument": "dimension_data"
+                                    }
                                 }
                             }
                         }

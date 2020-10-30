@@ -63,7 +63,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_object, newmin, newmax, output_object):
-    """Create a Actinia command of the process chain that uses t.rast.mapcalc 
+    """Create a Actinia command of the process chain that uses t.rast.mapcalc
     to rescale raster values to the specified interval
 
     :param input_object: The input openeo map name
@@ -85,7 +85,7 @@ def create_process_chain_entry(input_object, newmin, newmax, output_object):
                       "value": newmin},
                      {"param": "max",
                       "value": newmax},
-                    ]}
+                     ]}
 
     return pc
 

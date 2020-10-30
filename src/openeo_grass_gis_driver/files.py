@@ -6,7 +6,7 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import Actinia
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
 # Management of user-uploaded assets and processed data.
-# need to be uploaded to the actinia server: not supported 
+# need to be uploaded to the actinia server: not supported
 
 class Files(Resource):
 

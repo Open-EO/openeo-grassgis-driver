@@ -38,9 +38,10 @@ GET_UDF_EXAMPLE = {
 
 SUPPORTED_UDF = {
     "python": {
-        "udf_types": [
-            "reduce_time"
-        ],
+        "title": "python 3.6+",
+        "description": "Python programming language",
+        "type": "language",
+        "default": "3.6.2",
         "versions": {
             "3.6": {
                 "packages": [

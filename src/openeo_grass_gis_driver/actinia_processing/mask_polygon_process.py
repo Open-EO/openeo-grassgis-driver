@@ -23,14 +23,14 @@ def create_process_description():
                        required=True)
     p_poly = Parameter(description="One or more polygons used for filtering",
                        schema={"anyOf": [
-                                  {
-                                    "type": "object",
-                                    "subtype": "geojson"
-                                  },
-                                  {
-                                    "type": "object",
-                                    "subtype": "vector-cube"
-                                  }]},
+                           {
+                               "type": "object",
+                               "subtype": "geojson"
+                           },
+                           {
+                               "type": "object",
+                               "subtype": "vector-cube"
+                           }]},
                        required=True)
     p_value = Parameter(description="The value used to replace non-zero and `true` values with",
                        schema={"type": "object", "subtype": "string"},
@@ -45,10 +45,10 @@ def create_process_description():
 
     # Example
     arguments = {
-                "data": {"from_node": "get_data_1"},
-                "mask": "some geojson",
+        "data": {"from_node": "get_data_1"},
+        "mask": "some geojson",
                 "replacement": "null",
-            }
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_polygon_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
@@ -92,7 +92,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
                          "value": vector_object},
                         {"param": "output",
                          "value": "geojson_mask"},
-                       ]}
+                        ]}
 
     if inside is False:
         create_mask = {"id": "v_to_rast_%i" % rn,
@@ -130,7 +130,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
                          "value": "masked"},
                         {"param": "output",
                          "value": output_object.grass_name()},
-                       ]}
+                        ]}
     else:
         do_mask = {"id": "t_rast_mapcalc_%i" % rn,
              "module": "t.rast.mapcalc",
@@ -144,7 +144,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
                          "value": "masked"},
                         {"param": "output",
                          "value": output_object.grass_name()},
-                       ]}
+                        ]}
 
 
     pc.append(importer)

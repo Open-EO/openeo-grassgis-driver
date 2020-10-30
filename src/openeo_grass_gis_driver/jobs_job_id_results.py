@@ -4,6 +4,7 @@ import sys
 import traceback
 from datetime import datetime
 from flask import make_response, jsonify, request
+from openeo_grass_gis_driver.capabilities import CAPABILITIES
 from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.process_graph_db import GraphDB
@@ -42,6 +43,14 @@ class JobsJobIdResults(ResourceBase):
         if job_id in self.job_db:
             job: JobInformation = self.job_db[job_id]
 
+            job.stac_version = CAPABILITIES['stac_version']
+            job.type = "Feature"
+            job.geometry = "json:null"
+            job.properties = dict()
+            job.properties['datetime'] = None
+            job.assets = dict()
+            job.links = []
+
             # Check for the actinia id to get the latest actinia job information
             if job_id in self.actinia_job_db:
                 actinia_id = self.actinia_job_db[job_id]
@@ -51,7 +60,7 @@ class JobsJobIdResults(ResourceBase):
                     # Add the actinia information to the openeo job
                     if job.additional_info != job_info:
                         job.additional_info = job_info
-                        job.updated = job_info["datetime"]
+                        job.updated = datetime.fromisoformat(job_info["datetime"]).isoformat()
                         if job_info["status"] == "finished":
                             job.status = "finished"
                         if job_info["status"] == "error":
@@ -71,7 +80,7 @@ class JobsJobIdResults(ResourceBase):
                         self.job_db[job_id] = job
 
                 if (job.additional_info['urls'] and
-                    "resources" in job.additional_info['urls']):
+                        "resources" in job.additional_info['urls']):
                     resource_links = job.additional_info['urls']['resources']
 
                     if job.links is None:
@@ -104,7 +113,7 @@ class JobsJobIdResults(ResourceBase):
 
                 job.additional_info = response
                 job.status = "queued"
-                job.updated = str(datetime.now())
+                job.updated = str(datetime.now().isoformat())
 
                 self.job_db[job_id] = job
 
@@ -124,7 +133,7 @@ class JobsJobIdResults(ResourceBase):
         try:
             # Empty the process location
             ActiniaInterface.PROCESS_LOCATION = {}
-            graph = Graph(job.process_graph)
+            graph = Graph(job.process)
             result_name, process_list = graph.to_actinia_process_list()
 
             if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:

@@ -23,14 +23,14 @@ def create_process_description():
                        required=True)
     p_poly = Parameter(description="One or more polygons used for filtering",
                        schema={"anyOf": [
-                                  {
-                                    "type": "object",
-                                    "subtype": "geojson"
-                                  },
-                                  {
-                                    "type": "object",
-                                    "subtype": "vector-cube"
-                                  }]},
+                           {
+                               "type": "object",
+                               "subtype": "geojson"
+                           },
+                           {
+                               "type": "object",
+                               "subtype": "vector-cube"
+                           }]},
                        required=True)
 
     rv = ReturnValue(description="Processed EO data.",
@@ -38,9 +38,9 @@ def create_process_description():
 
     # Example
     arguments = {
-                "data": {"from_node": "get_data_1"},
-                "polygons": {"from_node": "get_data_2"},
-            }
+        "data": {"from_node": "get_data_1"},
+        "polygons": {"from_node": "get_data_2"},
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_polygon_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
@@ -79,7 +79,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
                          "value": vector_object},
                         {"param": "output",
                          "value": "geojson_mask"},
-                       ]},
+                        ]},
           {"id": "v_to_rast_%i" % rn,
           "module": "v.to.rast",
           "inputs": [{"param": "input", "value": "geojson_mask"},
@@ -90,8 +90,8 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
         {"id": "t_rast_algebra_%i" % rn,
          "module": "t.rast.algebra",
          "inputs": [{"param": "expression",
-                     "value": "%(result)s = 1 * %(input)s" % 
-                              {"result":  output_object.grass_name(),
+                     "value": "%(result)s = 1 * %(input)s" %
+                              {"result": output_object.grass_name(),
                                "input": input_object.grass_name()}},
                     {"param": "basename",
                      "value": "filter_polygon"},
@@ -99,7 +99,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
         {"id": "r_mask_%i" % rn,
          "module": "r_mask",
          "inputs": {"flags": "r"}}
-         ]
+    ]
 
     return pc
 

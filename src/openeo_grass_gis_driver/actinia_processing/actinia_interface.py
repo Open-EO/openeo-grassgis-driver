@@ -17,7 +17,7 @@ class ActiniaInterface(object):
 
     PROCESS_LOCATION = {}
 
-    def __init__(self, config: ActiniaConfig=None):
+    def __init__(self, config: ActiniaConfig = None):
 
         if config is None:
             config = ActiniaConfig
@@ -145,7 +145,7 @@ class ActiniaInterface(object):
 
         return r.status_code, data
 
-    def create_mapset(self, location: str, mapset: str="PERMANENT") -> Tuple[int, dict]:
+    def create_mapset(self, location: str, mapset: str = "PERMANENT") -> Tuple[int, dict]:
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {"base": self.base_url,
                                                                       "location": location,
                                                                       "mapset": mapset}
@@ -159,7 +159,7 @@ class ActiniaInterface(object):
 
         return r.status_code, data
 
-    def delete_mapset(self, location: str, mapset: str="PERMANENT") -> Tuple[int, dict]:
+    def delete_mapset(self, location: str, mapset: str = "PERMANENT") -> Tuple[int, dict]:
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {"base": self.base_url,
                                                                       "location": location,
                                                                       "mapset": mapset}

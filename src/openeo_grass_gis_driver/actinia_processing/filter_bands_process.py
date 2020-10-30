@@ -25,8 +25,8 @@ def create_process_description():
     p_bands = Parameter(description="A list of band names. "
                                     "Either the unique band name or one of the common band names.",
                         schema={
-                               "type": "array",
-                               "items": {
+                            "type": "array",
+                            "items": {
                                  "type": "string",
                                  "subtype": "band-name"
                                }
@@ -37,8 +37,8 @@ def create_process_description():
                                           "The first element is the minimum wavelength and the second element "
                                           "is the maximum wavelength. Wavelengths are specified in micrometres (μm).",
                               schema={
-                                        "type": "array",
-                                        "items": {
+                                  "type": "array",
+                                  "items": {
                                           "type": "array",
                                           "minItems": 2,
                                           "maxItems": 2,
@@ -58,7 +58,7 @@ def create_process_description():
                                             ]
                                           ]
                                         }
-                                  },
+                              },
                               required=False)
 
     rv = ReturnValue(description="Processed EO data.",
@@ -66,9 +66,9 @@ def create_process_description():
 
     # Example
     arguments = {
-                "data": {"from_node": "get_data_1"},
-                "bands": ["red", "nir"]
-                }
+        "data": {"from_node": "get_data_1"},
+        "bands": ["red", "nir"]
+    }
 
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"filter_bands_1": node})
@@ -138,7 +138,7 @@ def get_process_list(node: Node) -> Tuple[list, list]:
 
     # at least one of bands, common_names, wavelengths must be given
     if "data" not in node.arguments or \
-            ("bands" not in node.arguments and \
+            ("bands" not in node.arguments and
              "wavelengths" not in node.arguments):
         raise Exception("Process %s requires parameter data and at least one of "
                         "bands, wavelengths" % PROCESS_NAME)

@@ -36,10 +36,10 @@ def create_process_description():
 
     # Example
     arguments = {
-                "data": {"from_node": "get_data_1"},
-                "mask": {"from_node": "get_data_2"},
-                "replacement": "null",
-            }
+        "data": {"from_node": "get_data_1"},
+        "mask": {"from_node": "get_data_2"},
+        "replacement": "null",
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"mask_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
@@ -63,7 +63,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 def create_process_chain_entry(input_object: DataObject, mask_object: DataObject,
                                mask_value, output_object: DataObject):
-    """Create a Actinia command of the process chain that uses t.rast.mapcalc 
+    """Create a Actinia command of the process chain that uses t.rast.mapcalc
     to mask raster values based on a mask dataset and a replacement value
 
     :param input_object: The input time series name
@@ -87,7 +87,7 @@ def create_process_chain_entry(input_object: DataObject, mask_object: DataObject
                          "value": "masked"},
                         {"param": "output",
                          "value": output_object.grass_name()},
-                       ]}
+                        ]}
     else:
         pc = {"id": "t_rast_mapcalc_%i" % rn,
              "module": "t.rast.mapcalc",
@@ -101,7 +101,7 @@ def create_process_chain_entry(input_object: DataObject, mask_object: DataObject
                          "value": "masked"},
                         {"param": "output",
                          "value": output_object.grass_name()},
-                       ]}
+                        ]}
 
     return pc
 

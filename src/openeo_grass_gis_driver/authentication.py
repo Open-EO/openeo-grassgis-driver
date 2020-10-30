@@ -38,6 +38,7 @@ from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
 tokendb = TokenDB()
 
+
 def ok_user_and_password(username, password):
     iface = ActiniaInterface()
     iface.set_auth(username, password)
@@ -47,32 +48,40 @@ def ok_user_and_password(username, password):
     else:
         return True
 
+
 def authenticate():
-    resp = jsonify({'message': "Unauthorized.", 'status': 401})
-    resp.status_code = 401
-    resp.headers['WWW-Authenticate'] = 'Basic realm="Main"'
+    resp = ErrorSchema(code=401,
+                       message="Authorization failed").as_response(401)
+    resp.headers['WWW-Authenticate'] = 'Bearer realm="Main"'
     return resp
 
-# def authenticate_with_token():
 
 def requires_authorization(f):
     @functools.wraps(f)
     def decorated(*args, **kwargs):
+        if 'Authorization' not in request.headers:
+            return authenticate()
+
         auth = request.headers['Authorization']
         auth = auth.split()[1]
-        user = tokendb[auth]
-        if not user:
+        if 'basic//' not in auth:
             return authenticate()
+
+        auth = auth.split('basic//')[1]
+        if auth not in tokendb:
+            return authenticate()
+
         return f(*args, **kwargs)
     return decorated
 
+
 class ResourceBase(Resource):
     decorators = []
-    #TODO: fixme
-    #decorators.append(requires_authorization)
+    decorators.append(requires_authorization)
 
     def __init__(self):
         Resource.__init__(self)
+
 
 class Authentication(Resource):
     def get(self):
@@ -87,6 +96,7 @@ class Authentication(Resource):
             'access_token': hex
         }), 200)
 
+
 class OIDCAuthentication(Resource):
     # OpenID Connect https://openid.net/connect/
     def get(self):
@@ -94,17 +104,17 @@ class OIDCAuthentication(Resource):
                            code=204,
                            message="OpenID Connect is not available").as_response(204)
 
-class UserInfo(Resource):
+
+class UserInfo(ResourceBase):
     def get(self):
-        auth = request.authorization
-        if not auth or not ok_user_and_password(auth.username, auth.password):
-            return ErrorSchema(id="1234567890",
-                               code=401,
-                               message="Authorization failed").as_response(401)
-        
+        # We can assume here that the user is authenticated correctly via
+        # Bearer type and not repeat the checks from requires_authorization
+        # method above.
+        auth = request.headers['Authorization']
+        auth = auth.split()[1].split('basic//')[1]
+        user = tokendb[auth]
         # user_id, name, storage, budget, links
         # actinia does not provide name, storage, budget, links
         return make_response(jsonify({
-            'user_id': auth.username
+            'user_id': user
         }), 200)
-        

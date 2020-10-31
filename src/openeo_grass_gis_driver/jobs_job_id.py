@@ -30,12 +30,13 @@ class JobsJobId(ResourceBase):
     def get(self, job_id):
         """Return information about a single job
 
-        https://open-eo.github.io/openeo-api/v/0.3.0/apireference/#tag/Job-Management/paths/~1jobs~1{job_id}/get
+        https://api.openeo.org/#operation/describe-job
         """
 
         if job_id in self.job_db:
-            job = self.job_db[job_id]
-            return make_response(job.to_json(), 200)
+            job: JobInformation = self.job_db[job_id]
+            return job.as_response(http_status=200)
+            # return make_response(job.to_json(), 200)
         else:
             return ErrorSchema(id="123456678", code=404,
                                message=f"job with id {job_id} not found in database.").as_response(http_status=404)

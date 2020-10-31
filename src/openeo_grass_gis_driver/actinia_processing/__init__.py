@@ -4,7 +4,7 @@
 # from . import apply_mask_process
 from . import apply_process
 #from . import bbox_from_raster_process
-#from . import filter_bands_process
+from . import filter_bands_process
 from . import filter_bbox_process
 from . import filter_spatial_process
 from . import filter_temporal_process
@@ -24,6 +24,7 @@ from . import ndvi_process
 from . import reduce_dimension_process
 from . import rename_labels_process
 from . import resample_spatial_process
+from . import run_udf_process
 # from . import udf_reduce_time
 from . import raster_exporter
 from . import save_result_process

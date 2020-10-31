@@ -83,5 +83,5 @@ def create_endpoints():
     # File storage
     # /files
     # /files/{path}
-    flask_api.add_resource(Files, '/files')
-    flask_api.add_resource(FilesPath, '/files/<string:path>')
+    # flask_api.add_resource(Files, '/files')
+    # flask_api.add_resource(FilesPath, '/files/<string:path>')

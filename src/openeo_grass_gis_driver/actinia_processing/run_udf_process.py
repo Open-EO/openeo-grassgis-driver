@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from random import randint
-
+import json
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
 
 from openeo_grass_gis_driver.actinia_processing.base import Node, check_node_parents, DataObject, GrassDataType
@@ -18,7 +18,7 @@ PROCESS_NAME = "run_udf"
 
 def create_process_description():
     p_data = Parameter(description="The data to be passed to the UDF as array or raster data cube.",
-                       schema={[
+                       schema=[
                            {
                                "title": "Raster data cube",
                                "type": "object",
@@ -36,15 +36,15 @@ def create_process_description():
                                "title": "Single Value",
                                "description": "A single value of any data type."
                            }
-                       ]},
+                       ],
                        required=True)
     p_udf = Parameter(description="Either source code, an absolute URL or a path to an UDF script.",
-                      schema={[
+                      schema=[
                           {
-                                  "description": "URI to an UDF",
-                                  "type": "string",
-                                  "format": "uri",
-                                  "subtype": "uri"
+                              "description": "URI to an UDF",
+                              "type": "string",
+                              "format": "uri",
+                              "subtype": "uri"
                           },
                           {
                               "description": "Path to an UDF uploaded to the server.",
@@ -56,8 +56,7 @@ def create_process_description():
                               "type": "string",
                               "subtype": "udf-code"
                           }
-                      ]
-                      },
+                      ],
                          required=True)
 
     p_runtime = Parameter(description="An UDF runtime identifier available at the back-end.",
@@ -68,17 +67,16 @@ def create_process_description():
 
     p_version = Parameter(description="An UDF runtime version. If set to `null`, "
                                       "the default runtime version specified for each runtime is used.",
-                          schema={[
+                          schema=[
                               {
-                                      "type": "string",
-                                      "subtype": "udf-runtime-version"
+                                  "type": "string",
+                                  "subtype": "udf-runtime-version"
                               },
                               {
                                   "title": "Default runtime version",
                                   "type": "null"
                               }
-                          ]
-                          },
+                          ],
                           required=False)
 
     p_context = Parameter(description="Additional data such as configuration options "
@@ -90,7 +88,7 @@ def create_process_description():
                                  "if a raster data cube was passed for `data`. If an array was "
                                   "passed for `data`, the returned value is defined by the context "
                                   "and is exactly what the UDF returned.",
-                     schema={[
+                     schema=[
                          {
                              "title": "Raster data cube",
                              "type": "object",
@@ -100,7 +98,7 @@ def create_process_description():
                              "title": "Any",
                              "description": "Any data type."
                          }
-                     ]})
+                     ])
 
     # Example
     arguments = {

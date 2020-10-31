@@ -77,7 +77,8 @@ def requires_authorization(f):
 
 class ResourceBase(Resource):
     decorators = []
-    decorators.append(requires_authorization)
+    # TODO: fixme
+    # decorators.append(requires_authorization)
 
     def __init__(self):
         Resource.__init__(self)

@@ -32,10 +32,10 @@ def create_process_description():
     p_data = Parameter(description="Raster data cube",
                        schema={"type": "object", "subtype": "raster-cube"},
                        required=True)
-    p_uprocess = Parameter(description="A process (callback) to be applied on each value. "
-                                       "The specified process must be unary meaning that it must work on a single value.",
+    p_uprocess = Parameter(description="Applies a unary process to each pixel value in the data cube. "
+                                       "A unary process takes a single value and returns a single value.",
                            schema={"type": "object",
-                                   "subtype": "callback",
+                                   "subtype": "process-graph",
                                    "parameters": [{
                                        "name": "x",
                                        "description": "The value to process.",
@@ -167,7 +167,7 @@ def get_process_list(node: Node):
     :return: (output_objects, actinia_process_list)
     """
 
-    tree, operators = construct_tree(node.as_dict()['arguments']['process']['callback'])
+    tree, operators = construct_tree(node.as_dict()['arguments']['process']['process_graph'])
     # print (operators)
     formula = None
     output_datatype = GrassDataType.RASTER

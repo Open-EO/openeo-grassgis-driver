@@ -256,18 +256,18 @@ def process_node_to_actinia_process_chain(node: Node) -> Tuple[list, list]:
         raise Exception("Missing process node")
 
     process_list = []
-    output_oblect_list = []
+    output_object_list = []
 
     if node.process_id not in PROCESS_DICT:
         raise Exception("Unsupported process id, available processes: %s" % PROCESS_DICT.keys())
 
     outputs, processes = PROCESS_DICT[node.process_id](node)
     process_list.extend(processes)
-    output_oblect_list.extend(outputs)
+    output_object_list.extend(outputs)
 
     node.processed = True
 
-    return output_oblect_list, process_list
+    return output_object_list, process_list
 
 
 def check_node_parents(node: Node) -> Tuple[list, list]:

@@ -233,7 +233,7 @@ REDUCE_TIME_MIN = {
                     "data": {"from_node": "get_strds_data"},
                     "dimension": "temporal",
                     "reducer": {
-                        "callback": {
+                        "process_graph": {
                             "min1": {
                                 "process_id": "min",
                                 "arguments": {
@@ -592,7 +592,7 @@ USE_CASE_1 = {
                     "data": {"from_node": "filter_daterange_ndvi"},
                     "dimension": "temporal",
                     "reducer": {
-                        "callback": {
+                        "process_graph": {
                             "min1": {
                                 "process_id": "min",
                                 "arguments": {
@@ -693,7 +693,7 @@ OPENEO_EXAMPLE_1 = {
                     },
                     "dimension": "temporal",
                     "reducer": {
-                        "callback": {
+                        "process_graph": {
                             "min1": {
                                 "process_id": "min",
                                 "arguments": {
@@ -718,7 +718,7 @@ OPENEO_EXAMPLE_1 = {
                     },
                     "dimension": "spectral",
                     "reducer": {
-                        "callback": {
+                        "process_graph": {
                             "divide1": {
                                 "process_id": "divide",
                                 "arguments": {

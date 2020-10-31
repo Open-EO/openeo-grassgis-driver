@@ -51,13 +51,7 @@ CAPABILITIES = {
         {
             "path": "/services",
             "methods": [
-                "GET", "POST"
-            ]
-        },
-        {
-            "path": "/services/{service_id}",
-            "methods": [
-                "GET", "PATCH", "DELETE"
+                "GET"
             ]
         },
         {
@@ -162,18 +156,6 @@ CAPABILITIES = {
                 "GET", "POST", "DELETE"
             ]
         },
-        {
-            "path": "/files",
-            "methods": [
-                "GET"
-            ]
-        },
-        {
-            "path": "/files/{path}",
-            "methods": [
-                "GET", "PUT", "DELETE"
-            ]
-        }
     ],
     "links": [
         {
@@ -191,6 +173,34 @@ CAPABILITIES = {
     ]
 }
 
+# deactivated /files and /services POST
+"""
+        {
+            "path": "/files",
+            "methods": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/files/{path}",
+            "methods": [
+                "GET", "PUT", "DELETE"
+            ]
+        }
+
+        {
+            "path": "/services",
+            "methods": [
+                "GET", "POST"
+            ]
+        },
+        {
+            "path": "/services/{service_id}",
+            "methods": [
+                "GET", "PATCH", "DELETE"
+            ]
+        },
+"""
 
 class Capabilities(Resource):
 

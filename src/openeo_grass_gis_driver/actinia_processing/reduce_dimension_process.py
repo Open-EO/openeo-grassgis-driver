@@ -15,6 +15,7 @@ PROCESS_NAME = "reduce_dimension"
 
 OPERATOR_DICT = {
     'sum': '+',
+    'add': '+',
     'subtract': '-',
     'product': '*',
     'divide': '/',
@@ -276,7 +277,7 @@ def get_process_list(node: Node):
     if dimtype is None:
         raise Exception('Unable to determine dimension type for dimension <%s>.' % (dimension))
 
-    tree, operators = construct_tree(node.as_dict()['arguments']['reducer']['callback'])
+    tree, operators = construct_tree(node.as_dict()['arguments']['reducer']['process_graph'])
     # print (operators)
     formula = None
     output_datatype = GrassDataType.RASTER

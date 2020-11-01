@@ -60,7 +60,7 @@ class JobsJobIdResults(ResourceBase):
                     # Add the actinia information to the openeo job
                     if job.additional_info != job_info:
                         job.additional_info = job_info
-                        job.updated = datetime.fromisoformat(job_info["datetime"]).isoformat()
+                        job.updated = job_info["datetime"]
                         if job_info["status"] == "finished":
                             job.status = "finished"
                         if job_info["status"] == "error":

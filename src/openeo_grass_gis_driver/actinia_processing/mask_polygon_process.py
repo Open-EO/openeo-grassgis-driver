@@ -20,7 +20,7 @@ def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
     p_poly = Parameter(description="One or more polygons used for filtering",
                        schema={"anyOf": [
                            {
@@ -31,14 +31,14 @@ def create_process_description():
                                "type": "object",
                                "subtype": "vector-cube"
                            }]},
-                       required=True)
+                       optional=False)
     p_value = Parameter(description="The value used to replace non-zero and `true` values with",
                        schema={"type": "object", "subtype": "string"},
-                       required=False)
+                       optional=True)
     p_inside = Parameter(description="If set to `true` all pixels for which the point at the pixel center "
                                      "**does** intersect with any polygon are replaced",
                        schema={"type": "boolean"},
-                       required=False)
+                       optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

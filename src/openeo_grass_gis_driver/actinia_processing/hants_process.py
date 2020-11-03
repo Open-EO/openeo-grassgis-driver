@@ -23,28 +23,28 @@ def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
     p_nf = Parameter(description="The number of frequencies to use",
                              schema={"type": "object", "subtype": "integer"},
-                             required=True)
+                             optional=False)
     p_dod = Parameter(description="Degree of over-determination",
                              schema={"type": "object", "subtype": "integer"},
-                             required=False)
+                             optional=True)
     p_fet = Parameter(description="Fit error tolerance when filtering outliers",
                              schema={"type": "object", "subtype": "float"},
-                             required=False)
+                             optional=True)
     p_rangelo = Parameter(description="Ignore values below this limit",
                              schema={"type": "object", "subtype": "float"},
-                             required=False)
+                             optional=True)
     p_rangehi = Parameter(description="Ignore values above this limit",
                              schema={"type": "object", "subtype": "float"},
-                             required=False)
+                             optional=True)
     p_rejlo = Parameter(description="Reject low outliers",
                              schema={"type": "object", "subtype": "boolean"},
-                             required=False)
+                             optional=True)
     p_rejhi = Parameter(description="Reject high outliers",
                              schema={"type": "object", "subtype": "boolean"},
-                             required=False)
+                             optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

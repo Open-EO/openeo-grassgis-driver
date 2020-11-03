@@ -24,13 +24,13 @@ def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
     p_target = Parameter(description="Any openEO process object that returns a raster dataset",
                          schema={"type": "object", "subtype": "raster-cube"},
-                         required=True)
+                         optional=False)
     p_method = Parameter(description="The resampling method to use",
                          schema={"type": "string"},
-                         required=True)
+                         optional=False)
 
     p_method.enum = ["near",
                      "bilinear",

@@ -19,11 +19,11 @@ PROCESS_NAME = "rename_labels"
 def create_process_description():
     p_data = Parameter(description="The data cube.",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
 
     p_dim = Parameter(description="The name of the dimension to rename the labels for.",
                       schema={"type": "string"},
-                      required=True)
+                      optional=False)
 
     p_tgt = Parameter(description="The new names for the labels. The dimension labels in the data cube are expected to be enumerated, if the parameter `target` is not specified. If a target dimension label already exists in the data cube, a `LabelExists` error is thrown.",
                       schema={"type": "array",
@@ -38,7 +38,7 @@ def create_process_description():
                                   ]
                                 }
                               },
-                      required=True)
+                      optional=False)
 
     p_src = Parameter(description="The names of the labels as they are currently in the data cube. The array defines an unsorted and potentially incomplete list of labels that should be renamed to the names available in the corresponding array elements in the parameter `target`. If one of the source dimension labels doesn't exist, a `LabelNotAvailable` error is thrown. By default, the array is empty so that the dimension labels in the data cube are expected to be enumerated.",
                       schema={"type": "array",
@@ -53,7 +53,7 @@ def create_process_description():
                                   ]
                                 }
                               },
-                      required=False)
+                      optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

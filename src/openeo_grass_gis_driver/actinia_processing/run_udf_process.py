@@ -37,7 +37,7 @@ def create_process_description():
                                "description": "A single value of any data type."
                            }
                        ],
-                       required=True)
+                       optional=False)
     p_udf = Parameter(description="Either source code, an absolute URL or a path to an UDF script.",
                       schema=[
                           {
@@ -57,13 +57,13 @@ def create_process_description():
                               "subtype": "udf-code"
                           }
                       ],
-                         required=True)
+                         optional=False)
 
     p_runtime = Parameter(description="An UDF runtime identifier available at the back-end.",
                           schema={"type": "string",
                                   "subtype": "udf-runtime"
                                   },
-                          required=True)
+                          optional=False)
 
     p_version = Parameter(description="An UDF runtime version. If set to `null`, "
                                       "the default runtime version specified for each runtime is used.",
@@ -77,12 +77,12 @@ def create_process_description():
                                   "type": "null"
                               }
                           ],
-                          required=False)
+                          optional=True)
 
     p_context = Parameter(description="Additional data such as configuration options "
                                       "that should be passed to the UDF.",
                           schema={"type": "object"},
-                          required=False)
+                          optional=True)
 
     rv = ReturnValue(description="The data processed by the UDF. Returns a raster data cube "
                                  "if a raster data cube was passed for `data`. If an array was "

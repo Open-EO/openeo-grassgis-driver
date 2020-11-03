@@ -22,7 +22,7 @@ PROCESS_NAME = "bbox_from_raster"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
 

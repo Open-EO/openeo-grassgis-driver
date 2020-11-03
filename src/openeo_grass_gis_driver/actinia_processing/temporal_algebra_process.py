@@ -22,46 +22,46 @@ def create_process_description():
     p_a = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $a in the t.rast.algebra expression.",
                     schema={"type": "object", "subtype": "raster-cube"},
-                    required=False)
+                    optional=True)
 
     p_b = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $b in the t.rast.algebra expression.",
                     schema={"type": "object", "subtype": "raster-cube"},
-                    required=False)
+                    optional=True)
 
     p_c = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $c in the t.rast.algebra expression.",
                     schema={"type": "object", "subtype": "raster-cube"},
-                    required=False)
+                    optional=True)
 
     p_d = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $d in the t.rast.algebra expression.",
                     schema={"type": "object", "subtype": "raster-cube"},
-                    required=False)
+                    optional=True)
 
     p_e = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $e in the t.rast.algebra expression.",
                     schema={"type": "object", "subtype": "raster-cube"},
-                    required=False)
+                    optional=True)
 
     p_f = Parameter(description="Any openEO process object that returns a single space-time raster "
                                 "datasets identified as $f in the t.rast.algebra expression.",
                     schema={"type": "object", "subtype": "raster-cube"},
-                    required=False)
+                    optional=True)
 
     p_result = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                                      "identified as RESULT in the t.rast.algebra expression.",
                          schema={"type": "object", "subtype": "raster-cube"},
-                         required=True)
+                         optional=False)
 
     p_expression = Parameter(description="The t.rast.algebra expression",
                              schema={"type": "string",
                                      "examples": ["$result = ($a + $b / ($a - $b))"]},
-                             required=True)
+                             optional=False)
 
     bn = Parameter(description="Basename of the new generated raster datasets in the resulting "
                                "space-time raster datasets",
-                   schema={"type": "string", "examples": ["ndvi_base"]}, required=True)
+                   schema={"type": "string", "examples": ["ndvi_base"]}, optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

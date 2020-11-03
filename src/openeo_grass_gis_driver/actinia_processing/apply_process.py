@@ -31,7 +31,7 @@ FN_DICT = {
 def create_process_description():
     p_data = Parameter(description="Raster data cube",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
     p_uprocess = Parameter(description="Applies a unary process to each pixel value in the data cube. "
                                        "A unary process takes a single value and returns a single value.",
                            schema={"type": "object",
@@ -44,7 +44,7 @@ def create_process_description():
                                          }
                                       }]
                                    },
-                           required=True)
+                           optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

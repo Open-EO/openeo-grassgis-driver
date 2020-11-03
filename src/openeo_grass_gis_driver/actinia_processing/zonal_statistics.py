@@ -22,11 +22,11 @@ def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                       "or space-time raster dataset",
                           schema={"type": "object", "subtype": "raster-cube"},
-                          required=True)
+                          optional=False)
 
     p_polygons = Parameter(description="URL to a publicly accessible polygon file readable by OGR",
                            schema={"type": "string"},
-                           required=True)
+                           optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

@@ -17,12 +17,14 @@ PROCESS_NAME = "apply"
 OPERATOR_DICT = {
     'sum': '+',
     'subtract': '-',
+    'multiply': '*',
     'product': '*',
     'divide': '/'
 }
 
 # translate openeo functions to r.mapcalc functions
 FN_DICT = {
+    'abs': 'abs',
     'ln': 'log',
     'power': 'pow'
 }

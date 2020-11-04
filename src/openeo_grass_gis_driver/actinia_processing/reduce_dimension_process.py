@@ -17,6 +17,7 @@ OPERATOR_DICT = {
     'sum': '+',
     'add': '+',
     'subtract': '-',
+    'multiply': '*',
     'product': '*',
     'divide': '/',
     'eq': '==',

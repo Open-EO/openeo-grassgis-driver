@@ -22,10 +22,10 @@ def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
     p_format = Parameter(description="The format of the export. Default is GeotTiff format.",
                          schema={"type": "string", "default": "GTiff"},
-                         required=False)
+                         optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

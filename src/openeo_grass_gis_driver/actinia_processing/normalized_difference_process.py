@@ -22,12 +22,12 @@ def create_process_description():
     p_band1 = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                                   "that contains the first band for normalized difference computation.",
                       schema={"type": "object", "subtype": "raster-cube"},
-                      required=True)
+                      optional=False)
 
     p_band2 = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                                   "that contains the second band for normalized difference computation.",
                       schema={"type": "object", "subtype": "raster-cube"},
-                      required=True)
+                      optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

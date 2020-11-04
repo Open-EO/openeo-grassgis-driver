@@ -25,10 +25,10 @@ class Parameter(JsonableObject):
         Detailed description to fully explain the entity.
         CommonMark 0.28 syntax MAY be used for rich text representation.
 
-    required:
+    optional:
         boolean
         Default: false
-        Determines whether this parameter is mandatory.
+        Determines whether this parameter is optional.
 
     deprecated:
         boolean
@@ -53,23 +53,30 @@ class Parameter(JsonableObject):
         Additional values for format are defined centrally in the API
         documentation, e.g. bbox or crs.
 
+    default:
+        optional
+        string
+        default entry (None).
+
     """
 
     def __init__(self, description: str,
                  schema: dict,
-                 required: bool = False,
-                 depricated: bool = False,
-                 experimental: bool = False,
+                 optional: Optional[bool] = False,
+                 depricated: Optional[bool] = False,
+                 experimental: Optional[bool] = False,
                  mime_type: Optional[str] = None,
-                 name: Optional[str] = None):
+                 name: Optional[str] = None,
+                 default = None):
         # name is set later on in ProcessDescription
         self.name = None
         self.description = description
         self.schema = schema
-        self.required = required
+        self.optional = optional
         self.depricated = depricated
         self.experimental = experimental
         self.mime_type = mime_type
+        self.default = default
 
 
 class ReturnValue(JsonableObject):

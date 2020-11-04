@@ -22,15 +22,15 @@ def create_process_description():
     p_red = Parameter(description="Any openEO process object that returns raster dataset that should be used as "
                                   "the red channel in the resulting GRB image.",
                       schema={"type": "object", "subtype": "raster-cube"},
-                      required=True)
+                      optional=False)
     p_green = Parameter(description="Any openEO process object that returns raster dataset that should be used as "
                                     "the green channel in the resulting GRB image.",
                         schema={"type": "object", "subtype": "raster-cube"},
-                        required=True)
+                        optional=False)
     p_blue = Parameter(description="Any openEO process object that returns raster dataset that should be used as "
                                    "the blue channel in the resulting GRB image.",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

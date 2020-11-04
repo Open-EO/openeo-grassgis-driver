@@ -14,35 +14,50 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-PROCESS_NAME = "filter_spatial"
+PROCESS_NAME = "add_dimension"
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
+    p_data = Parameter(description="A data cube to add the dimension to.",
                        schema={"type": "object", "subtype": "raster-cube"},
                        optional=False)
-    p_poly = Parameter(description="One or more polygons used for filtering",
-                       schema={"anyOf": [
-                           {
-                               "type": "object",
-                               "subtype": "geojson"
-                           },
-                           {
-                               "type": "object",
-                               "subtype": "vector-cube"
-                           }]},
-                       optional=False)
+    p_name = Parameter(description="Name for the dimension.",
+                        schema={"type": "string"})
+    p_label = Parameter(description="A dimension label.",
+                       schema=[
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "string"
+                                }
+                              ])
+    p_type = Parameter(description="The type of dimension, defaults to `other`.",
+                       schema={
+                                "type": "string",
+                                "enum": [
+                                  "spatial",
+                                  "temporal",
+                                  "bands",
+                                  "other"
+                                ]
+                              },
+                              default="other",
+                              optional=True)
 
-    rv = ReturnValue(description="Processed EO data.",
+    rv = ReturnValue(description="The data cube with a newly added dimension. "
+                                 "The new dimension has exactly one dimension label. "
+                                 "All other dimensions remain unchanged.",
                      schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {
         "data": {"from_node": "get_data_1"},
-        "polygons": {"from_node": "get_data_2"},
+        "name": "bands",
+        "label": "spectral bands",
+        "type": "spatial"
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"filter_polygon_1": node})
+    graph = ProcessGraph(title="title", description="description", process_graph={"add_dimension_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
                                process_graph=graph)]
 
@@ -52,7 +67,9 @@ def create_process_description():
                              "defined in the Simple Features standard by the OGC).",
                             summary="Spatial filter using polygons",
                             parameters={"data": p_data,
-                                        "geometries": p_poly},
+                                        "name": p_name,
+                                        "label": p_label,
+                                        "type": p_type},
                             returns=rv,
                             examples=examples)
 
@@ -62,44 +79,17 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_object: DataObject, vector_object,
+def create_process_chain_entry(input_object: DataObject,
                                output_object: DataObject):
     """Create a Actinia command of the process chain
 
     :param input_object:
-    :param vector_object:
     :return: A Actinia process chain description
     """
 
     rn = randint(0, 1000000)
 
-    pc = [{"id": "v_in_geojson_%i" % rn,
-             "module": "v.in.geojson",
-             "inputs": [{"param": "input",
-                         "value": vector_object},
-                        {"param": "output",
-                         "value": "geojson_mask"},
-                        ]},
-          {"id": "v_to_rast_%i" % rn,
-          "module": "v.to.rast",
-          "inputs": [{"param": "input", "value": "geojson_mask"},
-                     {"param": "output", "value": "MASK"},
-                     {"param": "type", "value": "point,line,area"},
-                     {"param": "use", "value": "val"},
-                     ]},
-        {"id": "t_rast_algebra_%i" % rn,
-         "module": "t.rast.algebra",
-         "inputs": [{"param": "expression",
-                     "value": "%(result)s = 1 * %(input)s" %
-                              {"result": output_object.grass_name(),
-                               "input": input_object.grass_name()}},
-                    {"param": "basename",
-                     "value": "filter_polygon"},
-                    ]},
-        {"id": "r_mask_%i" % rn,
-         "module": "r_mask",
-         "inputs": {"flags": "r"}}
-    ]
+    pc = []
 
     return pc
 
@@ -114,26 +104,21 @@ def get_process_list(node: Node):
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []
 
-    if "data" not in node.arguments or \
-            "polygons" not in node.arguments:
-        raise Exception("Process %s requires parameter data, polygons" % PROCESS_NAME)
+    if "data" not in node.arguments:
+        raise Exception("Process %s requires parameter data" % PROCESS_NAME)
 
     input_objects = node.get_parent_by_name(parent_name="data").output_objects
-    vector_objects = node.arguments["polygons"]
 
     if not input_objects:
         raise Exception("Process %s requires an input strds" % PROCESS_NAME)
-
-    if not vector_objects:
-        raise Exception("Process %s requires an input vector" % PROCESS_NAME)
 
     input_object = list(input_objects)[-1]
 
     output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
-    pc = create_process_chain_entry(input_object, vector_object, output_object)
-    process_list.append(pc)
+    # pc = create_process_chain_entry(input_object, output_object)
+    # process_list.append(pc)
 
     return output_objects, process_list
 

@@ -31,7 +31,7 @@ OPERATOR_DICT = {
 def create_process_description():
     p_data = Parameter(description="Raster data cube",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
     p_reducer = Parameter(description="A reducer to apply on the specified dimension.",
                           schema={"type": "object",
                                 "subtype": "process-graph",
@@ -56,16 +56,16 @@ def create_process_description():
                                   }
                                   ]
                                   },
-                         required=True)
+                         optional=False)
 
     p_dimension = Parameter(description="The name of the dimension over which to reduce.",
                        schema={"type": "string"},
-                       required=True)
+                       optional=False)
 
     p_context = Parameter(description="Additional data to be passed to the reducer.",
                        schema={"description": "Any data type.",
                             "default": "null"},
-                            required=False)
+                            optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

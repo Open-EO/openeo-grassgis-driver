@@ -20,7 +20,7 @@ PROCESS_NAME = "filter_bands"
 def create_process_description():
     p_data = Parameter(description="A data cube with bands.",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
 
     p_bands = Parameter(description="A list of band names. "
                                     "Either the unique band name or one of the common band names.",
@@ -31,7 +31,7 @@ def create_process_description():
                                  "subtype": "band-name"
                                }
                         },
-                        required=False)
+                        optional=True)
 
     p_wavelengths = Parameter(description="A list of sub-lists with each sub-list consisting of two elements. "
                                           "The first element is the minimum wavelength and the second element "
@@ -59,7 +59,7 @@ def create_process_description():
                                           ]
                                         }
                               },
-                              required=False)
+                              optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

@@ -23,21 +23,21 @@ def create_process_description():
     p_red = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                                   "that contains the RED band for EVI computation.",
                       schema={"type": "object", "subtype": "raster-cube"},
-                      required=True)
+                      optional=False)
 
     p_nir = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                                   "that contains the NIR band for EVI computation.",
                       schema={"type": "object", "subtype": "raster-cube"},
-                      required=True)
+                      optional=False)
 
     p_blue = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                                   "that contains the BLUE band for EVI computation.",
                       schema={"type": "object", "subtype": "raster-cube"},
-                      required=True)
+                      optional=False)
 
     p_scale = Parameter(description="Scale factor to convert band values",
                         schema={"type": "object", "subtype": "float"},
-                        required=False)
+                        optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

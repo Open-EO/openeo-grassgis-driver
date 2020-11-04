@@ -26,8 +26,8 @@ def create_process_description():
                                 "pattern": "^[A-Za-z0-9_\\-\\.~/]+$",
                                 "examples": ["nc_spm_08.landsat.raster.lsat5_1987_10",
                                              "nc_spm_08.PERMANENT.vector.lakes",
-                                             "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]},
-                          required=True)
+                                             "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]}
+                          )
     p_spatial = Parameter(description="Limits the data to load from the collection to the specified bounding box or polygons.\n\n"
                                           "The coordinate reference system of the bounding box must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
                        schema=[{
@@ -108,7 +108,7 @@ def create_process_description():
                            "subtype": "geojson"
                        }
                           ],
-                    required=True)
+                    optional=False)
     p_temporal = Parameter(description="Limits the data to load from the collection to the specified left-closed temporal interval. Applies to all temporal dimensions if there are multiple of them. Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.",
                        schema={"type": "array",
                                "subtype": "temporal-interval",
@@ -146,7 +146,7 @@ def create_process_description():
                                 ]
                                    ]
                                },
-                       required=True)
+                       optional=False)
 
     p_bands = Parameter(description="Only adds the specified bands into the data cube so that bands that don't match the list of band names are not available. Applies to all dimensions of type `bands` if there are multiple of them.\n\nThe order of the specified array defines the order of the bands in the data cube.",
                       schema=[
@@ -159,6 +159,7 @@ def create_process_description():
                         }])
     p_properties = Parameter(description="Limits the data by metadata properties to include only data in the data cube which all given expressions return `true` for (AND operation).\n\nSpecify key-value-pairs with the keys being the name of the metadata property, which can be retrieved with the openEO Data Discovery for Collections. The values must be expressions to be evaluated against the collection metadata, see the example.\n\n**Note:** Back-ends may not pass the actual value to the expressions, but pass a proprietary index or a placeholder so that they can use the expressions to query against another data source. So debugging on the callback parameter `value` may lead to unexpected results.",
               experimental=True,
+              optional=True,
               schema=[
                 {
                   "type": "object",

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 # Import the actinia_processing to fill the process.PROCESS_DICT with actinia_processing
-# from . import aggregate_spatial_process.py
+from . import add_dimension_process
+# from . import aggregate_spatial_process
 # from . import apply_mask_process
 from . import apply_process
+from . import array_element_process
 #from . import bbox_from_raster_process
 from . import filter_bands_process
 from . import filter_bbox_process

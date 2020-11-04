@@ -14,32 +14,52 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-PROCESS_NAME = "trim_cube"
-
+PROCESS_NAME = "array_element"
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_data = Parameter(description="An array",
+                       schema={
+                                "type": "array",
+                                "items": {
+                                  "description": "Any data type is allowed."
+                                }})
+    p_index = Parameter(description="The zero-based index of the element to retrieve.",
+                        schema={
+                                "type": "integer"
+                              },
+                              optional=True)
+    p_label = Parameter(description="The label of the element to retrieve.",
+                       schema=[
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "string"
+                                }
+                              ],
+                              optional=True)
 
-    rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "subtype": "raster-cube"})
+    rv = ReturnValue(description="The value of the requested element.",
+                     schema={
+                             "description": "Any data type is allowed."})
 
     # Example
     arguments = {
-        "data": {"from_node": "get_data_1"}
+        "data": {"from_node": "get_data_1"},
+        "index": 0,
+        "label":0
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"trim_1": node})
+    graph = ProcessGraph(title="title", description="description", process_graph={"array_element_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",
                                process_graph=graph)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Removes slices solely containing no-data values. "
-                                        "If the dimension is irregular categorical then slices in the middle can be removed.",
-                            summary="Remove slices with no-data values",
-                            parameters={"data": p_data},
+                            description="Returns the element with the specified index or label from the array.",
+                            summary="Get an element from an array",
+                            parameters={"data": p_data,
+                                        "index": p_index,
+                                        "label": p_label},
                             returns=rv,
                             examples=examples)
 
@@ -49,27 +69,17 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_object: DataObject,
+def create_process_chain_entry(input_object: DataObject, vector_object,
                                output_object: DataObject):
     """Create a Actinia command of the process chain
 
     :param input_object:
-    :param vector_object:
     :return: A Actinia process chain description
     """
 
     rn = randint(0, 1000000)
 
-    pc = [{"id": "t_rast_algebra_%i" % rn,
-         "module": "t.rast.algebra",
-         "inputs": [{"param": "expression",
-                     "value": "%(result)s = 1 * %(input)s" %
-                              {"result": output_object.grass_name(),
-                               "input": input_object.grass_name()}},
-                    {"param": "basename",
-                     "value": "trim"},
-                    ]},
-          ]
+    pc = []
 
     return pc
 
@@ -97,8 +107,8 @@ def get_process_list(node: Node):
     output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
-    pc = create_process_chain_entry(input_object, output_object)
-    process_list.append(pc)
+    # pc = create_process_chain_entry(input_object, vector_object, output_object)
+    # process_list.append(pc)
 
     return output_objects, process_list
 

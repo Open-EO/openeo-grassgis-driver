@@ -22,11 +22,11 @@ def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
                           schema={"type": "object", "subtype": "raster-cube"},
-                          required=True)
+                          optional=False)
 
     p_geometries = Parameter(description="Geometries as GeoJSON on which the aggregation will be based.",
                            schema={"type": "object", "subtype": "geojson"},
-                           required=True)
+                           optional=False)
     p_reducer = Parameter(description="A reducer to be applied on all values of each geometry.",
                            schema={"type": "object",
                                     "subtype": "process-graph",
@@ -52,13 +52,13 @@ def create_process_description():
                                       }
                                     ]
                                    },
-                           required=True)
+                           optional=False)
     p_target_dimension = Parameter(description="The new dimension name to be used for storing the results. Defaults to `result`.",
                            schema={"type": "string"},
-                           required=False)
+                           optional=True)
     p_context = Parameter(description="Additional data to be passed to the reducer.",
                            schema={"description": "Any data type."},
-                           required=False)
+                           optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "vector-cube"})

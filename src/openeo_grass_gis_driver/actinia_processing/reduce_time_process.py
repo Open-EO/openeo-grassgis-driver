@@ -23,11 +23,11 @@ def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
     p_method = Parameter(description="The method to reduce the time dimension of a "
                                      "space-time raster dataset",
                          schema={"type": "string"},
-                         required=True)
+                         optional=False)
 
     p_method.enum = ["average", "count", "median", "mode", "minimum", "min_raster", "maximum",
                      "max_raster", "stddev", "range,sum", "variance", "diversity", "slope",

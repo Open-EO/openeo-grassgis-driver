@@ -15,6 +15,7 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
+# https://api.openeo.org/#operation/validate-custom-process
 class GraphValidation(ResourceBase):
 
     def __init__(self):
@@ -51,7 +52,8 @@ class GraphValidation(ResourceBase):
                                                                                process_chain=process_chain)
 
             if status == 200:
-                return make_response("", 204)
+                errors = {"errors": []}
+                return make_response(errors, 200)
             else:
                 return ErrorSchema(id=str(datetime.now().isoformat()), code=status,
                                    message=str(response)).as_response(http_status=status)

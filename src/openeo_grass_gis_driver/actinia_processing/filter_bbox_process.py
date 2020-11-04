@@ -21,7 +21,7 @@ def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
     p_extent = Parameter(description="A bounding box, which may include a vertical axis (see `base` and `height`).\n\n"
                                      "The coordinate reference system of the extent must be specified as "
                                      "[EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
@@ -96,7 +96,7 @@ def create_process_description():
                                   }
                                 }
                         },
-        required=True)
+        optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

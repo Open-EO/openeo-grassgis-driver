@@ -21,12 +21,12 @@ def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or a space-time raster dataset",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
 
     p_mask = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or a space-time raster dataset",
                        schema={"type": "object", "subtype": "raster-cube"},
-                       required=True)
+                       optional=False)
 
     rv = ReturnValue(description="Masked EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

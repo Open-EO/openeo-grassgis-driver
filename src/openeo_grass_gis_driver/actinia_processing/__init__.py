@@ -36,3 +36,35 @@ from . import trim_cube_process
 #from . import scale_minmax_process
 #from . import zonal_statistics
 #from . import temporal_algebra_process
+
+# logical processes
+from . import logic_and_process
+from . import logic_if_process
+from . import logic_not_process
+from . import logic_or_process
+from . import logic_xor_process
+
+# math processes
+from . import math_abs_process
+from . import math_add_process
+from . import math_clip_process
+from . import math_divide_process
+from . import math_exp_process
+from . import math_int_process
+from . import math_ln_process
+from . import math_max_process
+from . import math_mean_process
+from . import math_median_process
+from . import math_min_process
+from . import math_mod_process
+from . import math_multiply_process
+from . import math_normdiff_process
+from . import math_power_process
+from . import math_product_process
+from . import math_quantiles_process
+from . import math_sd_process
+from . import math_sgn_process
+from . import math_sqrt_process
+from . import math_subtract_process
+from . import math_sum_process
+from . import math_variance_process

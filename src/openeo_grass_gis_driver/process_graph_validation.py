@@ -15,6 +15,7 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
+# https://api.openeo.org/#operation/validate-custom-process
 class GraphValidation(ResourceBase):
 
     def __init__(self):

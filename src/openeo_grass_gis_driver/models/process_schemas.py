@@ -53,6 +53,11 @@ class Parameter(JsonableObject):
         Additional values for format are defined centrally in the API
         documentation, e.g. bbox or crs.
 
+    default:
+        optional
+        string
+        default entry (None).
+
     """
 
     def __init__(self, description: str,
@@ -61,7 +66,8 @@ class Parameter(JsonableObject):
                  depricated: Optional[bool] = False,
                  experimental: Optional[bool] = False,
                  mime_type: Optional[str] = None,
-                 name: Optional[str] = None):
+                 name: Optional[str] = None,
+                 default = None):
         # name is set later on in ProcessDescription
         self.name = None
         self.description = description
@@ -70,6 +76,7 @@ class Parameter(JsonableObject):
         self.depricated = depricated
         self.experimental = experimental
         self.mime_type = mime_type
+        self.default = default
 
 
 class ReturnValue(JsonableObject):

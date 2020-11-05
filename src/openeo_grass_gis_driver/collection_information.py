@@ -135,6 +135,15 @@ class CollectionInformationResource(Resource):
 
         title = "Raster dataset"
         bands = []
+        dimensions = {"x": {
+            "type": "spatial",
+            "axis": "x"
+        },
+            "y": {
+            "type": "spatial",
+            "axis": "x"
+        },
+        }
         if datatype.lower() == "strds":
             title = "Space time raster dataset"
 
@@ -146,6 +155,10 @@ class CollectionInformationResource(Resource):
 
             if end_time:
                 end_time = end_time.replace(" ", "T").replace("'", "").replace('"', '')
+            
+            dimensions['t'] = {"type": "temporal",
+                               "extent": [start_time, end_time]
+                              }
 
             extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
                                                float(layer_data["east"]), float(layer_data["north"])),
@@ -167,6 +180,23 @@ class CollectionInformationResource(Resource):
                     bands.append(EOBands(name="S2_10", common_name="cirrus"))
                     bands.append(EOBands(name="S2_11", common_name="swir16"))
                     bands.append(EOBands(name="S2_12", common_name="swir22"))
+                    
+                    dimensions['bands'] = {"type": "bands",
+                                           "values": ["coastal",
+                                                      "blue",
+                                                      "green",
+                                                      "rededge",
+                                                      "rededge",
+                                                      "rededge",
+                                                      "nir",
+                                                      "nir08",
+                                                      "nir09",
+                                                      "cirrus",
+                                                      "swir16",
+                                                      "swir22"
+                                                  ]
+                                           }
+                    
 
         if datatype.lower() == "vector":
             title = "Vector dataset"
@@ -183,6 +213,7 @@ class CollectionInformationResource(Resource):
         ci = CollectionInformation(id=name, title=title,
                                    description=description,
                                    extent=extent,
-                                   properties=properties)
+                                   properties=properties,
+                                   dimensions=dimensions)
 
         return ci.as_response(http_status=200)

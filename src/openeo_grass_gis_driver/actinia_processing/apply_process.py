@@ -112,7 +112,14 @@ def construct_tree(obj):
 
     for name, config in obj.items():
         node = nodes[name]
-        args = config['arguments']['data']
+        if "data" in config['arguments']:
+            args = config['arguments']['data']
+        else:
+            args = list()
+            if "x" in config['arguments']:
+                args.append(config['arguments']['x'])
+            if "y" in config['arguments']:
+                args.append(config['arguments']['y'])
         if isinstance(args, list):
             for arg in args:
                 if isinstance(arg, dict):
@@ -130,7 +137,7 @@ def construct_tree(obj):
                 node['operator'] = config['process_id']
                 operators.append(node['operator'])
                 node['children'] = []
-        if config['result'] is True:
+        if "result" in config and config['result'] is True:
             root = node
     return root, operators
 

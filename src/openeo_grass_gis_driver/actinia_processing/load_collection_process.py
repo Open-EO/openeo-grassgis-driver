@@ -339,7 +339,7 @@ def get_process_list(node: Node):
 
     # First analyse the data entry
     if "id" not in node.arguments:
-        raise Exception("Process %s requires parameter <data>" % PROCESS_NAME)
+        raise Exception("Process %s requires parameter <id>" % PROCESS_NAME)
 
     input_object = DataObject.from_string(node.arguments["id"])
 

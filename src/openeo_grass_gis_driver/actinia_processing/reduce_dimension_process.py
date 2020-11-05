@@ -189,12 +189,13 @@ def get_dimension_type(dimension_name):
 
     dimtype = None
 
-    if dimension_name == 'temporal':
-        dimtype = 'temporal'
-    elif 'spectral' in dimension_name or 'band' in dimension_name:
-        dimtype = 'bands'
-    elif dimension_name in ('x', 'y', 'z', 'easting', 'northing', 'height'):
-        dimtype = 'spatial'
+    if dimension_name in ("temporal", "t", "tmp", "temp"):
+        dimtype = "temporal"
+    elif "spectral" in dimension_name or "band" in dimension_name or \
+         dimension_name in ("spectral", "s", "b"):
+        dimtype = "bands"
+    elif dimension_name in ("x", "y", "z", "easting", "northing", "height"):
+        dimtype = "spatial"
 
     return dimtype
 
@@ -211,7 +212,15 @@ def construct_tree(obj):
 
     for name, config in obj.items():
         node = nodes[name]
-        args = config['arguments']['data']
+        args = None
+        if "data" in config['arguments']:
+            args = config['arguments']['data']
+        else:
+            args = list()
+            if "x" in config['arguments']:
+                args.append(config['arguments']['x'])
+            if "y" in config['arguments']:
+                args.append(config['arguments']['y'])
         if isinstance(args, list):
             for arg in args:
                 if isinstance(arg, dict):
@@ -232,7 +241,7 @@ def construct_tree(obj):
                 node['operator'] = config['process_id']
                 operators.append(node['operator'])
                 node['children'] = []
-        if config['result'] is True:
+        if "result" in config and config['result'] is True:
             root = node
     return root, operators
 
@@ -276,7 +285,7 @@ def get_process_list(node: Node):
     # get dimension type
     dimtype = get_dimension_type(node.arguments["dimension"])
     if dimtype is None:
-        raise Exception('Unable to determine dimension type for dimension <%s>.' % (dimension))
+        raise Exception('Unable to determine dimension type for dimension <%s>.' % (node.arguments["dimension"]))
 
     tree, operators = construct_tree(node.as_dict()['arguments']['reducer']['process_graph'])
     # print (operators)

@@ -662,7 +662,8 @@ class CollectionEntry(JsonableObject):
                  title: str = None, description: str = None, license: str = "proprietary",
                  stac_version: str = "0.6.2", id: str = None, version: str = None,
                  keywords: List[str] = None,
-                 properties: Optional[CollectionProperties] = CollectionProperties()):
+                 properties: Optional[CollectionProperties] = CollectionProperties(),
+                 dimensions = None):
         self.title = title
         self.description = description
         self.license = license
@@ -680,7 +681,8 @@ class CollectionEntry(JsonableObject):
         self.version = version
         self.providers = providers
         self.properties = properties
-        self.cube___dimensions = {"x": {
+        if not dimensions:
+            dimensions = {"x": {
             "type": "spatial",
             "axis": "x"
         },
@@ -689,6 +691,7 @@ class CollectionEntry(JsonableObject):
             "axis": "x"
         },
         }
+        self.cube___dimensions = dimensions
         # STAC Common Metadata: A list of commonly used fields throughout all domains
         # https://github.com/radiantearth/stac-spec/tree/v0.9.0/item-spec/common-metadata.md
         # Content Extensions: Domain-specific fields for domains such as EO, SAR and point clouds.

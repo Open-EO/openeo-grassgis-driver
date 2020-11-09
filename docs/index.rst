@@ -316,14 +316,14 @@ List process information about all processes that are available for computation:
           "links": [], 
           "processes": [
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Applies a mask to an EO dataset. Each pixel that is 0 or nodata in the mask is set to nodata. See also multilayer_mask.", 
               "experimental": false, 
               "id": "apply_mask", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or a space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -333,7 +333,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "mask": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or a space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -354,14 +354,14 @@ List process information about all processes that are available for computation:
               "summary": "Apply a mask to an EO dataset."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Drops observations from raster data or raster time series data  that are located outside of a given bounding box.", 
               "experimental": false, 
               "id": "filter_bbox", 
               "links": [], 
               "parameters": {
                 "bottom": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The bottom (southern) border of the spatial extent", 
                   "experimental": false, 
                   "required": true, 
@@ -371,7 +371,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -381,7 +381,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "height_res": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The height resolution of the spatial extent", 
                   "experimental": false, 
                   "required": true, 
@@ -391,7 +391,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "left": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The left (western) border of the spatial extent", 
                   "experimental": false, 
                   "required": true, 
@@ -401,7 +401,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "right": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The right (eastern) border of the spatial extent", 
                   "experimental": false, 
                   "required": true, 
@@ -411,7 +411,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "top": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The top (northern) border of the spatial extent", 
                   "experimental": false, 
                   "required": true, 
@@ -421,7 +421,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "width_res": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The width resolution of the spatial extent", 
                   "experimental": false, 
                   "required": true, 
@@ -442,14 +442,14 @@ List process information about all processes that are available for computation:
               "summary": "Filter raster based data by bounding box"
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Sets the computational bounding box for downstream computation from raster layer.", 
               "experimental": false, 
               "id": "bbox_from_raster", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets", 
                   "experimental": false, 
                   "required": true, 
@@ -470,14 +470,14 @@ List process information about all processes that are available for computation:
               "summary": "Sets the computational bounding box for downstream computation from raster layer."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Limits the data cube to the specified interval of dates and/or times.", 
               "experimental": false, 
               "id": "filter_temporal", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -487,7 +487,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "dimension": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The temporal dimension to filter on. If the dimension is not set or is set to `null`, the data cube is expected to only have one temporal dimension. Fails with a `TooManyDimensions` error if it has more dimensions. Fails with a `DimensionNotAvailable` error if the specified dimension does not exist.\n\n**Note:** The default dimensions a data cube provides are described in the collection's metadata field `cube:dimensions`.", 
                   "experimental": false, 
                   "required": false, 
@@ -500,7 +500,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "extent": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.", 
                   "experimental": false, 
                   "required": true, 
@@ -552,14 +552,14 @@ List process information about all processes that are available for computation:
               "summary": "Temporal filter for a date and/or time interval"
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Apply Harmonic Analysis of Time-Series (HANTS) to a space-time raster dataset.", 
               "experimental": false, 
               "id": "hants", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -569,7 +569,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "dod": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Degree of over-determination", 
                   "experimental": false, 
                   "required": false, 
@@ -579,7 +579,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "fet": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Fit error tolerance when filtering outliers", 
                   "experimental": false, 
                   "required": false, 
@@ -589,7 +589,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "nf": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The number of frequencies to use", 
                   "experimental": false, 
                   "required": true, 
@@ -599,7 +599,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "range_high": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Ignore values above this limit", 
                   "experimental": false, 
                   "required": false, 
@@ -609,7 +609,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "range_low": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Ignore values below this limit", 
                   "experimental": false, 
                   "required": false, 
@@ -619,7 +619,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "reject_high": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Reject high outliers", 
                   "experimental": false, 
                   "required": false, 
@@ -629,7 +629,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "reject_low": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Reject low outliers", 
                   "experimental": false, 
                   "required": false, 
@@ -650,14 +650,14 @@ List process information about all processes that are available for computation:
               "summary": "Apply HANTS to a space-time raster dataset."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "This process returns a raster-, a vector- or a space-time raster datasets that is available in the /collections endpoint.", 
               "experimental": false, 
               "id": "load_collection", 
               "links": [], 
               "parameters": {
                 "id": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The identifier of a single raster-, vector- or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -682,14 +682,14 @@ List process information about all processes that are available for computation:
               "summary": "Returns a single dataset that is available in the /collections endpoint for processing"
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Drops observations from raster data or raster time series data  that are outside of the specified interval.", 
               "experimental": false, 
               "id": "mask_invalid_values", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -699,7 +699,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "max": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Maximum allowed value", 
                   "experimental": false, 
                   "required": true, 
@@ -709,7 +709,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "min": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Minimum allowed value", 
                   "experimental": false, 
                   "required": true, 
@@ -730,14 +730,14 @@ List process information about all processes that are available for computation:
               "summary": "Filter raster based data on the specified interval"
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Applies a mask to a raster data cube  replacing values in data that are not null in mask with the new value.", 
               "experimental": false, 
               "id": "mask", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -747,7 +747,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "mask": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -757,7 +757,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "value": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The value used to replace non-zero and `true` values with", 
                   "experimental": false, 
                   "required": true, 
@@ -778,14 +778,14 @@ List process information about all processes that are available for computation:
               "summary": "Applies a mask to a raster data cube"
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Creates a mask using several bands of an EO dataset. Each pixel that has nodata or invalid value in any of the layers/bands gets value 1, pixels that have valid values in all layers/bands get value 0.", 
               "experimental": false, 
               "id": "multilayer_mask", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or a space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -806,14 +806,14 @@ List process information about all processes that are available for computation:
               "summary": "Create a multilayer mask from several raster datasets."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Compute the NDVI based on the red and nir bands of the input datasets.", 
               "experimental": false, 
               "id": "ndvi", 
               "links": [], 
               "parameters": {
                 "nir": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets that contains the NIR band for NDVI computation.", 
                   "experimental": false, 
                   "required": true, 
@@ -823,7 +823,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "red": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets that contains the RED band for NDVI computation.", 
                   "experimental": false, 
                   "required": true, 
@@ -844,14 +844,14 @@ List process information about all processes that are available for computation:
               "summary": "Compute the NDVI based on the red and nir bands of the input datasets."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Compute the EVI based on the red, nir, and blue bands of the input datasets.", 
               "experimental": false, 
               "id": "evi", 
               "links": [], 
               "parameters": {
                 "blue": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets that contains the BLUE band for EVI computation.", 
                   "experimental": false, 
                   "required": true, 
@@ -861,7 +861,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "nir": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets that contains the NIR band for EVI computation.", 
                   "experimental": false, 
                   "required": true, 
@@ -871,7 +871,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "red": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets that contains the RED band for EVI computation.", 
                   "experimental": false, 
                   "required": true, 
@@ -881,7 +881,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "scale": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Scale factor to convert band values", 
                   "experimental": false, 
                   "required": false, 
@@ -902,14 +902,14 @@ List process information about all processes that are available for computation:
               "summary": "Compute the EVI based on the red, nir, and blue bands of the input datasets."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "The normalized difference is computed as *(band1 - band2) / (band1 + band2).", 
               "experimental": false, 
               "id": "normalized_difference", 
               "links": [], 
               "parameters": {
                 "band1": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets that contains the first band for normalized difference computation.", 
                   "experimental": false, 
                   "required": true, 
@@ -919,7 +919,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "band2": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets that contains the second band for normalized difference computation.", 
                   "experimental": false, 
                   "required": true, 
@@ -940,14 +940,14 @@ List process information about all processes that are available for computation:
               "summary": "The normalized difference is computed as *(band1 - band2) / (band1 + band2)."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Use a r.macalc expression to compute a new raster dataset from up to 6 existing raster datasets.", 
               "experimental": false, 
               "id": "map_algebra", 
               "links": [], 
               "parameters": {
                 "a": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single raster datasets identified as $a in the r.mapcalc expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -957,7 +957,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "b": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single raster datasets identified as $b in the r.mapcalc expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -967,7 +967,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "c": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single raster datasets identified as $c in the r.mapcalc expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -977,7 +977,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "d": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single raster datasets identified as $d in the r.mapcalc expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -987,7 +987,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "e": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single raster datasets identified as $e in the r.mapcalc expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -997,7 +997,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "expression": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The r.mapcalc expression", 
                   "experimental": false, 
                   "required": true, 
@@ -1009,7 +1009,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "f": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single raster datasets identified as $f in the r.mapcalc expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -1019,7 +1019,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "result": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "An openEO process object identified as RESULT in the r.mapcalc expression.", 
                   "experimental": false, 
                   "required": true, 
@@ -1040,14 +1040,14 @@ List process information about all processes that are available for computation:
               "summary": "Apply a r.mapcalc expression with up to 6 raster datasets."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Reduce the time dimension of a space-time raster dataset by getting the percentile.", 
               "experimental": false, 
               "id": "percentile_time", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -1057,7 +1057,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "percentile": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The percentile to get from a space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -1078,14 +1078,14 @@ List process information about all processes that are available for computation:
               "summary": "Reduce the time dimension of a space-time raster dataset."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Reduce the time dimension of a space-time raster dataset with different reduce options.", 
               "experimental": false, 
               "id": "reduce_time", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -1095,7 +1095,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "method": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The method to reduce the time dimension of a space-time raster dataset", 
                   "enum": [
                     "average", 
@@ -1137,14 +1137,14 @@ List process information about all processes that are available for computation:
               "summary": "Reduce the time dimension of a space-time raster dataset."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "This process exports an arbitrary number of raster map layers using the region specified upstream.", 
               "experimental": false, 
               "id": "raster_exporter", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -1154,7 +1154,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "format": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The format of the export. Default is GeotTiff format.", 
                   "experimental": false, 
                   "required": false, 
@@ -1175,14 +1175,14 @@ List process information about all processes that are available for computation:
               "summary": "Exports raster map layers using the region specified upstream."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "This process exports an arbitrary number of raster map layers using the region specified upstream.", 
               "experimental": false, 
               "id": "save_result", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -1192,7 +1192,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "format": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The format of the export. Default is GeotTiff format.", 
                   "experimental": false, 
                   "required": false, 
@@ -1213,14 +1213,14 @@ List process information about all processes that are available for computation:
               "summary": "Exports raster map layers using the region specified upstream."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "This process exports three raster map layers as a single RGB image using the region specified upstream.", 
               "experimental": false, 
               "id": "rgb_raster_exporter", 
               "links": [], 
               "parameters": {
                 "blur": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster dataset that should be used as the blue channel in the resulting GRB image.", 
                   "experimental": false, 
                   "required": true, 
@@ -1230,7 +1230,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "green": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster dataset that should be used as the green channel in the resulting GRB image.", 
                   "experimental": false, 
                   "required": true, 
@@ -1240,7 +1240,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "red": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster dataset that should be used as the red channel in the resulting GRB image.", 
                   "experimental": false, 
                   "required": true, 
@@ -1261,14 +1261,14 @@ List process information about all processes that are available for computation:
               "summary": "Exports three RGB raster map layers using the region specified upstream."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Change the resolution of a space-time raster dataset with different methods.", 
               "experimental": false, 
               "id": "resample", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -1278,7 +1278,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "method": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The resampling method to use", 
                   "enum": [
                     "near", 
@@ -1300,7 +1300,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "target": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -1321,14 +1321,14 @@ List process information about all processes that are available for computation:
               "summary": "Spatially resample a space-time raster dataset."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Scales the image values between specified min and max values.", 
               "experimental": false, 
               "id": "scale_minmax", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -1338,7 +1338,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "max": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "New maximum value", 
                   "experimental": false, 
                   "required": true, 
@@ -1348,7 +1348,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "min": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "New minimum value", 
                   "experimental": false, 
                   "required": true, 
@@ -1369,14 +1369,14 @@ List process information about all processes that are available for computation:
               "summary": "Rescale raster data based on interval"
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Compute the zonal statistics of a time series using a vector polygon. The following parameters are computed: mean, min, max, mean_of_abs, stddev, variance, coeff_var, sum, null_cells, cells", 
               "experimental": false, 
               "id": "zonal_statistics", 
               "links": [], 
               "parameters": {
                 "data": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns raster datasets or space-time raster dataset", 
                   "experimental": false, 
                   "required": true, 
@@ -1386,7 +1386,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "polygons": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "URL to a publicly accessible polygon file readable by OGR", 
                   "experimental": false, 
                   "required": true, 
@@ -1406,14 +1406,14 @@ List process information about all processes that are available for computation:
               "summary": "Compute the zonal statistics of a time series using a vector polygon."
             }, 
             {
-              "deprecated": false, 
+              "deprecated": false,
               "description": "Use a t.rast.algebra expression to compute a new space-time raster dataset from up to 6 existing space-time raster datasets.", 
               "experimental": false, 
               "id": "temporal_algebra", 
               "links": [], 
               "parameters": {
                 "a": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets identified as $a in the t.rast.algebra expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -1423,7 +1423,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "b": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets identified as $b in the t.rast.algebra expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -1433,7 +1433,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "basename": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Basename of the new generated raster datasets in the resulting space-time raster datasets", 
                   "experimental": false, 
                   "required": true, 
@@ -1445,7 +1445,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "c": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets identified as $c in the t.rast.algebra expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -1455,7 +1455,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "d": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets identified as $d in the t.rast.algebra expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -1465,7 +1465,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "e": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets identified as $e in the t.rast.algebra expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -1475,7 +1475,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "expression": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "The t.rast.algebra expression", 
                   "experimental": false, 
                   "required": true, 
@@ -1487,7 +1487,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "f": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets identified as $f in the t.rast.algebra expression.", 
                   "experimental": false, 
                   "required": false, 
@@ -1497,7 +1497,7 @@ List process information about all processes that are available for computation:
                   }
                 }, 
                 "result": {
-                  "depricated": false, 
+                  "deprecated": false,
                   "description": "Any openEO process object that returns a single space-time raster datasets identified as RESULT in the t.rast.algebra expression.", 
                   "experimental": false, 
                   "required": true, 

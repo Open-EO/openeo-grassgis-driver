@@ -143,6 +143,7 @@ def get_process_list(node: Node):
 
     output_object = DataObject(name=f"{cube1_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
+    node.add_output(output_object=output_object)
 
     pc = create_process_chain_entry(cube1_object, cube2_object, output_object)
     process_list.append(pc)

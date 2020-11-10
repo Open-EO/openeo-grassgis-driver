@@ -63,7 +63,7 @@ class Parameter(JsonableObject):
     def __init__(self, description: str,
                  schema: dict,
                  optional: Optional[bool] = False,
-                 depricated: Optional[bool] = False,
+                 deprecated: Optional[bool] = False,
                  experimental: Optional[bool] = False,
                  mime_type: Optional[str] = None,
                  name: Optional[str] = None,
@@ -73,7 +73,7 @@ class Parameter(JsonableObject):
         self.description = description
         self.schema = schema
         self.optional = optional
-        self.depricated = depricated
+        self.deprecated = deprecated
         self.experimental = experimental
         self.mime_type = mime_type
         self.default = default

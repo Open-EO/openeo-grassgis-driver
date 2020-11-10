@@ -264,7 +264,7 @@ def create_process_chain_entry(input_object: DataObject,
         west = spatial_extent["west"]
         east = spatial_extent["east"]
         if "crs" in spatial_extent:
-            crs = spatial_extent["crs"]
+            crs = str(spatial_extent["crs"])
         else:
             crs = "4326"
 

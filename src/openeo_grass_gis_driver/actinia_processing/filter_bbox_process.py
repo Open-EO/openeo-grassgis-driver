@@ -182,7 +182,7 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     west = node.arguments["extent"]["west"]
     east = node.arguments["extent"]["east"]
     if "crs" in node.arguments["extent"]:
-        crs = node.arguments["extent"]["crs"]
+        crs = str(node.arguments["extent"]["crs"])
     else:
         crs = "4326"
 

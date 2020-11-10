@@ -104,9 +104,6 @@ def get_process_list(node: Node):
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []
 
-    if "data" not in node.arguments:
-        raise Exception("Process %s requires parameter data" % PROCESS_NAME)
-
     input_objects = node.get_parent_by_name(parent_name="data").output_objects
 
     if not input_objects:

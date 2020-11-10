@@ -104,7 +104,12 @@ def check_job(job, job_id):
     if "description" in job:
         description = job["description"]
 
-    process = ProcessGraph(title=title, description=description, process_graph=job["process"]["process_graph"])
+    process_graph = None
+    if "process" in job:
+        process_graph = job["process"]["process_graph"]
+    else:
+        process_graph = job["process_graph"]
+    process = ProcessGraph(title=title, description=description, process_graph=process_graph)
 
     created = str(datetime.now().isoformat())
 

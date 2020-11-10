@@ -94,9 +94,6 @@ def create__process_chain_entry(input_object: DataObject, target, source, output
     :return: A Actinia process chain description
     """
 
-    start_time = start_time.replace('T', ' ')
-    end_time = end_time.replace('T', ' ')
-
     # Get info about the time series to extract its resolution settings and bbox
     rn = randint(0, 1000000)
 

@@ -3,7 +3,7 @@ import json
 from random import randint
 from typing import List, Tuple
 
-from openeo_grass_gis_driver.actinia_processing.base import check_node_parents, DataObject
+from openeo_grass_gis_driver.actinia_processing.base import check_node_parents, DataObject, GrassDataType
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
@@ -109,10 +109,9 @@ def get_process_list(node: Node):
     if not input_objects:
         raise Exception("Process %s requires an input strds" % PROCESS_NAME)
 
-    input_object = list(input_objects)[-1]
-
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
-    output_objects.append(output_object)
+    for data_object in input_objects:
+        output_objects.append(data_object)
+        node.add_output(data_object)
 
     # pc = create_process_chain_entry(input_object, output_object)
     # process_list.append(pc)

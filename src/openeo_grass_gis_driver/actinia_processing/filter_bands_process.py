@@ -150,7 +150,7 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     if "wavelengths" in node.arguments:
         wavelengths = node.arguments["wavelengths"]
 
-    data_object = node.get_parent_by_name(parent_name="data").output_objects[0]
+    data_object = list(node.get_parent_by_name(parent_name="data").output_objects)[-1]
 
     output_object = DataObject(name=f"{data_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
     output_objects.append(output_object)

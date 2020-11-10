@@ -96,7 +96,7 @@ class Node:
             self.arguments = self.process["arguments"]
         self.parents: Set[Node] = set()
         self.parents_dict: Dict[str, Node] = dict()
-        self.child: Optional[Node] = None
+        self.children: Set[Node] = set()
         self._process_description = process_description
         self._was_processed = False
         self.output_objects: Set[DataObject] = set()
@@ -119,9 +119,9 @@ class Node:
 
     def __str__(self):
 
-        child_id = None
-        if self.child is not None:
-            child_id = self.child.id
+        child_ids = list()
+        if self.children:
+            child_ids = [node.id for node in self.children]
 
         parent_ids = list()
         if self.parents:
@@ -131,7 +131,7 @@ class Node:
         if self.parents_dict:
             parent_names = list(self.parents_dict.keys())
 
-        return f"Node: {self.id} parent names: {parent_names} parent ids: {parent_ids} child: {child_id}"
+        return f"Node: {self.id} parent names: {parent_names} parent ids: {parent_ids} child ids: {child_ids}"
 
     def get_parents_dict(self) -> dict:
 
@@ -221,10 +221,10 @@ class Graph:
                     parent_node = self.node_dict[parent_dict[parent_name]]
                     node.parents.add(parent_node)
                     node.parents_dict[parent_name] = parent_node
-                    parent_node.child = node
+                    parent_node.children.add(node)
 
         for node in self.node_dict.values():
-            if node.child is None:
+            if len(node.children) == 0:
                 self.root_nodes.add(node)
 
     def to_actinia_process_list(self) -> Tuple[list, list]:

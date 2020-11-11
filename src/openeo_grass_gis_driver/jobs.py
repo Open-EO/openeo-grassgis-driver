@@ -74,8 +74,6 @@ class Jobs(ResourceBase):
         # job_id = str(uuid4())
         job = request.get_json()
 
-        if "process" not in job:
-            job = {"process": job}
             # return ErrorSchema(id=uuid4(), message="A process graph is required in the request").as_response(400)
 
         job_info = check_job(job=job, job_id=job_id)

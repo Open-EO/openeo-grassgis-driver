@@ -41,8 +41,8 @@ class GraphValidationTestCase(TestBase):
         self.assertEqual(1, len(pg.root_nodes))
         self.assertEqual(2, len(pg.node_dict))
 
-        self.assertIsNone(pg.node_dict["filter_bbox_1"].child)
-        self.assertEqual(pg.node_dict["filter_bbox_1"], pg.node_dict["get_data_1"].child)
+        self.assertEqual(0, len(pg.node_dict["filter_bbox_1"].children))
+        self.assertTrue(pg.node_dict["filter_bbox_1"] in pg.node_dict["get_data_1"].children)
         self.assertEqual(pg.node_dict["filter_bbox_1"].get_parent_by_name("data"), pg.node_dict["get_data_1"])
         self.assertEqual(1, len(pg.node_dict["filter_bbox_1"].parents))
         self.assertTrue(pg.node_dict["get_data_1"] in pg.node_dict["filter_bbox_1"].parents)
@@ -73,8 +73,8 @@ class GraphValidationTestCase(TestBase):
         self.assertEqual(1, len(pg.root_nodes))
         self.assertEqual(2, len(pg.node_dict))
 
-        self.assertIsNone(pg.node_dict["filter_daterange_1"].child)
-        self.assertEqual(pg.node_dict["filter_daterange_1"], pg.node_dict["get_strds_data"].child)
+        self.assertEqual(0, len(pg.node_dict["filter_daterange_1"].children))
+        self.assertTrue(pg.node_dict["filter_daterange_1"] in pg.node_dict["get_strds_data"].children)
         self.assertEqual(pg.node_dict["filter_daterange_1"].get_parent_by_name("data"), pg.node_dict["get_strds_data"])
         self.assertEqual(1, len(pg.node_dict["filter_daterange_1"].parents))
         self.assertTrue(pg.node_dict["get_strds_data"] in pg.node_dict["filter_daterange_1"].parents)
@@ -89,11 +89,11 @@ class GraphValidationTestCase(TestBase):
         self.assertEqual(1, len(pg.root_nodes))
         self.assertEqual(2, len(pg.node_dict))
 
-        self.assertIsNone(pg.node_dict["ndvi_1"].child)
+        self.assertEqual(0, len(pg.node_dict["ndvi_1"].children))
         self.assertEqual(1, len(pg.node_dict["ndvi_1"].parents))
         self.assertTrue(pg.node_dict["get_data"] in pg.node_dict["ndvi_1"].parents)
 
-        self.assertEqual(pg.node_dict["ndvi_1"], pg.node_dict["get_data"].child)
+        self.assertTrue(pg.node_dict["ndvi_1"] in pg.node_dict["get_data"].children)
 
         self.assertEqual(pg.node_dict["ndvi_1"].parents_dict["data"], pg.node_dict["get_data"])
 

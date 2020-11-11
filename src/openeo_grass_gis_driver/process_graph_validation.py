@@ -33,8 +33,6 @@ class GraphValidation(ResourceBase):
             # Empty the process location
             ActiniaInterface.PROCESS_LOCATION = {}
             process_graph = request.get_json()
-            if "process" not in process_graph:
-                process_graph = {"process": process_graph}
 
             g = Graph(graph_description=process_graph)
             result_name, process_list = g.to_actinia_process_list()

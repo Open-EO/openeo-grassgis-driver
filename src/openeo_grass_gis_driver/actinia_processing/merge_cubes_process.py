@@ -99,13 +99,12 @@ def create_process_chain_entry(cube1_object: DataObject, cube2_object: DataObjec
 
     # t.merge does not have a method to resolve overlaps
 
-    pc = [{"id": "t_merge_%i" % rn,
+    pc = {"id": "t_merge_%i" % rn,
          "module": "t.merge",
          "inputs": [{"param": "inputs",
                      "value": "%(cube1)s,%(cube2)s" % {"cube1": cube1_object.grass_name(), "cube2": cube2_object.grass_name()}},
                     {"param": "output",
                      "value": output_object.grass_name()}]}
-          ]
 
     return pc
 

@@ -19,7 +19,7 @@ class WellKnown(Resource):
 
         version_list = list()
         version_list.append({"url": host_url + "api/v1.0/",
-                             "api_version": "1.0.0",
+                             "api_version": "1.0.1",
                              "production": False})
 
         resp = dict()

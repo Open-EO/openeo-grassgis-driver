@@ -100,6 +100,6 @@ GET_UDF_DOC = {
 }
 
 
-class Udf(ResourceBase):
+class Udf(Resource):
     def get(self):
         return make_response(jsonify(SUPPORTED_UDF), 200)

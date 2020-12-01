@@ -109,19 +109,39 @@ def create_process_chain_entry(input_time_series: DataObject,
 
     # convert wavelengths to a string
     wvstring = None
-    if wavelengths:
+    pc = None
+    if wavelengths and bands:
         wvstring = (',').join(wavelengths)
 
-    pc = {"id": "t_rast_filterbands_%i" % rn,
-          "module": "t.rast.filterbands",
-          "inputs": [{"param": "input",
-                      "value": "%(input)s" % {"input": input_time_series.grass_name()}},
-                     {"param": "bands",
-                      "value": "%(bands)s" % {"bands": (',').join(bands)}},
-                     {"param": "wavelengths",
-                      "value": "%(wavelengths)s" % {"wavelengths": wvstring}},
-                     {"param": "output",
-                      "value": output_time_series.grass_name()}]}
+        pc = {"id": "t_rast_filterbands_%i" % rn,
+              "module": "t.rast.filterbands",
+              "inputs": [{"param": "input",
+                          "value": "%(input)s" % {"input": input_time_series.grass_name()}},
+                         {"param": "bands",
+                          "value": "%(bands)s" % {"bands": (',').join(bands)}},
+                         {"param": "wavelengths",
+                          "value": "%(wavelengths)s" % {"wavelengths": wvstring}},
+                         {"param": "output",
+                          "value": output_time_series.grass_name()}]}
+    elif bands:
+        pc = {"id": "t_rast_filterbands_%i" % rn,
+              "module": "t.rast.filterbands",
+              "inputs": [{"param": "input",
+                          "value": "%(input)s" % {"input": input_time_series.grass_name()}},
+                         {"param": "bands",
+                          "value": "%(bands)s" % {"bands": (',').join(bands)}},
+                         {"param": "output",
+                          "value": output_time_series.grass_name()}]}
+    elif wavelengths:
+        wvstring = (',').join(wavelengths)
+        pc = {"id": "t_rast_filterbands_%i" % rn,
+              "module": "t.rast.filterbands",
+              "inputs": [{"param": "input",
+                          "value": "%(input)s" % {"input": input_time_series.grass_name()}},
+                         {"param": "bands",
+                          "value": "%(bands)s" % {"bands": (',').join(bands)}},
+                         {"param": "output",
+                          "value": output_time_series.grass_name()}]}
 
     return pc
 

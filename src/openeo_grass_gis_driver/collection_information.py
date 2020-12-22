@@ -117,17 +117,20 @@ class CollectionInformationResource(Resource):
 
         status_code, layer_data = self.iface.layer_info(layer_name=name)
         if status_code != 200:
-            return make_response(jsonify({"description": "An internal error occurred "
-                                                         "while catching GRASS GIS layer information "
-                                                         "for layer <%s>!\n Error: %s"
-                                                         "" % (name, str(layer_data))}, 400))
+            return make_response(jsonify({"id": "12345678",
+                                          "code": "CollectionNotFound",
+                                          "message": "Collection '%s' does not exist." % (name),
+                                          "links": {}}),
+                                          404)
 
         # Get the projection from the GRASS mapset
         status_code, mapset_info = self.iface.mapset_info(location=location, mapset=mapset)
         if status_code != 200:
-            return make_response(jsonify({"description": "An internal error occurred "
-                                                         "while catching mapset info "
-                                                         "for mapset <%s>!" % mapset}, 400))
+            return make_response(jsonify({"id": "12345678",
+                                          "code": "Internal",
+                                          "message": "Server error: %s" % (mapset_info),
+                                          "links": {}}),
+                                          500)
 
         extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
                                            float(layer_data["east"]), float(layer_data["north"])),

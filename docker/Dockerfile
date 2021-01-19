@@ -1,41 +1,27 @@
-# Use standard ubuntu 16.04
-FROM ubuntu:18.04
+FROM alpine:3.13 as common
+RUN apk add --no-cache python3 py3-gdal
+RUN python3 -m ensurepip && pip3 install --upgrade pip wheel
 
-EXPOSE 5000
-
-RUN apt update && apt upgrade -y && \
-    apt update && apt install --no-install-recommends --no-install-suggests \
-    git \
-    build-essential \
-    flex \
-    make \
-    bison \
-    gcc \
-    libgcc1 \
-    g++ \
-    libgdal-dev \
-    python3 \
-    python3-dev \
-    python3-pip -y  && \
-    apt-get clean && \
-    apt-get autoremove
-
-# Set the working directory to /src
-WORKDIR /src
-
-RUN git clone https://github.com/Open-EO/openeo-grassgis-driver.git openeo_grass_gis_driver
-
+FROM common as build
+RUN apk add git
+RUN pip3 install setuptools
+COPY . /src/openeo_grass_gis_driver
 WORKDIR /src/openeo_grass_gis_driver
-# RUN git checkout "master"
+RUN python3 setup.py sdist bdist_wheel -d /build
 
-RUN pip3 install --upgrade pip
-RUN pip3 install -U setuptools
-RUN pip3 install wheel
-RUN pip3 install -r requirements.txt
+FROM common as install
+COPY --from=build /build/*.whl /build/
+COPY requirements.txt /src/requirements.txt
+RUN pip3 install -r /src/requirements.txt
+RUN pip3 install /build/*
 
-ENV SETUPTOOLS_SCM_PRETEND_VERSION=0.0.1
-ENV SETUPTOOLS_SCM_DEBUG=1
-RUN make install
+FROM install as test
+RUN apk add make git
+COPY --from=build /src/openeo_grass_gis_driver /src/openeo_grass_gis_driver
+WORKDIR /src/openeo_grass_gis_driver
 RUN make test
 
-CMD python3 -m openeo_grass_gis_driver.main
+FROM install as app
+ENV GDAL_CACHEMAX=2000
+CMD ["gunicorn -b 0.0.0.0:5000 openeo_grass_gis_driver.main:flask_app"]
+EXPOSE 5000

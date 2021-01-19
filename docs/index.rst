@@ -75,7 +75,7 @@ An active internet connection is required. All requests to the openEO GRASS GIS 
 
         .. code-block:: bash
 
-            docker build -t openeo_grass_gis_driver docker
+            docker build -f docker/Dockerfile -t openeo_grass_gis_driver .       
             docker run --name=openeo_grass_gis_driver -p 5000:5000 openeo_grass_gis_driver
         ..
 

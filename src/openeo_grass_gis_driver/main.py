@@ -10,6 +10,7 @@ __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
+create_endpoints()
+
 if __name__ == '__main__':
-    create_endpoints()
     flask_app.run(host='0.0.0.0', port=5000, debug=True)

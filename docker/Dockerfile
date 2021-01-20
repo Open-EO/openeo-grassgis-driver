@@ -12,6 +12,7 @@ RUN python3 setup.py sdist bdist_wheel -d /build
 FROM common as install
 COPY --from=build /build/*.whl /build/
 COPY requirements.txt /src/requirements.txt
+RUN sed -i 's+Sphinx+#Sphinx+g' /src/requirements.txt
 RUN pip3 install -r /src/requirements.txt
 RUN pip3 install /build/*
 

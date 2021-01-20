@@ -99,7 +99,7 @@ python setup.py install
 <li><p>Make sure the actinia deployment is reachable by the openEO GRASS GIS driver container</p></li>
 <li><p>Deploy the openEO GRASS GIS driver docker container</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker build -t openeo_grass_gis_driver docker
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker build -f docker/Dockerfile -t openeo_grass_gis_driver .
 docker run --name<span class="o">=</span>openeo_grass_gis_driver -p <span class="m">5000</span>:5000 openeo_grass_gis_driver
 </pre></div>
 </div>
@@ -3439,7 +3439,7 @@ S2A_B08_filter_daterange_NDVI_extract_00007</p></td>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Soeren Gebbert.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
     </div>
   </body>
 </html>

@@ -6,4 +6,4 @@ sqlitedict==1.7.0
 gunicorn
 
 # needed to build documentation
-# Sphinx==3.4.3
+Sphinx==3.4.3

@@ -4,10 +4,9 @@ from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaC
 import requests
 
 __license__ = "Apache License, Version 2.0"
-__author__ = "Sören Gebbert"
-__copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
-__maintainer__ = "Soeren Gebbert"
-__email__ = "soerengebbert@googlemail.com"
+__author__ = "Sören Gebbert, Carmen Tawalika"
+__copyright__ = "Copyright 2018-2021, Sören Gebbert, mundialis"
+__maintainer__ = "mundialis"
 
 
 class ActiniaInterface(object):
@@ -222,11 +221,11 @@ class ActiniaInterface(object):
 
     def get_resource(self, url: str) -> Tuple[int, dict]:
         """Get a resource from actinia pointed to by url, e.g. a GeoTIFF
-        
+
             !!!THIS IS DANGEROUS!!!
             it will load the whole resource into RAM
         """
-        
+
         r = requests.get(url=url, auth=self.auth)
 
         #import pdb; pdb.set_trace()
@@ -300,3 +299,25 @@ class ActiniaInterface(object):
         url = "%(base)s/locations/%(location)s/processing_async_export" % {"base": self.base_url,
                                                                                "location": location}
         return self._send_post_request(url=url, process_chain=process_chain)
+
+    def list_modules(self) -> Tuple[int, dict]:
+        url = "%(base)s/modules" % {"base": self.base_url}
+        r = requests.get(url=url, auth=self.auth)
+        data = r.text
+
+        if r.status_code == 200:
+            ret = r.json()
+            data = ret["processes"]
+
+        return r.status_code, data
+
+    def list_module(self, module) -> Tuple[int, dict]:
+        url = "%(base)s/modules/%(module)s" % {"base": self.base_url, "module": module}
+        r = requests.get(url=url, auth=self.auth)
+        data = r.text
+
+        if r.status_code == 200:
+            ret = r.json()
+            data = ret
+
+        return r.status_code, data

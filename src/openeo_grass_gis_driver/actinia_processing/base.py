@@ -7,6 +7,7 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import Actinia
 
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 
+ACTINIA_PROCESS_DESCRIPTION_DICT = {}
 PROCESS_DESCRIPTION_DICT = {}
 PROCESS_DICT = {}
 
@@ -47,7 +48,7 @@ class DataObject:
     def from_string(name: str):
 
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(name)
-        
+
         if datatype is None:
             raise Exception(f"Invalid collection id <{name}>")
 

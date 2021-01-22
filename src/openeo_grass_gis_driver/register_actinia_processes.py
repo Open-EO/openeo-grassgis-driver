@@ -2,7 +2,7 @@
 from openeo_grass_gis_driver.actinia_processing.config import Config \
     as ActiniaConfig
 from openeo_grass_gis_driver.actinia_processing.base import \
-    PROCESS_DESCRIPTION_DICT
+    ACTINIA_PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
     ActiniaInterface
 
@@ -22,5 +22,5 @@ def register_processes():
     if status_code == 200:
         for module in modules:
             # TODO: add logger
-            print("registering %s" % module['id'])
-            PROCESS_DESCRIPTION_DICT[module['id']] = module
+            # print("registering %s" % module['id'])
+            ACTINIA_PROCESS_DESCRIPTION_DICT[module['id']] = module

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from openeo_grass_gis_driver.app import flask_app
 from openeo_grass_gis_driver.endpoints import create_endpoints
-from openeo_grass_gis_driver.register_processes import register_processes
+from openeo_grass_gis_driver.register_actinia_processes import \
+    register_processes
 
 
 __license__ = "Apache License, Version 2.0"

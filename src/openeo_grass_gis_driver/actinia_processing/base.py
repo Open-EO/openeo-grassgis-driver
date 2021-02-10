@@ -259,16 +259,135 @@ def process_node_to_actinia_process_chain(node: Node) -> Tuple[list, list]:
     process_list = []
     output_object_list = []
 
-    if node.process_id not in PROCESS_DICT:
-        raise Exception("Unsupported process id, available processes: %s" % PROCESS_DICT.keys())
+    if node.process_id in PROCESS_DICT:
+        outputs, processes = PROCESS_DICT[node.process_id](node)
+    elif node.process_id in ACTINIA_PROCESS_DESCRIPTION_DICT:
+        # native actinia process
+        outputs, processes = openeo_to_actinia(node)
+    else:
+        raise Exception("Unsupported process id '%s'" % node.process_id)
 
-    outputs, processes = PROCESS_DICT[node.process_id](node)
     process_list.extend(processes)
     output_object_list.extend(outputs)
 
     node.processed = True
 
     return output_object_list, process_list
+
+
+def openeo_to_actinia(node: Node) -> Tuple[list, list]:
+    """Generic translator of openeo to actinia
+
+    :param node: The process node
+    :return: (output_objects, actinia_process_list)
+    """
+    input_objects, process_list = check_node_parents(node=node)
+
+    output_objects = []
+
+    # GRASS module name
+    module_name = node.process_id
+
+    # get module description from actinia
+    # to find out which parameters are input and which are output
+    # -> output is in the returns block if existing
+    iface = ActiniaInterface()
+    iface.set_auth(ActiniaConfig.USER, ActiniaConfig.PASSWORD)
+    status_code, module = iface.list_module(module_name)
+    if status_code != 200:
+        raise Exception("Unsupported actinia process '%s'" % module_name)
+
+    actinia_id = "%s_%i" % (module_name.replace(".", "_"), rn)
+
+    rn = randint(0, 1000000)
+
+    # create an actinia process chain entry of the form
+
+    #    pc = {"id": "t_rast_mapcalc_%i" % rn,
+    #          "module": "t.rast.mapcalc",
+    #          "inputs": [{"param": name,
+    #                      "value": answer},
+    #                     {"param": name,
+    #                      "value": answer},
+    #                      ...
+    #                    ]
+    #          }
+
+    # from openeo
+
+    # "process_id": module_name,
+    #    "arguments": {
+    #        key: value,
+    #        key: value,
+    #        ...
+    #    }
+
+
+    pc = {}
+    pc["id"] = actinia_id
+    pc["module"] = node.process_id
+    pc["inputs"] = []
+
+    # input parameters
+    for key in node.arguments.keys():
+        # is key a valid actinia option ?
+        ao = None
+        # not very elegant
+        for item in module["parameters"]:
+            if item["name"] == key:
+                ao = item
+        if ao is None:
+            # warning, error, exception?
+            continue
+        # check if it is an input object
+        if isinstance(node.arguments[key], dict) and \
+           "from_node" in node.arguments[key]:
+            value = node.get_parent_by_name(parent_name=key).output_objects[0]
+        else:
+            # treat as string
+            value = node.arguments[key]
+        param = {"param": key,
+                 "value": value}
+        pc["inputs"].append(param)
+
+    # output parameters
+    if "returns" in module:
+        for key in node.arguments.keys():
+            # a suggested method to allow openeo users to select certain
+            # outputs if a module can generate several outputs:
+            # put a dummy entry in "arguments"
+
+            # find actinia option in "returns" of the
+            # actinia module description
+            ao = None
+            # not very elegant
+            for item in module["returns"]:
+                if item["name"] == key:
+                    ao = item
+            if ao is None:
+                continue
+            datatype = None
+            if ao["schema"]["subtype"] == "cell":
+                datatype = GrassDataType.RASTER
+            elif ao["schema"]["subtype"] == "vector":
+                datatype = GrassDataType.VECTOR
+            elif ao["schema"]["subtype"] == "strds":
+                datatype = GrassDataType.STRDS
+
+            if datatype is not None:
+                # note that key is added to the output name
+                # in order to distinguish between different outputs
+                # of the same module
+                output_object = DataObject(name=f"{data_object.name}_{PROCESS_NAME}_{key}", datatype=datatype)
+                param = {"param": key,
+                         "value": output_object.grass_name()}
+                pc["inputs"].append(param)
+                output_objects.append(output_object)
+                node.add_output(output_object=output_object)
+
+    process_list.append(pc)
+
+    return output_objects, process_list
 
 
 def check_node_parents(node: Node) -> Tuple[list, list]:

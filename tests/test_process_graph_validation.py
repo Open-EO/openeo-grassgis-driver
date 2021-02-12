@@ -44,6 +44,12 @@ class GraphValidationTestCase(TestBase):
         response = self.app.post('/validation', data=json.dumps(DATERANGE), content_type="application/json", headers=self.auth)
         self.assertEqual(response.status_code, 200)
 
+    def test_6_graph_actiniamodule(self):
+        """Run the validation test
+        """
+        response = self.app.post('/validation', data=json.dumps(ACTINIA_PROCESS), content_type="application/json", headers=self.auth)
+        self.assertEqual(response.status_code, 200)
+
     def no_support_test_6_graph_zonal_statistics(self):
         """Run the validation test
         """

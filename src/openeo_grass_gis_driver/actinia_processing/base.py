@@ -297,7 +297,9 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
     if status_code != 200:
         raise Exception("Unsupported actinia process '%s'" % module_name)
 
-    actinia_id = "%s_%i" % (module_name.replace(".", "_"), rn)
+    # openeo-like process name
+    process_name = module_name.replace(".", "_")
+    actinia_id = "%s_%i" % (process_name, rn)
 
     rn = randint(0, 1000000)
 
@@ -310,7 +312,8 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
     #                     {"param": name,
     #                      "value": answer},
     #                      ...
-    #                    ]
+    #                    ],
+    #           "flags": ...
     #          }
 
     # from openeo
@@ -322,11 +325,11 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
     #        ...
     #    }
 
-
     pc = {}
     pc["id"] = actinia_id
     pc["module"] = node.process_id
     pc["inputs"] = []
+    pc["flags"] = None
 
     # input parameters
     for key in node.arguments.keys():
@@ -342,13 +345,24 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
         # check if it is an input object
         if isinstance(node.arguments[key], dict) and \
            "from_node" in node.arguments[key]:
+            # input option comes from another node in the process graph
             value = node.get_parent_by_name(parent_name=key).output_objects[0]
+        elif item["schema"]["type"] == "boolean":
+            # flag
+            if node.arguments[key] is True:
+                if pc["flags"] is None:
+                    pc["flags"] = key
+                else:
+                    pc["flags"] = pc["flags"] + key
         else:
-            # treat as string
+            # option answer, treat as string
             value = node.arguments[key]
-        param = {"param": key,
-                 "value": value}
-        pc["inputs"].append(param)
+            param = {"param": key,
+                     "value": value}
+            pc["inputs"].append(param)
+
+    if pc["flags"] is None:
+        del pc["flags"]
 
     # output parameters
     if "returns" in module:
@@ -378,7 +392,7 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
                 # note that key is added to the output name
                 # in order to distinguish between different outputs
                 # of the same module
-                output_object = DataObject(name=f"{data_object.name}_{PROCESS_NAME}_{key}", datatype=datatype)
+                output_object = DataObject(name=f"{data_object.name}_{process_name}_{key}", datatype=datatype)
                 param = {"param": key,
                          "value": output_object.grass_name()}
                 pc["inputs"].append(param)

@@ -762,3 +762,37 @@ OPENEO_EXAMPLE_1 = {
         }
     }
 }
+
+ACTINIA_PROCESS = {
+    "title": "Get a raster layer",
+    "description": "This process is the source for a raster layer",
+    "process": {
+        "process_graph": {
+            "get_elevation_data": {
+                "process_id": "load_collection",
+                "arguments": {
+                    "id": "nc_spm_08.PERMANENT.raster.elevation",
+                    "spatial_extent": {
+                        "west": 630000,
+                        "east": 645000,
+                        "north": 228500,
+                        "south": 215000,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                    "temporal_extent": [
+                        "2018-01-01",
+                        "2019-01-01"
+                    ],
+                }
+            },
+            "compute_slope": {
+                "process_id": "r.slope.aspect",
+                "arguments": {
+                    "elevation": {"from_node": "get_elevation_data"},
+                    "e": True,
+                    "slope": True,
+                }
+            }
+        }
+    }
+}

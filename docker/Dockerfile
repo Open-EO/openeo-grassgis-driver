@@ -24,5 +24,5 @@ RUN make test
 
 FROM install as app
 ENV GDAL_CACHEMAX="25%"
-CMD ["gunicorn -b 0.0.0.0:5000 openeo_grass_gis_driver.main:flask_app"]
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "openeo_grass_gis_driver.main:flask_app"]
 EXPOSE 5000

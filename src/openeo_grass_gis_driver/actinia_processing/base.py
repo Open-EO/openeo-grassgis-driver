@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from enum import Enum
 from typing import Set, Dict, Optional, Tuple, Union, List
+from random import randint
 
 # This is the process dictionary that is used to store all processes of the Actinia wrapper
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
@@ -292,16 +293,15 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
     # to find out which parameters are input and which are output
     # -> output is in the returns block if existing
     iface = ActiniaInterface()
-    iface.set_auth(ActiniaConfig.USER, ActiniaConfig.PASSWORD)
     status_code, module = iface.list_module(module_name)
     if status_code != 200:
         raise Exception("Unsupported actinia process '%s'" % module_name)
 
     # openeo-like process name
+    rn = randint(0, 1000000)
+
     process_name = module_name.replace(".", "_")
     actinia_id = "%s_%i" % (process_name, rn)
-
-    rn = randint(0, 1000000)
 
     # create an actinia process chain entry of the form
 
@@ -332,6 +332,7 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
     pc["flags"] = None
 
     # input parameters
+    data_object = None
     for key in node.arguments.keys():
         # is key a valid actinia option ?
         ao = None
@@ -346,7 +347,9 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
         if isinstance(node.arguments[key], dict) and \
            "from_node" in node.arguments[key]:
             # input option comes from another node in the process graph
-            value = node.get_parent_by_name(parent_name=key).output_objects[0]
+	    # which output object in the set of output_objects?
+            value = list(node.get_parent_by_name(parent_name=key).output_objects)[0]
+            data_object = value
         elif item["schema"]["type"] == "boolean":
             # flag
             if node.arguments[key] is True:
@@ -363,6 +366,10 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
 
     if pc["flags"] is None:
         del pc["flags"]
+
+    # TODO: support modules that do not have input maps
+    if data_object is None:
+        raise Exception("No input data object for actinia process '%s'" % module_name)
 
     # output parameters
     if "returns" in module:

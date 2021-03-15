@@ -782,7 +782,7 @@ ACTINIA_PROCESS = {
                     "temporal_extent": [
                         "2018-01-01",
                         "2019-01-01"
-                    ],
+                    ]
                 }
             },
             "compute_slope": {
@@ -790,7 +790,7 @@ ACTINIA_PROCESS = {
                 "arguments": {
                     "elevation": {"from_node": "get_elevation_data"},
                     "e": True,
-                    "slope": True,
+                    "slope": True
                 }
             }
         }

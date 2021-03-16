@@ -10,7 +10,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 class Config:
     # Settings for docker swarm image
-    HOST="https://actinia-openeo.mundialis.de"
+    HOST="https://actinia-dev.mundialis.de"
     PORT=443
     LOCATIONS=["nc_spm_08", "utm32n", "latlong_wgs84"]
     #USER="demouser"

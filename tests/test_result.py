@@ -4,7 +4,8 @@ import time
 import pprint
 from flask import json
 from openeo_grass_gis_driver.test_base import TestBase
-from openeo_grass_gis_driver.utils.process_graph_examples_v10 import *
+from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
+    FILTER_BBOX, GET_DATA_1, GET_DATA_3, DATERANGE
 
 
 __license__ = "Apache License, Version 2.0"

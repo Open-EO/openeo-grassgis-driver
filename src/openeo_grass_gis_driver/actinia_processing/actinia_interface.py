@@ -104,7 +104,7 @@ class ActiniaInterface(object):
 
         try:
             data = r.json()
-        except:
+        except Exception:
             pass
 
         return r.status_code, data
@@ -116,7 +116,7 @@ class ActiniaInterface(object):
 
         try:
             data = r.json()
-        except:
+        except Exception:
             pass
 
         return r.status_code, data
@@ -128,7 +128,7 @@ class ActiniaInterface(object):
 
         try:
             data = r.json()
-        except:
+        except Exception:
             pass
 
         return r.status_code, data
@@ -153,7 +153,7 @@ class ActiniaInterface(object):
 
         try:
             data = r.json()
-        except:
+        except Exception:
             pass
 
         return r.status_code, data
@@ -167,7 +167,7 @@ class ActiniaInterface(object):
 
         try:
             data = r.json()
-        except:
+        except Exception:
             pass
 
         return r.status_code, data

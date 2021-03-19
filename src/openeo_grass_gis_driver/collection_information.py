@@ -158,7 +158,7 @@ class CollectionInformationResource(Resource):
 
             if end_time:
                 end_time = end_time.replace(" ", "T").replace("'", "").replace('"', '')
-            
+
             dimensions['t'] = {"type": "temporal",
                                "extent": [start_time, end_time]
                               }
@@ -183,7 +183,7 @@ class CollectionInformationResource(Resource):
                     bands.append(EOBands(name="S2_10", common_name="cirrus"))
                     bands.append(EOBands(name="S2_11", common_name="swir16"))
                     bands.append(EOBands(name="S2_12", common_name="swir22"))
-                    
+
                     dimensions['bands'] = {"type": "bands",
                                            "values": ["coastal",
                                                       "blue",
@@ -199,7 +199,6 @@ class CollectionInformationResource(Resource):
                                                       "swir22"
                                                   ]
                                            }
-                    
 
         if datatype.lower() == "vector":
             title = "Vector dataset"

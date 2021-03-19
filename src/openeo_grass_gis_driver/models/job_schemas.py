@@ -14,7 +14,6 @@ __maintainer__ = "Sören Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
 
-
 class Argument(JsonableObject):
     """	Describes a general argument for various entities.
 

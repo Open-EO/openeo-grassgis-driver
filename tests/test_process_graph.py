@@ -4,7 +4,7 @@ import unittest
 import pprint
 from flask import json
 from openeo_grass_gis_driver.test_base import TestBase
-from openeo_grass_gis_driver.utils.process_graph_examples_v10 import *
+from openeo_grass_gis_driver.utils.process_graph_examples_v10 import FILTER_BBOX
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -59,7 +59,6 @@ class ProcessGraphTestCase(TestBase):
 
         self.assertEqual(process_graph_id, data["id"])
         self.assertEqual(FILTER_BBOX["process"]["process_graph"], data["process_graph"])
-
 
     def test_job_creation_2(self):
         """Run the test in the ephemeral database

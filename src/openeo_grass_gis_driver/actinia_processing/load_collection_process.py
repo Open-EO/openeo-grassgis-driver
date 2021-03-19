@@ -217,8 +217,6 @@ def create_process_description():
 
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
-
-
 def create_process_chain_entry(input_object: DataObject,
                                spatial_extent,
                                temporal_extent,
@@ -299,7 +297,7 @@ def create_process_chain_entry(input_object: DataObject,
                              {"param": "crs", "value": str(crs)},]}
 
         pc.append(region_bbox)
-    
+
     if input_object.is_strds() and \
        (temporal_extent is not None or bands is not None):
         wherestring = ""
@@ -361,7 +359,7 @@ def get_process_list(node: Node):
 
     output_objects.append(output_object)
     node.add_output(output_object)
-    
+
     pc = create_process_chain_entry(input_object,
                                     spatial_extent,
                                     temporal_extent,

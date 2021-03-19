@@ -115,7 +115,6 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
               "inputs": [{"param": "expression",
                           "value": "polymask = if(isnull(polymask_inv), 1, null())"}
                          ]}]
-        
 
     # replace all pixels where mask is null
     if mask_value == "null":
@@ -145,7 +144,6 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
                         {"param": "output",
                          "value": output_object.grass_name()},
                         ]}
-
 
     pc.append(importer)
     pc.append(create_mask)

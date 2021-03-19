@@ -49,7 +49,7 @@ class CollectionExtent(JsonableObject):
 
         # This is soooo stupid, why is the temporal extent required? There is data that has no temporal extent
         # So we trick here to set an arbitrary extent of 200 years
-        
+
         # list of bboxes !
         bbox = []
         bbox.append(spatial)    # TODO maxItems: 6
@@ -62,7 +62,7 @@ class CollectionExtent(JsonableObject):
 class CollectionProperties(JsonableObject):
     """
     (collection_properties)
-    
+
     currently only STAC EO (electro-optical)
     missing: STAC other extensions, STAC SAR, STAC Scientific
              see https://open-eo.github.io/openeo-api/#operation/describe-collection
@@ -80,7 +80,7 @@ class CollectionProperties(JsonableObject):
         meters, but the panchromatic band is 15 meters. The eo:gsd
         should be 30 meters in this case since those are the bands most
         commonly used.
-    
+
     eo:platform
         required
         string
@@ -138,7 +138,6 @@ class CollectionProperties(JsonableObject):
         self.eo___instrument = eo_instrument
         self.eo___epsg = eo_epsg
         self.eo___bands = eo_bands
-
 
 
 class EOBands(JsonableObject):

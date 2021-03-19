@@ -177,7 +177,6 @@ def get_process_list(node: Node):
         output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
         output_objects.append(output_object)
 
-
         pc = create_process_chain_entry(input_object,
                                         python_file_url,
                                         udf_runtime, udf_version,

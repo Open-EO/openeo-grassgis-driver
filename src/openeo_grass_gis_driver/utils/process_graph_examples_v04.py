@@ -275,7 +275,6 @@ MAP_ALGEBRA = {
 }
 
 
-
 TEMPORAL_ALGEBRA = {
     "title": "Compute the NDVI based on two strds with temporal algebra",
     "description": "Compute the NDVI based on two strds with temporal algebra",

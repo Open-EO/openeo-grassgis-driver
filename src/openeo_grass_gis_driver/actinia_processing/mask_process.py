@@ -126,8 +126,8 @@ def get_process_list(node: Node) -> Tuple[list, list]:
         mask_value = "null"
 
     # Get the input and mask data separately
-    data_object = node.get_parent_by_name(parent_name="data").output_objects[0]
-    mask_object = node.get_parent_by_name(parent_name="mask").output_objects[0]
+    data_object = list(node.get_parent_by_name(parent_name="data").output_objects)[0]
+    mask_object = list(node.get_parent_by_name(parent_name="mask").output_objects)[0]
 
     output_object = DataObject(name=f"{data_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
     output_objects.append(output_object)

@@ -109,7 +109,7 @@ class ActiniaInterfaceTestCase(TestBase):
         print(status)
         print(info)
 
-        time.sleep(2)
+        time.sleep(5)
 
         status, info = iface.resource_info(resource_id)
         print(status)

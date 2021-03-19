@@ -94,6 +94,28 @@ class JobsTestCase(TestBase):
         response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
         self.assertEqual(404, response.status_code)
 
+    def test_actinia_process(self):
+        """Run the test in the ephemeral database
+        """
+        JOB_TEMPLATE["process"] = ACTINIA_PROCESS["process"]
+
+        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json", headers=self.auth)
+        self.assertEqual(201, response.status_code)
+        job_id = response.get_data().decode("utf-8")
+
+        response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
+        self.assertEqual(200, response.status_code)
+
+        response = self.app.delete(f'/jobs/{job_id}', headers=self.auth)
+        self.assertEqual(204, response.status_code)
+
+        response = self.app.delete(f'/jobs/{job_id}', headers=self.auth)
+        self.assertEqual(404, response.status_code)
+
+        response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
+        self.assertEqual(404, response.status_code)
+
+
 
 class JobsTestResultsCase(TestBase):
 

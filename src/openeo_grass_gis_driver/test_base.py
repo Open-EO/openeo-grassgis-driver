@@ -8,6 +8,8 @@ from werkzeug.datastructures import Headers
 
 from openeo_grass_gis_driver.app import flask_api
 from openeo_grass_gis_driver.endpoints import create_endpoints
+from openeo_grass_gis_driver.register_actinia_processes import \
+    register_processes
 from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
 
 __license__ = "Apache License, Version 2.0"
@@ -20,6 +22,7 @@ __email__ = "soerengebbert@googlemail.com"
 class TestBase(unittest.TestCase):
 
     create_endpoints()
+    register_processes()
 
     def setUp(self):
         self.app = flask_api.app.test_client()

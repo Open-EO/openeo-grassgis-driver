@@ -74,7 +74,7 @@ class Jobs(ResourceBase):
         # job_id = str(uuid4())
         job = request.get_json()
 
-            # return ErrorSchema(id=uuid4(), message="A process graph is required in the request").as_response(400)
+        # return ErrorSchema(id=uuid4(), message="A process graph is required in the request").as_response(400)
 
         job_info = check_job(job=job, job_id=job_id)
         self.job_db[job_id] = job_info
@@ -84,7 +84,7 @@ class Jobs(ResourceBase):
         response.headers["OpenEO-Identifier"] = job_id
         # add location, e.g. "https://openeo.org/api/v1.0/resource/<job_id>"
         response.headers["Location"] = ("%s/%s") % (url_for(".jobs"), job_id)
-        
+
         return response
 
     def delete(self):

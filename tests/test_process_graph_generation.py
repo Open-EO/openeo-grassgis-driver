@@ -110,5 +110,6 @@ class GraphValidationTestCase(TestBase):
         self.assertEqual(1, len(pg.root_nodes))
         self.assertEqual(5, len(pg.node_dict))
 
+
 if __name__ == "__main__":
     unittest.main()

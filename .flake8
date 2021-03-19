@@ -22,16 +22,6 @@ ignore =
     F841 local variable 'rn' is assigned to but never used
     W293 blank line contains whitespace
     W605 invalid escape sequence '\-'
-    E101 indentation contains mixed spaces and tabs
-    E116 unexpected indentation (comment)
-    E117 over-indented (comment)
-    E125 continuation line with same indent as next logical line
-    E221 multiple spaces before operator
-    E261 at least two spaces before inline comment
-    E271 multiple spaces after keyword
-    E305 expected 2 blank lines after class or function definition, found 1
-    W191 indentation contains tabs
-    E266 too many leading '#' for block comment
 
     # ignored by default
     E121 continuation line under-indented for hanging indent

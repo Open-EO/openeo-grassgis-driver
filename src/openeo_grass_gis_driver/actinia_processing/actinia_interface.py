@@ -195,7 +195,7 @@ class ActiniaInterface(object):
                                                                                     "mapset": mapset}
         return self._send_get_request(url)
 
-    def list_strds(self, location: str, mapset: str)  -> Tuple[int, dict]:
+    def list_strds(self, location: str, mapset: str) -> Tuple[int, dict]:
         url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/strds" % {"base": self.base_url,
                                                                             "location": location,
                                                                             "mapset": mapset}

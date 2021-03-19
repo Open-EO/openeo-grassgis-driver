@@ -128,7 +128,7 @@ def get_process_list(node: Node):
 
     if "overlap_resolver" in node.arguments and \
         (node.arguments["overlap_resolver"] is not None or
-        node.arguments["overlap_resolver"] != "null"):
+            node.arguments["overlap_resolver"] != "null"):
         raise Exception("Process %s does not support yet the parameter \"overlap_resolver\"" % PROCESS_NAME)
 
     if not cube1_objects:

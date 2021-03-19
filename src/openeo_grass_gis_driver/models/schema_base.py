@@ -23,9 +23,9 @@ def as_dict_without_nones(o):
         value = d[key]
         if value == "json:null":
             value = None
-        elif  value == "json:true":
+        elif value == "json:true":
             value = True
-        elif  value == "json:false":
+        elif value == "json:false":
             value = False
         # ___ is a placeholder for : as in eo:bands
         r[key.replace("___", ":")] = value

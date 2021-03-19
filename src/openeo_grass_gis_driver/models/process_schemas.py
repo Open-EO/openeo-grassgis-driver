@@ -424,7 +424,7 @@ class ProcessDescription(JsonableObject):
         self.deprecated = deprecated
         self.experimental = experimental
         self.exceptions = exceptions
-        self.examples = None # Ignore examples for validation purpose
+        self.examples = None  # Ignore examples for validation purpose
         self.categories = categories
         # parameter_order in pattern
         # pattern = "^[A-Za-z0-9_]+$"

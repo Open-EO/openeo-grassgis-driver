@@ -21,7 +21,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 
 ###############################################################################
-####### Version 0.4 of the API ################################################
+# Version 0.4 of the API ################################################
 ###############################################################################
 
 
@@ -347,7 +347,7 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
         if isinstance(node.arguments[key], dict) and \
            "from_node" in node.arguments[key]:
             # input option comes from another node in the process graph
-	        # which output object in the set of output_objects?
+            # which output object in the set of output_objects?
             value = list(node.get_parent_by_name(parent_name=key).output_objects)[0]
             data_object = value
         elif ao["schema"]["type"] == "boolean":

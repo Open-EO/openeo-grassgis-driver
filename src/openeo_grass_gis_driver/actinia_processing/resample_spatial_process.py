@@ -85,7 +85,7 @@ def create_process_chain_entry(input_object: DataObject, method, output_object: 
     # TODO: a new GRASS addon that
     # 1. fetches a list of raster maps in a strds
     # 2. resamples each raster map with the selected method
-    
+
     # translate openeo method to GRASS method
     if method == "near":
         method = "nearest"

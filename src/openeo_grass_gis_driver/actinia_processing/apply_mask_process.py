@@ -59,7 +59,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 def create_process_chain_entry(input: DataObject, mask: DataObject, output: DataObject):
     """Create a Actinia process description that uses r.mapcalc
        to apply a mask.
-       
+
        NOTE: according to multilayer_mask, 0 means not masked, 1 means masked
              this is the other way around compared to GRASS
 
@@ -68,7 +68,7 @@ def create_process_chain_entry(input: DataObject, mask: DataObject, output: Data
     :param output: The name of the output map
     :return: A Actinia process chain description
     """
-    
+
     rn = randint(0, 1000000)
 
     pc = {"id": "r_mapcalc_%i" % rn,

@@ -159,7 +159,7 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
 
     elif dimtype == 'bands':
         # t.rast.mapcalc
-        
+
         # t.rast.bandcalc needs the formula and translates
         # "data[<index>]" to appropriate band references
         # with <index> being a number, 0 for first band
@@ -181,7 +181,7 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
 
 def get_dimension_type(dimension_name):
     """Guess dimension type from dimension name.
-    
+
     Problem: name and type of dimensions must be stored with the data
              and data do not exist yet, but we need the dimension type here
              in order to parse the openeo reducer

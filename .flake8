@@ -17,7 +17,6 @@ ignore =
     F405 'FILTER_BBOX' may be undefined, or defined from star imports: openeo_grass_gis_driver.utils.process_graph_examples_v10
     F821 undefined name 'vector_object'
     F841 local variable 'rn' is assigned to but never used
-    W293 blank line contains whitespace
 
     # ignored by default
     E121 continuation line under-indented for hanging indent

@@ -24,3 +24,8 @@ def register_processes():
             # TODO: add logger
             # print("registering %s" % module['id'])
             ACTINIA_PROCESS_DESCRIPTION_DICT[module['id']] = module
+
+    # overwrite certain module to collect more information
+    status_code, module = iface.list_module('r.slope.aspect')
+    if status_code == 200:
+        ACTINIA_PROCESS_DESCRIPTION_DICT[module['id']] = module

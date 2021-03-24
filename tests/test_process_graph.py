@@ -35,7 +35,7 @@ class ProcessGraphTestCase(TestBase):
         process_graph_id = f"user-graph-{str(uuid4())}"
 
         response = self.app.put(f'/process_graphs/{process_graph_id}', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
-                                 content_type="application/json", headers=self.auth)
+                                content_type="application/json", headers=self.auth)
 
         # response = self.app.post('/process_graphs', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
         #                         content_type="application/json", headers=self.auth)
@@ -67,7 +67,7 @@ class ProcessGraphTestCase(TestBase):
 
         process_graph_id = f"user-graph-{str(uuid4())}"
         response = self.app.put(f'/process_graphs/{process_graph_id}', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
-                                 content_type="application/json", headers=self.auth)
+                                content_type="application/json", headers=self.auth)
 
         # response = self.app.post('/process_graphs', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
         #                         content_type="application/json", headers=self.auth)

@@ -20,11 +20,11 @@ PROCESS_NAME = "lte"
 
 def create_process_description():
     p_x = Parameter(description="First operand.",
-                       schema={
+                    schema={
                                "description": "Any data type is allowed."
                        })
     p_y = Parameter(description="Second operand.",
-                       schema={
+                    schema={
                                "description": "Any data type is allowed."
                        })
 

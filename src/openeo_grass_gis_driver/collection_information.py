@@ -121,7 +121,7 @@ class CollectionInformationResource(Resource):
                                           "code": "CollectionNotFound",
                                           "message": "Collection '%s' does not exist." % (name),
                                           "links": {}}),
-                                          404)
+                                 404)
 
         # Get the projection from the GRASS mapset
         status_code, mapset_info = self.iface.mapset_info(location=location, mapset=mapset)
@@ -130,7 +130,7 @@ class CollectionInformationResource(Resource):
                                           "code": "Internal",
                                           "message": "Server error: %s" % (mapset_info),
                                           "links": {}}),
-                                          500)
+                                 500)
 
         extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
                                            float(layer_data["east"]), float(layer_data["north"])),

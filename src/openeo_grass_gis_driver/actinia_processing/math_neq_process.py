@@ -20,11 +20,11 @@ PROCESS_NAME = "neq"
 
 def create_process_description():
     p_x = Parameter(description="First operand.",
-                       schema={
+                    schema={
                                "description": "Any data type is allowed."
                        })
     p_y = Parameter(description="Second operand.",
-                       schema={
+                    schema={
                                "description": "Any data type is allowed."
                        })
     p_delta = Parameter(description="Only applicable for comparing two numbers.",

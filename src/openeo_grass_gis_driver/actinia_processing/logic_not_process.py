@@ -20,7 +20,7 @@ PROCESS_NAME = "not"
 
 def create_process_description():
     p_x = Parameter(description="Boolean value to invert.",
-                       schema={
+                    schema={
                                "type": [
                                  "boolean",
                                  "null"

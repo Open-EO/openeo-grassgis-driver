@@ -58,7 +58,7 @@ def create_process_description():
                               "subtype": "udf-code"
                           }
                       ],
-                         optional=False)
+                      optional=False)
 
     p_runtime = Parameter(description="An UDF runtime identifier available at the back-end.",
                           schema={"type": "string",
@@ -87,8 +87,8 @@ def create_process_description():
 
     rv = ReturnValue(description="The data processed by the UDF. Returns a raster data cube "
                                  "if a raster data cube was passed for `data`. If an array was "
-                                  "passed for `data`, the returned value is defined by the context "
-                                  "and is exactly what the UDF returned.",
+                     "passed for `data`, the returned value is defined by the context "
+                     "and is exactly what the UDF returned.",
                      schema=[
                          {
                              "title": "Raster data cube",

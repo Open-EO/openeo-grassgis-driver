@@ -20,7 +20,7 @@ PROCESS_NAME = "sqrt"
 
 def create_process_description():
     p_x = Parameter(description="A number.",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"

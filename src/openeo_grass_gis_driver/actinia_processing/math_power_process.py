@@ -20,14 +20,14 @@ PROCESS_NAME = "power"
 
 def create_process_description():
     p_x = Parameter(description="The numerical base.",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"
                                ]
                        })
     p_y = Parameter(description="The numerical exponent.",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"

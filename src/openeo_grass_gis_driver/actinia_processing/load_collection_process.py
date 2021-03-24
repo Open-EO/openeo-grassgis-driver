@@ -22,15 +22,15 @@ PROCESS_NAME = "load_collection"
 def create_process_description():
 
     p_data = Parameter(description="The collection identifier.",
-                        schema={"type": "string",
-                                "subtype": "collection-id",
-                                "pattern": "^[A-Za-z0-9_\\-\\.~/]+$",
-                                "examples": ["nc_spm_08.landsat.raster.lsat5_1987_10",
-                                             "nc_spm_08.PERMANENT.vector.lakes",
-                                             "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]}
+                       schema={"type": "string",
+                               "subtype": "collection-id",
+                               "pattern": "^[A-Za-z0-9_\\-\\.~/]+$",
+                               "examples": ["nc_spm_08.landsat.raster.lsat5_1987_10",
+                                            "nc_spm_08.PERMANENT.vector.lakes",
+                                            "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]}
                        )
     p_spatial = Parameter(description="Limits the data to load from the collection to the specified bounding box or polygons.\n\n"
-                                          "The coordinate reference system of the bounding box must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
+                          "The coordinate reference system of the bounding box must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
                        schema=[{
                            "title": "Bounding Box",
                            "type": "object",

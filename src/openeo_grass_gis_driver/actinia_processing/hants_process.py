@@ -25,26 +25,26 @@ def create_process_description():
                        schema={"type": "object", "subtype": "raster-cube"},
                        optional=False)
     p_nf = Parameter(description="The number of frequencies to use",
-                             schema={"type": "object", "subtype": "integer"},
-                             optional=False)
+                     schema={"type": "object", "subtype": "integer"},
+                     optional=False)
     p_dod = Parameter(description="Degree of over-determination",
-                             schema={"type": "object", "subtype": "integer"},
-                             optional=True)
+                      schema={"type": "object", "subtype": "integer"},
+                      optional=True)
     p_fet = Parameter(description="Fit error tolerance when filtering outliers",
-                             schema={"type": "object", "subtype": "float"},
-                             optional=True)
+                      schema={"type": "object", "subtype": "float"},
+                      optional=True)
     p_rangelo = Parameter(description="Ignore values below this limit",
-                             schema={"type": "object", "subtype": "float"},
-                             optional=True)
+                          schema={"type": "object", "subtype": "float"},
+                          optional=True)
     p_rangehi = Parameter(description="Ignore values above this limit",
-                             schema={"type": "object", "subtype": "float"},
-                             optional=True)
+                          schema={"type": "object", "subtype": "float"},
+                          optional=True)
     p_rejlo = Parameter(description="Reject low outliers",
-                             schema={"type": "object", "subtype": "boolean"},
-                             optional=True)
+                        schema={"type": "object", "subtype": "boolean"},
+                        optional=True)
     p_rejhi = Parameter(description="Reject high outliers",
-                             schema={"type": "object", "subtype": "boolean"},
-                             optional=True)
+                        schema={"type": "object", "subtype": "boolean"},
+                        optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

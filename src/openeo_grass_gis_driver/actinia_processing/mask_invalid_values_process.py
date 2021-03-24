@@ -25,11 +25,11 @@ def create_process_description():
                        schema={"type": "object", "subtype": "raster-cube"},
                        optional=False)
     p_min = Parameter(description="Minimum allowed value",
-                       schema={"type": "object", "subtype": "float"},
-                       optional=False)
+                      schema={"type": "object", "subtype": "float"},
+                      optional=False)
     p_max = Parameter(description="Maximum allowed value",
-                        schema={"type": "object", "subtype": "float"},
-                        optional=False)
+                      schema={"type": "object", "subtype": "float"},
+                      optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})

@@ -38,9 +38,9 @@ class ProcessGraphNode(JsonableObject):
     """
 
     def __init__(self, process_id: str,
-                       arguments: Dict[str, Any],
-                       description: str = "This is a single process",
-                       result: Optional[bool] = False):
+                 arguments: Dict[str, Any],
+                 description: str = "This is a single process",
+                 result: Optional[bool] = False):
 
         # ID in pattern
         # pattern = "^[A-Za-z0-9_]+$"
@@ -79,7 +79,7 @@ class ProcessGraph(JsonableObject):
     """
 
     def __init__(self, process_graph: Dict[str, ProcessGraphNode],
-                    title: str = None, description: str = None):
+                 title: str = None, description: str = None):
 
         self.title = title
         self.description = description

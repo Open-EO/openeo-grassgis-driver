@@ -49,8 +49,8 @@ def create_process_description():
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Limits the data cube over the spatial dimensions to the specified polygons.\n\nThe filter retains "
-                             "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
-                             "defined in the Simple Features standard by the OGC).",
+                            "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
+                            "defined in the Simple Features standard by the OGC).",
                             summary="Spatial filter using polygons",
                             parameters={"data": p_data,
                                         "geometries": p_poly},
@@ -75,12 +75,12 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
     rn = randint(0, 1000000)
 
     pc = [{"id": "v_in_geojson_%i" % rn,
-             "module": "v.in.geojson",
-             "inputs": [{"param": "input",
-                         "value": vector_object},
-                        {"param": "output",
-                         "value": "geojson_mask"},
-                        ]},
+           "module": "v.in.geojson",
+           "inputs": [{"param": "input",
+                       "value": vector_object},
+                      {"param": "output",
+                       "value": "geojson_mask"},
+                      ]},
           {"id": "v_to_rast_%i" % rn,
           "module": "v.to.rast",
           "inputs": [{"param": "input", "value": "geojson_mask"},

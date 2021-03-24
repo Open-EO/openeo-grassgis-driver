@@ -20,14 +20,14 @@ PROCESS_NAME = "xor"
 
 def create_process_description():
     p_x = Parameter(description="A boolean value.",
-                       schema={
+                    schema={
                                "type": [
                                  "boolean",
                                  "null"
                                ]
                        })
     p_y = Parameter(description="A boolean value.",
-                       schema={
+                    schema={
                                "type": [
                                  "boolean",
                                  "null"

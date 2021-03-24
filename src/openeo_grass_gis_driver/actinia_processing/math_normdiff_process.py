@@ -20,11 +20,11 @@ PROCESS_NAME = "normalized_difference"
 
 def create_process_description():
     p_x = Parameter(description="The value for the first band.",
-                       schema={
+                    schema={
                                "type": "number"
                        })
     p_y = Parameter(description="The value for the second band.",
-                       schema={
+                    schema={
                                "type": "number"
                        })
 

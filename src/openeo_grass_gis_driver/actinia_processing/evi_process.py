@@ -31,7 +31,7 @@ def create_process_description():
                       optional=False)
 
     p_blue = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
-                                  "that contains the BLUE band for EVI computation.",
+                       "that contains the BLUE band for EVI computation.",
                       schema={"type": "object", "subtype": "raster-cube"},
                       optional=False)
 

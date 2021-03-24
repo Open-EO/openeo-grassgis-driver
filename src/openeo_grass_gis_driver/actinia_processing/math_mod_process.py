@@ -20,14 +20,14 @@ PROCESS_NAME = "mod"
 
 def create_process_description():
     p_x = Parameter(description="A number to be used as dividend.",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"
                                ]
                        })
     p_y = Parameter(description="A number to be used as divisor.",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"

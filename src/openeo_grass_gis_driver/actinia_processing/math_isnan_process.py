@@ -20,7 +20,7 @@ PROCESS_NAME = "is_nan"
 
 def create_process_description():
     p_x = Parameter(description="The data to check.",
-                       schema={
+                    schema={
                                "description": "Any data type is allowed."
                        })
 

@@ -21,16 +21,16 @@ PROCESS_NAME = "aggregate_spatial"
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",
-                          schema={"type": "object", "subtype": "raster-cube"},
-                          optional=False)
+                       schema={"type": "object", "subtype": "raster-cube"},
+                       optional=False)
 
     p_geometries = Parameter(description="Geometries as GeoJSON on which the aggregation will be based.",
                            schema={"type": "object", "subtype": "geojson"},
                            optional=False)
     p_reducer = Parameter(description="A reducer to be applied on all values of each geometry.",
-                           schema={"type": "object",
-                                    "subtype": "process-graph",
-                                    "parameters": [
+                          schema={"type": "object",
+                                  "subtype": "process-graph",
+                                  "parameters": [
                                       {
                                         "name": "data",
                                         "description": "An array with elements of any type.",
@@ -51,14 +51,14 @@ def create_process_description():
                                         "default": "null"
                                       }
                                     ]
-                                   },
-                           optional=False)
+                                  },
+                          optional=False)
     p_target_dimension = Parameter(description="The new dimension name to be used for storing the results. Defaults to `result`.",
                            schema={"type": "string"},
                            optional=True)
     p_context = Parameter(description="Additional data to be passed to the reducer.",
-                           schema={"description": "Any data type."},
-                           optional=True)
+                          schema={"description": "Any data type."},
+                          optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "vector-cube"})
@@ -131,11 +131,11 @@ def create_process_chain_entry(input_object: DataObject, geometries: str):
         "module": "v.to.rast",
         "inputs": [{"param": "input",
                     "value": "geometries"},
-                    {"param": "output",
+                   {"param": "output",
                     "value": "geometries"},
-                    {"param": "type",
+                   {"param": "type",
                     "value": "point,line,area"},
-                    {"param": "use",
+                   {"param": "use",
                     "value": "cat"}]
     }
 

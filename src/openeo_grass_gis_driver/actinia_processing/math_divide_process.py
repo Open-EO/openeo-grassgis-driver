@@ -20,14 +20,14 @@ PROCESS_NAME = "divide"
 
 def create_process_description():
     p_x = Parameter(description="The dividend",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"
                                ]
                        })
     p_y = Parameter(description="The divisor",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"

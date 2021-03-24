@@ -20,9 +20,9 @@ PROCESS_NAME = "zonal_statistics"
 
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                      "or space-time raster dataset",
-                          schema={"type": "object", "subtype": "raster-cube"},
-                          optional=False)
+                       "or space-time raster dataset",
+                       schema={"type": "object", "subtype": "raster-cube"},
+                       optional=False)
 
     p_polygons = Parameter(description="URL to a publicly accessible polygon file readable by OGR",
                            schema={"type": "string"},

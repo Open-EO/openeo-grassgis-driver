@@ -22,7 +22,7 @@ def create_process_description():
                        schema={"type": "object", "subtype": "raster-cube"},
                        optional=False)
     p_name = Parameter(description="Name for the dimension.",
-                        schema={"type": "string"})
+                       schema={"type": "string"})
     p_label = Parameter(description="A dimension label.",
                        schema=[
                                 {
@@ -42,8 +42,8 @@ def create_process_description():
                                   "other"
                                 ]
                               },
-                              default="other",
-                              optional=True)
+                       default="other",
+                       optional=True)
 
     rv = ReturnValue(description="The data cube with a newly added dimension. "
                                  "The new dimension has exactly one dimension label. "
@@ -64,8 +64,8 @@ def create_process_description():
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Limits the data cube over the spatial dimensions to the specified polygons.\n\nThe filter retains "
-                             "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
-                             "defined in the Simple Features standard by the OGC).",
+                            "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
+                            "defined in the Simple Features standard by the OGC).",
                             summary="Spatial filter using polygons",
                             parameters={"data": p_data,
                                         "name": p_name,

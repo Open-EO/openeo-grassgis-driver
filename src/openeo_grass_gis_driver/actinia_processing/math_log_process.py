@@ -20,14 +20,14 @@ PROCESS_NAME = "log"
 
 def create_process_description():
     p_x = Parameter(description="A number to compute the logarithm for.",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"
                                ]
                        })
     p_y = Parameter(description="The numerical base.",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"

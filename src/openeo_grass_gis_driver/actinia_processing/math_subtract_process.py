@@ -20,14 +20,14 @@ PROCESS_NAME = "subtract"
 
 def create_process_description():
     p_x = Parameter(description="The minuend",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"
                                ]
                        })
     p_y = Parameter(description="The subtrahend",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"

@@ -20,14 +20,14 @@ PROCESS_NAME = "multiply"
 
 def create_process_description():
     p_x = Parameter(description="The multiplier.",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"
                                ]
                        })
     p_y = Parameter(description="The multiplicand.",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"

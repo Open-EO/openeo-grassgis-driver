@@ -297,7 +297,7 @@ class ActiniaInterface(object):
         """
 
         url = "%(base)s/locations/%(location)s/processing_async_export" % {"base": self.base_url,
-                                                                               "location": location}
+                                                                           "location": location}
         return self._send_post_request(url=url, process_chain=process_chain)
 
     def list_modules(self) -> Tuple[int, dict]:

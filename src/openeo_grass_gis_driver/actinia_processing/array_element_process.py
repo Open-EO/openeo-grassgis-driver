@@ -28,7 +28,7 @@ def create_process_description():
                         schema={
                                 "type": "integer"
                               },
-                              optional=True)
+                        optional=True)
     p_label = Parameter(description="The label of the element to retrieve.",
                        schema=[
                                 {
@@ -38,7 +38,7 @@ def create_process_description():
                                   "type": "string"
                                 }
                               ],
-                              optional=True)
+                        optional=True)
 
     rv = ReturnValue(description="The value of the requested element.",
                      schema={

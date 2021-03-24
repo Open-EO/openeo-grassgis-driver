@@ -16,6 +16,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "array_element"
 
+
 def create_process_description():
     p_data = Parameter(description="An array",
                        schema={

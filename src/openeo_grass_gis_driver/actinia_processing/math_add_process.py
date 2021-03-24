@@ -17,6 +17,7 @@ __email__ = "soerengebbert@googlemail.com"
 # dummy math process
 PROCESS_NAME = "add"
 
+
 def create_process_description():
     p_data = Parameter(description="The first summand.",
                        schema={

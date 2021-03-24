@@ -202,6 +202,7 @@ CAPABILITIES = {
         },
 """
 
+
 class Capabilities(Resource):
 
     def get(self, ):

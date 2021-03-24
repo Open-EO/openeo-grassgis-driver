@@ -16,6 +16,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "add_dimension"
 
+
 def create_process_description():
     p_data = Parameter(description="A data cube to add the dimension to.",
                        schema={"type": "object", "subtype": "raster-cube"},

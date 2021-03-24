@@ -17,6 +17,7 @@ __email__ = "soerengebbert@googlemail.com"
 # dummy logic process
 PROCESS_NAME = "if"
 
+
 def create_process_description():
     p_value = Parameter(description="A boolean value.",
                         schema={

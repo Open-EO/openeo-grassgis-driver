@@ -8,6 +8,7 @@ from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 # Management of user-uploaded assets and processed data.
 # need to be uploaded to the actinia server: not supported
 
+
 class Files(Resource):
 
     def __init__(self):

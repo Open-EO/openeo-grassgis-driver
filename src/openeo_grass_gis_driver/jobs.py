@@ -37,6 +37,7 @@ OUTPUT_FORMATS = {
   "input": {}
 }
 
+
 class OutputFormats(Resource):
     def get(self, ):
         return make_response(jsonify(OUTPUT_FORMATS), 200)

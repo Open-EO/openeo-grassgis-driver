@@ -59,6 +59,7 @@ class CollectionExtent(JsonableObject):
         interval.append(temporal)
         self.temporal = {"interval": interval}
 
+
 class CollectionProperties(JsonableObject):
     """
     (collection_properties)

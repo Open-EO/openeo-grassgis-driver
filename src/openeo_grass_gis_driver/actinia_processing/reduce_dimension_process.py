@@ -29,6 +29,7 @@ OPERATOR_DICT = {
     'and': '&&'
 }
 
+
 def create_process_description():
     p_data = Parameter(description="Raster data cube",
                        schema={"type": "object", "subtype": "raster-cube"},

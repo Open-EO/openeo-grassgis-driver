@@ -16,6 +16,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "filter_spatial"
 
+
 def create_process_description():
     p_data = Parameter(description="Any openEO process object that returns raster datasets "
                                    "or space-time raster dataset",

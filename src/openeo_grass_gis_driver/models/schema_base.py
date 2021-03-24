@@ -151,6 +151,7 @@ class ListLinks(JsonableObject):
     def __init__(self, links: List[EoLink]):
         self.links = links
 
+
 class File(JsonableObject):
     """ Workspace File
     path:

@@ -17,6 +17,7 @@ __email__ = "soerengebbert@googlemail.com"
 # dummy math process
 PROCESS_NAME = "is_nodata"
 
+
 def create_process_description():
     p_x = Parameter(description="The data to check.",
                        schema={

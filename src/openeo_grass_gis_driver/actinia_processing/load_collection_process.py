@@ -18,6 +18,7 @@ PROCESS_NAME = "load_collection"
 
 # based on get_data, updated to OpenEO API v0.4, then to v1.0
 
+
 def create_process_description():
 
     p_data = Parameter(description="The collection identifier.",
@@ -216,6 +217,7 @@ def create_process_description():
 
 
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
+
 
 def create_process_chain_entry(input_object: DataObject,
                                spatial_extent,

@@ -16,6 +16,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "run_udf"
 
+
 def create_process_description():
     p_data = Parameter(description="The data to be passed to the UDF as array or raster data cube.",
                        schema=[
@@ -123,6 +124,7 @@ def create_process_description():
 
 
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
+
 
 def create_process_chain_entry(input_object, python_file_url,
                                udf_runtime, udf_version, output_object):

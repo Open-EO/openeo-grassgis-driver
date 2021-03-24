@@ -65,11 +65,11 @@ class Argument(JsonableObject):
         self.description = description
         self.required = required
         self.default = default
-        #if not isinstance(minimum, (int, float, complex)):
+        # if not isinstance(minimum, (int, float, complex)):
         #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The minimum MUST be a number")
-        #self.minimum = minimum
-        #if not isinstance(maximum, (int, float, complex)):
+        # self.minimum = minimum
+        # if not isinstance(maximum, (int, float, complex)):
         #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The maximum MUST be a number")
         self.minimum = minimum
@@ -239,9 +239,9 @@ class JobInformation(JsonableObject):
                  updated: Optional[str] = None,
                  plan: str = None, cost: float = None, budget: float = None):
         # Test id
-        #pattern = "^[A-Za-z0-9_\-\.~]+$"
-        #x = re.search(pattern, job_id)
-        #if not x:
+        # pattern = "^[A-Za-z0-9_\-\.~]+$"
+        # x = re.search(pattern, job_id)
+        # if not x:
         #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The id MUST match the following pattern: %s" % pattern)
         #    return make_response(es.to_json(), 400)
@@ -249,7 +249,7 @@ class JobInformation(JsonableObject):
         self.title = title
         self.description = description
         # Test Status
-        #if status in ["submitted", "queued", "running", "canceled", "finished", "error"]:
+        # if status in ["submitted", "queued", "running", "canceled", "finished", "error"]:
         #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The status has to one of \"submitted\" \"queued\" \"running\" \"canceled\" \"finished\" \"error\"")
         #    return make_response(es.to_json(), 400)

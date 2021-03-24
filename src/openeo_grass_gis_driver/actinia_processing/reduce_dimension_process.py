@@ -294,7 +294,7 @@ def get_process_list(node: Node):
     output_datatype = GrassDataType.RASTER
     if dimtype == 'bands':
         formula = serialize_tree(tree)
-        #print (formula)
+        # print (formula)
         output_datatype = GrassDataType.STRDS
     elif dimtype == 'temporal':
         if len(operators) != 1:

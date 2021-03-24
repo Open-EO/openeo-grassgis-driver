@@ -13,8 +13,8 @@ class Config:
     HOST = "https://actinia-dev.mundialis.de"
     PORT = 443
     LOCATIONS = ["nc_spm_08", "utm32n", "latlong_wgs84"]
-    #USER = "demouser"
-    #PASSWORD = "gu3st!pa55w0rd"
+    # USER = "demouser"
+    # PASSWORD = "gu3st!pa55w0rd"
     USER = "openeo"
     PASSWORD = "EeMob0la"
     # The database file that stores the graphs

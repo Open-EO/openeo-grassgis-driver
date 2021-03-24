@@ -7,7 +7,6 @@ ignore =
     E127 continuation line over-indented for visual indent
     E128 continuation line under-indented for visual indent
     E251 unexpected spaces around keyword / parameter equals
-    E265 block comment should start with '# '
     E501 line too long (85 > 79 characters)
     F401 'module' imported but unused
     F405 'FILTER_BBOX' may be undefined, or defined from star imports: openeo_grass_gis_driver.utils.process_graph_examples_v10

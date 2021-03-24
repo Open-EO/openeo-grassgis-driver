@@ -411,7 +411,7 @@ class ProcessDescription(JsonableObject):
         #            message="The keys of the parameters MUST match the following pattern: %s" % pattern)
         #        return make_response(es.to_json(), 400)
 
-        #self.parameters = parameters
+        # self.parameters = parameters
         plist = list()
         for key in parameters:
             parameters[key].name = key

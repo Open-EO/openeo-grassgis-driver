@@ -9,7 +9,7 @@ from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCES
 from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
-from flask import make_response, jsonify, request
+from flask import make_response, jsonify
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"

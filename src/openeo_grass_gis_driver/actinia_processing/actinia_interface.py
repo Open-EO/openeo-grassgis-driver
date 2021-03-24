@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import List, Tuple, Dict, Optional
+from typing import Tuple, Optional
 from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
 import requests
 

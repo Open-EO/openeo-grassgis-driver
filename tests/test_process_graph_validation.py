@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import pprint
 import unittest
 from flask import json
 from openeo_grass_gis_driver.test_base import TestBase

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """This file includes all required openEO response schemas
 """
-from typing import List, Optional, Dict
-from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks
+from typing import Dict
+from openeo_grass_gis_driver.models.schema_base import JsonableObject
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode
 
 __author__ = "Anika Bettge"

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from pprint import pprint
 from flask import make_response, request
 from openeo_grass_gis_driver.actinia_processing.base import Graph
 from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig

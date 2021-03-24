@@ -2,7 +2,7 @@
 import traceback
 from uuid import uuid4
 import sys
-from flask import make_response, jsonify, request
+from flask import make_response, request
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
 from openeo_grass_gis_driver.process_graph_db import GraphDB

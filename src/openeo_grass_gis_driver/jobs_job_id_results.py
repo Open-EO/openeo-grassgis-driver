@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-import pprint
 import sys
 import traceback
 from datetime import datetime
-from flask import make_response, jsonify, request
+from flask import make_response
 from openeo_grass_gis_driver.capabilities import CAPABILITIES
 from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from enum import Enum
-from typing import Set, Dict, Optional, Tuple, Union, List
+from typing import Set, Dict, Optional, Tuple, Union
 from random import randint
 
 # This is the process dictionary that is used to store all processes of the Actinia wrapper

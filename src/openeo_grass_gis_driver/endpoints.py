@@ -17,7 +17,7 @@ from openeo_grass_gis_driver.jobs_job_id_results import JobsJobIdResults
 from openeo_grass_gis_driver.process_graphs import ProcessGraphs
 from openeo_grass_gis_driver.process_graphs_id import ProcessGraphId
 from openeo_grass_gis_driver.udf import Udf
-from openeo_grass_gis_driver.files import Files, FilesPath
+# from openeo_grass_gis_driver.files import Files, FilesPath
 from openeo_grass_gis_driver.well_known import WellKnown
 
 __license__ = "Apache License, Version 2.0"

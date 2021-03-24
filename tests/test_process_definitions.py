@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import unittest
 from pprint import pprint
-from openeo_grass_gis_driver.actinia_processing import config
 from openeo_grass_gis_driver.test_base import TestBase
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, Node, Graph
+from openeo_grass_gis_driver.actinia_processing.base import Graph
 from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
     GET_DATA_1, GET_DATA_2, GET_DATA_3, FILTER_BBOX, DATERANGE, \
     REDUCE_TIME_MIN, NDVI_STRDS, USE_CASE_1

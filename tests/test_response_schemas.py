@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import unittest
 from datetime import datetime
-from openeo_grass_gis_driver.models.collection_schemas import CollectionExtent, CollectionEntry, Collection, EoLinks, EoLink
+from openeo_grass_gis_driver.models.collection_schemas import CollectionExtent, CollectionEntry, Collection, EoLink
 from openeo_grass_gis_driver.models.collection_schemas import CollectionInformation
+from openeo_grass_gis_driver.models.schema_base import EoLinks
 from openeo_grass_gis_driver.test_base import TestBase
 
 __license__ = "Apache License, Version 2.0"

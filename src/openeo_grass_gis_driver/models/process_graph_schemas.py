@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """This file includes all required openEO response schemas
 """
-from typing import List, Tuple, Optional, Dict, Any
-from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks, EoLink
+from typing import List, Optional, Dict, Any
+from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks
 
 
 __author__ = "Sören Gebbert"

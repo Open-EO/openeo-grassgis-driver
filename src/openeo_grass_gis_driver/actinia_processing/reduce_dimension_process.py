@@ -86,7 +86,7 @@ def create_process_description():
                             parameters={"data": p_data,
                                         "reducer": p_reducer,
                                         "dimension": p_dimension,
-                                        "context": p_context,},
+                                        "context": p_context, },
                             returns=rv,
                             examples=examples)
 

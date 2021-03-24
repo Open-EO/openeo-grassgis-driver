@@ -277,7 +277,7 @@ def create_process_chain_entry(input_object: DataObject,
                              {"param": "e", "value": str(east)},
                              {"param": "w", "value": str(west)},
                              {"param": "crs", "value": str(crs)},
-                             {"param": "raster", "value": input_object.grass_name()},]}
+                             {"param": "raster", "value": input_object.grass_name()}, ]}
         elif input_object.is_strds():
             region_bbox = {"id": "g_region_bbox_%i" % rn,
                   "module": "g.region.bbox",
@@ -286,7 +286,7 @@ def create_process_chain_entry(input_object: DataObject,
                              {"param": "e", "value": str(east)},
                              {"param": "w", "value": str(west)},
                              {"param": "crs", "value": str(crs)},
-                             {"param": "strds", "value": input_object.grass_name()},]}
+                             {"param": "strds", "value": input_object.grass_name()}, ]}
         else:
             region_bbox = {"id": "g_region_bbox_%i" % rn,
                   "module": "g.region.bbox",
@@ -294,7 +294,7 @@ def create_process_chain_entry(input_object: DataObject,
                              {"param": "s", "value": str(south)},
                              {"param": "e", "value": str(east)},
                              {"param": "w", "value": str(west)},
-                             {"param": "crs", "value": str(crs)},]}
+                             {"param": "crs", "value": str(crs)}, ]}
 
         pc.append(region_bbox)
 

@@ -38,7 +38,7 @@ class Result(ResourceBase):
             result_name, process_list = g.to_actinia_process_list()
 
             if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
-                return make_response(jsonify({"description":"Processes can only be defined for a single location!"},
+                return make_response(jsonify({"description": "Processes can only be defined for a single location!"},
                                              400))
 
             location = ActiniaInterface.PROCESS_LOCATION.keys()
@@ -66,8 +66,8 @@ class Result(ResourceBase):
                                     mimetype=mimetype,
                                     direct_passthrough=True)
 
-                return make_response(jsonify({"job_id":response["resource_id"],
-                                              "job_info":response}), status)
+                return make_response(jsonify({"job_id": response["resource_id"],
+                                              "job_info": response}), status)
             else:
                 return ErrorSchema(id="1234567890", code=404,
                                    message=str(response), links=response["urls"]["status"]).as_response(status)

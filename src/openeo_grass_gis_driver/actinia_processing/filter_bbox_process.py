@@ -152,7 +152,7 @@ def create_process_chain_entry(north: float, south: float, east: float,
                      {"param": "s", "value": str(south)},
                      {"param": "e", "value": str(east)},
                      {"param": "w", "value": str(west)},
-                     {"param": "crs", "value": str(crs)},]}
+                     {"param": "crs", "value": str(crs)}, ]}
 
     return pc
 

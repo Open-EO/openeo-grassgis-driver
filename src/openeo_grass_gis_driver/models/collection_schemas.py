@@ -656,7 +656,7 @@ class CollectionEntry(JsonableObject):
 
     # TODO provider not required
     def __init__(self, providers: Optional[CollectionProviders] = None,
-                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis", rel="external"),],
+                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis", rel="external"), ],
                  extent: Optional[CollectionExtent] = CollectionExtent(),
                  title: str = None, description: str = None, license: str = "proprietary",
                  stac_version: str = "0.6.2", id: str = None, version: str = None,
@@ -703,7 +703,7 @@ class Collection(JsonableObject):
     """
 
     def __init__(self, collections: List[CollectionEntry],
-                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis", rel="external"),]):
+                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis", rel="external"), ]):
         self.collections = collections
         self.links = links
 

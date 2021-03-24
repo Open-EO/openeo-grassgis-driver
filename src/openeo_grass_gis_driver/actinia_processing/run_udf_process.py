@@ -134,7 +134,7 @@ def create_process_chain_entry(input_object, python_file_url,
     :return: A Actinia process chain description
     """
 
-    rn = randint(0, 1000000)
+    # rn = randint(0, 1000000)
 
     pc = {"id": "t_rast_udf",
           "module": "t.rast.udf",

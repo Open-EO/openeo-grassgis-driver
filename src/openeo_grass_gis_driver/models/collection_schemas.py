@@ -132,7 +132,7 @@ class CollectionProperties(JsonableObject):
     def __init__(
             self, eo_gsd: float = None, eo_platform: str = None,
             eo_constellation: str = None, eo_instrument: str = None,
-            eo_epsg: int = None, eo_bands = None):
+            eo_epsg: int = None, eo_bands=None):
         self.eo___gsd = eo_gsd
         self.eo___platform = eo_platform
         self.eo___constellation = eo_constellation
@@ -663,7 +663,7 @@ class CollectionEntry(JsonableObject):
                  stac_version: str = "0.6.2", id: str = None, version: str = None,
                  keywords: List[str] = None,
                  properties: Optional[CollectionProperties] = CollectionProperties(),
-                 dimensions = None):
+                 dimensions=None):
         self.title = title
         self.description = description
         self.license = license

@@ -64,7 +64,7 @@ class Jobs(ResourceBase):
             job.process = None
             jobs.append(job)
 
-        job_list = JobList(jobs=jobs, links = [])
+        job_list = JobList(jobs=jobs, links=[])
         return job_list.as_response(http_status=200)
 
     def post(self):

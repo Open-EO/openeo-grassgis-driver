@@ -60,7 +60,7 @@ class Argument(JsonableObject):
 """
     def __init__(self, description: str, minimum: Optional[int] = None,
                  maximum: Optional[int] = None, required: bool = False,
-                 default = None, enum: List = None, example = None):
+                 default=None, enum: List = None, example=None):
 
         self.description = description
         self.required = required

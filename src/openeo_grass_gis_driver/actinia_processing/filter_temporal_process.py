@@ -23,38 +23,38 @@ def create_process_description():
                        optional=False)
 
     p_extent = Parameter(description="Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.",
-                       schema={"type": "array",
-                               "subtype": "temporal-interval",
-                               "minItems": 2,
-                               "maxItems": 2,
-                               "items": {
-                                 "anyOf": [
-                                  {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "subtype": "date-time"
-                                  },
-                                  {
+                         schema={"type": "array",
+                                 "subtype": "temporal-interval",
+                                 "minItems": 2,
+                                 "maxItems": 2,
+                                 "items": {
+                                   "anyOf": [
+                                    {
+                                      "type": "string",
+                                      "format": "date-time",
+                                      "subtype": "date-time"
+                                     },
+                                    {
                                       "type": "string",
                                       "format": "date",
                                       "subtype": "date"
-                                  },
-                                  {
-                                    "type": "null"
-                                  }
-                                     ]
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                    ]
                                    },
-                              "examples": [
-                                [
-                                  "2015-01-01T00:00:00Z",
-                                  "2016-01-01T00:00:00Z"
-                                ],
-                                [
-                                  "2015-01-01",
-                                  "2016-01-01"
-                                ]
+                                 "examples": [
+                                  [
+                                     "2015-01-01T00:00:00Z",
+                                     "2016-01-01T00:00:00Z"
+                                   ],
+                                  [
+                                    "2015-01-01",
+                                    "2016-01-01"
+                                   ]
                                    ]},
-                       optional=False)
+                         optional=False)
 
     p_dim = Parameter(description="The temporal dimension to filter on. If the dimension is not set or is set to `null`, the data cube is expected to only have one temporal dimension. Fails with a `TooManyDimensions` error if it has more dimensions. Fails with a `DimensionNotAvailable` error if the specified dimension does not exist.\n\n**Note:** The default dimensions a data cube provides are described in the collection's metadata field `cube:dimensions`.",
                       schema={"type": [
@@ -113,14 +113,14 @@ def create__process_chain_entry(input_object: DataObject, start_time: str, end_t
 
     # end_time can be null, and we can not find out if end_time is set because the input does not exist yet
     pc = {"id": "t_rast_extract_%i" % rn,
-      "module": "t.rast.extract",
-      "inputs": [{"param": "input", "value": input_object.grass_name()},
-                 {"param": "where", "value": "start_time >= '%(start)s' "
-                                             "AND start_time <= '%(end)s'" % {"start": start_time, "end": end_time}},
-                 {"param": "output", "value": output_object.grass_name()},
-                 {"param": "expression", "value": "1.0 * %s" % input_object.grass_name()},
-                 {"param": "basename", "value": f"{input_object.name}_extract"},
-                 {"param": "suffix", "value": "num"}]}
+          "module": "t.rast.extract",
+          "inputs": [{"param": "input", "value": input_object.grass_name()},
+                     {"param": "where", "value": "start_time >= '%(start)s' "
+                      "AND start_time <= '%(end)s'" % {"start": start_time, "end": end_time}},
+                     {"param": "output", "value": output_object.grass_name()},
+                     {"param": "expression", "value": "1.0 * %s" % input_object.grass_name()},
+                     {"param": "basename", "value": f"{input_object.name}_extract"},
+                     {"param": "suffix", "value": "num"}]}
 
     return pc
 

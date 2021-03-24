@@ -112,12 +112,12 @@ class Service(JsonableObject):
     """
 
     def __init__(self,
-            process_graph: ProcessGraphNode,
-            url: str, type: str, parameters: Dict,
-            attributes: Dict, submitted: str = None,
-            title: str = None, description: str = None,
-            enabled: bool = True,
-            plan: str = None, costs: float = None, budget: float = None):
+                 process_graph: ProcessGraphNode,
+                 url: str, type: str, parameters: Dict,
+                 attributes: Dict, submitted: str = None,
+                 title: str = None, description: str = None,
+                 enabled: bool = True,
+                 plan: str = None, costs: float = None, budget: float = None):
 
         self.title = title
         self.description = description
@@ -137,6 +137,6 @@ class Service(JsonableObject):
         x = re.search(pattern, id)
         if not x:
             es = ErrorSchema(id=str(datetime.now()), code=400,
-                message="The id MUST match the following pattern: %s" % pattern)
+                             message="The id MUST match the following pattern: %s" % pattern)
             return make_response(es.to_json(), 400)
         self.id = id

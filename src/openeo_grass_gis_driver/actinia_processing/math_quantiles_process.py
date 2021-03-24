@@ -41,12 +41,12 @@ def create_process_description():
                        optional=True
                        )
     p_quant = Parameter(description="A number of intervals to calculate quantiles for. Calculates q-quantiles with (nearly) equal-sized intervals.",
-                       schema={
+                        schema={
                                "type": "integer",
                                "minimum": 2
-                       },
-                       optional=True
-                       )
+                         },
+                        optional=True
+                        )
     p_nodata = Parameter(description="Indicates whether no-data values are ignored or not.",
                          schema={
                                  "type": "boolean"

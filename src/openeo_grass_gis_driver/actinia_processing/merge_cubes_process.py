@@ -20,32 +20,31 @@ PROCESS_NAME = "merge_cubes"
 def create_process_description():
     p_data1 = Parameter(description="Any openEO process object that returns raster datasets "
                         "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+                        schema={"type": "object", "subtype": "raster-cube"},
+                        optional=False)
     p_data2 = Parameter(description="Any openEO process object that returns raster datasets "
                         "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+                        schema={"type": "object", "subtype": "raster-cube"},
+                        optional=False)
     # the overlap_resolver is not supported by us
     p_resolver = Parameter(description="A reduction operator that resolves the conflict if the data overlaps",
-                       schema={"type": "object",
-                               "subtype": "process-graph",
-                               "parameters": [
-                                  {
+                           schema={"type": "object",
+                                   "subtype": "process-graph",
+                                   "parameters": [{
                                     "name": "x",
                                     "description": "The first value.",
                                     "schema": {
                                       "description": "Any data type."
                                     }
-                                  },
-                                  {
+                                    },
+                                    {
                                     "name": "y",
                                     "description": "The second value.",
                                     "schema": {
                                       "description": "Any data type."
                                     }
-                                  },
-                                  {
+                                    },
+                                    {
                                     "name": "context",
                                     "description": "Additional data passed by the user.",
                                     "schema": {
@@ -53,10 +52,10 @@ def create_process_description():
                                     },
                                     "required": False,
                                     "default": "null"
-                                  }
-                                ]
-                               },
-                       optional=True)
+                                    }
+                                    ]
+                                   },
+                           optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -100,10 +99,10 @@ def create_process_chain_entry(cube1_object: DataObject, cube2_object: DataObjec
     # t.merge does not have a method to resolve overlaps
 
     pc = {"id": "t_merge_%i" % rn,
-         "module": "t.merge",
-         "inputs": [{"param": "inputs",
+          "module": "t.merge",
+          "inputs": [{"param": "inputs",
                      "value": "%(cube1)s,%(cube2)s" % {"cube1": cube1_object.grass_name(), "cube2": cube2_object.grass_name()}},
-                    {"param": "output",
+                     {"param": "output",
                      "value": output_object.grass_name()}]}
 
     return pc

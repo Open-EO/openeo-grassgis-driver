@@ -28,8 +28,8 @@ def create_process_description():
                        schema={"type": "object", "subtype": "raster-cube"},
                        optional=False)
     p_value = Parameter(description="The value used to replace non-zero and `true` values with",
-                       schema={"type": "object", "subtype": "string"},
-                       optional=True)
+                        schema={"type": "object", "subtype": "string"},
+                        optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -77,31 +77,31 @@ def create_process_chain_entry(input_object: DataObject, mask_object: DataObject
 
     if mask_value == "null":
         pc = {"id": "t_rast_mapcalc_%i" % rn,
-             "module": "t.rast.mapcalc",
-             "inputs": [{"param": "expression",
+              "module": "t.rast.mapcalc",
+              "inputs": [{"param": "expression",
                          "value": "%(result)s = if(isnull(%(mask_name)s), "
                                   "%(raw)s, null())" % {"result": output_object.grass_name(),
                                                         "mask_name": mask_object.grass_name(),
                                                         "raw": input_object.grass_name()}},
-                        {"param": "basename",
+                         {"param": "basename",
                          "value": "masked"},
-                        {"param": "output",
+                         {"param": "output",
                          "value": output_object.grass_name()},
-                        ]}
+                         ]}
     else:
         pc = {"id": "t_rast_mapcalc_%i" % rn,
-             "module": "t.rast.mapcalc",
-             "inputs": [{"param": "expression",
+              "module": "t.rast.mapcalc",
+              "inputs": [{"param": "expression",
                          "value": "%(result)s = if(isnull(%(mask_name)s), "
                                   "%(raw)s, %(mask_value)s)" % {"result": output_object.grass_name(),
-                                                        "mask_name": mask_object.grass_name(),
-                                                        "raw": input_object.grass_name(),
-                                                        "mask_value": mask_value}},
-                        {"param": "basename",
+                                                                "mask_name": mask_object.grass_name(),
+                                                                "raw": input_object.grass_name(),
+                                                                "mask_value": mask_value}},
+                         {"param": "basename",
                          "value": "masked"},
-                        {"param": "output",
+                         {"param": "output",
                          "value": output_object.grass_name()},
-                        ]}
+                         ]}
 
     return pc
 

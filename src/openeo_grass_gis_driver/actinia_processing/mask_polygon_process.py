@@ -34,12 +34,12 @@ def create_process_description():
                            }]},
                        optional=False)
     p_value = Parameter(description="The value used to replace non-zero and `true` values with",
-                       schema={"type": "object", "subtype": "string"},
-                       optional=True)
+                        schema={"type": "object", "subtype": "string"},
+                        optional=True)
     p_inside = Parameter(description="If set to `true` all pixels for which the point at the pixel center "
                                      "**does** intersect with any polygon are replaced",
-                       schema={"type": "boolean"},
-                       optional=True)
+                         schema={"type": "boolean"},
+                         optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -88,63 +88,63 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
     pc = []
 
     importer = {"id": "v_in_geojson_%i" % rn,
-             "module": "v.in.geojson",
-             "inputs": [{"param": "input",
-                         "value": vector_object},
-                        {"param": "output",
-                         "value": "geojson_mask"},
-                        ]}
+                "module": "v.in.geojson",
+                "inputs": [{"param": "input",
+                            "value": vector_object},
+                           {"param": "output",
+                            "value": "geojson_mask"},
+                           ]}
 
     if inside is False:
         create_mask = {"id": "v_to_rast_%i" % rn,
-              "module": "v.to.rast",
-              "inputs": [{"param": "input", "value": "geojson_mask"},
-                         {"param": "output", "value": "polymask"},
-                         {"param": "type", "value": "area"},
-                         {"param": "use", "value": "val"},
-                         ]}
+                       "module": "v.to.rast",
+                       "inputs": [{"param": "input", "value": "geojson_mask"},
+                                  {"param": "output", "value": "polymask"},
+                                  {"param": "type", "value": "area"},
+                                  {"param": "use", "value": "val"},
+                                  ]}
     else:
         create_mask = [{"id": "v_to_rast_%i" % rn,
-              "module": "v.to.rast",
-              "inputs": [{"param": "input", "value": "geojson_mask"},
-                         {"param": "output", "value": "polymask_inv"},
-                         {"param": "type", "value": "area"},
-                         {"param": "use", "value": "val"},
-                         ]},
+                        "module": "v.to.rast",
+                        "inputs": [{"param": "input", "value": "geojson_mask"},
+                                   {"param": "output", "value": "polymask_inv"},
+                                   {"param": "type", "value": "area"},
+                                   {"param": "use", "value": "val"},
+                                   ]},
                        {"id": "r:mapcalc_%i" % rn,
-              "module": "r.mapcalc",
-              "inputs": [{"param": "expression",
-                          "value": "polymask = if(isnull(polymask_inv), 1, null())"}
-                         ]}]
+                        "module": "r.mapcalc",
+                        "inputs": [{"param": "expression",
+                                    "value": "polymask = if(isnull(polymask_inv), 1, null())"}
+                                   ]}]
 
     # replace all pixels where mask is null
     if mask_value == "null":
         do_mask = {"id": "t_rast_mapcalc_%i" % rn,
-             "module": "t.rast.mapcalc",
-             "inputs": [{"param": "expression",
-                         "value": "%(result)s = if(isnull(%(mask_name)s), "
-                                  "%(raw)s, null())" % {"result": output_object.grass_name(),
-                                                        "mask_name": "polymask",
-                                                        "raw": input_object.grass_name()}},
-                        {"param": "basename",
-                         "value": "masked"},
-                        {"param": "output",
-                         "value": output_object.grass_name()},
-                        ]}
+                   "module": "t.rast.mapcalc",
+                   "inputs": [{"param": "expression",
+                               "value": "%(result)s = if(isnull(%(mask_name)s), "
+                               "%(raw)s, null())" % {"result": output_object.grass_name(),
+                                                     "mask_name": "polymask",
+                                                     "raw": input_object.grass_name()}},
+                              {"param": "basename",
+                               "value": "masked"},
+                              {"param": "output",
+                               "value": output_object.grass_name()},
+                              ]}
     else:
         do_mask = {"id": "t_rast_mapcalc_%i" % rn,
-             "module": "t.rast.mapcalc",
-             "inputs": [{"param": "expression",
-                         "value": "%(result)s = if(isnull(%(mask_name)s), "
-                                  "%(raw)s, %(mask_value)s)" % {"result": output_object.grass_name(),
-                                                        "mask_name": "polymask",
-                                                        "raw": input_object.grass_name(),
-                                                        "mask_value": mask_value}},
-                        {"param": "basename",
-                         "value": "masked"},
-                        {"param": "output",
-                         "value": output_object.grass_name()},
-                        ]}
+                   "module": "t.rast.mapcalc",
+                   "inputs": [{"param": "expression",
+                               "value": "%(result)s = if(isnull(%(mask_name)s), "
+                               "%(raw)s, %(mask_value)s)" % {"result": output_object.grass_name(),
+                                                             "mask_name": "polymask",
+                                                             "raw": input_object.grass_name(),
+                                                             "mask_value": mask_value}},
+                              {"param": "basename",
+                               "value": "masked"},
+                              {"param": "output",
+                               "value": output_object.grass_name()},
+                              ]}
 
     pc.append(importer)
     pc.append(create_mask)

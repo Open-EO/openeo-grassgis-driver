@@ -566,7 +566,7 @@ class CollectionProviders(JsonableObject):
     """
 
     def __init__(self, name: str, description: str = None,
-            roles: List[str] = None, url: str = None):
+                 roles: List[str] = None, url: str = None):
         self.name = name
         self.description = description
         # if roles:

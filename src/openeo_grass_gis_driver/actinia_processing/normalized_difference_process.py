@@ -21,13 +21,13 @@ PROCESS_NAME = "normalized_difference"
 def create_process_description():
     p_band1 = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                         "that contains the first band for normalized difference computation.",
-                      schema={"type": "object", "subtype": "raster-cube"},
-                      optional=False)
+                        schema={"type": "object", "subtype": "raster-cube"},
+                        optional=False)
 
     p_band2 = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
                         "that contains the second band for normalized difference computation.",
-                      schema={"type": "object", "subtype": "raster-cube"},
-                      optional=False)
+                        schema={"type": "object", "subtype": "raster-cube"},
+                        optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -73,11 +73,11 @@ def create_process_chain_entry(band1_time_series: DataObject, band2_time_series:
          "inputs": [{"param": "expression",
                      "value": "%(result)s = float((%(band1)s - %(band2)s)/"
                               "(%(band1)s + %(band2)s))" % {"result": output_time_series.grass_name(),
-                                                        "band1": band1_time_series.grass_name(),
-                                                        "band2": band2_time_series.grass_name()}},
+                                                            "band1": band1_time_series.grass_name(),
+                                                            "band2": band2_time_series.grass_name()}},
                     {"param": "inputs",
                      "value": "%(band1)s,%(band2)s" % {"band1": band1_time_series.grass_name(),
-                                                   "band2": band2_time_series.grass_name()}},
+                                                       "band2": band2_time_series.grass_name()}},
                     {"param": "basename",
                      "value": "nd"},
                     {"param": "output",

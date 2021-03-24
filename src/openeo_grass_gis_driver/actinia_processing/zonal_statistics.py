@@ -33,7 +33,7 @@ def create_process_description():
 
     # Example
     arguments = {"data": {"from_node": "get_b08_data"},
-                "polygons": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"}
+                 "polygons": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"zonal_statistics_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

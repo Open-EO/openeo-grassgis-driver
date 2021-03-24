@@ -100,17 +100,17 @@ def create__process_chain_entry(input_object: DataObject, target, source, output
     # source can be null
     if source:
         pc = {"id": "t_rast_renamebands_%i" % rn,
-          "module": "t.rast.renamebands",
-          "inputs": [{"param": "input", "value": input_object.grass_name()},
-                     {"param": "target", "value": (',').join(target)},
-                     {"param": "source", "value": (',').join(source)},
-                     {"param": "output", "value": output_object.grass_name()}]}
+              "module": "t.rast.renamebands",
+              "inputs": [{"param": "input", "value": input_object.grass_name()},
+                         {"param": "target", "value": (',').join(target)},
+                         {"param": "source", "value": (',').join(source)},
+                         {"param": "output", "value": output_object.grass_name()}]}
     else:
         pc = {"id": "t_rast_renamebands_%i" % rn,
-          "module": "t.rast.renamebands",
-          "inputs": [{"param": "input", "value": input_object.grass_name()},
-                     {"param": "target", "value": (',').join(target)},
-                     {"param": "output", "value": output_object.grass_name()}]}
+              "module": "t.rast.renamebands",
+              "inputs": [{"param": "input", "value": input_object.grass_name()},
+                         {"param": "target", "value": (',').join(target)},
+                         {"param": "output", "value": output_object.grass_name()}]}
 
     return pc
 

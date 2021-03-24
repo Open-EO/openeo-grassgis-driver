@@ -28,15 +28,15 @@ def create_process_description():
                                "description": "Any data type is allowed."
                        })
     p_delta = Parameter(description="Only applicable for comparing two numbers.",
-                       schema={
+                        schema={
                              "type": [
                                "number",
                                "null"
                              ],
-                       },
-                       default=None,
-                       optional=True
-                       )
+                         },
+                        default=None,
+                        optional=True
+                        )
     p_case = Parameter(description="Only applicable for comparing two strings.",
                        schema={
                                "type": "boolean"

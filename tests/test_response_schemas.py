@@ -30,7 +30,7 @@ class ResponseSchemaTestCase(TestBase):
         print("Collection", c.to_json())
 
         ci = CollectionInformation(id="raster", description="Test", title="title", license="unknown",
-                             extent=e, links=[cl, ])
+                                   extent=e, links=[cl, ])
         print("CollectionInformation", ci.to_json())
 
 

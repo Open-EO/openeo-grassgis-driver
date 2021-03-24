@@ -86,18 +86,18 @@ def create_process_chain_entry(input_object: DataObject, vmin: float, vmax: floa
     rn = randint(0, 1000000)
 
     pc = {"id": "t_rast_mapcalc_%i" % rn,
-         "module": "t.rast.mapcalc",
-         "inputs": [{"param": "expression",
+          "module": "t.rast.mapcalc",
+          "inputs": [{"param": "expression",
                      "value": "%(result)s = if(%(raw)s < %(min)s || "
                               "%(raw)s > %(max)s), null(), %(raw)s)" % {"result": output_object.grass_name(),
-                                                        "raw": input_object.grass_name(),
-                                                        "min": str(vmin),
-                                                        "max": str(vmax)}},
-                    {"param": "basename",
+                                                                        "raw": input_object.grass_name(),
+                                                                        "min": str(vmin),
+                                                                        "max": str(vmax)}},
+                     {"param": "basename",
                      "value": "masked_invalid"},
-                    {"param": "output",
+                     {"param": "output",
                      "value": output_object.grass_name()},
-                    ]}
+                     ]}
 
     return pc
 

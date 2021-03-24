@@ -24,7 +24,7 @@ def create_process_description():
     p_name = Parameter(description="Name for the dimension.",
                        schema={"type": "string"})
     p_label = Parameter(description="A dimension label.",
-                       schema=[
+                        schema=[
                                 {
                                   "type": "number"
                                 },

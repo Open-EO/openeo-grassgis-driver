@@ -30,7 +30,7 @@ def create_process_description():
                               },
                         optional=True)
     p_label = Parameter(description="The label of the element to retrieve.",
-                       schema=[
+                        schema=[
                                 {
                                   "type": "number"
                                 },

@@ -36,38 +36,38 @@ def create_process_description():
                        optional=False)
     p_reducer = Parameter(description="A reducer to apply on the specified dimension.",
                           schema={"type": "object",
-                                "subtype": "process-graph",
-                                "parameters": [
-                                  {
-                                    "name": "data",
-                                    "description": "A labeled array with elements of any type.",
-                                    "schema": {
-                                      "type": "array",
-                                      "subtype": "labeled-array",
-                                      "items": {
+                                  "subtype": "process-graph",
+                                  "parameters": [
+                                    {
+                                      "name": "data",
+                                      "description": "A labeled array with elements of any type.",
+                                      "schema": {
+                                        "type": "array",
+                                        "subtype": "labeled-array",
+                                        "items": {
+                                          "description": "Any data type."
+                                        }
+                                      }
+                                      },
+                                    {
+                                      "name": "context",
+                                      "description": "Additional data passed by the user.",
+                                      "schema": {
                                         "description": "Any data type."
                                       }
                                     }
-                                  },
-                                  {
-                                    "name": "context",
-                                    "description": "Additional data passed by the user.",
-                                    "schema": {
-                                      "description": "Any data type."
-                                    }
-                                  }
                                   ]
                                   },
-                         optional=False)
+                          optional=False)
 
     p_dimension = Parameter(description="The name of the dimension over which to reduce.",
-                       schema={"type": "string"},
-                       optional=False)
+                            schema={"type": "string"},
+                            optional=False)
 
     p_context = Parameter(description="Additional data to be passed to the reducer.",
-                       schema={"description": "Any data type.",
-                            "default": "null"},
-                            optional=True)
+                          schema={"description": "Any data type.",
+                                  "default": "null"},
+                          optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -168,14 +168,14 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
 
         pc = {"id": "t_rast_bandcalc_%i" % rn,
               "module": "t.rast.bandcalc",
-         "inputs": [{"param": "expression",
-                     "value": "%(formula)s" % {"formula": formula}},
-                    {"param": "input",
-                     "value": "%(input)s" % {"input": input_object.grass_name()}},
-                    {"param": "basename",
-                     "value": "reduce"},
-                    {"param": "output",
-                     "value": output_object.grass_name()}]}
+              "inputs": [{"param": "expression",
+                          "value": "%(formula)s" % {"formula": formula}},
+                         {"param": "input",
+                          "value": "%(input)s" % {"input": input_object.grass_name()}},
+                         {"param": "basename",
+                          "value": "reduce"},
+                         {"param": "output",
+                          "value": output_object.grass_name()}]}
 
     return pc
 

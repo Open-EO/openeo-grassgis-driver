@@ -83,24 +83,24 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
                       ]},
           {"id": "v_to_rast_%i" % rn,
           "module": "v.to.rast",
-          "inputs": [{"param": "input", "value": "geojson_mask"},
-                     {"param": "output", "value": "MASK"},
-                     {"param": "type", "value": "point,line,area"},
-                     {"param": "use", "value": "val"},
-                     ]},
-        {"id": "t_rast_algebra_%i" % rn,
-         "module": "t.rast.algebra",
-         "inputs": [{"param": "expression",
-                     "value": "%(result)s = 1 * %(input)s" %
-                              {"result": output_object.grass_name(),
-                               "input": input_object.grass_name()}},
-                    {"param": "basename",
-                     "value": "filter_polygon"},
-                    ]},
-        {"id": "r_mask_%i" % rn,
-         "module": "r_mask",
-         "inputs": {"flags": "r"}}
-    ]
+           "inputs": [{"param": "input", "value": "geojson_mask"},
+                      {"param": "output", "value": "MASK"},
+                      {"param": "type", "value": "point,line,area"},
+                      {"param": "use", "value": "val"},
+                      ]},
+          {"id": "t_rast_algebra_%i" % rn,
+           "module": "t.rast.algebra",
+           "inputs": [{"param": "expression",
+                       "value": "%(result)s = 1 * %(input)s" %
+                       {"result": output_object.grass_name(),
+                        "input": input_object.grass_name()}},
+                      {"param": "basename",
+                       "value": "filter_polygon"},
+                      ]},
+          {"id": "r_mask_%i" % rn,
+           "module": "r_mask",
+           "inputs": {"flags": "r"}}
+          ]
 
     return pc
 

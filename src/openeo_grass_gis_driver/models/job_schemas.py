@@ -101,8 +101,8 @@ class OutputFormat(JsonableObject):
     """
 
     def __init__(self, gis_data_types: List[str],
-            links: List[Optional[EoLinks]] = None,
-            parameters: List[Argument] = None):
+                 links: List[Optional[EoLinks]] = None,
+                 parameters: List[Argument] = None):
 
         self.gis_data_types = gis_data_types
         self.links = links

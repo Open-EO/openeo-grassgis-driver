@@ -25,8 +25,8 @@ def create_process_description():
                        optional=False)
 
     p_geometries = Parameter(description="Geometries as GeoJSON on which the aggregation will be based.",
-                           schema={"type": "object", "subtype": "geojson"},
-                           optional=False)
+                             schema={"type": "object", "subtype": "geojson"},
+                             optional=False)
     p_reducer = Parameter(description="A reducer to be applied on all values of each geometry.",
                           schema={"type": "object",
                                   "subtype": "process-graph",
@@ -54,8 +54,8 @@ def create_process_description():
                                   },
                           optional=False)
     p_target_dimension = Parameter(description="The new dimension name to be used for storing the results. Defaults to `result`.",
-                           schema={"type": "string"},
-                           optional=True)
+                                   schema={"type": "string"},
+                                   optional=True)
     p_context = Parameter(description="Additional data to be passed to the reducer.",
                           schema={"description": "Any data type."},
                           optional=True)
@@ -65,7 +65,7 @@ def create_process_description():
 
     # Example
     arguments = {"data": {"from_node": "get_b08_data"},
-                "geometries": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"}
+                 "geometries": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"aggregate_spatial_1": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

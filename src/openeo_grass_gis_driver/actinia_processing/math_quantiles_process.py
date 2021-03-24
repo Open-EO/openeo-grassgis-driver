@@ -36,7 +36,7 @@ def create_process_description():
                                  "type": "number",
                                  "minimum": 0,
                                  "maximum": 1
-                            }
+                                   }
                        },
                        optional=True
                        )
@@ -62,7 +62,7 @@ def create_process_description():
                                  "number",
                                  "null"
                                ]
-                            }
+                                 }
                      })
 
     # Example

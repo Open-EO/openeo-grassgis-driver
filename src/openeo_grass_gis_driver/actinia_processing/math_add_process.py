@@ -56,7 +56,7 @@ def create_process_description():
                             summary="Addition of two numbers",
                             parameters={"x": p_data,
                                         "y": p_data2
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

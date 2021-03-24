@@ -41,7 +41,7 @@ def create_process_description():
                             description="Checks whether the specified data is a missing data, i.e. equals to any of the no-data values",
                             summary="Value is a no-data value",
                             parameters={"x": p_x
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

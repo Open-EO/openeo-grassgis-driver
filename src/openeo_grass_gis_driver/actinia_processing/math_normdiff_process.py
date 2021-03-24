@@ -49,7 +49,7 @@ def create_process_description():
                             summary="Normalized difference",
                             parameters={"x": p_x,
                                         "y": p_y
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

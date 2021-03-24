@@ -69,7 +69,7 @@ def create_process_description():
                                         "y": p_y,
                                         "delta": p_delta,
                                         "case_sensitive": p_case
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

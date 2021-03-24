@@ -56,7 +56,7 @@ def create_process_description():
                             summary="Logarithm to a base",
                             parameters={"x": p_x,
                                         "base": p_y
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

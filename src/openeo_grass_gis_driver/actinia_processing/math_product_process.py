@@ -60,7 +60,7 @@ def create_process_description():
                             summary="Compute the product by multiplying numbers",
                             parameters={"data": p_data,
                                         "ignore_nodata": p_nodata
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

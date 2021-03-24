@@ -47,7 +47,7 @@ def create_process_description():
                             description="Computes the square root of a real number `x`.",
                             summary="Square root",
                             parameters={"x": p_x
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

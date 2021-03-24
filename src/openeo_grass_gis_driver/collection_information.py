@@ -161,7 +161,7 @@ class CollectionInformationResource(Resource):
 
             dimensions['t'] = {"type": "temporal",
                                "extent": [start_time, end_time]
-                              }
+                               }
 
             extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
                                                float(layer_data["east"]), float(layer_data["north"])),
@@ -197,7 +197,7 @@ class CollectionInformationResource(Resource):
                                                       "cirrus",
                                                       "swir16",
                                                       "swir22"
-                                                  ]
+                                                      ]
                                            }
 
         if datatype.lower() == "vector":

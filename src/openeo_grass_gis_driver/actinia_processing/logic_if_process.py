@@ -59,7 +59,7 @@ def create_process_description():
                             parameters={"value": p_value,
                                         "accept": p_accept,
                                         "reject": p_reject
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

@@ -65,7 +65,7 @@ def create_process_description():
                             parameters={"x": p_data,
                                         "min": p_min,
                                         "max": p_max
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

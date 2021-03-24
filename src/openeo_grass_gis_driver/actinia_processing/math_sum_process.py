@@ -61,7 +61,7 @@ def create_process_description():
                             summary="Compute the sum by adding up numbers",
                             parameters={"data": p_data,
                                         "ignore_nodata": p_nodata
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

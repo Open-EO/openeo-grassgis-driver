@@ -97,7 +97,7 @@ def create_process_description():
                                         "probabilities": p_prob,
                                         "q": p_quant,
                                         "ignore_nodata": p_nodata
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

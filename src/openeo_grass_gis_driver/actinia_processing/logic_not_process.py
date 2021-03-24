@@ -47,7 +47,7 @@ def create_process_description():
                             description="Inverts a single boolean so that `true` gets `false` and `false` gets `true`.",
                             summary="Inverting a boolean",
                             parameters={"x": p_x
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

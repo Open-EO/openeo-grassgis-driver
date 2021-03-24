@@ -47,7 +47,7 @@ def create_process_description():
                             description="The integer part of the real number `x`.",
                             summary="Integer part of a number",
                             parameters={"x": p_x
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

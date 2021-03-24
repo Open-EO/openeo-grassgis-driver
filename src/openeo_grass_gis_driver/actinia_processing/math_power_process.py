@@ -56,7 +56,7 @@ def create_process_description():
                             summary="Exponentiation",
                             parameters={"base": p_x,
                                         "p": p_y
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

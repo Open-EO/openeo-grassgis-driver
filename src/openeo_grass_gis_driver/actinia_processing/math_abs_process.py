@@ -47,7 +47,7 @@ def create_process_description():
                             description="Computes the absolute value of a real number `x`.",
                             summary="Absolute value",
                             parameters={"x": p_data,
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

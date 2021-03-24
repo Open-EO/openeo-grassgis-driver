@@ -41,7 +41,7 @@ def create_process_description():
                             description="Checks whether the specified value `x` is not a number.",
                             summary="Value is not a number",
                             parameters={"x": p_x
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

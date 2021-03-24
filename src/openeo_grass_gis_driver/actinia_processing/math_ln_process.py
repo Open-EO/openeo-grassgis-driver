@@ -47,7 +47,7 @@ def create_process_description():
                             description="The natural logarithm is the logarithm to the base *e* of the number `x`.",
                             summary="Natural logarithm",
                             parameters={"x": p_x
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

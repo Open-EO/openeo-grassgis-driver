@@ -47,7 +47,7 @@ def create_process_description():
                             description="Exponential function to the base *e* raised to the power of `p`.",
                             summary="Exponentiation to the base e",
                             parameters={"p": p_x
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

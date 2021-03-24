@@ -62,7 +62,7 @@ def create_process_description():
                             summary="Maximum value",
                             parameters={"data": p_data,
                                         "ignore_nodata": p_nodata
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

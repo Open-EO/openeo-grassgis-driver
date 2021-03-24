@@ -27,7 +27,7 @@ def create_process_description():
                                 "examples": ["nc_spm_08.landsat.raster.lsat5_1987_10",
                                              "nc_spm_08.PERMANENT.vector.lakes",
                                              "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]}
-                          )
+                       )
     p_spatial = Parameter(description="Limits the data to load from the collection to the specified bounding box or polygons.\n\n"
                                           "The coordinate reference system of the bounding box must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
                        schema=[{
@@ -188,12 +188,12 @@ def create_process_description():
                      "east": 16.6,
                      "north": 48.6,
                      "south": 47.2
-                    },
+                },
                 "temporal_extent": [
                      "2018-01-01",
                      "2019-01-01"
                  ],
-        }
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(title="title", description="description", process_graph={"load_strds_collection": node})
     examples = [ProcessExample(title="Simple example", description="Simple example",

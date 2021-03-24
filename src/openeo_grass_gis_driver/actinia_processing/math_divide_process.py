@@ -56,7 +56,7 @@ def create_process_description():
                             summary="Division of two numbers",
                             parameters={"x": p_x,
                                         "y": p_y
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

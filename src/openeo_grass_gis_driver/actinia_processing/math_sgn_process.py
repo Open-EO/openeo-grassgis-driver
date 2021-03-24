@@ -47,7 +47,7 @@ def create_process_description():
                             description="The signum (also known as *sign*) of `x` is defined as:\n\n* *1* if *x > 0*\n* *0* if *x = 0*\n* *-1* if *x < 0*.",
                             summary="Signum",
                             parameters={"x": p_x
-                                       },
+                                        },
                             returns=rv,
                             examples=examples)
 

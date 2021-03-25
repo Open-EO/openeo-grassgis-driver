@@ -175,12 +175,16 @@ class JobsTestResultsCase(TestBase):
 #        """
 #        JOB_TEMPLATE["process_graph"] = ZONAL_STATISTICS["process_graph"]
 #
-#        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json", headers=self.auth)
+#        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE),
+#                                 content_type="application/json",
+#                                 headers=self.auth)
 #        self.assertEqual(201, response.status_code)
 #        job_id = response.get_data().decode("utf-8")
 #
 #        # Get job information
-#        response = self.app.get(f'/jobs/{job_id}/results', content_type="application/json", headers=self.auth)
+#        response = self.app.get(f'/jobs/{job_id}/results',
+#                                content_type="application/json",
+#                                headers=self.auth)
 #        self.assertEqual(200, response.status_code)
 #        data = response.get_data().decode("utf-8")
 #        print(data)
@@ -198,7 +202,8 @@ class JobsTestResultsCase(TestBase):
 #        self.assertEqual(200, response.status_code)
 #
 #        # cancel the job
-#        response = self.app.delete(f'/jobs/{job_id}/results', headers=self.auth)
+#        response = self.app.delete(f'/jobs/{job_id}/results',
+#                                   headers=self.auth)
 #        data = response.get_data().decode("utf-8")
 #        print(data)
 #        self.assertEqual(204, response.status_code)

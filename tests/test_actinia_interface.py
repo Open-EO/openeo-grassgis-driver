@@ -107,7 +107,8 @@ class ActiniaInterfaceTestCase(TestBase):
                  "flags": "g"}]}
 
         status, response = iface.async_persistent_processing(
-            location="nc_spm_08", mapset="new_user_mapset", process_chain=process_chain)
+            location="nc_spm_08", mapset="new_user_mapset",
+            process_chain=process_chain)
         resource_id = response["resource_id"]
         print(status)
         print(resource_id)

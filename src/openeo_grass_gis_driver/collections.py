@@ -42,8 +42,9 @@ class Collections(Resource):
                 status_code, strds_data = self.iface.list_strds(
                     location=location, mapset=mapset)
                 if status_code != 200:
-                    return make_response(jsonify({"description": "An internal error occurred "
-                                                                 "while catching strds layers!"}, 400))
+                    return make_response(jsonify(
+                        {"description": "An internal error occurred "
+                         "while catching strds layers!"}, 400))
 
                 for entry in strds_data:
                     strds_id = "%s.%s.strds.%s" % (location, mapset, entry)
@@ -60,8 +61,9 @@ class Collections(Resource):
                 status_code, raster_data = self.iface.list_raster(
                     location=location, mapset=mapset)
                 if status_code != 200:
-                    return make_response(jsonify({"description": "An internal error occurred "
-                                                                 "while catching raster layers!"}, 400))
+                    return make_response(jsonify(
+                        {"description": "An internal error occurred "
+                         "while catching raster layers!"}, 400))
 
                 for entry in raster_data:
                     raster_id = "%s.%s.raster.%s" % (location, mapset, entry)
@@ -78,8 +80,9 @@ class Collections(Resource):
                 status_code, vector_data = self.iface.list_vector(
                     location=location, mapset=mapset)
                 if status_code != 200:
-                    return make_response(jsonify({"description": "An internal error occurred "
-                                                                 "while catching vector layers!"}, 400))
+                    return make_response(jsonify(
+                        {"description": "An internal error occurred "
+                         "while catching vector layers!"}, 400))
 
                 for entry in vector_data:
                     vector_id = "%s.%s.vector.%s" % (location, mapset, entry)

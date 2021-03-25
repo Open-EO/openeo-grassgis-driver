@@ -62,7 +62,8 @@ class GraphValidationTestCase(TestBase):
 #        self.assertEqual(2, len(pg.node_dict))
 #
 #        self.assertIsNone(pg.node_dict["zonal_statistics_1"].child)
-#        self.assertEqual(pg.node_dict["zonal_statistics_1"], pg.node_dict["get_b08_data"].child)
+#        self.assertEqual(pg.node_dict["zonal_statistics_1"],
+#                         pg.node_dict["get_b08_data"].child)
 #        self.assertEqual(pg.node_dict["zonal_statistics_1"].get_parent_by_name("data"), pg.node_dict["get_b08_data"])
 #        self.assertEqual(1, len(pg.node_dict["zonal_statistics_1"].parents))
 #        self.assertTrue(pg.node_dict["get_b08_data"] in pg.node_dict["zonal_statistics_1"].parents)

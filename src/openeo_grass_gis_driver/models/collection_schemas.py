@@ -21,8 +21,9 @@ class CollectionExtent(JsonableObject):
         required
         Array of array of number
         The potential spatial extent covered by the collection.
-        The bounding box is provided as four or six numbers, depending on whether
-        the coordinate reference system includes a vertical axis (height or depth):
+        The bounding box is provided as four or six numbers, depending on
+        whether the coordinate reference system includes a vertical axis
+        (height or depth):
 
         West (lower left corner, coordinate axis 1)
         South (lower left corner, coordinate axis 2)
@@ -30,7 +31,8 @@ class CollectionExtent(JsonableObject):
         East (upper right corner, coordinate axis 1)
         North (upper right corner, coordinate axis 2)
         Height (optional, upper right corner, coordinate axis 3)
-        The coordinate reference system of the values is WGS84 longitude/latitude.
+        The coordinate reference system of the values is WGS84
+        longitude/latitude.
 
     temporal:
         required
@@ -39,7 +41,8 @@ class CollectionExtent(JsonableObject):
         The temporal extent specified by a start and an end time,
         each formatted as a RFC 3339 date-time. Open date ranges are
         supported and can be specified by setting one of the times to null.
-        Setting both entries to null is not allowed. Only the Gregorian calendar is supported.
+        Setting both entries to null is not allowed. Only the Gregorian
+        calendar is supported.
 
     """
 
@@ -66,7 +69,7 @@ class CollectionProperties(JsonableObject):
 
     currently only STAC EO (electro-optical)
     missing: STAC other extensions, STAC SAR, STAC Scientific
-             see https://open-eo.github.io/openeo-api/#operation/describe-collection
+        see https://open-eo.github.io/openeo-api/#operation/describe-collection
 
     eo:gsd
         required
@@ -240,7 +243,8 @@ class SarBands(JsonableObject):
 
     common_name:
         Description to fully explain the band, should include processing
-        information. CommonMark 0.28 syntax MAY be used for rich textrepresentation.
+        information. CommonMark 0.28 syntax MAY be used for rich text
+        representation.
 
     data_type:
         string
@@ -277,10 +281,10 @@ class SarBands(JsonableObject):
 #     sar:platform:
 #         required
 #         string
-#         Unique name of the specific platform the instrument is attached to. For
-#         satellites this would be the name of the satellite (e.g., landsat-8,
-#         sentinel-2A), whereas for drones this would be a unique name for the
-#         drone.
+#         Unique name of the specific platform the instrument is attached to.
+#         For satellites this would be the name of the satellite (e.g.,
+#         landsat-8, sentinel-2A), whereas for drones this would be a unique
+#         name for the drone.
 #
 #     sci:doi:
 #         string
@@ -346,21 +350,21 @@ class SarBands(JsonableObject):
 #     sar:platform:
 #         required
 #         string
-#         Unique name of the specific platform the instrument is attached to. For
-#         satellites this would be the name of the satellite (e.g., landsat-8,
-#         sentinel-2A), whereas for drones this would be a unique name for the
-#         drone.
+#         Unique name of the specific platform the instrument is attached to.
+#         For satellites this would be the name of the satellite (e.g.,
+#         landsat-8, sentinel-2A), whereas for drones this would be a unique
+#         name for the drone.
 #
 #     sar:constellation:
 #         string
 #         sar:constellation is the name of the group of satellites that have
 #         similar payloads and have their orbits arranged in a way to increase
-#         the temporal resolution of acquisitions of data with similar geometric
-#         and radiometric characteristics. Examples are the Sentinel-1
-#         constellation, which has S1A, S1B, S1C and S1D and RADARSAT, which has
-#         RADARSAT-1 and RADARSAT-2. This field allows users to search for
-#         Sentinel-1 data, for example, without needing to specify which specific
-#         platform the data came from.
+#         the temporal resolution of acquisitions of data with similar
+#         geometric and radiometric characteristics. Examples are the
+#         Sentinel-1 constellation, which has S1A, S1B, S1C and S1D and
+#         RADARSAT, which has RADARSAT-1 and RADARSAT-2. This field allows
+#         users to search for Sentinel-1 data, for example, without needing to
+#         specify which specific platform the data came from.
 #
 #     sar:instrument:
 #         required
@@ -372,16 +376,16 @@ class SarBands(JsonableObject):
 #         required
 #         string
 #         The name of the sensor acquisition mode that is commonly used. This
-#         should be the short name, if available. For example, WV for "Wave mode"
-#         of Sentinel-1 and Envisat ASAR satellites.
+#         should be the short name, if available. For example, WV for
+#         "Wave mode" of Sentinel-1 and Envisat ASAR satellites.
 #         example: "WV"
 #
 #     sar:frequency_band:
 #         required
 #         string
-#         The common name for the frequency band to make it easier to search for
-#         bands across instruments. See section "Common Frequency Band Names" for
-#         a list of accepted names.
+#         The common name for the frequency band to make it easier to search
+#         for bands across instruments. See section
+#         "Common Frequency Band Names" for a list of accepted names.
 #         "P", "L", "S", "C", "X", "Ku", "K", "Ka"
 #
 #     sar:center_wavelength:
@@ -395,17 +399,19 @@ class SarBands(JsonableObject):
 #     sar:polarization:
 #         required
 #         array of strings (length of 1 to 4)
-#         A single polarization or a polarization combinations specified as array.
-#         For single polarized radars one of `HH`, `VV`, `HV` or `VH` must be set.
-#         Fully polarimetric radars add all four polarizations to the array. Dual
-#         polarized radars and alternating polarization add the corresponding
-#         polarizations to the array, for instance for `HH+HV` add both `HH`
-#         and `HV`.
+#         A single polarization or a polarization combinations specified as
+#         array. For single polarized radars one of `HH`, `VV`, `HV` or `VH`
+#         must be set.
+#         Fully polarimetric radars add all four polarizations to the array.
+#         Dual polarized radars and alternating polarization add the
+#         corresponding polarizations to the array, for instance for `HH+HV`
+#         add both `HH` and `HV`.
 #         "HH", "VV", "HV", "VH"
 #
 #     sar:bands:
 #         array of objects
-#         This is a list of the available bands where each item is a Band Object.
+#         This is a list of the available bands where each item is a Band
+#         Object.
 #
 #     sar:type:
 #         required
@@ -429,17 +435,18 @@ class SarBands(JsonableObject):
 #     sar:looks:
 #         array of numbers (minimum = 0, length = 2 or 3)
 #         The number of groups of signal samples (looks). The first element of
-#         the array must be the number of range looks, the second element must be
-#         the number of azimuth looks, the optional third element is the
+#         the array must be the number of range looks, the second element must
+#         be the number of azimuth looks, the optional third element is the
 #         equivalent number of looks (ENL).
 #
 #     sar:absolute_orbit:
-#         array of numbers and arrays of numbers (with length = 2 of the array in the array and minimum = 0)
+#         array of numbers and arrays of numbers (with length = 2 of the array
+#         in the array and minimum = 0)
 #         A list of absolute orbit numbers. Usually corresponds to the orbit
 #         count within the orbit cycle (e.g. ALOS, ERS-1/2, JERS-1, and
-#         RADARSAT-1, Sentinel-1). For UAVSAR it is the Flight ID. A range can be
-#         specified as two element array in the array, e.g. `[25101, [25131, 25140]]`
-#         would be 25101 and 25131 to 25140.
+#         RADARSAT-1, Sentinel-1). For UAVSAR it is the Flight ID. A range can
+#         be specified as two element array in the array, e.g.
+#         `[25101, [25131, 25140]]` would be 25101 and 25131 to 25140.
 #     """
 #     # TODO Doppelpunkte!!!
 #     def __init__(
@@ -447,7 +454,8 @@ class SarBands(JsonableObject):
 #             sar_instrument: str, sar_instrument_mode: str,
 #             sar_frequency_band: str, sar_center_wavelength: float = None,
 #             sar_center_frequency: float = None,
-#             sar_polarization: Optional[Tuple[str, Optional[str], Optional[str], Optional[str]]] = None,
+#             sar_polarization: Optional[Tuple[str, Optional[str],
+#                                     Optional[str], Optional[str]]] = None,
 #             sar_bands: SarBands = SarBands(), sar_type: str,
 #             sar_resolution: Optional[Tuple[float, float]] = None,
 #             sar_pixel_spacing: Optional[Tuple[float, float]] = None,
@@ -476,58 +484,59 @@ class SarBands(JsonableObject):
 #     eo:gsd:
 #         required
 #         number
-#         The nominal Ground Sample Distance for the data, as measured in meters
-#         on the ground. Since GSD can vary across a scene depending on
-#         projection, this should be the average or most commonly used GSD in the
-#         center of the image. If the data includes multiple bands with different
-#         GSD values, this should be the value for the greatest number or most
-#         common bands. For instance, Landsat optical and short-wave IR bands are
-#         all 30 meters, but the panchromatic band is 15 meters. The eo:gsd
-#         should be 30 meters in this case since those are the bands most
-#         commonly used.
+#         The nominal Ground Sample Distance for the data, as measured in
+#         meters on the ground. Since GSD can vary across a scene depending on
+#         projection, this should be the average or most commonly used GSD in
+#         the center of the image. If the data includes multiple bands with
+#         different GSD values, this should be the value for the greatest
+#         number or most common bands. For instance, Landsat optical and
+#         short-wave IR bands are all 30 meters, but the panchromatic band is
+#         15 meters. The eo:gsd should be 30 meters in this case since those
+#         are the bands most commonly used.
 #
 #     eo:platform:
 #         required
 #         string
-#         Unique name of the specific platform the instrument is attached to. For
-#         satellites this would be the name of the satellite (e.g., landsat-8,
-#         sentinel-2A), whereas for drones this would be a unique name for the
-#         drone.
+#         Unique name of the specific platform the instrument is attached to.
+#         For satellites this would be the name of the satellite (e.g.,
+#         landsat-8, sentinel-2A), whereas for drones this would be a unique
+#         name for the drone.
 #
 #     eo:constellation:
 #         string
-#         The name of the group of satellites that have similar payloads and have
-#         their orbits arranged in a way to increase the temporal resolution of
-#         acquisitions of data with similar geometric and radiometric
-#         characteristics. Examples are the Sentinel-2 constellation, which has
-#         S2A and S2B and RapidEye. This field allows users to search for
-#         Sentinel-2 data, for example, without needing to specify which specific
-#         platform the data came from.
+#         The name of the group of satellites that have similar payloads and
+#         have their orbits arranged in a way to increase the temporal
+#         resolution of acquisitions of data with similar geometric and
+#         radiometric characteristics. Examples are the Sentinel-2
+#         constellation, which has S2A and S2B and RapidEye. This field allows
+#         users to search for Sentinel-2 data, for example, without needing to
+#         specify which specific platform the data came from.
 #
 #     eo:instrument:
 #         required
 #         string
-#         The name of the sensor used, although for Items which contain data from
-#         multiple sensors this could also name multiple sensors. For example,
-#         data from the Landsat-8 platform is collected with the OLI sensor as
-#         well as the TIRS sensor, but the data is distributed together and
-#         commonly referred to as OLI_TIRS.
+#         The name of the sensor used, although for Items which contain data
+#         from multiple sensors this could also name multiple sensors. For
+#         example, data from the Landsat-8 platform is collected with the OLI
+#         sensor as  well as the TIRS sensor, but the data is distributed
+#         together and commonly referred to as OLI_TIRS.
 #
 #     eo:epsg:
 #         nullable: true
 #         number
 #         EPSG code of the datasource, `null` if no EPSG code. A Coordinate
-#         Reference System (CRS) is the native reference system (sometimes called
-#         a 'projection') used by the data, and can usually be referenced using
-#         an EPSG code. If the data does not have a CRS, such as in the case of
-#         non-rectified imagery with Ground Control Points, `eo:epsg` should be
-#         set to `null`. It should also be set to `null` if a CRS exists, but for
-#         which there is no valid EPSG code.
+#         Reference System (CRS) is the native reference system (sometimes
+#         called a 'projection') used by the data, and can usually be
+#         referenced using an EPSG code. If the data does not have a CRS, such
+#         as in the case of non-rectified imagery with Ground Control Points,
+#         `eo:epsg` should be set to `null`. It should also be set to `null`
+#         if a CRS exists, but for which there is no valid EPSG code.
 #
 #     eo:bands:
 #         required
 #         list of object
-#         This is a list of the available bands where each item is a Band Object.
+#         This is a list of the available bands where each item is a Band
+#         Object.
 #     """
 #     # TODO Doppelpunkte!!!
 #     def __init__(self, eo_gsd: int, eo_platform: str, eo_constellation: str = None,
@@ -565,7 +574,8 @@ class CollectionProviders(JsonableObject):
         * processor: A processor is any provider who processed data to a
           derived product.
         * host: The host is the actual provider offering the data on their
-          storage. There should be no more than one host, specified as last element of the list.
+          storage. There should be no more than one host, specified as last
+          element of the list.
 
     url:
         string (url-format)
@@ -603,9 +613,10 @@ class CollectionEntry(JsonableObject):
         required
         string (collection_license)
         Collection's license(s) as a SPDX License identifier, SPDX expression,
-        or the string proprietary if the license is not on the SPDX license list.
-        Proprietary licensed data SHOULD add a link to the license text with the l
-        icense relation in the links section (not as a value of this fields).
+        or the string proprietary if the license is not on the SPDX license
+        list. Proprietary licensed data SHOULD add a link to the license text
+        with the license relation in the links section (not as a value of this
+        fields).
 
     stac_version:
         required
@@ -666,9 +677,10 @@ class CollectionEntry(JsonableObject):
     # TODO provider not required
     def __init__(self,
                  providers: Optional[CollectionProviders] = None,
-                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de",
-                                                         title="mundialis",
-                                                         rel="external"),
+                 links: Optional[List[EoLink]] = [EoLink(
+                     href="http://www.mundialis.de",
+                     title="mundialis",
+                     rel="external"),
                                                   ],
                  extent: Optional[CollectionExtent] = CollectionExtent(),
                  title: str = None,
@@ -727,8 +739,9 @@ class Collection(JsonableObject):
 # TODO !!!
 # collection_band_description:
 #     string
-#     Description to fully explain the band, should include processing information.
-#     CommonMark 0.28syntax MAY be used for rich text representation.",
+#     Description to fully explain the band, should include processing
+#     information. CommonMark 0.28syntax MAY be used for rich text
+#     representation.",
 #
 #
 # collection_dimension_type_spatial:
@@ -752,8 +765,8 @@ class Collection(JsonableObject):
 #
 # collection_dimension_step:
 #     number
-#     If the dimension consists of interval values, the space between the values.
-#     Use `null` for irregularly spaced steps.
+#     If the dimension consists of interval values, the space between the
+#     values. Use `null` for irregularly spaced steps.
 #
 # collection_dimension_unit:
 #     string

@@ -28,8 +28,10 @@ class Result(ResourceBase):
         self.db = GraphDB()
 
     def post(self):
-        """Run the job in an ephemeral mapset synchronously for 10 seconds. After 10 seconds the running job
-        will be killed on the actinia server and the response will be an termination report.
+        """Run the job in an ephemeral mapset synchronously for 10 seconds.
+        After 10 seconds the running job
+        will be killed on the actinia server and the response will be an
+        termination report.
         """
 
         try:
@@ -42,8 +44,9 @@ class Result(ResourceBase):
             if len(
                     ActiniaInterface.PROCESS_LOCATION) == 0 or len(
                     ActiniaInterface.PROCESS_LOCATION) > 1:
+                descr = "Processes can only be defined for a single location!"
                 return make_response(jsonify(
-                    {"description": "Processes can only be defined for a single location!"}, 400))
+                    {"description": descr}, 400))
 
             location = ActiniaInterface.PROCESS_LOCATION.keys()
             location = list(location)[0]
@@ -71,11 +74,13 @@ class Result(ResourceBase):
                                     mimetype=mimetype,
                                     direct_passthrough=True)
 
-                return make_response(jsonify({"job_id": response["resource_id"],
-                                              "job_info": response}), status)
+                return make_response(jsonify(
+                    {"job_id": response["resource_id"],
+                     "job_info": response}), status)
             else:
                 return ErrorSchema(id="1234567890", code=404, message=str(
-                    response), links=response["urls"]["status"]).as_response(status)
+                    response),
+                    links=response["urls"]["status"]).as_response(status)
         except Exception:
 
             e_type, e_value, e_tb = sys.exc_info()
@@ -90,10 +95,13 @@ class Result(ResourceBase):
     def wait_until_finished(self, response, max_time: int = 10):
         """Poll the status of a resource and assert its finished HTTP status
 
-        The response will be checked if the resource was accepted. Hence it must always be HTTP 200 status.
+        The response will be checked if the resource was accepted.
+        Hence it must always be HTTP 200 status.
 
-        The status URL from the response is then polled until status: finished, error or terminated.
-        The result of the poll can be checked against its HTTP status and its GRaaS status message.
+        The status URL from the response is then polled until status:
+        finished, error or terminated.
+        The result of the poll can be checked against its HTTP status and its
+        GRaaS status message.
 
         Args:
             response: The accept response

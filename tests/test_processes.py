@@ -22,7 +22,8 @@ class ProcessesTestCase(TestBase):
         self.assertEqual(len("processes"), 9)
 
 #    def test_process_zonal_statistics(self):
-#        response = self.app.get('/processes/zonal_statistics', headers=self.auth)
+#        response = self.app.get('/processes/zonal_statistics',
+#                                headers=self.auth)
 #        self.assertEqual(response.status_code, 200)
 #        data = json.loads(response.data.decode())
 #        pprint(data)

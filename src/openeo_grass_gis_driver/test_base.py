@@ -47,10 +47,13 @@ class TestBase(unittest.TestCase):
             status="finished"):
         """Poll the status of a resource and assert its finished HTTP status
 
-        The response will be checked if the resource was accepted. Hence it must always be HTTP 200 status.
+        The response will be checked if the resource was accepted.
+        Hence it must always be HTTP 200 status.
 
-        The status URL from the response is then polled until status: finished, error or terminated.
-        The result of the poll can be checked against its HTTP status and its GRaaS status message.
+        The status URL from the response is then polled until status:
+        finished, error or terminated.
+        The result of the poll can be checked against its HTTP status and its
+        GRaaS status message.
 
         Args:
             response: The accept response

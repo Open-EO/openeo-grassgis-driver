@@ -19,7 +19,10 @@ class PreviewTestCase(TestBase):
     #    def test_graph_bbox_from_raster_nc_job_ephemeral(self):
     #        """Test the bbox from raster process
     #        """
-    #        response = self.app.post('/result', data=json.dumps(BBOX_FROM_RASTER), content_type="application/json", headers=self.auth)
+    #        response = self.app.post('/result',
+    #                                 data=json.dumps(BBOX_FROM_RASTER),
+    #                                 content_type="application/json",
+    #                                 headers=self.auth)
     #
     #        data = json.loads(response.data.decode())
     #        pprint.pprint(data)
@@ -41,7 +44,8 @@ class PreviewTestCase(TestBase):
         self.assertEqual(200, response.status_code)
 
     def test_graph_filter_bbox_nc_job_ephemeral_error(self):
-        """Test the filter box process that produces an error because of wrong raster name
+        """Test the filter box process that produces an error because of wrong
+        raster name
         """
 
         fbox = FILTER_BBOX
@@ -102,7 +106,9 @@ class PreviewTestCase(TestBase):
 #    def test_graph_raster_export(self):
 #        """Run the raster export process
 #        """
-#        response = self.app.post('/result', data=json.dumps(RASTER_EXPORT), content_type="application/json", headers=self.auth)
+#        response = self.app.post('/result', data=json.dumps(RASTER_EXPORT),
+#                                 content_type="application/json",
+#                                 headers=self.auth)
 #
 #        #data = json.loads(response.data.decode())
 #        #pprint.pprint(data)
@@ -112,7 +118,10 @@ class PreviewTestCase(TestBase):
 #    def test_graph_rgb_raster_export(self):
 #        """Run the rgb raster export process
 #        """
-#        response = self.app.post('/result', data=json.dumps(RGB_RASTER_EXPORT), content_type="application/json", headers=self.auth)
+#        response = self.app.post('/result',
+#                                 data=json.dumps(RGB_RASTER_EXPORT),
+#                                 content_type="application/json",
+#                                 headers=self.auth)
 #
 #        #data = json.loads(response.data.decode())
 #        #pprint.pprint(data)
@@ -122,7 +131,9 @@ class PreviewTestCase(TestBase):
 #    def test_graph_raster_zonal_statistics(self):
 #        """Run the zonal statistics process
 #        """
-#        response = self.app.post('/result', data=json.dumps(ZONAL_STATISTICS), content_type="application/json", headers=self.auth)
+#        response = self.app.post('/result', data=json.dumps(ZONAL_STATISTICS),
+#                                 content_type="application/json",
+#                                 headers=self.auth)
 #
 #        data = json.loads(response.data.decode())
 #        pprint.pprint(data)
@@ -132,7 +143,9 @@ class PreviewTestCase(TestBase):
 #    def test_graph_map_algebra(self):
 #        """Run the map algebra process
 #        """
-#        response = self.app.post('/result', data=json.dumps(MAP_ALGEBRA), content_type="application/json", headers=self.auth)
+#        response = self.app.post('/result', data=json.dumps(MAP_ALGEBRA),
+#                                 content_type="application/json",
+#                                 headers=self.auth)
 #
 #        data = json.loads(response.data.decode())
 #        pprint.pprint(data)

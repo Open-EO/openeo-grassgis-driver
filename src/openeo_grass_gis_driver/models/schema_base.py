@@ -38,7 +38,11 @@ class JsonableObject:
     the response classes into JSON"""
 
     def to_json(self):
-        return json.dumps(self, default=lambda o: as_dict_without_nones(o), sort_keys=False, indent=2)
+        return json.dumps(
+            self,
+            default=lambda o: as_dict_without_nones(o),
+            sort_keys=False,
+            indent=2)
 
     def as_response(self, http_status):
         response = make_response(self.to_json(), http_status)
@@ -173,7 +177,11 @@ class File(JsonableObject):
 
     """
 
-    def __init__(self, path: str = None, size: int = None, modified: str = None):
+    def __init__(
+            self,
+            path: str = None,
+            size: int = None,
+            modified: str = None):
         self.path = path
         self.size = size
         self.modified = modified

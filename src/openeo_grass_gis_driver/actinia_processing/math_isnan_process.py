@@ -22,27 +22,35 @@ def create_process_description():
                                "description": "Any data type is allowed."
                        })
 
-    rv = ReturnValue(description="`true` if the data is not a number, otherwise `false`",
-                     schema={
-                             "type": "boolean"
-                     })
+    rv = ReturnValue(
+        description="`true` if the data is not a number, otherwise `false`",
+        schema={
+         "type": "boolean"})
 
     # Example
     arguments = {
         "x": 1
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"isnan_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "isnan_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Checks whether the specified value `x` is not a number.",
-                            summary="Value is not a number",
-                            parameters={"x": p_x
-                                        },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Checks whether the specified value `x` is not a number.",
+        summary="Value is not a number",
+        parameters={
+            "x": p_x},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -85,7 +93,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

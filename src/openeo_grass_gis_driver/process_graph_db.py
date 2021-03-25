@@ -14,4 +14,7 @@ class GraphDB(SqliteDict):
 
     """
     def __init__(self):
-        SqliteDict.__init__(self, filename=ActiniaConfig.GRAPH_DB, autocommit=True)
+        SqliteDict.__init__(
+            self,
+            filename=ActiniaConfig.GRAPH_DB,
+            autocommit=True)

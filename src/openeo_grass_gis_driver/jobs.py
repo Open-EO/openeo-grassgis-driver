@@ -75,7 +75,8 @@ class Jobs(ResourceBase):
         # job_id = str(uuid4())
         job = request.get_json()
 
-        # return ErrorSchema(id=uuid4(), message="A process graph is required in the request").as_response(400)
+        # return ErrorSchema(id=uuid4(), message="A process graph is required
+        # in the request").as_response(400)
 
         job_info = check_job(job=job, job_id=job_id)
         self.job_db[job_id] = job_info
@@ -108,7 +109,10 @@ def check_job(job, job_id):
         process_graph = job["process"]["process_graph"]
     else:
         process_graph = job["process_graph"]
-    process = ProcessGraph(title=title, description=description, process_graph=process_graph)
+    process = ProcessGraph(
+        title=title,
+        description=description,
+        process_graph=process_graph)
 
     created = str(datetime.now().isoformat())
 

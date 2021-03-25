@@ -16,10 +16,13 @@ PROCESS_NAME = "filter_temporal"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
 
     p_extent = Parameter(description="Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.",
                          schema={"type": "array",
@@ -55,12 +58,13 @@ def create_process_description():
                                    ]},
                          optional=False)
 
-    p_dim = Parameter(description="The temporal dimension to filter on. If the dimension is not set or is set to `null`, the data cube is expected to only have one temporal dimension. Fails with a `TooManyDimensions` error if it has more dimensions. Fails with a `DimensionNotAvailable` error if the specified dimension does not exist.\n\n**Note:** The default dimensions a data cube provides are described in the collection's metadata field `cube:dimensions`.",
-                      schema={"type": [
-                          "string",
-                          "null"
-                      ],
-                          "default": "null"})
+    p_dim = Parameter(
+        description="The temporal dimension to filter on. If the dimension is not set or is set to `null`, the data cube is expected to only have one temporal dimension. Fails with a `TooManyDimensions` error if it has more dimensions. Fails with a `DimensionNotAvailable` error if the specified dimension does not exist.\n\n**Note:** The default dimensions a data cube provides are described in the collection's metadata field `cube:dimensions`.",
+        schema={
+            "type": [
+                "string",
+                "null"],
+            "default": "null"})
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -71,16 +75,27 @@ def create_process_description():
         "extent": ["2001-01-01", "2005-01-01"],
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"filter_daterange_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "filter_daterange_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Limits the data cube to the specified interval of dates and/or times.",
-                            summary="Temporal filter for a date and/or time interval",
-                            parameters={"data": p_data, "extent": p_extent, "dimension": p_dim},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Limits the data cube to the specified interval of dates and/or times.",
+        summary="Temporal filter for a date and/or time interval",
+        parameters={
+            "data": p_data,
+            "extent": p_extent,
+            "dimension": p_dim},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -88,7 +103,11 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create__process_chain_entry(input_object: DataObject, start_time: str, end_time: str, output_object: DataObject):
+def create__process_chain_entry(
+        input_object: DataObject,
+        start_time: str,
+        end_time: str,
+        output_object: DataObject):
     """Create a Actinia command of the process chain that uses t.rast.extract to create a subset of a strds
        The filter checks whether the temporal dimension value is
        greater than or equal to the lower boundary (start date/time)
@@ -107,10 +126,12 @@ def create__process_chain_entry(input_object: DataObject, start_time: str, end_t
     start_time = start_time.replace('T', ' ')
     end_time = end_time.replace('T', ' ')
 
-    # Get info about the time series to extract its resolution settings and bbox
+    # Get info about the time series to extract its resolution settings and
+    # bbox
     rn = randint(0, 1000000)
 
-    # end_time can be null, and we can not find out if end_time is set because the input does not exist yet
+    # end_time can be null, and we can not find out if end_time is set because
+    # the input does not exist yet
     pc = {"id": "t_rast_extract_%i" % rn,
           "module": "t.rast.extract",
           "inputs": [{"param": "input", "value": input_object.grass_name()},
@@ -135,14 +156,17 @@ def get_process_list(node: Node):
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []
 
-    for data_object in node.get_parent_by_name(parent_name="data").output_objects:
+    for data_object in node.get_parent_by_name(
+            parent_name="data").output_objects:
 
         # Skip if the datatype is not a strds and put the input into the output
         if data_object.is_strds() is False:
             output_objects.append(data_object)
             continue
 
-        output_object = DataObject(name=f"{data_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+        output_object = DataObject(
+            name=f"{data_object.name}_{PROCESS_NAME}",
+            datatype=GrassDataType.STRDS)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)
 

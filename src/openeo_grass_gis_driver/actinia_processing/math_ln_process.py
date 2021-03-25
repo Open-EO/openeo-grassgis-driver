@@ -17,13 +17,12 @@ PROCESS_NAME = "ln"
 
 
 def create_process_description():
-    p_x = Parameter(description="A number to compute the natural logarithm for.",
-                    schema={
-                               "type": [
-                                 "number",
-                                 "null"
-                               ]
-                       })
+    p_x = Parameter(
+        description="A number to compute the natural logarithm for.",
+        schema={
+            "type": [
+                "number",
+                "null"]})
 
     rv = ReturnValue(description="The computed natural logarithm.",
                      schema={
@@ -38,17 +37,25 @@ def create_process_description():
         "x": 1
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"ln_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "ln_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="The natural logarithm is the logarithm to the base *e* of the number `x`.",
-                            summary="Natural logarithm",
-                            parameters={"x": p_x
-                                        },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="The natural logarithm is the logarithm to the base *e* of the number `x`.",
+        summary="Natural logarithm",
+        parameters={
+            "x": p_x},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -91,7 +98,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

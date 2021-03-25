@@ -46,9 +46,16 @@ def create_process_description():
         "y": True
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"and_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "and_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Checks if **both** values are true.",
@@ -100,7 +107,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

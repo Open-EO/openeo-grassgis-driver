@@ -3,7 +3,8 @@ from enum import Enum
 from typing import Set, Dict, Optional, Tuple, Union
 from random import randint
 
-# This is the process dictionary that is used to store all processes of the Actinia wrapper
+# This is the process dictionary that is used to store all processes of
+# the Actinia wrapper
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
 
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
@@ -35,7 +36,12 @@ class GrassDataType(Enum):
 class DataObject:
     """Data object that represents GRASS raster, vector and strds datatypes that can be defined in a process graph"""
 
-    def __init__(self, name: str, datatype: GrassDataType, mapset: str = None, location: str = None):
+    def __init__(
+            self,
+            name: str,
+            datatype: GrassDataType,
+            mapset: str = None,
+            location: str = None):
 
         self.name = name
         self.datatype = datatype
@@ -48,17 +54,30 @@ class DataObject:
     @staticmethod
     def from_string(name: str):
 
-        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(name)
+        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(
+            name)
 
         if datatype is None:
             raise Exception(f"Invalid collection id <{name}>")
 
         if GrassDataType.RASTER.value == datatype:
-            return DataObject(name=layer_name, datatype=GrassDataType.RASTER, mapset=mapset, location=location)
+            return DataObject(
+                name=layer_name,
+                datatype=GrassDataType.RASTER,
+                mapset=mapset,
+                location=location)
         elif GrassDataType.VECTOR.value == datatype:
-            return DataObject(name=layer_name, datatype=GrassDataType.VECTOR, mapset=mapset, location=location)
+            return DataObject(
+                name=layer_name,
+                datatype=GrassDataType.VECTOR,
+                mapset=mapset,
+                location=location)
         elif GrassDataType.STRDS.value == datatype:
-            return DataObject(name=layer_name, datatype=GrassDataType.STRDS, mapset=mapset, location=location)
+            return DataObject(
+                name=layer_name,
+                datatype=GrassDataType.STRDS,
+                mapset=mapset,
+                location=location)
 
         raise Exception(f"Unsupported object type <{datatype}>")
 
@@ -170,7 +189,8 @@ class Graph:
         if isinstance(graph_description, ProcessGraph):
             self.title: str = graph_description.title
             self.description: str = graph_description.description
-            self.build_process_graph_from_description(process_graph=graph_description.process_graph)
+            self.build_process_graph_from_description(
+                process_graph=graph_description.process_graph)
         else:
             if "title" not in graph_description:
                 # raise Exception("Title is required in the process graph")
@@ -184,7 +204,8 @@ class Graph:
             # only a process_graph
             if "process" not in graph_description and \
                "process_graph" not in graph_description:
-                raise Exception("process_graph is required in the process graph")
+                raise Exception(
+                    "process_graph is required in the process graph")
 
             if "process" in graph_description and \
                "process_graph" not in graph_description["process"]:
@@ -197,7 +218,8 @@ class Graph:
             self.title: str = graph_description["title"]
             self.description: str = graph_description["description"]
 
-            self.build_process_graph_from_description(process_graph=process_graph)
+            self.build_process_graph_from_description(
+                process_graph=process_graph)
 
     def build_process_graph_from_description(self, process_graph: dict):
         """Build the directed process graph from the graph description
@@ -236,7 +258,8 @@ class Graph:
         full_output_object_list = list()
 
         for node in self.root_nodes:
-            output_object_list, process_list = process_node_to_actinia_process_chain(node=node)
+            output_object_list, process_list = process_node_to_actinia_process_chain(
+                node=node)
             full_process_list.extend(process_list)
             full_output_object_list.extend(output_object_list)
 
@@ -348,7 +371,9 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
            "from_node" in node.arguments[key]:
             # input option comes from another node in the process graph
             # which output object in the set of output_objects?
-            value = list(node.get_parent_by_name(parent_name=key).output_objects)[0]
+            value = list(
+                node.get_parent_by_name(
+                    parent_name=key).output_objects)[0]
             data_object = value
         elif ao["schema"]["type"] == "boolean":
             # flag
@@ -369,7 +394,9 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
 
     # TODO: support modules that do not have input maps
     if data_object is None:
-        raise Exception("No input data object for actinia process '%s'" % module_name)
+        raise Exception(
+            "No input data object for actinia process '%s'" %
+            module_name)
 
     # output parameters
     if "returns" in module:
@@ -399,7 +426,9 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
                 # note that key is added to the output name
                 # in order to distinguish between different outputs
                 # of the same module
-                output_object = DataObject(name=f"{data_object.name}_{process_name}_{key}", datatype=datatype)
+                output_object = DataObject(
+                    name=f"{data_object.name}_{process_name}_{key}",
+                    datatype=datatype)
                 param = {"param": key,
                          "value": output_object.grass_name()}
                 pc["inputs"].append(param)

@@ -46,18 +46,26 @@ def create_process_description():
         "y": 2.5
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"add_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "add_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Sums up the two numbers `x` and `y` (*x + y*) and returns the computed sum.",
-                            summary="Addition of two numbers",
-                            parameters={"x": p_data,
-                                        "y": p_data2
-                                        },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Sums up the two numbers `x` and `y` (*x + y*) and returns the computed sum.",
+        summary="Addition of two numbers",
+        parameters={
+            "x": p_data,
+            "y": p_data2},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -100,7 +108,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

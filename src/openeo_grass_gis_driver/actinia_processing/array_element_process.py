@@ -22,11 +22,11 @@ def create_process_description():
                                 "items": {
                                   "description": "Any data type is allowed."
                                 }})
-    p_index = Parameter(description="The zero-based index of the element to retrieve.",
-                        schema={
-                                "type": "integer"
-                              },
-                        optional=True)
+    p_index = Parameter(
+        description="The zero-based index of the element to retrieve.",
+        schema={
+            "type": "integer"},
+        optional=True)
     p_label = Parameter(description="The label of the element to retrieve.",
                         schema=[
                                 {
@@ -49,18 +49,27 @@ def create_process_description():
         "label": 0
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"array_element_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "array_element_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Returns the element with the specified index or label from the array.",
-                            summary="Get an element from an array",
-                            parameters={"data": p_data,
-                                        "index": p_index,
-                                        "label": p_label},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Returns the element with the specified index or label from the array.",
+        summary="Get an element from an array",
+        parameters={
+            "data": p_data,
+            "index": p_index,
+            "label": p_label},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -103,7 +112,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

@@ -17,10 +17,13 @@ PROCESS_NAME = "mask_polygon"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
     p_poly = Parameter(description="One or more polygons used for filtering",
                        schema={"anyOf": [
                            {
@@ -32,13 +35,18 @@ def create_process_description():
                                "subtype": "vector-cube"
                            }]},
                        optional=False)
-    p_value = Parameter(description="The value used to replace non-zero and `true` values with",
-                        schema={"type": "object", "subtype": "string"},
-                        optional=True)
-    p_inside = Parameter(description="If set to `true` all pixels for which the point at the pixel center "
-                                     "**does** intersect with any polygon are replaced",
-                         schema={"type": "boolean"},
-                         optional=True)
+    p_value = Parameter(
+        description="The value used to replace non-zero and `true` values with",
+        schema={
+            "type": "object",
+            "subtype": "string"},
+        optional=True)
+    p_inside = Parameter(
+        description="If set to `true` all pixels for which the point at the pixel center "
+        "**does** intersect with any polygon are replaced",
+        schema={
+            "type": "boolean"},
+        optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -50,21 +58,30 @@ def create_process_description():
                 "replacement": "null",
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"filter_polygon_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "filter_polygon_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Limits the data cube over the spatial dimensions to the specified polygons.\n\nThe filter retains "
-                            "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
-                            "defined in the Simple Features standard by the OGC).",
-                            summary="Spatial filter using polygons",
-                            parameters={"data": p_data,
-                                        "mask": p_poly,
-                                        "replacement": p_value,
-                                        "inside": p_inside},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Limits the data cube over the spatial dimensions to the specified polygons.\n\nThe filter retains "
+        "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
+        "defined in the Simple Features standard by the OGC).",
+        summary="Spatial filter using polygons",
+        parameters={
+            "data": p_data,
+            "mask": p_poly,
+            "replacement": p_value,
+            "inside": p_inside},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -164,7 +181,9 @@ def get_process_list(node: Node):
 
     if "data" not in node.arguments or \
             "mask" not in node.arguments:
-        raise Exception("Process %s requires parameter data, polygons" % PROCESS_NAME)
+        raise Exception(
+            "Process %s requires parameter data, polygons" %
+            PROCESS_NAME)
 
     if "replacement" in node.arguments:
         mask_value = node.arguments["replacement"]
@@ -184,10 +203,13 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
-    pc = create_process_chain_entry(input_object, vector_object, inside, output_object)
+    pc = create_process_chain_entry(
+        input_object, vector_object, inside, output_object)
     process_list.extend(pc)
 
     return output_objects, process_list

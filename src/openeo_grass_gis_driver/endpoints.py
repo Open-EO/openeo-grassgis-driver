@@ -45,12 +45,16 @@ def create_endpoints():
 
     # EO Data Discovery
     flask_api.add_resource(Collections, '/collections')
-    flask_api.add_resource(CollectionInformationResource, '/collections/<string:name>')
+    flask_api.add_resource(
+        CollectionInformationResource,
+        '/collections/<string:name>')
 
     # Predefined Processes
     flask_api.add_resource(Processes, '/processes')
     # /processes/{process_id} is not in API 1.0
-    flask_api.add_resource(ProcessesProcessId, '/processes/<string:process_id>')
+    flask_api.add_resource(
+        ProcessesProcessId,
+        '/processes/<string:process_id>')
 
     # User-Defined Processes
     flask_api.add_resource(GraphValidation, '/validation')

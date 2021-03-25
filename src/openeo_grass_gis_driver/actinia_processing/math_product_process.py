@@ -27,20 +27,20 @@ def create_process_description():
                                  ]
                                }
                        })
-    p_nodata = Parameter(description="Indicates whether no-data values are ignored or not.",
-                         schema={
-                                 "type": "boolean"
-                         },
-                         default=True,
-                         optional=True)
+    p_nodata = Parameter(
+        description="Indicates whether no-data values are ignored or not.",
+        schema={
+            "type": "boolean"},
+        default=True,
+        optional=True)
 
-    rv = ReturnValue(description="The computed product of the sequence of numbers.",
-                     schema={
-                             "type": [
-                               "number",
-                               "null"
-                             ],
-                     })
+    rv = ReturnValue(
+        description="The computed product of the sequence of numbers.",
+        schema={
+            "type": [
+                "number",
+                "null"],
+             })
 
     # Example
     arguments = {
@@ -50,18 +50,26 @@ def create_process_description():
         ]
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"product_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "product_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Multiplies all elements in a sequential array of numbers and returns the computed product.",
-                            summary="Compute the product by multiplying numbers",
-                            parameters={"data": p_data,
-                                        "ignore_nodata": p_nodata
-                                        },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Multiplies all elements in a sequential array of numbers and returns the computed product.",
+        summary="Compute the product by multiplying numbers",
+        parameters={
+            "data": p_data,
+            "ignore_nodata": p_nodata},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -104,7 +112,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

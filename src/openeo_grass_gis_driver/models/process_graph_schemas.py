@@ -116,7 +116,7 @@ class ProcessGraphListEntry(JsonableObject):
         # x = re.search(pattern, id)
         # if not x:
         #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
-        #        message="The id MUST match the following pattern: %s" % pattern)
+        # message="The id MUST match the following pattern: %s" % pattern)
         self.id = id
 
 

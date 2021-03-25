@@ -34,9 +34,16 @@ class TestBase(unittest.TestCase):
         self.auth.add('Authorization', 'Basic ' + encodeAuth)
         response = self.app.get('/credentials/basic', headers=self.auth)
         resp_data = json.loads(response.data.decode())
-        self.auth.set('Authorization', 'Bearer basic//' + resp_data['access_token'])
+        self.auth.set(
+            'Authorization',
+            'Bearer basic//' +
+            resp_data['access_token'])
 
-    def wait_until_finished(self, response, http_status=200, status="finished"):
+    def wait_until_finished(
+            self,
+            response,
+            http_status=200,
+            status="finished"):
         """Poll the status of a resource and assert its finished HTTP status
 
         The response will be checked if the resource was accepted. Hence it must always be HTTP 200 status.
@@ -53,8 +60,16 @@ class TestBase(unittest.TestCase):
 
         """
         # Check if the resource was accepted
-        self.assertEqual(response.status_code, 200, "HTML status code is wrong %i" % response.status_code)
-        self.assertEqual(response.mimetype, "application/json", "Wrong mimetype %s" % response.mimetype)
+        self.assertEqual(
+            response.status_code,
+            200,
+            "HTML status code is wrong %i" %
+            response.status_code)
+        self.assertEqual(
+            response.mimetype,
+            "application/json",
+            "Wrong mimetype %s" %
+            response.mimetype)
 
         resp_data = json.loads(response.data.decode())
 
@@ -72,7 +87,11 @@ class TestBase(unittest.TestCase):
             time.sleep(0.2)
 
         self.assertEqual(resp_data["status"], status)
-        self.assertEqual(response.status_code, http_status, "HTML status code is wrong %i" % response.status_code)
+        self.assertEqual(
+            response.status_code,
+            http_status,
+            "HTML status code is wrong %i" %
+            response.status_code)
 
         time.sleep(0.4)
         return resp_data

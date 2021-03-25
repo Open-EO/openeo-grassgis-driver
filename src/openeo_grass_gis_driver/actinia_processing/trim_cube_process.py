@@ -17,10 +17,13 @@ PROCESS_NAME = "trim_cube"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -30,17 +33,26 @@ def create_process_description():
         "data": {"from_node": "get_data_1"}
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"trim_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "trim_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Removes slices solely containing no-data values. "
-                                        "If the dimension is irregular categorical then slices in the middle can be removed.",
-                            summary="Remove slices with no-data values",
-                            parameters={"data": p_data},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Removes slices solely containing no-data values. "
+        "If the dimension is irregular categorical then slices in the middle can be removed.",
+        summary="Remove slices with no-data values",
+        parameters={
+            "data": p_data},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -93,7 +105,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     pc = create_process_chain_entry(input_object, output_object)

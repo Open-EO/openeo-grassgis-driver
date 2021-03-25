@@ -71,11 +71,11 @@ raster_example = {
     "title": "\"South-West Wake county: Elevation NED 10m\"",
     "units": "\"none\"",
     "vdatum": "\"none\"",
-    "west": "630000"
-}
+    "west": "630000"}
 
 
-def coordinate_transform_extent_to_EPSG_4326(crs: str, extent: CollectionExtent):
+def coordinate_transform_extent_to_EPSG_4326(
+        crs: str, extent: CollectionExtent):
     """Tranfor the extent coordinates to lat/lon
 
     :param crs:
@@ -91,9 +91,11 @@ def coordinate_transform_extent_to_EPSG_4326(crs: str, extent: CollectionExtent)
 
     transform = osr.CoordinateTransformation(source, target)
 
-    lower_left = ogr.CreateGeometryFromWkt(f"POINT ({extent.spatial['bbox'][0][0]} {extent.spatial['bbox'][0][1]})")
+    lower_left = ogr.CreateGeometryFromWkt(
+        f"POINT ({extent.spatial['bbox'][0][0]} {extent.spatial['bbox'][0][1]})")
     lower_left.Transform(transform)
-    upper_right = ogr.CreateGeometryFromWkt(f"POINT ({extent.spatial['bbox'][0][2]} {extent.spatial['bbox'][0][3]})")
+    upper_right = ogr.CreateGeometryFromWkt(
+        f"POINT ({extent.spatial['bbox'][0][2]} {extent.spatial['bbox'][0][3]})")
     upper_right.Transform(transform)
 
     a0 = lower_left.GetPoint()[0]
@@ -113,28 +115,43 @@ class CollectionInformationResource(Resource):
     def get(self, name):
 
         # List strds maps from the GRASS location
-        location, mapset, datatype, layer = self.iface.layer_def_to_components(name)
+        location, mapset, datatype, layer = self.iface.layer_def_to_components(
+            name)
 
         status_code, layer_data = self.iface.layer_info(layer_name=name)
         if status_code != 200:
-            return make_response(jsonify({"id": "12345678",
-                                          "code": "CollectionNotFound",
-                                          "message": "Collection '%s' does not exist." % (name),
-                                          "links": {}}),
-                                 404)
+            return make_response(
+                jsonify(
+                    {
+                        "id": "12345678",
+                        "code": "CollectionNotFound",
+                        "message": "Collection '%s' does not exist." %
+                        (name),
+                        "links": {}}),
+                404)
 
         # Get the projection from the GRASS mapset
-        status_code, mapset_info = self.iface.mapset_info(location=location, mapset=mapset)
+        status_code, mapset_info = self.iface.mapset_info(
+            location=location, mapset=mapset)
         if status_code != 200:
-            return make_response(jsonify({"id": "12345678",
-                                          "code": "Internal",
-                                          "message": "Server error: %s" % (mapset_info),
-                                          "links": {}}),
-                                 500)
+            return make_response(
+                jsonify(
+                    {
+                        "id": "12345678",
+                        "code": "Internal",
+                        "message": "Server error: %s" %
+                        (mapset_info),
+                        "links": {}}),
+                500)
 
-        extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
-                                           float(layer_data["east"]), float(layer_data["north"])),
-                                  temporal=("1900-01-01T00:00:00", "2100-01-01T00:00:00"))
+        extent = CollectionExtent(
+            spatial=(
+                float(
+                    layer_data["west"]), float(
+                    layer_data["south"]), float(
+                    layer_data["east"]), float(
+                        layer_data["north"])), temporal=(
+                            "1900-01-01T00:00:00", "2100-01-01T00:00:00"))
 
         title = "Raster dataset"
         bands = []
@@ -154,18 +171,35 @@ class CollectionInformationResource(Resource):
             end_time = layer_data["end_time"]
 
             if start_time:
-                start_time = start_time.replace(" ", "T").replace("'", "").replace('"', '')
+                start_time = start_time.replace(
+                    " ",
+                    "T").replace(
+                    "'",
+                    "").replace(
+                    '"',
+                    '')
 
             if end_time:
-                end_time = end_time.replace(" ", "T").replace("'", "").replace('"', '')
+                end_time = end_time.replace(
+                    " ",
+                    "T").replace(
+                    "'",
+                    "").replace(
+                    '"',
+                    '')
 
             dimensions['t'] = {"type": "temporal",
                                "extent": [start_time, end_time]
                                }
 
-            extent = CollectionExtent(spatial=(float(layer_data["west"]), float(layer_data["south"]),
-                                               float(layer_data["east"]), float(layer_data["north"])),
-                                      temporal=(start_time, end_time))
+            extent = CollectionExtent(
+                spatial=(
+                    float(
+                        layer_data["west"]), float(
+                        layer_data["south"]), float(
+                        layer_data["east"]), float(
+                        layer_data["north"])), temporal=(
+                            start_time, end_time))
 
             # TODO: band_names must be in layer_data
             if "number_of_bands" in layer_data:
@@ -203,7 +237,8 @@ class CollectionInformationResource(Resource):
         if datatype.lower() == "vector":
             title = "Vector dataset"
 
-        description = "GRASS GIS location/mapset path: /%s/%s" % (location, mapset)
+        description = "GRASS GIS location/mapset path: /%s/%s" % (
+            location, mapset)
         crs = mapset_info["projection"]
 
         coordinate_transform_extent_to_EPSG_4326(crs=crs, extent=extent)

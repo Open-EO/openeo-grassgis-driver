@@ -26,13 +26,12 @@ def create_process_description():
                                "description": "Any data type is allowed."
                        })
 
-    rv = ReturnValue(description="`true` if `x` is strictly greater than `y` or `null` if any operand is `null`, otherwise `false`.",
-                     schema={
-                             "type": [
-                               "boolean",
-                               "null"
-                             ]
-                     })
+    rv = ReturnValue(
+        description="`true` if `x` is strictly greater than `y` or `null` if any operand is `null`, otherwise `false`.",
+        schema={
+            "type": [
+                "boolean",
+                "null"]})
 
     # Example
     arguments = {
@@ -40,18 +39,26 @@ def create_process_description():
         "y": None
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"gt_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "gt_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Compares whether `x` is strictly greater than `y`.",
-                            summary="Greater than comparison",
-                            parameters={"x": p_x,
-                                        "y": p_y
-                                        },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Compares whether `x` is strictly greater than `y`.",
+        summary="Greater than comparison",
+        parameters={
+            "x": p_x,
+            "y": p_y},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -94,7 +101,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

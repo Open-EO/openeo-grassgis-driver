@@ -33,23 +33,23 @@ def create_process_description():
                                   "type": "string"
                                 }
                               ])
-    p_type = Parameter(description="The type of dimension, defaults to `other`.",
-                       schema={
-                                "type": "string",
-                                "enum": [
-                                  "spatial",
-                                  "temporal",
-                                  "bands",
-                                  "other"
-                                ]
-                              },
-                       default="other",
-                       optional=True)
+    p_type = Parameter(
+        description="The type of dimension, defaults to `other`.",
+        schema={
+            "type": "string",
+            "enum": [
+                "spatial",
+                "temporal",
+                "bands",
+                "other"]},
+        default="other",
+        optional=True)
 
-    rv = ReturnValue(description="The data cube with a newly added dimension. "
-                                 "The new dimension has exactly one dimension label. "
-                                 "All other dimensions remain unchanged.",
-                     schema={"type": "object", "subtype": "raster-cube"})
+    rv = ReturnValue(
+        description="The data cube with a newly added dimension. "
+        "The new dimension has exactly one dimension label. "
+        "All other dimensions remain unchanged.", schema={
+            "type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {
@@ -59,21 +59,30 @@ def create_process_description():
         "type": "spatial"
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"add_dimension_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "add_dimension_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Limits the data cube over the spatial dimensions to the specified polygons.\n\nThe filter retains "
-                            "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
-                            "defined in the Simple Features standard by the OGC).",
-                            summary="Spatial filter using polygons",
-                            parameters={"data": p_data,
-                                        "name": p_name,
-                                        "label": p_label,
-                                        "type": p_type},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Limits the data cube over the spatial dimensions to the specified polygons.\n\nThe filter retains "
+        "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
+        "defined in the Simple Features standard by the OGC).",
+        summary="Spatial filter using polygons",
+        parameters={
+            "data": p_data,
+            "name": p_name,
+            "label": p_label,
+            "type": p_type},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 

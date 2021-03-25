@@ -42,5 +42,8 @@ class JobsJobIdEstimate(ResourceBase):
 
             return make_response(jsonify(estimate), 200)
         else:
-            return ErrorSchema(id="123456678", code=404,
-                               message=f"job with id {job_id} not found in database.").as_response(http_status=404)
+            return ErrorSchema(
+                id="123456678",
+                code=404,
+                message=f"job with id {job_id} not found in database.").as_response(
+                http_status=404)

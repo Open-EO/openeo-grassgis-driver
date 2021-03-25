@@ -29,7 +29,11 @@ class PreviewTestCase(TestBase):
     def test_graph_filter_bbox_nc_job_ephemeral(self):
         """Test the filter box process
         """
-        response = self.app.post('/result', data=json.dumps(FILTER_BBOX), content_type="application/json", headers=self.auth)
+        response = self.app.post(
+            '/result',
+            data=json.dumps(FILTER_BBOX),
+            content_type="application/json",
+            headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -42,7 +46,11 @@ class PreviewTestCase(TestBase):
 
         fbox = FILTER_BBOX
         fbox["process"]["process_graph"]["get_data_1"]["arguments"]["id"] = "nc_spm_08.PERMANENT.raster.elevation_nonon"
-        response = self.app.post('/result', data=json.dumps(fbox), content_type="application/json", headers=self.auth)
+        response = self.app.post(
+            '/result',
+            data=json.dumps(fbox),
+            content_type="application/json",
+            headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -52,7 +60,11 @@ class PreviewTestCase(TestBase):
     def test_graph_get_data_1(self):
         """Test the get data process to get raster data
         """
-        response = self.app.post('/result', data=json.dumps(GET_DATA_1), content_type="application/json", headers=self.auth)
+        response = self.app.post(
+            '/result',
+            data=json.dumps(GET_DATA_1),
+            content_type="application/json",
+            headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -62,7 +74,11 @@ class PreviewTestCase(TestBase):
     def test_graph_get_data_3(self):
         """Test the get data process to get strds data
         """
-        response = self.app.post('/result', data=json.dumps(GET_DATA_3), content_type="application/json", headers=self.auth)
+        response = self.app.post(
+            '/result',
+            data=json.dumps(GET_DATA_3),
+            content_type="application/json",
+            headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)
@@ -72,7 +88,11 @@ class PreviewTestCase(TestBase):
     def test_graph_daterange(self):
         """Run the daterange process
         """
-        response = self.app.post('/result', data=json.dumps(DATERANGE), content_type="application/json", headers=self.auth)
+        response = self.app.post(
+            '/result',
+            data=json.dumps(DATERANGE),
+            content_type="application/json",
+            headers=self.auth)
 
         data = json.loads(response.data.decode())
         pprint.pprint(data)

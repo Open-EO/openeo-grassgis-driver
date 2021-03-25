@@ -99,7 +99,8 @@ class ReturnValue(JsonableObject):
         documentation, e.g. bbox or crs.
     """
 
-    def __init__(self, description: str, schema: dict, media_type: Optional[str] = "application/json"):
+    def __init__(self, description: str, schema: dict,
+                 media_type: Optional[str] = "application/json"):
         self.description = description
         self.schema = schema
         self.media_type = media_type

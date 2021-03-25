@@ -19,19 +19,41 @@ PROCESS_NAME = "reduce_time"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
-    p_method = Parameter(description="The method to reduce the time dimension of a "
-                                     "space-time raster dataset",
-                         schema={"type": "string"},
-                         optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
+    p_method = Parameter(
+        description="The method to reduce the time dimension of a "
+        "space-time raster dataset",
+        schema={
+            "type": "string"},
+        optional=False)
 
-    p_method.enum = ["average", "count", "median", "mode", "minimum", "min_raster", "maximum",
-                     "max_raster", "stddev", "range,sum", "variance", "diversity", "slope",
-                     "offset", "detcoeff", "quart1", "quart3", "perc90", "skewness",
-                     "kurtosis"]
+    p_method.enum = [
+        "average",
+        "count",
+        "median",
+        "mode",
+        "minimum",
+        "min_raster",
+        "maximum",
+        "max_raster",
+        "stddev",
+        "range,sum",
+        "variance",
+        "diversity",
+        "slope",
+        "offset",
+        "detcoeff",
+        "quart1",
+        "quart3",
+        "perc90",
+        "skewness",
+        "kurtosis"]
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -41,16 +63,26 @@ def create_process_description():
         "data": {"from_node": "get_strds_data"},
         "method": "minimum"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"reduce_time_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Reduce the time dimension of a space-time raster dataset "
-                                        "with different reduce options.",
-                            summary="Reduce the time dimension of a space-time raster dataset.",
-                            parameters={"data": p_data, "method": p_method},
-                            returns=rv,
-                            examples=examples)
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "reduce_time_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Reduce the time dimension of a space-time raster dataset "
+        "with different reduce options.",
+        summary="Reduce the time dimension of a space-time raster dataset.",
+        parameters={
+            "data": p_data,
+            "method": p_method},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -58,7 +90,10 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_object: DataObject, method, output_object: DataObject):
+def create_process_chain_entry(
+        input_object: DataObject,
+        method,
+        output_object: DataObject):
     """Create a Actinia process description that uses t.rast.series to reduce a time series.
 
     :param input_object: The input time series object
@@ -95,11 +130,14 @@ def get_process_list(node: Node):
 
     for input_object in node.get_parent_by_name("data").output_objects:
 
-        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.RASTER)
+        output_object = DataObject(
+            name=f"{input_object.name}_{PROCESS_NAME}",
+            datatype=GrassDataType.RASTER)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)
 
-        pc = create_process_chain_entry(input_object, node.arguments["method"], output_object)
+        pc = create_process_chain_entry(
+            input_object, node.arguments["method"], output_object)
         process_list.append(pc)
 
     return output_objects, process_list

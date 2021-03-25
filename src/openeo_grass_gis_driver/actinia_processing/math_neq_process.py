@@ -25,31 +25,28 @@ def create_process_description():
                     schema={
                                "description": "Any data type is allowed."
                        })
-    p_delta = Parameter(description="Only applicable for comparing two numbers.",
-                        schema={
-                             "type": [
-                               "number",
-                               "null"
-                             ],
-                         },
-                        default=None,
-                        optional=True
-                        )
-    p_case = Parameter(description="Only applicable for comparing two strings.",
-                       schema={
-                               "type": "boolean"
-                       },
-                       default=None,
-                       optional=True
-                       )
+    p_delta = Parameter(
+        description="Only applicable for comparing two numbers.",
+        schema={
+            "type": [
+                "number",
+                "null"],
+            },
+        default=None,
+        optional=True)
+    p_case = Parameter(
+        description="Only applicable for comparing two strings.",
+        schema={
+            "type": "boolean"},
+        default=None,
+        optional=True)
 
-    rv = ReturnValue(description="Returns `true` if `x` is *not* equal to `y`, `null` if any operand is `null`, otherwise `false`.",
-                     schema={
-                             "type": [
-                               "boolean",
-                               "null"
-                             ]
-                     })
+    rv = ReturnValue(
+        description="Returns `true` if `x` is *not* equal to `y`, `null` if any operand is `null`, otherwise `false`.",
+        schema={
+            "type": [
+                "boolean",
+                "null"]})
 
     # Example
     arguments = {
@@ -57,20 +54,28 @@ def create_process_description():
         "y": None
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"neq_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "neq_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Compares whether `x` is *not* strictly equal to `y`.",
-                            summary="Not equal to comparison",
-                            parameters={"x": p_x,
-                                        "y": p_y,
-                                        "delta": p_delta,
-                                        "case_sensitive": p_case
-                                        },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Compares whether `x` is *not* strictly equal to `y`.",
+        summary="Not equal to comparison",
+        parameters={
+            "x": p_x,
+            "y": p_y,
+            "delta": p_delta,
+            "case_sensitive": p_case},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -113,7 +118,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

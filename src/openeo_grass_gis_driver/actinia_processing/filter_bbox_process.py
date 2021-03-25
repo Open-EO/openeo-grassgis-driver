@@ -18,10 +18,13 @@ PROCESS_NAME = "filter_bbox"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
     p_extent = Parameter(description="A bounding box, which may include a vertical axis (see `base` and `height`).\n\n"
                                      "The coordinate reference system of the extent must be specified as "
                                      "[EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
@@ -113,9 +116,16 @@ def create_process_description():
         },
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"filter_bbox_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "filter_bbox_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Spatial filter using a bounding box",
@@ -174,8 +184,10 @@ def get_process_list(node: Node) -> Tuple[list, list]:
             "east" not in node.arguments["extent"] or \
             "west" not in node.arguments["extent"] or \
             "crs" not in node.arguments["extent"]:
-        raise Exception("Process %s requires parameter data and extent with north, south, east, west, "
-                        "crs" % PROCESS_NAME)
+        raise Exception(
+            "Process %s requires parameter data and extent with north, south, east, west, "
+            "crs" %
+            PROCESS_NAME)
 
     north = node.arguments["extent"]["north"]
     south = node.arguments["extent"]["south"]
@@ -193,7 +205,8 @@ def get_process_list(node: Node) -> Tuple[list, list]:
                                     west=west, crs=crs)
     process_list.append(pc)
 
-    for data_object in node.get_parent_by_name(parent_name="data").output_objects:
+    for data_object in node.get_parent_by_name(
+            parent_name="data").output_objects:
         output_objects.append(data_object)
         node.add_output(data_object)
 

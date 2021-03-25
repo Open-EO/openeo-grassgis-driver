@@ -18,13 +18,19 @@ PROCESS_NAME = "save_result"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
-    p_format = Parameter(description="The format of the export. Default is GeotTiff format.",
-                         schema={"type": "string", "default": "GTiff"},
-                         optional=True)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
+    p_format = Parameter(
+        description="The format of the export. Default is GeotTiff format.",
+        schema={
+            "type": "string",
+            "default": "GTiff"},
+        optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -33,16 +39,26 @@ def create_process_description():
     arguments = {"data": {"from_node": "get_b08_data"},
                  "format": "GTiff"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"save_result_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="This process exports an arbitrary number of raster map layers "
-                                        "using the region specified upstream.",
-                            summary="Exports raster map layers using the region specified upstream.",
-                            parameters={"data": p_data, "format": p_format},
-                            returns=rv,
-                            examples=examples)
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "save_result_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="This process exports an arbitrary number of raster map layers "
+        "using the region specified upstream.",
+        summary="Exports raster map layers using the region specified upstream.",
+        parameters={
+            "data": p_data,
+            "format": p_format},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -65,12 +81,12 @@ def create_process_chain_entry(input_object: DataObject):
     if input_object.is_vector():
         output_format = "GML"
 
-    exporter = {
-        "id": "save_result_%i" % rn,
-        "module": "exporter",
-        "outputs": [{"export": {"type": input_object.datatype.value, "format": output_format},
-                     "param": "map",
-                     "value": input_object.grass_name()}]}
+    exporter = {"id": "save_result_%i" % rn,
+                "module": "exporter",
+                "outputs": [{"export": {"type": input_object.datatype.value,
+                                        "format": output_format},
+                             "param": "map",
+                             "value": input_object.grass_name()}]}
 
     pc.append(exporter)
 

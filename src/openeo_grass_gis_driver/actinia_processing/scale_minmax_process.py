@@ -20,10 +20,13 @@ PROCESS_NAME = "scale_minmax"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
     p_min = Parameter(description="New minimum value",
                       schema={"type": "object", "format": "float"},
                       optional=False)
@@ -41,17 +44,26 @@ def create_process_description():
         "max": 255,
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"scale_minmax_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Scales the image values between specified min and max values.",
-                            summary="Rescale raster data based on interval",
-                            parameters={"data": p_data,
-                                        "min": p_min,
-                                        "max": p_max},
-                            returns=rv,
-                            examples=examples)
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "scale_minmax_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Scales the image values between specified min and max values.",
+        summary="Rescale raster data based on interval",
+        parameters={
+            "data": p_data,
+            "min": p_min,
+            "max": p_max},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -100,7 +112,9 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     if "data" not in node.arguments or \
             "min" not in node.arguments or \
             "max" not in node.arguments:
-        raise Exception("Process %s requires parameter data, min, max" % PROCESS_NAME)
+        raise Exception(
+            "Process %s requires parameter data, min, max" %
+            PROCESS_NAME)
 
     newmin = node.arguments["min"]
     newmax = node.arguments["max"]
@@ -108,11 +122,14 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     # for each raster separately
     for input_object in node.get_parent_by_name("data").output_objects:
 
-        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.RASTER)
+        output_object = DataObject(
+            name=f"{input_object.name}_{PROCESS_NAME}",
+            datatype=GrassDataType.RASTER)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)
 
-        pc = create_process_chain_entry(input_object, newmin, newmax, output_object)
+        pc = create_process_chain_entry(
+            input_object, newmin, newmax, output_object)
         process_list.append(pc)
 
     # TODO: create strds from output raster maps

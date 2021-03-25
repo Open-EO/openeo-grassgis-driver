@@ -14,4 +14,7 @@ class JobDB(SqliteDict):
 
     """
     def __init__(self):
-        SqliteDict.__init__(self, filename=ActiniaConfig.JOB_DB, autocommit=True)
+        SqliteDict.__init__(
+            self,
+            filename=ActiniaConfig.JOB_DB,
+            autocommit=True)

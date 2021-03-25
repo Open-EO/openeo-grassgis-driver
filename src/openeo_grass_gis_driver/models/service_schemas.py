@@ -136,7 +136,11 @@ class Service(JsonableObject):
         pattern = r"^[A-Za-z0-9_\-\.~]+$"
         x = re.search(pattern, id)
         if not x:
-            es = ErrorSchema(id=str(datetime.now()), code=400,
-                             message="The id MUST match the following pattern: %s" % pattern)
+            es = ErrorSchema(
+                id=str(
+                    datetime.now()),
+                code=400,
+                message="The id MUST match the following pattern: %s" %
+                pattern)
             return make_response(es.to_json(), 400)
         self.id = id

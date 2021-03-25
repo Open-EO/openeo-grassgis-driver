@@ -27,30 +27,27 @@ def create_process_description():
                                  ]
                                }
                        })
-    p_prob = Parameter(description="A list of probabilities to calculate quantiles for. The probabilities must be between 0 and 1.",
-                       schema={
-                               "type": "array",
-                               "items": {
-                                 "type": "number",
-                                 "minimum": 0,
-                                 "maximum": 1
-                                   }
-                       },
-                       optional=True
-                       )
-    p_quant = Parameter(description="A number of intervals to calculate quantiles for. Calculates q-quantiles with (nearly) equal-sized intervals.",
-                        schema={
-                               "type": "integer",
-                               "minimum": 2
-                         },
-                        optional=True
-                        )
-    p_nodata = Parameter(description="Indicates whether no-data values are ignored or not.",
-                         schema={
-                                 "type": "boolean"
-                         },
-                         default=True,
-                         optional=True)
+    p_prob = Parameter(
+        description="A list of probabilities to calculate quantiles for. The probabilities must be between 0 and 1.",
+        schema={
+            "type": "array",
+            "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1}},
+        optional=True)
+    p_quant = Parameter(
+        description="A number of intervals to calculate quantiles for. Calculates q-quantiles with (nearly) equal-sized intervals.",
+        schema={
+            "type": "integer",
+            "minimum": 2},
+        optional=True)
+    p_nodata = Parameter(
+        description="Indicates whether no-data values are ignored or not.",
+        schema={
+            "type": "boolean"},
+        default=True,
+        optional=True)
 
     rv = ReturnValue(description="An array with the computed quantiles.",
                      schema={
@@ -85,20 +82,28 @@ def create_process_description():
         ]
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"quantiles_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "quantiles_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Calculates quantiles, which are cut points dividing the range of a probability distribution.",
-                            summary="Quantiles",
-                            parameters={"data": p_data,
-                                        "probabilities": p_prob,
-                                        "q": p_quant,
-                                        "ignore_nodata": p_nodata
-                                        },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Calculates quantiles, which are cut points dividing the range of a probability distribution.",
+        summary="Quantiles",
+        parameters={
+            "data": p_data,
+            "probabilities": p_prob,
+            "q": p_quant,
+            "ignore_nodata": p_nodata},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -141,7 +146,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

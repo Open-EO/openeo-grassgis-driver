@@ -19,10 +19,13 @@ PROCESS_NAME = "percentile_time"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
     p_percentile = Parameter(description="The percentile to get from a "
                                          "space-time raster dataset",
                              schema={"type": "object", "subtype": "float"},
@@ -35,17 +38,27 @@ def create_process_description():
     arguments = {"data": {"from_node": "get_strds_data"},
                  "percentile": "5"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"percentile_time_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "percentile_time_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Reduce the time dimension of a space-time raster dataset "
-                                        "by getting the percentile.",
-                            summary="Reduce the time dimension of a space-time raster dataset.",
-                            parameters={"data": p_data, "percentile": p_percentile},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Reduce the time dimension of a space-time raster dataset "
+        "by getting the percentile.",
+        summary="Reduce the time dimension of a space-time raster dataset.",
+        parameters={
+            "data": p_data,
+            "percentile": p_percentile},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -53,7 +66,10 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_object: DataObject, percentile, output_object: DataObject):
+def create_process_chain_entry(
+        input_object: DataObject,
+        percentile,
+        output_object: DataObject):
     """Create a Actinia process description that uses t.rast.series to reduce a time series.
 
     :param input_time_series: The input time series object
@@ -94,11 +110,14 @@ def get_process_list(node: Node):
     for data_object in node.get_parent_by_name("data").output_objects:
         # multiple strds as input ?
         # multiple raster layers as output !
-        output_object = DataObject(name=f"{data_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+        output_object = DataObject(
+            name=f"{data_object.name}_{PROCESS_NAME}",
+            datatype=GrassDataType.STRDS)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)
 
-        pc = create_process_chain_entry(data_object, node.arguments["percentile"], output_object)
+        pc = create_process_chain_entry(
+            data_object, node.arguments["percentile"], output_object)
         process_list.append(pc)
 
     return output_objects, process_list

@@ -22,10 +22,13 @@ PROCESS_NAME = "multilayer_mask"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or a space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or a space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
 
     rv = ReturnValue(description="Multilayer mask as EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -33,19 +36,28 @@ def create_process_description():
     # Example
     arguments = {"data": {"from_node": "get_strds_data"}}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"multilayer_mask_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "multilayer_mask_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Creates a mask using several bands of an EO dataset. "
-                                        "Each pixel that has nodata or invalid value in any of "
-                                        "the layers/bands gets value 1, pixels that have valid "
-                                        "values in all layers/bands get value 0.",
-                            summary="Create a multilayer mask from several raster datasets.",
-                            parameters={"data": p_data},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Creates a mask using several bands of an EO dataset. "
+        "Each pixel that has nodata or invalid value in any of "
+        "the layers/bands gets value 1, pixels that have valid "
+        "values in all layers/bands get value 0.",
+        summary="Create a multilayer mask from several raster datasets.",
+        parameters={
+            "data": p_data},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -53,7 +65,9 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(data_object: DataObject, output_object: DataObject):
+def create_process_chain_entry(
+        data_object: DataObject,
+        output_object: DataObject):
     """Create a Actinia process description that uses t.rast.series
        and r.mapcalc to create a multilayer mask.
 
@@ -62,17 +76,24 @@ def create_process_chain_entry(data_object: DataObject, output_object: DataObjec
     :return: A Actinia process chain description
     """
 
-    output_temp_object = DataObject(name=f"{output_object.name}_temp", datatype=GrassDataType.RASTER)
+    output_temp_object = DataObject(
+        name=f"{output_object.name}_temp",
+        datatype=GrassDataType.RASTER)
 
     # get number of maps in input_time_series
     iface = ActiniaInterface()
     # this is not working because the input object might not yet exist
-    status_code, layer_data = iface.layer_info(layer_name=data_object.grass_name())
+    status_code, layer_data = iface.layer_info(
+        layer_name=data_object.grass_name())
     if status_code != 200:
-        return make_response(jsonify({"description": "An internal error occurred "
-                                                     "while catching GRASS GIS layer information "
-                                                     "for layer <%s>!\n Error: %s"
-                                                     "" % (data_object, str(layer_data))}, 400))
+        return make_response(
+            jsonify(
+                {
+                    "description": "An internal error occurred "
+                    "while catching GRASS GIS layer information "
+                    "for layer <%s>!\n Error: %s"
+                    "" %
+                    (data_object, str(layer_data))}, 400))
     nmaps = layer_data['number_of_maps']
 
     rn = randint(0, 1000000)
@@ -112,7 +133,9 @@ def get_process_list(node: Node):
     output_objects = []
 
     data_object = list(input_objects)[-1]
-    output_object = DataObject(name=f"{data_object.name}_{PROCESS_NAME}", datatype=GrassDataType.RASTER)
+    output_object = DataObject(
+        name=f"{data_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.RASTER)
     output_objects.append(output_object)
     node.add_output(output_object=output_object)
 

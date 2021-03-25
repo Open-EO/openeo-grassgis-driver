@@ -33,19 +33,19 @@ def create_process_description():
     p_data = Parameter(description="Raster data cube",
                        schema={"type": "object", "subtype": "raster-cube"},
                        optional=False)
-    p_uprocess = Parameter(description="Applies a unary process to each pixel value in the data cube. "
-                                       "A unary process takes a single value and returns a single value.",
-                           schema={"type": "object",
-                                   "subtype": "process-graph",
-                                   "parameters": [{
-                                       "name": "x",
-                                       "description": "The value to process.",
-                                       "schema": {
-                                          "description": "Any data type."
-                                         }
-                                      }]
-                                   },
-                           optional=False)
+    p_uprocess = Parameter(
+        description="Applies a unary process to each pixel value in the data cube. "
+        "A unary process takes a single value and returns a single value.",
+        schema={
+            "type": "object",
+            "subtype": "process-graph",
+            "parameters": [
+                {
+                    "name": "x",
+                    "description": "The value to process.",
+                    "schema": {
+                        "description": "Any data type."}}]},
+        optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -55,18 +55,27 @@ def create_process_description():
         "data": {"from_node": "get_strds_data"},
         "process": "null"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"apply1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Applies a **unary** process which takes a single value "
-                                        "such as `abs` or `sqrt` to each pixel value and returns "
-                                        "a single new value for each pixel",
-                            summary="Applies a unary process to each pixel",
-                            parameters={"data": p_data,
-                                        "process": p_uprocess},
-                            returns=rv,
-                            examples=examples)
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "apply1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Applies a **unary** process which takes a single value "
+        "such as `abs` or `sqrt` to each pixel value and returns "
+        "a single new value for each pixel",
+        summary="Applies a unary process to each pixel",
+        parameters={
+            "data": p_data,
+            "process": p_uprocess},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -175,7 +184,8 @@ def get_process_list(node: Node):
     :return: (output_objects, actinia_process_list)
     """
 
-    tree, operators = construct_tree(node.as_dict()['arguments']['process']['process_graph'])
+    tree, operators = construct_tree(
+        node.as_dict()['arguments']['process']['process_graph'])
     # print (operators)
     formula = None
     output_datatype = GrassDataType.RASTER
@@ -188,7 +198,9 @@ def get_process_list(node: Node):
 
     for input_object in node.get_parent_by_name("data").output_objects:
 
-        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=output_datatype)
+        output_object = DataObject(
+            name=f"{input_object.name}_{PROCESS_NAME}",
+            datatype=output_datatype)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)
 

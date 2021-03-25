@@ -20,7 +20,8 @@ class ActiniaInterfaceTestCase(TestBase):
 
     def test_list_raster(self):
         iface = ActiniaInterface(self.gconf)
-        status, layers = iface.list_raster(location="nc_spm_08", mapset="PERMANENT")
+        status, layers = iface.list_raster(
+            location="nc_spm_08", mapset="PERMANENT")
         pprint(layers)
 
         self.assertEqual(status, 200)
@@ -28,7 +29,8 @@ class ActiniaInterfaceTestCase(TestBase):
 
     def test_list_vector(self):
         iface = ActiniaInterface(self.gconf)
-        status, layers = iface.list_vector(location="nc_spm_08", mapset="PERMANENT")
+        status, layers = iface.list_vector(
+            location="nc_spm_08", mapset="PERMANENT")
         pprint(layers)
 
         self.assertEqual(status, 200)
@@ -36,7 +38,8 @@ class ActiniaInterfaceTestCase(TestBase):
 
     def test_list_strds(self):
         iface = ActiniaInterface(self.gconf)
-        status, layers = iface.list_strds(location="latlong_wgs84", mapset="modis_ndvi_global")
+        status, layers = iface.list_strds(
+            location="latlong_wgs84", mapset="modis_ndvi_global")
         pprint(layers)
 
         self.assertEqual(status, 200)
@@ -44,7 +47,8 @@ class ActiniaInterfaceTestCase(TestBase):
 
     def test_strds_info(self):
         iface = ActiniaInterface(self.gconf)
-        status, info = iface.layer_info(layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m")
+        status, info = iface.layer_info(
+            layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m")
         pprint(info)
 
         self.assertEqual(status, 200)
@@ -58,7 +62,8 @@ class ActiniaInterfaceTestCase(TestBase):
 
     def test_mapset_info(self):
         iface = ActiniaInterface(self.gconf)
-        status, info = iface.mapset_info(location="latlong_wgs84", mapset="modis_ndvi_global")
+        status, info = iface.mapset_info(
+            location="latlong_wgs84", mapset="modis_ndvi_global")
         pprint(info)
 
         self.assertEqual(status, 200)
@@ -74,17 +79,20 @@ class ActiniaInterfaceTestCase(TestBase):
 
     def test_layer_exists_1(self):
         iface = ActiniaInterface(self.gconf)
-        status = iface.check_layer_exists(layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m")
+        status = iface.check_layer_exists(
+            layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m")
         self.assertTrue(status)
 
     def test_layer_exists_2(self):
         iface = ActiniaInterface(self.gconf)
-        status = iface.check_layer_exists(layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m")
+        status = iface.check_layer_exists(
+            layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m")
         self.assertTrue(status)
 
     def test_layer_exists_2_error(self):
         iface = ActiniaInterface(self.gconf)
-        status = iface.check_layer_exists(layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m_nope")
+        status = iface.check_layer_exists(
+            layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m_nope")
         self.assertFalse(status)
 
     def test_async_persistent_processing(self):
@@ -97,9 +105,8 @@ class ActiniaInterfaceTestCase(TestBase):
                  "module": "g.region",
                  "flags": "g"}]}
 
-        status, response = iface.async_persistent_processing(location="nc_spm_08",
-                                                             mapset="new_user_mapset",
-                                                             process_chain=process_chain)
+        status, response = iface.async_persistent_processing(
+            location="nc_spm_08", mapset="new_user_mapset", process_chain=process_chain)
         resource_id = response["resource_id"]
         print(status)
         print(resource_id)
@@ -120,11 +127,13 @@ class ActiniaInterfaceTestCase(TestBase):
 
         config = self.gconf
         iface = ActiniaInterface(config)
-        status, response = iface.create_mapset(location="nc_spm_08", mapset="new_mapset")
+        status, response = iface.create_mapset(
+            location="nc_spm_08", mapset="new_mapset")
         print(status)
         self.assertEqual(status, 200)
         print(response)
-        status, response = iface.delete_mapset(location="nc_spm_08", mapset="new_mapset")
+        status, response = iface.delete_mapset(
+            location="nc_spm_08", mapset="new_mapset")
         print(status)
         self.assertEqual(status, 200)
         print(response)

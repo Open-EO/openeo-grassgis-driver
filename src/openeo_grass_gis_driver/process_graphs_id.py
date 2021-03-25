@@ -33,7 +33,11 @@ class ProcessGraphId(ResourceBase):
             graph["id"] = id
             return make_response(jsonify(graph), 200)
         else:
-            return ErrorSchema(id=str(uuid4()), code=400, message=f"Process graph id {id} not found").as_response(400)
+            return ErrorSchema(
+                id=str(
+                    uuid4()),
+                code=400,
+                message=f"Process graph id {id} not found").as_response(400)
 
     # PATCH and POST have been removed from the openeo API
     def put(self, id):
@@ -50,7 +54,10 @@ class ProcessGraphId(ResourceBase):
             traceback_model = dict(message=str(e_value),
                                    traceback=traceback.format_tb(e_tb),
                                    type=str(e_type))
-            return ErrorSchema(id="1234567890", code=2, message=str(traceback_model)).as_response(400)
+            return ErrorSchema(
+                id="1234567890",
+                code=2,
+                message=str(traceback_model)).as_response(400)
 
     def delete(self, id):
         """Remove a single process graph from the database"""
@@ -58,7 +65,11 @@ class ProcessGraphId(ResourceBase):
         if id in self.graph_db:
 
             del self.graph_db[id]
-            return make_response(f"Process graph {id} have been successfully deleted", 204)
+            return make_response(
+                f"Process graph {id} have been successfully deleted", 204)
         else:
-            return ErrorSchema(id=str(uuid4()), code=400,
-                               message=f"Process graph id {id} not found").as_response(400)
+            return ErrorSchema(
+                id=str(
+                    uuid4()),
+                code=400,
+                message=f"Process graph id {id} not found").as_response(400)

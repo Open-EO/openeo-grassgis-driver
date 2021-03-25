@@ -24,22 +24,21 @@ def create_process_description():
                                   "null"
                                 ]
                         })
-    p_accept = Parameter(description="A value that is returned if the boolean value is `true`.",
-                         schema={
-                                 "description": "Any data type is allowed."
-                         })
-    p_reject = Parameter(description="A value that is returned if the boolean value is **not** `true`. Defaults to `null`.",
-                         schema={
-                                 "description": "Any data type is allowed."
-                         },
-                         default=None,
-                         optional=True
-                         )
+    p_accept = Parameter(
+        description="A value that is returned if the boolean value is `true`.",
+        schema={
+         "description": "Any data type is allowed."})
+    p_reject = Parameter(
+        description="A value that is returned if the boolean value is **not** `true`. Defaults to `null`.",
+        schema={
+            "description": "Any data type is allowed."},
+        default=None,
+        optional=True)
 
-    rv = ReturnValue(description="Either the `accept` or `reject` argument depending on the given boolean value.",
-                     schema={
-                             "description": "Any data type is allowed."
-                     })
+    rv = ReturnValue(
+        description="Either the `accept` or `reject` argument depending on the given boolean value.",
+        schema={
+         "description": "Any data type is allowed."})
 
     # Example
     arguments = {
@@ -48,19 +47,27 @@ def create_process_description():
         "reject": "B"
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"if_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "if_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="If the value passed is `true`, returns the value of the `accept` parameter, otherwise returns the value of the `reject` parameter.",
-                            summary="If-Then-Else conditional",
-                            parameters={"value": p_value,
-                                        "accept": p_accept,
-                                        "reject": p_reject
-                                        },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="If the value passed is `true`, returns the value of the `accept` parameter, otherwise returns the value of the `reject` parameter.",
+        summary="If-Then-Else conditional",
+        parameters={
+            "value": p_value,
+            "accept": p_accept,
+            "reject": p_reject},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -103,7 +110,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

@@ -19,20 +19,20 @@ PROCESS_NAME = "evi"
 
 
 def create_process_description():
-    p_red = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
-                                  "that contains the RED band for EVI computation.",
-                      schema={"type": "object", "subtype": "raster-cube"},
-                      optional=False)
+    p_red = Parameter(
+        description="Any openEO process object that returns a single space-time raster datasets "
+        "that contains the RED band for EVI computation.", schema={
+            "type": "object", "subtype": "raster-cube"}, optional=False)
 
-    p_nir = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
-                                  "that contains the NIR band for EVI computation.",
-                      schema={"type": "object", "subtype": "raster-cube"},
-                      optional=False)
+    p_nir = Parameter(
+        description="Any openEO process object that returns a single space-time raster datasets "
+        "that contains the NIR band for EVI computation.", schema={
+            "type": "object", "subtype": "raster-cube"}, optional=False)
 
-    p_blue = Parameter(description="Any openEO process object that returns a single space-time raster datasets "
-                       "that contains the BLUE band for EVI computation.",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_blue = Parameter(
+        description="Any openEO process object that returns a single space-time raster datasets "
+        "that contains the BLUE band for EVI computation.", schema={
+            "type": "object", "subtype": "raster-cube"}, optional=False)
 
     p_scale = Parameter(description="Scale factor to convert band values",
                         schema={"type": "object", "subtype": "float"},
@@ -48,16 +48,28 @@ def create_process_description():
         "blue": {"from_node": "get_blue_data"},
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"evi_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "evi_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Compute the EVI based on the red, nir, and blue bands of the input datasets.",
-                            summary="Compute the EVI based on the red, nir, and blue bands of the input datasets.",
-                            parameters={"red": p_red, "nir": p_nir, "blue": p_blue, "scale": p_scale},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Compute the EVI based on the red, nir, and blue bands of the input datasets.",
+        summary="Compute the EVI based on the red, nir, and blue bands of the input datasets.",
+        parameters={
+            "red": p_red,
+            "nir": p_nir,
+            "blue": p_blue,
+            "scale": p_scale},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -65,8 +77,12 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(nir_time_series: DataObject, red_time_series: DataObject, blue_time_series: DataObject,
-                               scale: float, output_time_series: DataObject):
+def create_process_chain_entry(
+        nir_time_series: DataObject,
+        red_time_series: DataObject,
+        blue_time_series: DataObject,
+        scale: float,
+        output_time_series: DataObject):
     """Create a Actinia process description that uses t.rast.mapcalc to create the EVI time series
 
     :param nir_time_series: The NIR band time series name
@@ -129,18 +145,27 @@ def get_process_list(node: Node):
         raise Exception("Process %s requires parameter <blue>" % PROCESS_NAME)
 
     # Get the red and nir data separately
-    red_input_objects = node.get_parent_by_name(parent_name="red").output_objects
-    nir_input_objects = node.get_parent_by_name(parent_name="nir").output_objects
-    blue_input_objects = node.get_parent_by_name(parent_name="blue").output_objects
+    red_input_objects = node.get_parent_by_name(
+        parent_name="red").output_objects
+    nir_input_objects = node.get_parent_by_name(
+        parent_name="nir").output_objects
+    blue_input_objects = node.get_parent_by_name(
+        parent_name="blue").output_objects
 
     if not red_input_objects:
-        raise Exception("Process %s requires an input strds for band <red>" % PROCESS_NAME)
+        raise Exception(
+            "Process %s requires an input strds for band <red>" %
+            PROCESS_NAME)
 
     if not nir_input_objects:
-        raise Exception("Process %s requires an input strds for band <nir>" % PROCESS_NAME)
+        raise Exception(
+            "Process %s requires an input strds for band <nir>" %
+            PROCESS_NAME)
 
     if not blue_input_objects:
-        raise Exception("Process %s requires an input strds for band <blue>" % PROCESS_NAME)
+        raise Exception(
+            "Process %s requires an input strds for band <blue>" %
+            PROCESS_NAME)
 
     scale = 1.0
     if "scale" in node.arguments:
@@ -154,11 +179,18 @@ def get_process_list(node: Node):
     output_objects.extend(list(nir_input_objects))
     output_objects.extend(list(blue_input_objects))
 
-    output_object = DataObject(name=f"{red_strds.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{red_strds.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
     node.add_output(output_object=output_object)
 
-    pc = create_process_chain_entry(nir_strds, red_strds, blue_strds, scale, output_object)
+    pc = create_process_chain_entry(
+        nir_strds,
+        red_strds,
+        blue_strds,
+        scale,
+        output_object)
     process_list.extend(pc)
 
     return output_objects, process_list

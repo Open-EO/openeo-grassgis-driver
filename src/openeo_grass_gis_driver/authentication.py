@@ -88,7 +88,9 @@ class Authentication(Resource):
         auth = request.authorization
         if not auth or not ok_user_and_password(auth.username, auth.password):
             return authenticate()
-        hash = hashlib.sha256((ActiniaConfig.SECRET_KEY + auth.username + str(datetime.datetime.now())).encode('UTF-8'))
+        hash = hashlib.sha256((ActiniaConfig.SECRET_KEY +
+                               auth.username +
+                               str(datetime.datetime.now())).encode('UTF-8'))
         hex = hash.hexdigest()
         tokendb[hex] = auth.username
         return make_response(jsonify({
@@ -100,9 +102,10 @@ class Authentication(Resource):
 class OIDCAuthentication(Resource):
     # OpenID Connect https://openid.net/connect/
     def get(self):
-        return ErrorSchema(id="1234567890",
-                           code=204,
-                           message="OpenID Connect is not available").as_response(204)
+        return ErrorSchema(
+            id="1234567890",
+            code=204,
+            message="OpenID Connect is not available").as_response(204)
 
 
 class UserInfo(ResourceBase):

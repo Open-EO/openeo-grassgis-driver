@@ -205,11 +205,19 @@ class EOBands(JsonableObject):
     """
 
     def __init__(
-            self, name: str = None, common_name: str = None, gsd: float = None,
-            accuracy: float = None, center_wavelength: float = None,
-            full_width_half_max: float = None, offset: float = 0,
-            unit: str = None, nodata: List[int] = None, periodicity: str = None,
-            scale: int = 1, description: Optional[str] = None):
+            self,
+            name: str = None,
+            common_name: str = None,
+            gsd: float = None,
+            accuracy: float = None,
+            center_wavelength: float = None,
+            full_width_half_max: float = None,
+            offset: float = 0,
+            unit: str = None,
+            nodata: List[int] = None,
+            periodicity: str = None,
+            scale: int = 1,
+            description: Optional[str] = None):
         self.name = name
         self.common_name = common_name
         self.description = description
@@ -656,11 +664,19 @@ class CollectionEntry(JsonableObject):
     """
 
     # TODO provider not required
-    def __init__(self, providers: Optional[CollectionProviders] = None,
-                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis", rel="external"), ],
+    def __init__(self,
+                 providers: Optional[CollectionProviders] = None,
+                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de",
+                                                         title="mundialis",
+                                                         rel="external"),
+                                                  ],
                  extent: Optional[CollectionExtent] = CollectionExtent(),
-                 title: str = None, description: str = None, license: str = "proprietary",
-                 stac_version: str = "0.6.2", id: str = None, version: str = None,
+                 title: str = None,
+                 description: str = None,
+                 license: str = "proprietary",
+                 stac_version: str = "0.6.2",
+                 id: str = None,
+                 version: str = None,
                  keywords: List[str] = None,
                  properties: Optional[CollectionProperties] = CollectionProperties(),
                  dimensions=None):
@@ -703,8 +719,8 @@ class Collection(JsonableObject):
     """A collection of data description entries
     """
 
-    def __init__(self, collections: List[CollectionEntry],
-                 links: Optional[List[EoLink]] = [EoLink(href="http://www.mundialis.de", title="mundialis", rel="external"), ]):
+    def __init__(self, collections: List[CollectionEntry], links: Optional[List[EoLink]] = [
+                 EoLink(href="http://www.mundialis.de", title="mundialis", rel="external"), ]):
         self.collections = collections
         self.links = links
 
@@ -752,7 +768,10 @@ class Collection(JsonableObject):
 
 class CollectionInformation(CollectionEntry):
 
-    def __init__(self, keywords: Optional[List[str]] = None, version: str = None, **kwargs):
+    def __init__(self,
+                 keywords: Optional[List[str]] = None,
+                 version: str = None,
+                 **kwargs):
         super(CollectionInformation, self).__init__(**kwargs)
 
         self.keywords = keywords

@@ -21,11 +21,15 @@ class ProcessesProcessId(ResourceBase):
     def get(self, process_id):
 
         if process_id in PROCESS_DESCRIPTION_DICT:
-            return make_response(jsonify(PROCESS_DESCRIPTION_DICT[process_id]), 200)
+            return make_response(
+                jsonify(
+                    PROCESS_DESCRIPTION_DICT[process_id]),
+                200)
         elif process_id in ACTINIA_PROCESS_DESCRIPTION_DICT:
             iface = ActiniaInterface()
             status_code, module = iface.list_module(process_id)
             if status_code == 200:
                 return make_response(jsonify(module), 200)
 
-        return make_response(jsonify({"description": "This process does not exist!"}), 400)
+        return make_response(
+            jsonify({"description": "This process does not exist!"}), 400)

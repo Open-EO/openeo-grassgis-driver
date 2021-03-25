@@ -24,20 +24,18 @@ def create_process_description():
                                  "null"
                                ]
                        })
-    p_min = Parameter(description="Minimum value. If the value is lower than this value, the process will return the value of this parameter.",
-                      schema={
-                              "type": [
-                                "number",
-                                "null"
-                              ]
-                      })
-    p_max = Parameter(description="Maximum value. If the value is greater than this value, the process will return the value of this parameter.",
-                      schema={
-                              "type": [
-                                "number",
-                                "null"
-                              ]
-                      })
+    p_min = Parameter(
+        description="Minimum value. If the value is lower than this value, the process will return the value of this parameter.",
+        schema={
+            "type": [
+                "number",
+                "null"]})
+    p_max = Parameter(
+        description="Maximum value. If the value is greater than this value, the process will return the value of this parameter.",
+        schema={
+            "type": [
+                "number",
+                "null"]})
 
     rv = ReturnValue(description="The value clipped to the specified range.",
                      schema={
@@ -54,19 +52,27 @@ def create_process_description():
         "max": 1
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"clip_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "clip_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Clips a number between specified minimum and maximum values.",
-                            summary="Clip a value between a minimum and a maximum",
-                            parameters={"x": p_data,
-                                        "min": p_min,
-                                        "max": p_max
-                                        },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Clips a number between specified minimum and maximum values.",
+        summary="Clip a value between a minimum and a maximum",
+        parameters={
+            "x": p_data,
+            "min": p_min,
+            "max": p_max},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -109,7 +115,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

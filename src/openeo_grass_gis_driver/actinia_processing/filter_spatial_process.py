@@ -17,10 +17,13 @@ PROCESS_NAME = "filter_spatial"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
     p_poly = Parameter(description="One or more polygons used for filtering",
                        schema={"anyOf": [
                            {
@@ -42,19 +45,28 @@ def create_process_description():
         "polygons": {"from_node": "get_data_2"},
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"filter_polygon_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "filter_polygon_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Limits the data cube over the spatial dimensions to the specified polygons.\n\nThe filter retains "
-                            "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
-                            "defined in the Simple Features standard by the OGC).",
-                            summary="Spatial filter using polygons",
-                            parameters={"data": p_data,
-                                        "geometries": p_poly},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Limits the data cube over the spatial dimensions to the specified polygons.\n\nThe filter retains "
+        "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
+        "defined in the Simple Features standard by the OGC).",
+        summary="Spatial filter using polygons",
+        parameters={
+            "data": p_data,
+            "geometries": p_poly},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -116,7 +128,9 @@ def get_process_list(node: Node):
 
     if "data" not in node.arguments or \
             "polygons" not in node.arguments:
-        raise Exception("Process %s requires parameter data, polygons" % PROCESS_NAME)
+        raise Exception(
+            "Process %s requires parameter data, polygons" %
+            PROCESS_NAME)
 
     input_objects = node.get_parent_by_name(parent_name="data").output_objects
     vector_objects = node.arguments["polygons"]
@@ -129,7 +143,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     pc = create_process_chain_entry(input_object, vector_object, output_object)

@@ -34,11 +34,14 @@ class ProcessGraphTestCase(TestBase):
 
         process_graph_id = f"user-graph-{str(uuid4())}"
 
-        response = self.app.put(f'/process_graphs/{process_graph_id}', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
-                                content_type="application/json", headers=self.auth)
+        response = self.app.put(
+            f'/process_graphs/{process_graph_id}',
+            data=json.dumps(PROCESS_CHAIN_TEMPLATE),
+            content_type="application/json",
+            headers=self.auth)
 
         # response = self.app.post('/process_graphs', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
-        #                         content_type="application/json", headers=self.auth)
+        # content_type="application/json", headers=self.auth)
 
         self.assertEqual(200, response.status_code)
         # process_graph_id = response.get_data().decode("utf-8")
@@ -51,14 +54,18 @@ class ProcessGraphTestCase(TestBase):
 
         self.assertEqual(process_graph_id, data["processes"][0]["id"])
 
-        response = self.app.get(f'/process_graphs/{process_graph_id}', headers=self.auth)
+        response = self.app.get(
+            f'/process_graphs/{process_graph_id}',
+            headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
 
         self.assertEqual(process_graph_id, data["id"])
-        self.assertEqual(FILTER_BBOX["process"]["process_graph"], data["process_graph"])
+        self.assertEqual(
+            FILTER_BBOX["process"]["process_graph"],
+            data["process_graph"])
 
     def test_job_creation_2(self):
         """Run the test in the ephemeral database
@@ -66,28 +73,39 @@ class ProcessGraphTestCase(TestBase):
         PROCESS_CHAIN_TEMPLATE["process_graph"] = FILTER_BBOX["process"]["process_graph"]
 
         process_graph_id = f"user-graph-{str(uuid4())}"
-        response = self.app.put(f'/process_graphs/{process_graph_id}', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
-                                content_type="application/json", headers=self.auth)
+        response = self.app.put(
+            f'/process_graphs/{process_graph_id}',
+            data=json.dumps(PROCESS_CHAIN_TEMPLATE),
+            content_type="application/json",
+            headers=self.auth)
 
         # response = self.app.post('/process_graphs', data=json.dumps(PROCESS_CHAIN_TEMPLATE),
-        #                         content_type="application/json", headers=self.auth)
+        # content_type="application/json", headers=self.auth)
 
         self.assertEqual(200, response.status_code)
         # process_graph_id = response.get_data().decode("utf-8")
 
-        response = self.app.get(f'/process_graphs/{process_graph_id}', headers=self.auth)
+        response = self.app.get(
+            f'/process_graphs/{process_graph_id}',
+            headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
 
         self.assertEqual(process_graph_id, data["id"])
-        self.assertEqual(FILTER_BBOX["process"]["process_graph"], data["process_graph"])
+        self.assertEqual(
+            FILTER_BBOX["process"]["process_graph"],
+            data["process_graph"])
 
-        response = self.app.delete(f'/process_graphs/{process_graph_id}', headers=self.auth)
+        response = self.app.delete(
+            f'/process_graphs/{process_graph_id}',
+            headers=self.auth)
         self.assertEqual(204, response.status_code)
 
-        response = self.app.get(f'/process_graphs/{process_graph_id}', headers=self.auth)
+        response = self.app.get(
+            f'/process_graphs/{process_graph_id}',
+            headers=self.auth)
         self.assertEqual(400, response.status_code)
 
         response = self.app.get('/process_graphs', headers=self.auth)

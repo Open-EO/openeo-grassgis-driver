@@ -39,10 +39,12 @@ class JobsJobIdLogs(ResourceBase):
             job: JobInformation = self.job_db[job_id]
             job_logs = {'logs': [], 'links': []}
 
-            # Check for the actinia id to get the latest actinia job information
+            # Check for the actinia id to get the latest actinia job
+            # information
             if job_id in self.actinia_job_db:
                 actinia_id = self.actinia_job_db[job_id]
-                code, job_info = self.iface.resource_info(resource_id=actinia_id)
+                code, job_info = self.iface.resource_info(
+                    resource_id=actinia_id)
 
                 if code == 200:
                     # Add the actinia information to the openeo job
@@ -81,5 +83,8 @@ class JobsJobIdLogs(ResourceBase):
 
             return make_response(jsonify(job_logs), 200)
         else:
-            return ErrorSchema(id="123456678", code=404,
-                               message=f"job with id {job_id} not found in database.").as_response(http_status=404)
+            return ErrorSchema(
+                id="123456678",
+                code=404,
+                message=f"job with id {job_id} not found in database.").as_response(
+                http_status=404)

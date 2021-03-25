@@ -41,11 +41,14 @@ class ProcessGraphs(ResourceBase):
             description = None
             if "description" in graph:
                 description = graph["description"]
-            entry = ProcessGraphListEntry(title=title, description=description, id=key)
+            entry = ProcessGraphListEntry(
+                title=title, description=description, id=key)
 
             process_graphs.append(entry)
 
-        return ProcessGraphList(process_graphs=process_graphs).as_response(http_status=200)
+        return ProcessGraphList(
+            process_graphs=process_graphs).as_response(
+            http_status=200)
 
     # no longer supported, replaced by ProcessGraphId
     def post(self):
@@ -65,9 +68,14 @@ class ProcessGraphs(ResourceBase):
             traceback_model = dict(message=str(e_value),
                                    traceback=traceback.format_tb(e_tb),
                                    type=str(e_type))
-            return ErrorSchema(id="1234567890", code=2, message=str(traceback_model)).as_response(http_status=400)
+            return ErrorSchema(
+                id="1234567890",
+                code=2,
+                message=str(traceback_model)).as_response(
+                http_status=400)
 
     def delete(self):
         """Clear the process graph database"""
         self.graph_db.clear()
-        return make_response("All process graphs have been successfully deleted", 204)
+        return make_response(
+            "All process graphs have been successfully deleted", 204)

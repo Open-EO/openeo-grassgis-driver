@@ -33,40 +33,39 @@ def create_process_description():
     p_data = Parameter(description="Raster data cube",
                        schema={"type": "object", "subtype": "raster-cube"},
                        optional=False)
-    p_reducer = Parameter(description="A reducer to apply on the specified dimension.",
-                          schema={"type": "object",
-                                  "subtype": "process-graph",
-                                  "parameters": [
-                                    {
-                                      "name": "data",
-                                      "description": "A labeled array with elements of any type.",
-                                      "schema": {
-                                        "type": "array",
-                                        "subtype": "labeled-array",
-                                        "items": {
-                                          "description": "Any data type."
-                                        }
-                                      }
-                                      },
-                                    {
-                                      "name": "context",
-                                      "description": "Additional data passed by the user.",
-                                      "schema": {
-                                        "description": "Any data type."
-                                      }
-                                    }
-                                  ]
-                                  },
-                          optional=False)
+    p_reducer = Parameter(
+        description="A reducer to apply on the specified dimension.",
+        schema={
+            "type": "object",
+            "subtype": "process-graph",
+            "parameters": [
+                {
+                    "name": "data",
+                    "description": "A labeled array with elements of any type.",
+                    "schema": {
+                        "type": "array",
+                        "subtype": "labeled-array",
+                        "items": {
+                            "description": "Any data type."}}},
+                {
+                            "name": "context",
+                            "description": "Additional data passed by the user.",
+                            "schema": {
+                                "description": "Any data type."}}]},
+        optional=False)
 
-    p_dimension = Parameter(description="The name of the dimension over which to reduce.",
-                            schema={"type": "string"},
-                            optional=False)
+    p_dimension = Parameter(
+        description="The name of the dimension over which to reduce.",
+        schema={
+            "type": "string"},
+        optional=False)
 
-    p_context = Parameter(description="Additional data to be passed to the reducer.",
-                          schema={"description": "Any data type.",
-                                  "default": "null"},
-                          optional=True)
+    p_context = Parameter(
+        description="Additional data to be passed to the reducer.",
+        schema={
+            "description": "Any data type.",
+            "default": "null"},
+        optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -77,9 +76,16 @@ def create_process_description():
         "dimension": "spatial",
         "reducer": "null"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"reduce1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "reduce1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
     pd = ProcessDescription(id=PROCESS_NAME,
                             description="Reduce",
                             summary="Reduce",
@@ -145,7 +151,9 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
         elif "variance" in formula:
             method = "variance"
         else:
-            raise Exception('Unsupported method <%s> for temporal reduction.' % (method))
+            raise Exception(
+                'Unsupported method <%s> for temporal reduction.' %
+                (method))
 
         # TODO: quantiles with openeo options probabilites (list of values between 0 and 1
         # q as number of intervals to calculate quantiles for
@@ -262,7 +270,8 @@ def serialize_tree(tree):
                 results.append(serialize_tree(node))
             # normalized_difference(x, y) -> (x - y) / (x + y)
             if operator == "normalized_difference":
-                return "((%s - %s) / (%s + %s))" % (results[0], results[1], results[0], results[1])
+                return "((%s - %s) / (%s + %s))" % (
+                    results[0], results[1], results[0], results[1])
             return operator + '(' + (', ').join(results) + ')'
             # return operator
     if tree['type'] == 'literal':
@@ -285,9 +294,12 @@ def get_process_list(node: Node):
     # get dimension type
     dimtype = get_dimension_type(node.arguments["dimension"])
     if dimtype is None:
-        raise Exception('Unable to determine dimension type for dimension <%s>.' % (node.arguments["dimension"]))
+        raise Exception(
+            'Unable to determine dimension type for dimension <%s>.' %
+            (node.arguments["dimension"]))
 
-    tree, operators = construct_tree(node.as_dict()['arguments']['reducer']['process_graph'])
+    tree, operators = construct_tree(
+        node.as_dict()['arguments']['reducer']['process_graph'])
     # print (operators)
     formula = None
     output_datatype = GrassDataType.RASTER
@@ -297,14 +309,17 @@ def get_process_list(node: Node):
         output_datatype = GrassDataType.STRDS
     elif dimtype == 'temporal':
         if len(operators) != 1:
-            raise Exception('Only one method is supported by reduce process on the temporal dimension.')
+            raise Exception(
+                'Only one method is supported by reduce process on the temporal dimension.')
 
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []
 
     for input_object in node.get_parent_by_name("data").output_objects:
 
-        output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=output_datatype)
+        output_object = DataObject(
+            name=f"{input_object.name}_{PROCESS_NAME}",
+            datatype=output_datatype)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)
 

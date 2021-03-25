@@ -20,18 +20,32 @@ class ResponseSchemaTestCase(TestBase):
         cl = EoLink(href="http://unknown", rel="unknown")
         print("CollectionLinks", cl.to_json())
 
-        e = CollectionExtent(spatial=(10, 20, 30, 40), temporal=(str(datetime(2000, 1, 1)), None))
+        e = CollectionExtent(spatial=(10, 20, 30, 40),
+                             temporal=(str(datetime(2000, 1, 1)), None))
         print("Extent", e.to_json())
 
-        ce = CollectionEntry(id="raster", description="Test", title="title", license="unknown",
-                             extent=e, links=EoLinks([cl]))
+        ce = CollectionEntry(
+            id="raster",
+            description="Test",
+            title="title",
+            license="unknown",
+            extent=e,
+            links=EoLinks(
+                [cl]))
         print("CollectionEntry", ce.to_json())
 
         c = Collection(collections=[ce, ], links=[cl, ])
         print("Collection", c.to_json())
 
-        ci = CollectionInformation(id="raster", description="Test", title="title", license="unknown",
-                                   extent=e, links=[cl, ])
+        ci = CollectionInformation(
+            id="raster",
+            description="Test",
+            title="title",
+            license="unknown",
+            extent=e,
+            links=[
+                cl,
+                ])
         print("CollectionInformation", ci.to_json())
 
 

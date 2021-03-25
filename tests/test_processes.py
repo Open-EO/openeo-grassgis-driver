@@ -34,7 +34,9 @@ class ProcessesTestCase(TestBase):
         pprint(data)
 
     def test_process_get_data(self):
-        response = self.app.get('/processes/load_collection', headers=self.auth)
+        response = self.app.get(
+            '/processes/load_collection',
+            headers=self.auth)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         pprint(data)

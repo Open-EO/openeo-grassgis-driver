@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Import the actinia_processing to fill the process.PROCESS_DICT with actinia_processing
+# Import the actinia_processing to fill the process.PROCESS_DICT with
+# actinia_processing
 from . import add_dimension_process
 # from . import aggregate_spatial_process
 # from . import apply_mask_process

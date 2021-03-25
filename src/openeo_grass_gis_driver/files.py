@@ -26,18 +26,23 @@ class FilesPath(Resource):
 
     def get(self, path):
         # not possible because upload is not supported
-        return ErrorSchema(id="1234567890",
-                           code=404,
-                           message="File <%s> not found" % path).as_response(404)
+        return ErrorSchema(
+            id="1234567890",
+            code=404,
+            message="File <%s> not found" %
+            path).as_response(404)
 
     def put(self, path):
         # upload is not allowed
-        return ErrorSchema(id="1234567890",
-                           code=403,
-                           message="File upload is not supported").as_response(403)
+        return ErrorSchema(
+            id="1234567890",
+            code=403,
+            message="File upload is not supported").as_response(403)
 
     def delete(self, path):
         # not possible because upload is not supported
-        return ErrorSchema(id="1234567890",
-                           code=404,
-                           message="File <%s> not found" % path).as_response(404)
+        return ErrorSchema(
+            id="1234567890",
+            code=404,
+            message="File <%s> not found" %
+            path).as_response(404)

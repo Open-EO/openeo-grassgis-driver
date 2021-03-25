@@ -2,9 +2,12 @@
 import json
 from random import randint
 
-from openeo_grass_gis_driver.actinia_processing.base import check_node_parents, DataObject, GrassDataType
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
+from openeo_grass_gis_driver.actinia_processing.base import \
+     check_node_parents, DataObject, GrassDataType
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+     ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_schemas import \
+     Parameter, ProcessDescription, ReturnValue, ProcessExample
 from .base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
 __license__ = "Apache License, Version 2.0"

@@ -5,7 +5,8 @@ from random import randint
 
 # This is the process dictionary that is used to store all processes of
 # the Actinia wrapper
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 

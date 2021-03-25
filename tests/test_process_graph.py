@@ -4,7 +4,8 @@ import unittest
 import pprint
 from flask import json
 from openeo_grass_gis_driver.test_base import TestBase
-from openeo_grass_gis_driver.utils.process_graph_examples_v10 import FILTER_BBOX
+from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
+    FILTER_BBOX
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

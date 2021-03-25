@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from openeo_grass_gis_driver.app import flask_api
-from openeo_grass_gis_driver.authentication import Authentication, OIDCAuthentication
+from openeo_grass_gis_driver.authentication import \
+     Authentication, OIDCAuthentication
 from openeo_grass_gis_driver.authentication import UserInfo
-from openeo_grass_gis_driver.capabilities import Capabilities, ServiceTypes, Services
+from openeo_grass_gis_driver.capabilities import \
+     Capabilities, ServiceTypes, Services
 from openeo_grass_gis_driver.collections import Collections
-from openeo_grass_gis_driver.collection_information import CollectionInformationResource
+from openeo_grass_gis_driver.collection_information import \
+     CollectionInformationResource
 from openeo_grass_gis_driver.processes import Processes
 from openeo_grass_gis_driver.processes_process_id import ProcessesProcessId
 from openeo_grass_gis_driver.jobs import Jobs, OutputFormats

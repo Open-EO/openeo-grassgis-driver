@@ -2,8 +2,8 @@
 import unittest
 from openeo_grass_gis_driver.test_base import TestBase
 from openeo_grass_gis_driver.actinia_processing.base import Graph
-from openeo_grass_gis_driver.utils.process_graph_examples_v10 import OPENEO_EXAMPLE_1, \
-  FILTER_BBOX, NDVI_STRDS, USE_CASE_1, DATERANGE
+from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
+     OPENEO_EXAMPLE_1, FILTER_BBOX, NDVI_STRDS, USE_CASE_1, DATERANGE
 # do not import ZONAL_STATISTICS
 
 __license__ = "Apache License, Version 2.0"

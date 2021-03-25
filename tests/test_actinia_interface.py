@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 from openeo_grass_gis_driver.test_base import TestBase
 from pprint import pprint
 import time

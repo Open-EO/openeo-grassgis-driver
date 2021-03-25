@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from flask import make_response, jsonify
-from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.actinia_processing.base import \
+     PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.actinia_processing.base import \
     ACTINIA_PROCESS_DESCRIPTION_DICT
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 from openeo_grass_gis_driver.authentication import ResourceBase
 
 __license__ = "Apache License, Version 2.0"

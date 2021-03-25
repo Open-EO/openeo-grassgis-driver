@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 from flask import make_response, jsonify
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 # from .actinia_processing import udf_reduce_time

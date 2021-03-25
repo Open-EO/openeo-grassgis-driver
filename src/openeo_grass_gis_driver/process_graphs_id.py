@@ -4,7 +4,8 @@ import traceback
 import sys
 from flask import make_response, jsonify, request
 from openeo_grass_gis_driver.process_graph_db import GraphDB
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 from openeo_grass_gis_driver.authentication import ResourceBase
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 

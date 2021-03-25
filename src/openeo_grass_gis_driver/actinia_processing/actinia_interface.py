@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from typing import Tuple, Optional
-from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
+from openeo_grass_gis_driver.actinia_processing.config import \
+   Config as ActiniaConfig
 import requests
 
 __license__ = "Apache License, Version 2.0"

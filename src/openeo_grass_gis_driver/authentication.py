@@ -32,8 +32,10 @@ import hashlib
 import datetime
 
 from openeo_grass_gis_driver.token_db import TokenDB
-from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.config import \
+     Config as ActiniaConfig
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
 tokendb = TokenDB()

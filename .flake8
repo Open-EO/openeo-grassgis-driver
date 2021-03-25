@@ -11,6 +11,10 @@
     E126 continuation line over-indented for hanging indent
     W504 line break after binary operator
 
+
+# W605 invalid escape sequence '\-'
+# F401 'module' imported but unused
+
 per-file-ignores =
     ./src/openeo_grass_gis_driver/models/job_schemas.py: W605
     ./src/openeo_grass_gis_driver/models/collection_schemas.py: W605

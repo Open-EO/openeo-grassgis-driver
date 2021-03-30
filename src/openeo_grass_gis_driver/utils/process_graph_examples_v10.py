@@ -786,7 +786,7 @@ ACTINIA_PROCESS = {
                 }
             },
             "compute_slope": {
-                "process_id": "r.slope.aspect",
+                "process_id": "r_slope_aspect",
                 "arguments": {
                     "elevation": {"from_node": "get_elevation_data"},
                     "e": True,

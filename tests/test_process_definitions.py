@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import unittest
 from pprint import pprint
-from openeo_grass_gis_driver.actinia_processing import config
 from openeo_grass_gis_driver.test_base import TestBase
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain, Node, Graph
-from openeo_grass_gis_driver.utils.process_graph_examples_v10 import *
+from openeo_grass_gis_driver.actinia_processing.base import Graph
+from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
+    GET_DATA_1, GET_DATA_2, GET_DATA_3, FILTER_BBOX, DATERANGE, \
+    REDUCE_TIME_MIN, NDVI_STRDS, USE_CASE_1
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -128,7 +129,9 @@ class ProcessDefinitionTestCase(TestBase):
         self.assertTrue(pc[2]["module"] == "t.rast.extract")
         self.assertTrue(pc[3]["module"] == "t.rast.ndvi")
         self.assertTrue(pc[4]["module"] == "t.rast.colors")
-        self.assertTrue("lsat5_1987_load_collection_ndvi" in [o.name for o in output_names])
+        self.assertTrue(
+            "lsat5_1987_load_collection_ndvi" in [
+                o.name for o in output_names])
 
 #    def test_raster_export(self):
 #

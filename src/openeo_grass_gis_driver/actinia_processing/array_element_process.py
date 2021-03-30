@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import json
-from random import randint
-from typing import List, Tuple
 
-from openeo_grass_gis_driver.actinia_processing.base import check_node_parents, DataObject, GrassDataType
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
+from openeo_grass_gis_driver.actinia_processing.base import \
+    check_node_parents, DataObject, GrassDataType
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+    ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_schemas import \
+     Parameter, ProcessDescription, ReturnValue, ProcessExample
+from .base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -16,6 +17,7 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "array_element"
 
+
 def create_process_description():
     p_data = Parameter(description="An array",
                        schema={
@@ -23,13 +25,13 @@ def create_process_description():
                                 "items": {
                                   "description": "Any data type is allowed."
                                 }})
-    p_index = Parameter(description="The zero-based index of the element to retrieve.",
-                        schema={
-                                "type": "integer"
-                              },
-                              optional=True)
+    p_index = Parameter(
+        description="The zero-based index of the element to retrieve.",
+        schema={
+            "type": "integer"},
+        optional=True)
     p_label = Parameter(description="The label of the element to retrieve.",
-                       schema=[
+                        schema=[
                                 {
                                   "type": "number"
                                 },
@@ -37,7 +39,7 @@ def create_process_description():
                                   "type": "string"
                                 }
                               ],
-                              optional=True)
+                        optional=True)
 
     rv = ReturnValue(description="The value of the requested element.",
                      schema={
@@ -47,21 +49,30 @@ def create_process_description():
     arguments = {
         "data": {"from_node": "get_data_1"},
         "index": 0,
-        "label":0
+        "label": 0
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"array_element_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "array_element_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Returns the element with the specified index or label from the array.",
-                            summary="Get an element from an array",
-                            parameters={"data": p_data,
-                                        "index": p_index,
-                                        "label": p_label},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Returns the element with the specified index or label from the array.",
+        summary="Get an element from an array",
+        parameters={
+            "data": p_data,
+            "index": p_index,
+            "label": p_label},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -77,7 +88,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
     :return: A Actinia process chain description
     """
 
-    rn = randint(0, 1000000)
+    # rn = randint(0, 1000000)
 
     pc = []
 
@@ -104,7 +115,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

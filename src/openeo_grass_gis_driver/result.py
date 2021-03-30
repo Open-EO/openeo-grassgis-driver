@@ -5,8 +5,10 @@ import traceback
 from flask import make_response, jsonify, request, Response
 from openeo_grass_gis_driver.actinia_processing.base import Graph
 from openeo_grass_gis_driver.process_graph_db import GraphDB
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
-from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.config import \
+     Config as ActiniaConfig
 from openeo_grass_gis_driver.authentication import ResourceBase
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
@@ -26,8 +28,10 @@ class Result(ResourceBase):
         self.db = GraphDB()
 
     def post(self):
-        """Run the job in an ephemeral mapset synchronously for 10 seconds. After 10 seconds the running job
-        will be killed on the actinia server and the response will be an termination report.
+        """Run the job in an ephemeral mapset synchronously for 10 seconds.
+        After 10 seconds the running job
+        will be killed on the actinia server and the response will be an
+        termination report.
         """
 
         try:
@@ -37,9 +41,12 @@ class Result(ResourceBase):
             g = Graph(graph_description=request_doc)
             result_name, process_list = g.to_actinia_process_list()
 
-            if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
-                return make_response(jsonify({"description":"Processes can only be defined for a single location!"},
-                                             400))
+            if len(
+                    ActiniaInterface.PROCESS_LOCATION) == 0 or len(
+                    ActiniaInterface.PROCESS_LOCATION) > 1:
+                descr = "Processes can only be defined for a single location!"
+                return make_response(jsonify(
+                    {"description": descr}, 400))
 
             location = ActiniaInterface.PROCESS_LOCATION.keys()
             location = list(location)[0]
@@ -48,9 +55,10 @@ class Result(ResourceBase):
 
             # pprint.pprint(process_chain)
 
-            status, response = self.iface.async_ephemeral_processing_export(location=location,
-                                                                            process_chain=process_chain)
-            status, response = self.wait_until_finished(response=response, max_time=1000)
+            status, response = self.iface.async_ephemeral_processing_export(
+                location=location, process_chain=process_chain)
+            status, response = self.wait_until_finished(
+                response=response, max_time=1000)
 
             if status == 200:
                 result_url = response["urls"]["resources"]
@@ -66,26 +74,34 @@ class Result(ResourceBase):
                                     mimetype=mimetype,
                                     direct_passthrough=True)
 
-                return make_response(jsonify({"job_id":response["resource_id"],
-                                              "job_info":response}), status)
+                return make_response(jsonify(
+                    {"job_id": response["resource_id"],
+                     "job_info": response}), status)
             else:
-                return ErrorSchema(id="1234567890", code=404,
-                                   message=str(response), links=response["urls"]["status"]).as_response(status)
+                return ErrorSchema(id="1234567890", code=404, message=str(
+                    response),
+                    links=response["urls"]["status"]).as_response(status)
         except Exception:
 
             e_type, e_value, e_tb = sys.exc_info()
             traceback_model = dict(message=str(e_value),
                                    traceback=traceback.format_tb(e_tb),
                                    type=str(e_type))
-            return ErrorSchema(id="1234567890", code=404, message=str(traceback_model)).as_response(404)
+            return ErrorSchema(
+                id="1234567890",
+                code=404,
+                message=str(traceback_model)).as_response(404)
 
     def wait_until_finished(self, response, max_time: int = 10):
         """Poll the status of a resource and assert its finished HTTP status
 
-        The response will be checked if the resource was accepted. Hence it must always be HTTP 200 status.
+        The response will be checked if the resource was accepted.
+        Hence it must always be HTTP 200 status.
 
-        The status URL from the response is then polled until status: finished, error or terminated.
-        The result of the poll can be checked against its HTTP status and its GRaaS status message.
+        The status URL from the response is then polled until status:
+        finished, error or terminated.
+        The result of the poll can be checked against its HTTP status and its
+        GRaaS status message.
 
         Args:
             response: The accept response
@@ -104,7 +120,9 @@ class Result(ResourceBase):
         while True:
             status, resp_data = self.iface.resource_info(resource_id)
 
-            if isinstance(resp_data, dict) is False or "status" not in resp_data:
+            if isinstance(
+                    resp_data,
+                    dict) is False or "status" not in resp_data:
                 raise Exception("wrong return values %s" % str(resp_data))
             if resp_data["status"] == "finished" or \
                     resp_data["status"] == "error" or \
@@ -114,7 +132,8 @@ class Result(ResourceBase):
 
             current_time = time.time()
             if current_time - start_time > max_time:
-                status_code, data = self.iface.delete_resource(resource_id=resource_id)
+                status_code, data = self.iface.delete_resource(
+                    resource_id=resource_id)
 
                 if status_code != 200:
                     raise Exception(f"Unable to terminate job, error: {data}")

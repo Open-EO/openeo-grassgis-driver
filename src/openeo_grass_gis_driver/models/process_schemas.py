@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """This file includes all required openEO response schemas
 """
-from datetime import datetime
+# from datetime import datetime
 
-from flask import make_response
-import re
-from typing import List, Tuple, Optional, Dict, Any
+# from flask import make_response
+# import re
+from typing import List, Optional, Dict, Any
 from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
-from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
+# from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
@@ -67,7 +67,7 @@ class Parameter(JsonableObject):
                  experimental: Optional[bool] = False,
                  mime_type: Optional[str] = None,
                  name: Optional[str] = None,
-                 default = None):
+                 default=None):
         # name is set later on in ProcessDescription
         self.name = None
         self.description = description
@@ -99,7 +99,8 @@ class ReturnValue(JsonableObject):
         documentation, e.g. bbox or crs.
     """
 
-    def __init__(self, description: str, schema: dict, media_type: Optional[str] = "application/json"):
+    def __init__(self, description: str, schema: dict,
+                 media_type: Optional[str] = "application/json"):
         self.description = description
         self.schema = schema
         self.media_type = media_type
@@ -411,7 +412,7 @@ class ProcessDescription(JsonableObject):
         #            message="The keys of the parameters MUST match the following pattern: %s" % pattern)
         #        return make_response(es.to_json(), 400)
 
-        #self.parameters = parameters
+        # self.parameters = parameters
         plist = list()
         for key in parameters:
             parameters[key].name = key
@@ -424,7 +425,7 @@ class ProcessDescription(JsonableObject):
         self.deprecated = deprecated
         self.experimental = experimental
         self.exceptions = exceptions
-        self.examples = None # Ignore examples for validation purpose
+        self.examples = None  # Ignore examples for validation purpose
         self.categories = categories
         # parameter_order in pattern
         # pattern = "^[A-Za-z0-9_]+$"

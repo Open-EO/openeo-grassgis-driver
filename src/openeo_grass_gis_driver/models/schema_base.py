@@ -23,9 +23,9 @@ def as_dict_without_nones(o):
         value = d[key]
         if value == "json:null":
             value = None
-        elif  value == "json:true":
+        elif value == "json:true":
             value = True
-        elif  value == "json:false":
+        elif value == "json:false":
             value = False
         # ___ is a placeholder for : as in eo:bands
         r[key.replace("___", ":")] = value
@@ -38,7 +38,11 @@ class JsonableObject:
     the response classes into JSON"""
 
     def to_json(self):
-        return json.dumps(self, default=lambda o: as_dict_without_nones(o), sort_keys=False, indent=2)
+        return json.dumps(
+            self,
+            default=lambda o: as_dict_without_nones(o),
+            sort_keys=False,
+            indent=2)
 
     def as_response(self, http_status):
         response = make_response(self.to_json(), http_status)
@@ -70,7 +74,7 @@ class Link(JsonableObject):
     """
 
     def __init__(self, href: str, title: Optional[str] = None,
-            rel: Optional[str] = None, type_: Optional[str] = None):
+                 rel: Optional[str] = None, type_: Optional[str] = None):
         self.href = href
         self.title = title
         self.rel = rel
@@ -102,7 +106,7 @@ class EoLink(JsonableObject):
     """
 
     def __init__(self, href: str, title: Optional[str] = None,
-            rel: Optional[str] = None, type_: Optional[str] = None):
+                 rel: Optional[str] = None, type_: Optional[str] = None):
         self.href = href
         self.title = title
         self.rel = rel
@@ -151,6 +155,7 @@ class ListLinks(JsonableObject):
     def __init__(self, links: List[EoLink]):
         self.links = links
 
+
 class File(JsonableObject):
     """ Workspace File
     path:
@@ -172,7 +177,11 @@ class File(JsonableObject):
 
     """
 
-    def __init__(self, path: str = None, size: int = None, modified: str = None):
+    def __init__(
+            self,
+            path: str = None,
+            size: int = None,
+            modified: str = None):
         self.path = path
         self.size = size
         self.modified = modified

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from openeo_grass_gis_driver.app import flask_api
-from openeo_grass_gis_driver.authentication import Authentication, OIDCAuthentication
+from openeo_grass_gis_driver.authentication import \
+     Authentication, OIDCAuthentication
 from openeo_grass_gis_driver.authentication import UserInfo
-from openeo_grass_gis_driver.capabilities import Capabilities, ServiceTypes, Services
+from openeo_grass_gis_driver.capabilities import \
+     Capabilities, ServiceTypes, Services
 from openeo_grass_gis_driver.collections import Collections
-from openeo_grass_gis_driver.collection_information import CollectionInformationResource
+from openeo_grass_gis_driver.collection_information import \
+     CollectionInformationResource
 from openeo_grass_gis_driver.processes import Processes
 from openeo_grass_gis_driver.processes_process_id import ProcessesProcessId
 from openeo_grass_gis_driver.jobs import Jobs, OutputFormats
@@ -17,7 +20,7 @@ from openeo_grass_gis_driver.jobs_job_id_results import JobsJobIdResults
 from openeo_grass_gis_driver.process_graphs import ProcessGraphs
 from openeo_grass_gis_driver.process_graphs_id import ProcessGraphId
 from openeo_grass_gis_driver.udf import Udf
-from openeo_grass_gis_driver.files import Files, FilesPath
+# from openeo_grass_gis_driver.files import Files, FilesPath
 from openeo_grass_gis_driver.well_known import WellKnown
 
 __license__ = "Apache License, Version 2.0"
@@ -45,12 +48,16 @@ def create_endpoints():
 
     # EO Data Discovery
     flask_api.add_resource(Collections, '/collections')
-    flask_api.add_resource(CollectionInformationResource, '/collections/<string:name>')
+    flask_api.add_resource(
+        CollectionInformationResource,
+        '/collections/<string:name>')
 
     # Predefined Processes
     flask_api.add_resource(Processes, '/processes')
     # /processes/{process_id} is not in API 1.0
-    flask_api.add_resource(ProcessesProcessId, '/processes/<string:process_id>')
+    flask_api.add_resource(
+        ProcessesProcessId,
+        '/processes/<string:process_id>')
 
     # User-Defined Processes
     flask_api.add_resource(GraphValidation, '/validation')

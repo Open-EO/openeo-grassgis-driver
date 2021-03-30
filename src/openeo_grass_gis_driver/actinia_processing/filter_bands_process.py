@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 import json
 from random import randint
-from typing import List, Tuple
+from typing import Tuple
 
-from openeo_grass_gis_driver.actinia_processing.base import check_node_parents, DataObject, GrassDataType
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
+from openeo_grass_gis_driver.actinia_processing.base import \
+     check_node_parents, DataObject, GrassDataType
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+     ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_schemas import \
+     Parameter, ProcessDescription, ReturnValue, ProcessExample
+from .base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -22,44 +25,27 @@ def create_process_description():
                        schema={"type": "object", "subtype": "raster-cube"},
                        optional=False)
 
-    p_bands = Parameter(description="A list of band names. "
-                                    "Either the unique band name or one of the common band names.",
-                        schema={
-                            "type": "array",
-                            "items": {
-                                 "type": "string",
-                                 "subtype": "band-name"
-                               }
-                        },
-                        optional=True)
+    p_bands = Parameter(
+        description="A list of band names. "
+        "Either the unique band name or one of the common band names.",
+        schema={
+            "type": "array",
+            "items": {
+                "type": "string",
+                "subtype": "band-name"}},
+        optional=True)
 
-    p_wavelengths = Parameter(description="A list of sub-lists with each sub-list consisting of two elements. "
-                                          "The first element is the minimum wavelength and the second element "
-                                          "is the maximum wavelength. Wavelengths are specified in micrometres (μm).",
-                              schema={
-                                  "type": "array",
-                                  "items": {
-                                          "type": "array",
-                                          "minItems": 2,
-                                          "maxItems": 2,
-                                          "items": {
-                                            "type": "number"
-                                          },
-                                          "examples": [
-                                            [
-                                              [
-                                                0.45,
-                                                0.5
-                                              ],
-                                              [
-                                                0.6,
-                                                0.7
-                                              ]
-                                            ]
-                                          ]
-                                        }
-                              },
-                              optional=True)
+    p_wavelengths = Parameter(
+        description="A list of sub-lists with each sub-list consisting of two elements. "
+        "The first element is the minimum wavelength and the second element "
+        "is the maximum wavelength. Wavelengths are specified in micrometres (μm).", schema={
+            "type": "array", "items": {
+                "type": "array", "minItems": 2, "maxItems": 2, "items": {
+                    "type": "number"}, "examples": [
+                    [
+                        [
+                            0.45, 0.5], [
+                                 0.6, 0.7]]]}}, optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -71,19 +57,28 @@ def create_process_description():
     }
 
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"filter_bands_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "filter_bands_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Filters the bands in the data cube so that bands that "
-                                        "don't match any of the criteria are dropped from the data cube.",
-                            summary="Filter the bands by name",
-                            parameters={"data": p_data,
-                                        "bands": p_bands,
-                                        "wavelengths": p_wavelengths},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Filters the bands in the data cube so that bands that "
+        "don't match any of the criteria are dropped from the data cube.",
+        summary="Filter the bands by name",
+        parameters={
+            "data": p_data,
+            "bands": p_bands,
+            "wavelengths": p_wavelengths},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -160,8 +155,10 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     if "data" not in node.arguments or \
             ("bands" not in node.arguments and
              "wavelengths" not in node.arguments):
-        raise Exception("Process %s requires parameter data and at least one of "
-                        "bands, wavelengths" % PROCESS_NAME)
+        raise Exception(
+            "Process %s requires parameter data and at least one of "
+            "bands, wavelengths" %
+            PROCESS_NAME)
 
     bands = None
     if "bands" in node.arguments:
@@ -170,9 +167,12 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     if "wavelengths" in node.arguments:
         wavelengths = node.arguments["wavelengths"]
 
-    data_object = list(node.get_parent_by_name(parent_name="data").output_objects)[-1]
+    data_object = list(node.get_parent_by_name(
+        parent_name="data").output_objects)[-1]
 
-    output_object = DataObject(name=f"{data_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{data_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
     node.add_output(output_object=output_object)
 

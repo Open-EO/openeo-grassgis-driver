@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 from flask import make_response, jsonify
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 # from .actinia_processing import udf_reduce_time
@@ -68,11 +69,11 @@ class UdfType(ResourceBase):
     def get(self, lang, udf_type):
 
         if lang not in python_udfs:
-            return make_response(jsonify({"description": "UDF type with "
-                                                         "specified identifier is not available"}), 404)
+            return make_response(jsonify(
+                {"description": "UDF type with " "specified identifier is not available"}), 404)
 
         if udf_type not in python_udfs[lang]:
-            return make_response(jsonify({"description": "UDF type with "
-                                                         "specified identifier is not available"}), 404)
+            return make_response(jsonify(
+                {"description": "UDF type with " "specified identifier is not available"}), 404)
 
         return make_response(jsonify(python_udfs[lang][udf_type]), 200)

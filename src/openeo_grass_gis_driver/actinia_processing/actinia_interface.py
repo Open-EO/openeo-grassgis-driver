@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from typing import List, Tuple, Dict, Optional
-from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
+from typing import Tuple, Optional
+from openeo_grass_gis_driver.actinia_processing.config import \
+   Config as ActiniaConfig
 import requests
 
 __license__ = "Apache License, Version 2.0"
@@ -23,7 +24,8 @@ class ActiniaInterface(object):
 
         self.host = config.HOST
         self.port = config.PORT
-        self.base_url = "%(host)s:%(port)s/latest" % {"host": self.host, "port": self.port}
+        self.base_url = "%(host)s:%(port)s/latest" % {
+                           "host": self.host, "port": self.port}
         self.auth = (config.USER, config.PASSWORD)
         self.user = config.USER
 
@@ -32,7 +34,8 @@ class ActiniaInterface(object):
         self.user = user
 
     @staticmethod
-    def layer_def_to_components(layer: str) -> Tuple[Optional[str], Optional[str], Optional[str], str]:
+    def layer_def_to_components(
+            layer: str) -> Tuple[Optional[str], Optional[str], Optional[str], str]:
         """Convert the name of a layer in the openeo framework into GRASS GIS definitions
 
         location.mapset.datatype.map_name -> (location, mapset, datatype, layer)
@@ -65,7 +68,8 @@ class ActiniaInterface(object):
         :return: map_name@mapset or map_name
         """
 
-        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(layer)
+        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(
+            layer)
         if mapset is not None:
             layer_name = layer_name + "@" + mapset
 
@@ -91,7 +95,8 @@ class ActiniaInterface(object):
 
         return r.status_code, data
 
-    def _send_post_request(self, url: str, process_chain: dict) -> Tuple[int, dict]:
+    def _send_post_request(
+            self, url: str, process_chain: dict) -> Tuple[int, dict]:
         """Send a post request and return the return status and the Actinia response
 
         :param url:
@@ -104,31 +109,33 @@ class ActiniaInterface(object):
 
         try:
             data = r.json()
-        except:
+        except Exception:
             pass
 
         return r.status_code, data
 
     def resource_info(self, resource_id: str) -> Tuple[int, dict]:
-        url = "%(base)s/resources/%(user)s/%(rid)s" % {"base": self.base_url, "user": self.user, "rid": resource_id}
+        url = "%(base)s/resources/%(user)s/%(rid)s" % {
+                 "base": self.base_url, "user": self.user, "rid": resource_id}
         r = requests.get(url=url, auth=self.auth)
         data = r.text
 
         try:
             data = r.json()
-        except:
+        except Exception:
             pass
 
         return r.status_code, data
 
     def delete_resource(self, resource_id: str) -> Tuple[int, dict]:
-        url = "%(base)s/resources/%(user)s/%(rid)s" % {"base": self.base_url, "user": self.user, "rid": resource_id}
+        url = "%(base)s/resources/%(user)s/%(rid)s" % {
+                 "base": self.base_url, "user": self.user, "rid": resource_id}
         r = requests.delete(url=url, auth=self.auth)
         data = r.text
 
         try:
             data = r.json()
-        except:
+        except Exception:
             pass
 
         return r.status_code, data
@@ -144,61 +151,57 @@ class ActiniaInterface(object):
 
         return r.status_code, data
 
-    def create_mapset(self, location: str, mapset: str = "PERMANENT") -> Tuple[int, dict]:
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {"base": self.base_url,
-                                                                      "location": location,
-                                                                      "mapset": mapset}
+    def create_mapset(self, location: str,
+                      mapset: str = "PERMANENT") -> Tuple[int, dict]:
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {
+                 "base": self.base_url, "location": location, "mapset": mapset}
         r = requests.post(url=url, auth=self.auth)
         data = r.text
 
         try:
             data = r.json()
-        except:
+        except Exception:
             pass
 
         return r.status_code, data
 
-    def delete_mapset(self, location: str, mapset: str = "PERMANENT") -> Tuple[int, dict]:
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {"base": self.base_url,
-                                                                      "location": location,
-                                                                      "mapset": mapset}
+    def delete_mapset(self, location: str,
+                      mapset: str = "PERMANENT") -> Tuple[int, dict]:
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s" % {
+                 "base": self.base_url, "location": location, "mapset": mapset}
         r = requests.delete(url=url, auth=self.auth)
         data = r.text
 
         try:
             data = r.json()
-        except:
+        except Exception:
             pass
 
         return r.status_code, data
 
     def list_mapsets(self, location: str) -> Tuple[int, dict]:
-        url = "%(base)s/locations/%(location)s/mapsets" % {"base": self.base_url,
-                                                           "location": location}
+        url = "%(base)s/locations/%(location)s/mapsets" % {
+                 "base": self.base_url, "location": location}
         return self._send_get_request(url)
 
     def mapset_info(self, location: str, mapset: str) -> Tuple[int, dict]:
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/info" % {"base": self.base_url,
-                                                                           "location": location,
-                                                                           "mapset": mapset}
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/info" % {
+                 "base": self.base_url, "location": location, "mapset": mapset}
         return self._send_get_request(url)
 
     def list_raster(self, location: str, mapset: str) -> Tuple[int, dict]:
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/raster_layers" % {"base": self.base_url,
-                                                                                    "location": location,
-                                                                                    "mapset": mapset}
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/raster_layers" % {
+                 "base": self.base_url, "location": location, "mapset": mapset}
         return self._send_get_request(url)
 
     def list_vector(self, location: str, mapset: str) -> Tuple[int, dict]:
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/vector_layers" % {"base": self.base_url,
-                                                                                    "location": location,
-                                                                                    "mapset": mapset}
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/vector_layers" % {
+                 "base": self.base_url, "location": location, "mapset": mapset}
         return self._send_get_request(url)
 
-    def list_strds(self, location: str, mapset: str)  -> Tuple[int, dict]:
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/strds" % {"base": self.base_url,
-                                                                            "location": location,
-                                                                            "mapset": mapset}
+    def list_strds(self, location: str, mapset: str) -> Tuple[int, dict]:
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/strds" % {
+                 "base": self.base_url, "location": location, "mapset": mapset}
         return self._send_get_request(url)
 
     def layer_info(self, layer_name: str) -> Tuple[int, dict]:
@@ -207,16 +210,18 @@ class ActiniaInterface(object):
         :param layer_name:
         :return:
         """
-        location, mapset, datatype, layer = ActiniaInterface.layer_def_to_components(layer_name)
+        location, mapset, datatype, layer = ActiniaInterface.layer_def_to_components(
+            layer_name)
         if datatype == "raster":
             datatype = "raster_layers"
         if datatype == "vector":
             datatype = "vector_layers"
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/%(dtype)s/%(layer)s" % {"base": self.base_url,
-                                                                                          "location": location,
-                                                                                          "mapset": mapset,
-                                                                                          "dtype": datatype,
-                                                                                          "layer": layer}
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/%(dtype)s/%(layer)s" % {
+            "base": self.base_url,
+            "location": location,
+            "mapset": mapset,
+            "dtype": datatype,
+            "layer": layer}
         return self._send_get_request(url)
 
     def get_resource(self, url: str) -> Tuple[int, dict]:
@@ -228,7 +233,7 @@ class ActiniaInterface(object):
 
         r = requests.get(url=url, auth=self.auth)
 
-        #import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
 
         if r.status_code == 200:
             return r
@@ -241,7 +246,8 @@ class ActiniaInterface(object):
         :param strds_name: The name of the strds
         :return: True if the strds exists, False otherwise
         """
-        # Get region information about the required strds and check if it exists
+        # Get region information about the required strds and check if it
+        # exists
         status_code, layer_info = self.layer_info(layer_name=layer_name)
 
         if status_code != 200:
@@ -249,7 +255,8 @@ class ActiniaInterface(object):
 
         return True
 
-    def async_persistent_processing(self, location: str, mapset: str, process_chain: dict) -> Tuple[int, dict]:
+    def async_persistent_processing(
+            self, location: str, mapset: str, process_chain: dict) -> Tuple[int, dict]:
         """Send a process chain to the Actinia backend to be run asynchronously in a persistent database
 
         :param location: The location in which to process
@@ -258,12 +265,12 @@ class ActiniaInterface(object):
         :return: Status code and the json data (status, json)
         """
 
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/processing_async" % {"base": self.base_url,
-                                                                                       "location": location,
-                                                                                       "mapset": mapset}
+        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/processing_async" % {
+                 "base": self.base_url, "location": location, "mapset": mapset}
         return self._send_post_request(url=url, process_chain=process_chain)
 
-    def async_ephemeral_processing(self, location: str, process_chain: dict) -> Tuple[int, dict]:
+    def async_ephemeral_processing(
+            self, location: str, process_chain: dict) -> Tuple[int, dict]:
         """Send a process chain to the Actinia backend to be run asynchronously in a ephemeral database
 
         :param location: The location in which to process
@@ -271,11 +278,12 @@ class ActiniaInterface(object):
         :return: Status code and the json data (status, json)
         """
 
-        url = "%(base)s/locations/%(location)s/processing_async" % {"base": self.base_url,
-                                                                    "location": location}
+        url = "%(base)s/locations/%(location)s/processing_async" % {
+                 "base": self.base_url, "location": location}
         return self._send_post_request(url=url, process_chain=process_chain)
 
-    def sync_ephemeral_processing_validation(self, location: str, process_chain: dict) -> Tuple[int, dict]:
+    def sync_ephemeral_processing_validation(
+            self, location: str, process_chain: dict) -> Tuple[int, dict]:
         """Send a process chain to the Actinia backend to be validated
 
         :param location: The location in which to process
@@ -283,11 +291,12 @@ class ActiniaInterface(object):
         :return: Status code and the json data (status, json)
         """
 
-        url = "%(base)s/locations/%(location)s/process_chain_validation_sync" % {"base": self.base_url,
-                                                                                 "location": location}
+        url = "%(base)s/locations/%(location)s/process_chain_validation_sync" % {
+                 "base": self.base_url, "location": location}
         return self._send_post_request(url=url, process_chain=process_chain)
 
-    def async_ephemeral_processing_export(self, location: str, process_chain: dict) -> Tuple[int, dict]:
+    def async_ephemeral_processing_export(
+            self, location: str, process_chain: dict) -> Tuple[int, dict]:
         """Send a process chain to the Actinia backend to be run asynchronously in a ephemeral database
         with export capabilities
 
@@ -296,8 +305,8 @@ class ActiniaInterface(object):
         :return: Status code and the json data (status, json)
         """
 
-        url = "%(base)s/locations/%(location)s/processing_async_export" % {"base": self.base_url,
-                                                                               "location": location}
+        url = "%(base)s/locations/%(location)s/processing_async_export" % {
+                 "base": self.base_url, "location": location}
         return self._send_post_request(url=url, process_chain=process_chain)
 
     def list_modules(self) -> Tuple[int, dict]:
@@ -312,7 +321,8 @@ class ActiniaInterface(object):
         return r.status_code, data
 
     def list_module(self, module) -> Tuple[int, dict]:
-        url = "%(base)s/modules/%(module)s" % {"base": self.base_url, "module": module}
+        url = "%(base)s/modules/%(module)s" % {
+                 "base": self.base_url, "module": module}
         r = requests.get(url=url, auth=self.auth)
         data = r.text
 

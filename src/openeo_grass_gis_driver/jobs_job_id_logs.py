@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
-import pprint
-import sys
-import traceback
-from datetime import datetime
-from flask import make_response, jsonify, request
-from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from flask import make_response, jsonify
+from openeo_grass_gis_driver.actinia_processing.config import \
+     Config as ActiniaConfig
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
-from openeo_grass_gis_driver.actinia_processing.actinia_job_db import ActiniaJobDB
-from openeo_grass_gis_driver.actinia_processing.base import Graph
+from openeo_grass_gis_driver.actinia_processing.actinia_job_db import \
+     ActiniaJobDB
 from openeo_grass_gis_driver.authentication import ResourceBase
 from openeo_grass_gis_driver.models.schema_base import EoLink
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
@@ -44,10 +42,12 @@ class JobsJobIdLogs(ResourceBase):
             job: JobInformation = self.job_db[job_id]
             job_logs = {'logs': [], 'links': []}
 
-            # Check for the actinia id to get the latest actinia job information
+            # Check for the actinia id to get the latest actinia job
+            # information
             if job_id in self.actinia_job_db:
                 actinia_id = self.actinia_job_db[job_id]
-                code, job_info = self.iface.resource_info(resource_id=actinia_id)
+                code, job_info = self.iface.resource_info(
+                    resource_id=actinia_id)
 
                 if code == 200:
                     # Add the actinia information to the openeo job
@@ -86,5 +86,8 @@ class JobsJobIdLogs(ResourceBase):
 
             return make_response(jsonify(job_logs), 200)
         else:
-            return ErrorSchema(id="123456678", code=404,
-                               message=f"job with id {job_id} not found in database.").as_response(http_status=404)
+            return ErrorSchema(
+                id="123456678",
+                code=404,
+                message=f"job with id {job_id} not found in database.").as_response(
+                http_status=404)

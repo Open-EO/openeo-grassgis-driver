@@ -2,12 +2,13 @@
 from random import randint
 import json
 
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph, ProcessGraphNode
-
-from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
-    check_node_parents, DataObject, GrassDataType
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+     ProcessGraph, ProcessGraphNode
+from openeo_grass_gis_driver.actinia_processing.base import \
+     PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
+     check_node_parents, DataObject, GrassDataType
+from openeo_grass_gis_driver.models.process_schemas import \
+     Parameter, ProcessDescription, ReturnValue, ProcessExample
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -19,15 +20,24 @@ PROCESS_NAME = "ndvi"
 
 
 def create_process_description():
-    p_data = Parameter(description="A raster data cube with two bands that have the common names red and nir assigned.",
-                      schema={"type": "object", "subtype": "raster-cube"},
-                      optional=False)
-    p_nir = Parameter(description="The name of the NIR band. Defaults to the band that has the common name `nir` assigned.",
-                      schema={"type": "string", "subtype": "band-name"},
-                      optional=True)
-    p_red = Parameter(description="The name of the red band. Defaults to the band that has the common name `red` assigned.",
-                      schema={"type": "string", "subtype": "band-name"},
-                      optional=True)
+    p_data = Parameter(
+        description="A raster data cube with two bands that have the common names red and nir assigned.",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
+    p_nir = Parameter(
+        description="The name of the NIR band. Defaults to the band that has the common name `nir` assigned.",
+        schema={
+            "type": "string",
+            "subtype": "band-name"},
+        optional=True)
+    p_red = Parameter(
+        description="The name of the red band. Defaults to the band that has the common name `red` assigned.",
+        schema={
+            "type": "string",
+            "subtype": "band-name"},
+        optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -39,22 +49,31 @@ def create_process_description():
         "red": "S2_4"
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"ndvi_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "ndvi_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="The data parameter expects a raster data cube with two bands "
-                                        "that have the common names red and nir assigned. The process returns "
-                                        "a raster data cube with two bands being replaced with a new band "
-                                        "that holds the computed values. ",
-                            summary="Computes the Normalized Difference Vegetation Index (NDVI). "
-                                    "The NDVI is computed as (nir - red) / (nir + red).",
-                            parameters={"data": p_data,
-                                        "nir": p_nir,
-                                        "red": p_red},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="The data parameter expects a raster data cube with two bands "
+        "that have the common names red and nir assigned. The process returns "
+        "a raster data cube with two bands being replaced with a new band "
+        "that holds the computed values. ",
+        summary="Computes the Normalized Difference Vegetation Index (NDVI). "
+        "The NDVI is computed as (nir - red) / (nir + red).",
+        parameters={
+            "data": p_data,
+            "nir": p_nir,
+            "red": p_red},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -123,11 +142,14 @@ def get_process_list(node: Node):
 
     output_objects.extend(list(input_objects))
 
-    output_object = DataObject(name=f"{input_strds.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_strds.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
     node.add_output(output_object=output_object)
 
-    pc = create_process_chain_entry(input_strds, nir_band, red_band, output_object)
+    pc = create_process_chain_entry(
+        input_strds, nir_band, red_band, output_object)
     process_list.extend(pc)
 
     return output_objects, process_list

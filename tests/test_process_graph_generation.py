@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import unittest
 from openeo_grass_gis_driver.test_base import TestBase
-from openeo_grass_gis_driver.actinia_processing.base import Node, Graph
-from openeo_grass_gis_driver.utils.process_graph_examples_v10 import OPENEO_EXAMPLE_1, \
-  FILTER_BBOX, NDVI_STRDS, USE_CASE_1, DATERANGE
+from openeo_grass_gis_driver.actinia_processing.base import Graph
+from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
+     OPENEO_EXAMPLE_1, FILTER_BBOX, NDVI_STRDS, USE_CASE_1, DATERANGE
 # do not import ZONAL_STATISTICS
 
 __license__ = "Apache License, Version 2.0"
@@ -42,10 +42,14 @@ class GraphValidationTestCase(TestBase):
         self.assertEqual(2, len(pg.node_dict))
 
         self.assertEqual(0, len(pg.node_dict["filter_bbox_1"].children))
-        self.assertTrue(pg.node_dict["filter_bbox_1"] in pg.node_dict["get_data_1"].children)
-        self.assertEqual(pg.node_dict["filter_bbox_1"].get_parent_by_name("data"), pg.node_dict["get_data_1"])
+        self.assertTrue(pg.node_dict["filter_bbox_1"]
+                        in pg.node_dict["get_data_1"].children)
+        self.assertEqual(
+            pg.node_dict["filter_bbox_1"].get_parent_by_name("data"),
+            pg.node_dict["get_data_1"])
         self.assertEqual(1, len(pg.node_dict["filter_bbox_1"].parents))
-        self.assertTrue(pg.node_dict["get_data_1"] in pg.node_dict["filter_bbox_1"].parents)
+        self.assertTrue(pg.node_dict["get_data_1"]
+                        in pg.node_dict["filter_bbox_1"].parents)
 
 #    def test_graph_creation_graph_zonal_statistics(self):
 #
@@ -58,7 +62,8 @@ class GraphValidationTestCase(TestBase):
 #        self.assertEqual(2, len(pg.node_dict))
 #
 #        self.assertIsNone(pg.node_dict["zonal_statistics_1"].child)
-#        self.assertEqual(pg.node_dict["zonal_statistics_1"], pg.node_dict["get_b08_data"].child)
+#        self.assertEqual(pg.node_dict["zonal_statistics_1"],
+#                         pg.node_dict["get_b08_data"].child)
 #        self.assertEqual(pg.node_dict["zonal_statistics_1"].get_parent_by_name("data"), pg.node_dict["get_b08_data"])
 #        self.assertEqual(1, len(pg.node_dict["zonal_statistics_1"].parents))
 #        self.assertTrue(pg.node_dict["get_b08_data"] in pg.node_dict["zonal_statistics_1"].parents)
@@ -74,10 +79,14 @@ class GraphValidationTestCase(TestBase):
         self.assertEqual(2, len(pg.node_dict))
 
         self.assertEqual(0, len(pg.node_dict["filter_daterange_1"].children))
-        self.assertTrue(pg.node_dict["filter_daterange_1"] in pg.node_dict["get_strds_data"].children)
-        self.assertEqual(pg.node_dict["filter_daterange_1"].get_parent_by_name("data"), pg.node_dict["get_strds_data"])
+        self.assertTrue(
+            pg.node_dict["filter_daterange_1"] in pg.node_dict["get_strds_data"].children)
+        self.assertEqual(
+            pg.node_dict["filter_daterange_1"].get_parent_by_name("data"),
+            pg.node_dict["get_strds_data"])
         self.assertEqual(1, len(pg.node_dict["filter_daterange_1"].parents))
-        self.assertTrue(pg.node_dict["get_strds_data"] in pg.node_dict["filter_daterange_1"].parents)
+        self.assertTrue(pg.node_dict["get_strds_data"]
+                        in pg.node_dict["filter_daterange_1"].parents)
 
     def test_graph_creation_graph_ndvi_strds(self):
 
@@ -91,11 +100,15 @@ class GraphValidationTestCase(TestBase):
 
         self.assertEqual(0, len(pg.node_dict["ndvi_1"].children))
         self.assertEqual(1, len(pg.node_dict["ndvi_1"].parents))
-        self.assertTrue(pg.node_dict["get_data"] in pg.node_dict["ndvi_1"].parents)
+        self.assertTrue(pg.node_dict["get_data"]
+                        in pg.node_dict["ndvi_1"].parents)
 
-        self.assertTrue(pg.node_dict["ndvi_1"] in pg.node_dict["get_data"].children)
+        self.assertTrue(pg.node_dict["ndvi_1"]
+                        in pg.node_dict["get_data"].children)
 
-        self.assertEqual(pg.node_dict["ndvi_1"].parents_dict["data"], pg.node_dict["get_data"])
+        self.assertEqual(
+            pg.node_dict["ndvi_1"].parents_dict["data"],
+            pg.node_dict["get_data"])
 
     def test_graph_creation_graph_use_case_1(self):
 
@@ -109,6 +122,7 @@ class GraphValidationTestCase(TestBase):
 
         self.assertEqual(1, len(pg.root_nodes))
         self.assertEqual(5, len(pg.node_dict))
+
 
 if __name__ == "__main__":
     unittest.main()

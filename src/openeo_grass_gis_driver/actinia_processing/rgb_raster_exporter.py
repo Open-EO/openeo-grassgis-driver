@@ -2,12 +2,14 @@
 from random import randint
 import json
 
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+     ProcessGraphNode, ProcessGraph
 
-from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
-    check_node_parents, DataObject, GrassDataType
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.base import \
+     PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
+     check_node_parents, DataObject, GrassDataType
+from openeo_grass_gis_driver.models.process_schemas import \
+     Parameter, ProcessDescription, ReturnValue, ProcessExample
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -19,18 +21,18 @@ PROCESS_NAME = "rgb_raster_exporter"
 
 
 def create_process_description():
-    p_red = Parameter(description="Any openEO process object that returns raster dataset that should be used as "
-                                  "the red channel in the resulting GRB image.",
-                      schema={"type": "object", "subtype": "raster-cube"},
-                      optional=False)
-    p_green = Parameter(description="Any openEO process object that returns raster dataset that should be used as "
-                                    "the green channel in the resulting GRB image.",
-                        schema={"type": "object", "subtype": "raster-cube"},
-                        optional=False)
-    p_blue = Parameter(description="Any openEO process object that returns raster dataset that should be used as "
-                                   "the blue channel in the resulting GRB image.",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_red = Parameter(
+        description="Any openEO process object that returns raster dataset that should be used as "
+        "the red channel in the resulting GRB image.", schema={
+            "type": "object", "subtype": "raster-cube"}, optional=False)
+    p_green = Parameter(
+        description="Any openEO process object that returns raster dataset that should be used as "
+        "the green channel in the resulting GRB image.", schema={
+            "type": "object", "subtype": "raster-cube"}, optional=False)
+    p_blue = Parameter(
+        description="Any openEO process object that returns raster dataset that should be used as "
+        "the blue channel in the resulting GRB image.", schema={
+            "type": "object", "subtype": "raster-cube"}, optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -40,17 +42,28 @@ def create_process_description():
                  "green": {"from_node": "get_green_data"},
                  "blue": {"from_node": "get_blue_data"}}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"rgb_raster_exporter_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "rgb_raster_exporter_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="This process exports three raster map layers as a single RGB image "
-                                        "using the region specified upstream.",
-                            summary="Exports three RGB raster map layers using the region specified upstream.",
-                            parameters={"red": p_red, "green": p_green, "blur": p_blue},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="This process exports three raster map layers as a single RGB image "
+        "using the region specified upstream.",
+        summary="Exports three RGB raster map layers using the region specified upstream.",
+        parameters={
+            "red": p_red,
+            "green": p_green,
+            "blur": p_blue},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -58,8 +71,11 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(output_object: DataObject, red_object: DataObject,
-                               green_object: DataObject, blue_object: DataObject) -> list:
+def create_process_chain_entry(
+        output_object: DataObject,
+        red_object: DataObject,
+        green_object: DataObject,
+        blue_object: DataObject) -> list:
     """Actinia process to export an RGB composite GeoTiff
 
     :param output_object:
@@ -105,16 +121,25 @@ def get_process_list(node: Node):
         raise Exception("Process %s requires parameter <blue>" % PROCESS_NAME)
 
     # Get the red, green and blue data separately
-    red_input_objects = node.get_parent_by_name(parent_name="red").output_objects
-    green_input_objects = node.get_parent_by_name(parent_name="green").output_objects
-    blue_input_objects = node.get_parent_by_name(parent_name="blue").output_objects
+    red_input_objects = node.get_parent_by_name(
+        parent_name="red").output_objects
+    green_input_objects = node.get_parent_by_name(
+        parent_name="green").output_objects
+    blue_input_objects = node.get_parent_by_name(
+        parent_name="blue").output_objects
 
     if not red_input_objects:
-        raise Exception("Process %s requires an input raster for band <red>" % PROCESS_NAME)
+        raise Exception(
+            "Process %s requires an input raster for band <red>" %
+            PROCESS_NAME)
     if not green_input_objects:
-        raise Exception("Process %s requires an input raster for band <green>" % PROCESS_NAME)
+        raise Exception(
+            "Process %s requires an input raster for band <green>" %
+            PROCESS_NAME)
     if not blue_input_objects:
-        raise Exception("Process %s requires an input raster for band <blue>" % PROCESS_NAME)
+        raise Exception(
+            "Process %s requires an input raster for band <blue>" %
+            PROCESS_NAME)
 
     red_object = list(red_input_objects)[-1]
     green_object = list(green_input_objects)[-1]
@@ -126,12 +151,17 @@ def get_process_list(node: Node):
 
     rn = randint(0, 1000000)
 
-    output_object = DataObject(name="red_green_blue_composite_%i" % rn, datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name="red_green_blue_composite_%i" %
+        rn, datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
     node.add_output(output_object=output_object)
 
-    pc = create_process_chain_entry(output_object=output_object, red_object=red_object,
-                                    green_object=green_object, blue_object=blue_object)
+    pc = create_process_chain_entry(
+        output_object=output_object,
+        red_object=red_object,
+        green_object=green_object,
+        blue_object=blue_object)
     process_list.extend(pc)
 
     return output_objects, process_list

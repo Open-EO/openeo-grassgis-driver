@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from pprint import pprint
 from flask import make_response, request
 from openeo_grass_gis_driver.actinia_processing.base import Graph
-from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.config import \
+     Config as ActiniaConfig
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 from openeo_grass_gis_driver.authentication import ResourceBase
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 from datetime import datetime
@@ -37,10 +38,16 @@ class GraphValidation(ResourceBase):
             g = Graph(graph_description=process_graph)
             result_name, process_list = g.to_actinia_process_list()
 
-            if len(ActiniaInterface.PROCESS_LOCATION) == 0 or len(ActiniaInterface.PROCESS_LOCATION) > 1:
+            if len(
+                    ActiniaInterface.PROCESS_LOCATION) == 0 or len(
+                    ActiniaInterface.PROCESS_LOCATION) > 1:
                 msg = "Processes can only be defined for a single location!"
                 status = 400
-                es = ErrorSchema(id=str(datetime.now().isoformat()), code=status, message=str(msg))
+                es = ErrorSchema(
+                    id=str(
+                        datetime.now().isoformat()),
+                    code=status,
+                    message=str(msg))
                 return make_response(es.to_json(), status)
 
             location = ActiniaInterface.PROCESS_LOCATION.keys()
@@ -48,15 +55,24 @@ class GraphValidation(ResourceBase):
 
             process_chain = dict(list=process_list, version="1")
 
-            status, response = self.iface.sync_ephemeral_processing_validation(location=location,
-                                                                               process_chain=process_chain)
+            status, response = self.iface.sync_ephemeral_processing_validation(
+                location=location, process_chain=process_chain)
 
             if status == 200:
                 errors = {"errors": []}
                 return make_response(errors, 200)
             else:
-                return ErrorSchema(id=str(datetime.now().isoformat()), code=status,
-                                   message=str(response)).as_response(http_status=status)
+                return ErrorSchema(
+                    id=str(
+                        datetime.now().isoformat()),
+                    code=status,
+                    message=str(response)).as_response(
+                    http_status=status)
 
         except Exception as e:
-            return ErrorSchema(id=str(datetime.now().isoformat()), code=400, message=str(e)).as_response(http_status=400)
+            return ErrorSchema(
+                id=str(
+                    datetime.now().isoformat()),
+                code=400,
+                message=str(e)).as_response(
+                http_status=400)

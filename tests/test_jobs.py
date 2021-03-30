@@ -3,7 +3,8 @@ import unittest
 import pprint
 from flask import json
 from openeo_grass_gis_driver.test_base import TestBase
-from openeo_grass_gis_driver.utils.process_graph_examples_v10 import *
+from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
+    FILTER_BBOX, NDVI_STRDS, ACTINIA_PROCESS
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -31,8 +32,11 @@ class JobsTestCase(TestBase):
         """
         JOB_TEMPLATE["process"] = FILTER_BBOX["process"]
 
-        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE),
-                                 content_type="application/json", headers=self.auth)
+        response = self.app.post(
+            '/jobs',
+            data=json.dumps(JOB_TEMPLATE),
+            content_type="application/json",
+            headers=self.auth)
         self.assertEqual(201, response.status_code)
         job_id = response.get_data().decode("utf-8")
 
@@ -59,7 +63,11 @@ class JobsTestCase(TestBase):
         """
         JOB_TEMPLATE["process"] = NDVI_STRDS["process"]
 
-        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json", headers=self.auth)
+        response = self.app.post(
+            '/jobs',
+            data=json.dumps(JOB_TEMPLATE),
+            content_type="application/json",
+            headers=self.auth)
         self.assertEqual(201, response.status_code)
         job_id = response.get_data().decode("utf-8")
 
@@ -78,7 +86,11 @@ class JobsTestCase(TestBase):
         """
         JOB_TEMPLATE["process"] = NDVI_STRDS["process"]
 
-        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json", headers=self.auth)
+        response = self.app.post(
+            '/jobs',
+            data=json.dumps(JOB_TEMPLATE),
+            content_type="application/json",
+            headers=self.auth)
         self.assertEqual(201, response.status_code)
         job_id = response.get_data().decode("utf-8")
 
@@ -99,7 +111,11 @@ class JobsTestCase(TestBase):
         """
         JOB_TEMPLATE["process"] = ACTINIA_PROCESS["process"]
 
-        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json", headers=self.auth)
+        response = self.app.post(
+            '/jobs',
+            data=json.dumps(JOB_TEMPLATE),
+            content_type="application/json",
+            headers=self.auth)
         self.assertEqual(201, response.status_code)
         job_id = response.get_data().decode("utf-8")
 
@@ -116,7 +132,6 @@ class JobsTestCase(TestBase):
         self.assertEqual(404, response.status_code)
 
 
-
 class JobsTestResultsCase(TestBase):
 
     def setUp(self):
@@ -129,7 +144,11 @@ class JobsTestResultsCase(TestBase):
         """
         JOB_TEMPLATE["process"] = FILTER_BBOX["process"]
 
-        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json", headers=self.auth)
+        response = self.app.post(
+            '/jobs',
+            data=json.dumps(JOB_TEMPLATE),
+            content_type="application/json",
+            headers=self.auth)
         self.assertEqual(201, response.status_code)
         job_id = response.get_data().decode("utf-8")
 
@@ -156,12 +175,16 @@ class JobsTestResultsCase(TestBase):
 #        """
 #        JOB_TEMPLATE["process_graph"] = ZONAL_STATISTICS["process_graph"]
 #
-#        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json", headers=self.auth)
+#        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE),
+#                                 content_type="application/json",
+#                                 headers=self.auth)
 #        self.assertEqual(201, response.status_code)
 #        job_id = response.get_data().decode("utf-8")
 #
 #        # Get job information
-#        response = self.app.get(f'/jobs/{job_id}/results', content_type="application/json", headers=self.auth)
+#        response = self.app.get(f'/jobs/{job_id}/results',
+#                                content_type="application/json",
+#                                headers=self.auth)
 #        self.assertEqual(200, response.status_code)
 #        data = response.get_data().decode("utf-8")
 #        print(data)
@@ -179,7 +202,8 @@ class JobsTestResultsCase(TestBase):
 #        self.assertEqual(200, response.status_code)
 #
 #        # cancel the job
-#        response = self.app.delete(f'/jobs/{job_id}/results', headers=self.auth)
+#        response = self.app.delete(f'/jobs/{job_id}/results',
+#                                   headers=self.auth)
 #        data = response.get_data().decode("utf-8")
 #        print(data)
 #        self.assertEqual(204, response.status_code)
@@ -199,8 +223,11 @@ class JobsTestResultsCase(TestBase):
         # as of openeo API 1.0, patch is no longer supported
         JOB_TEMPLATE["process"] = FILTER_BBOX["process"]
 
-        response = self.app.post('/jobs', data=json.dumps(JOB_TEMPLATE), content_type="application/json",
-                                 headers=self.auth)
+        response = self.app.post(
+            '/jobs',
+            data=json.dumps(JOB_TEMPLATE),
+            content_type="application/json",
+            headers=self.auth)
         self.assertEqual(201, response.status_code)
         job_id = response.get_data().decode("utf-8")
         print(job_id)
@@ -213,8 +240,11 @@ class JobsTestResultsCase(TestBase):
 
         JOB_TEMPLATE["process"] = NDVI_STRDS["process"]
 
-        response = self.app.patch(f'/jobs/{job_id}', data=json.dumps(JOB_TEMPLATE), content_type="application/json",
-                                  headers=self.auth)
+        response = self.app.patch(
+            f'/jobs/{job_id}',
+            data=json.dumps(JOB_TEMPLATE),
+            content_type="application/json",
+            headers=self.auth)
         self.assertEqual(204, response.status_code)
 
         # Get job information

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """This file includes all required openEO response schemas
 """
-from datetime import datetime
-from typing import List, Optional, Dict
+# from datetime import datetime
+from typing import List, Optional
 
-from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
+# from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.models.schema_base import JsonableObject, EoLinks
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 
@@ -12,7 +12,6 @@ __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Sören Gebbert"
 __email__ = "soerengebbert@googlemail.com"
-
 
 
 class Argument(JsonableObject):
@@ -61,16 +60,16 @@ class Argument(JsonableObject):
 """
     def __init__(self, description: str, minimum: Optional[int] = None,
                  maximum: Optional[int] = None, required: bool = False,
-                 default = None, enum: List = None, example = None):
+                 default=None, enum: List = None, example=None):
 
         self.description = description
         self.required = required
         self.default = default
-        #if not isinstance(minimum, (int, float, complex)):
+        # if not isinstance(minimum, (int, float, complex)):
         #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The minimum MUST be a number")
-        #self.minimum = minimum
-        #if not isinstance(maximum, (int, float, complex)):
+        # self.minimum = minimum
+        # if not isinstance(maximum, (int, float, complex)):
         #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The maximum MUST be a number")
         self.minimum = minimum
@@ -102,8 +101,8 @@ class OutputFormat(JsonableObject):
     """
 
     def __init__(self, gis_data_types: List[str],
-            links: List[Optional[EoLinks]] = None,
-            parameters: List[Argument] = None):
+                 links: List[Optional[EoLinks]] = None,
+                 parameters: List[Argument] = None):
 
         self.gis_data_types = gis_data_types
         self.links = links
@@ -240,9 +239,9 @@ class JobInformation(JsonableObject):
                  updated: Optional[str] = None,
                  plan: str = None, cost: float = None, budget: float = None):
         # Test id
-        #pattern = "^[A-Za-z0-9_\-\.~]+$"
-        #x = re.search(pattern, job_id)
-        #if not x:
+        # pattern = "^[A-Za-z0-9_\-\.~]+$"
+        # x = re.search(pattern, job_id)
+        # if not x:
         #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The id MUST match the following pattern: %s" % pattern)
         #    return make_response(es.to_json(), 400)
@@ -250,7 +249,7 @@ class JobInformation(JsonableObject):
         self.title = title
         self.description = description
         # Test Status
-        #if status in ["submitted", "queued", "running", "canceled", "finished", "error"]:
+        # if status in ["submitted", "queued", "running", "canceled", "finished", "error"]:
         #    es = ErrorSchema(id=str(datetime.now().isoformat()), code=400,
         #        message="The status has to one of \"submitted\" \"queued\" \"running\" \"canceled\" \"finished\" \"error\"")
         #    return make_response(es.to_json(), 400)

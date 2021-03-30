@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import json
-from random import randint
-from typing import List, Tuple
 
-from openeo_grass_gis_driver.actinia_processing.base import check_node_parents, DataObject, GrassDataType
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
+from openeo_grass_gis_driver.actinia_processing.base import \
+     check_node_parents, DataObject, GrassDataType
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+     ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_schemas import \
+     Parameter, ProcessDescription, ReturnValue, ProcessExample
+from .base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -17,6 +18,7 @@ __email__ = "soerengebbert@googlemail.com"
 # dummy logic process
 PROCESS_NAME = "if"
 
+
 def create_process_description():
     p_value = Parameter(description="A boolean value.",
                         schema={
@@ -25,22 +27,21 @@ def create_process_description():
                                   "null"
                                 ]
                         })
-    p_accept = Parameter(description="A value that is returned if the boolean value is `true`.",
-                         schema={
-                                 "description": "Any data type is allowed."
-                         })
-    p_reject = Parameter(description="A value that is returned if the boolean value is **not** `true`. Defaults to `null`.",
-                         schema={
-                                 "description": "Any data type is allowed."
-                         },
-                         default=None,
-                         optional=True
-                         )
+    p_accept = Parameter(
+        description="A value that is returned if the boolean value is `true`.",
+        schema={
+         "description": "Any data type is allowed."})
+    p_reject = Parameter(
+        description="A value that is returned if the boolean value is **not** `true`. Defaults to `null`.",
+        schema={
+            "description": "Any data type is allowed."},
+        default=None,
+        optional=True)
 
-    rv = ReturnValue(description="Either the `accept` or `reject` argument depending on the given boolean value.",
-                     schema={
-                             "description": "Any data type is allowed."
-                     })
+    rv = ReturnValue(
+        description="Either the `accept` or `reject` argument depending on the given boolean value.",
+        schema={
+         "description": "Any data type is allowed."})
 
     # Example
     arguments = {
@@ -49,19 +50,27 @@ def create_process_description():
         "reject": "B"
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"if_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "if_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="If the value passed is `true`, returns the value of the `accept` parameter, otherwise returns the value of the `reject` parameter.",
-                            summary="If-Then-Else conditional",
-                            parameters={"value": p_value,
-                                        "accept": p_accept,
-                                        "reject": p_reject
-                                       },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="If the value passed is `true`, returns the value of the `accept` parameter, otherwise returns the value of the `reject` parameter.",
+        summary="If-Then-Else conditional",
+        parameters={
+            "value": p_value,
+            "accept": p_accept,
+            "reject": p_reject},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -77,7 +86,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
     :return: A Actinia process chain description
     """
 
-    rn = randint(0, 1000000)
+    # rn = randint(0, 1000000)
 
     pc = []
 
@@ -104,7 +113,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

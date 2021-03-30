@@ -4,14 +4,16 @@ from datetime import datetime
 from flask_restful import Resource
 from flask import make_response, jsonify, request, url_for
 
-from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
+from openeo_grass_gis_driver.actinia_processing.config import \
+     Config as ActiniaConfig
 from openeo_grass_gis_driver.authentication import ResourceBase
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 from openeo_grass_gis_driver.models.job_schemas import JobInformation, JobList
-from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
+# from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -36,6 +38,7 @@ OUTPUT_FORMATS = {
   },
   "input": {}
 }
+
 
 class OutputFormats(Resource):
     def get(self, ):
@@ -63,7 +66,7 @@ class Jobs(ResourceBase):
             job.process = None
             jobs.append(job)
 
-        job_list = JobList(jobs=jobs, links = [])
+        job_list = JobList(jobs=jobs, links=[])
         return job_list.as_response(http_status=200)
 
     def post(self):
@@ -74,7 +77,8 @@ class Jobs(ResourceBase):
         # job_id = str(uuid4())
         job = request.get_json()
 
-            # return ErrorSchema(id=uuid4(), message="A process graph is required in the request").as_response(400)
+        # return ErrorSchema(id=uuid4(), message="A process graph is required
+        # in the request").as_response(400)
 
         job_info = check_job(job=job, job_id=job_id)
         self.job_db[job_id] = job_info
@@ -84,7 +88,7 @@ class Jobs(ResourceBase):
         response.headers["OpenEO-Identifier"] = job_id
         # add location, e.g. "https://openeo.org/api/v1.0/resource/<job_id>"
         response.headers["Location"] = ("%s/%s") % (url_for(".jobs"), job_id)
-        
+
         return response
 
     def delete(self):
@@ -107,7 +111,10 @@ def check_job(job, job_id):
         process_graph = job["process"]["process_graph"]
     else:
         process_graph = job["process_graph"]
-    process = ProcessGraph(title=title, description=description, process_graph=process_graph)
+    process = ProcessGraph(
+        title=title,
+        description=description,
+        process_graph=process_graph)
 
     created = str(datetime.now().isoformat())
 

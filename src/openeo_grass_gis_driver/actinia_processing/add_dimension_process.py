@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import json
-from random import randint
-from typing import List, Tuple
 
-from openeo_grass_gis_driver.actinia_processing.base import check_node_parents, DataObject, GrassDataType
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
+from openeo_grass_gis_driver.actinia_processing.base import \
+    check_node_parents, DataObject
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+    ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_schemas import \
+    Parameter, ProcessDescription, ReturnValue, ProcessExample
+from .base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -16,14 +17,15 @@ __email__ = "soerengebbert@googlemail.com"
 
 PROCESS_NAME = "add_dimension"
 
+
 def create_process_description():
     p_data = Parameter(description="A data cube to add the dimension to.",
                        schema={"type": "object", "subtype": "raster-cube"},
                        optional=False)
     p_name = Parameter(description="Name for the dimension.",
-                        schema={"type": "string"})
+                       schema={"type": "string"})
     p_label = Parameter(description="A dimension label.",
-                       schema=[
+                        schema=[
                                 {
                                   "type": "number"
                                 },
@@ -31,23 +33,23 @@ def create_process_description():
                                   "type": "string"
                                 }
                               ])
-    p_type = Parameter(description="The type of dimension, defaults to `other`.",
-                       schema={
-                                "type": "string",
-                                "enum": [
-                                  "spatial",
-                                  "temporal",
-                                  "bands",
-                                  "other"
-                                ]
-                              },
-                              default="other",
-                              optional=True)
+    p_type = Parameter(
+        description="The type of dimension, defaults to `other`.",
+        schema={
+            "type": "string",
+            "enum": [
+                "spatial",
+                "temporal",
+                "bands",
+                "other"]},
+        default="other",
+        optional=True)
 
-    rv = ReturnValue(description="The data cube with a newly added dimension. "
-                                 "The new dimension has exactly one dimension label. "
-                                 "All other dimensions remain unchanged.",
-                     schema={"type": "object", "subtype": "raster-cube"})
+    rv = ReturnValue(
+        description="The data cube with a newly added dimension. "
+        "The new dimension has exactly one dimension label. "
+        "All other dimensions remain unchanged.", schema={
+            "type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {
@@ -57,21 +59,30 @@ def create_process_description():
         "type": "spatial"
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"add_dimension_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "add_dimension_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Limits the data cube over the spatial dimensions to the specified polygons.\n\nThe filter retains "
-                             "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
-                             "defined in the Simple Features standard by the OGC).",
-                            summary="Spatial filter using polygons",
-                            parameters={"data": p_data,
-                                        "name": p_name,
-                                        "label": p_label,
-                                        "type": p_type},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Limits the data cube over the spatial dimensions to the specified polygons.\n\nThe filter retains "
+        "a pixel in the data cube if the point at the pixel center intersects with at least one of the polygons (as  "
+        "defined in the Simple Features standard by the OGC).",
+        summary="Spatial filter using polygons",
+        parameters={
+            "data": p_data,
+            "name": p_name,
+            "label": p_label,
+            "type": p_type},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -87,7 +98,7 @@ def create_process_chain_entry(input_object: DataObject,
     :return: A Actinia process chain description
     """
 
-    rn = randint(0, 1000000)
+    # rn = randint(0, 1000000)
 
     pc = []
 

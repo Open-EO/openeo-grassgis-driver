@@ -4,10 +4,13 @@ import traceback
 import sys
 from flask import make_response, request
 from openeo_grass_gis_driver.process_graph_db import GraphDB
-from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.config import \
+     Config as ActiniaConfig
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 from openeo_grass_gis_driver.authentication import ResourceBase
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphListEntry, ProcessGraphList
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+     ProcessGraphListEntry, ProcessGraphList
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 
 __license__ = "Apache License, Version 2.0"
@@ -41,11 +44,14 @@ class ProcessGraphs(ResourceBase):
             description = None
             if "description" in graph:
                 description = graph["description"]
-            entry = ProcessGraphListEntry(title=title, description=description, id=key)
+            entry = ProcessGraphListEntry(
+                title=title, description=description, id=key)
 
             process_graphs.append(entry)
 
-        return ProcessGraphList(process_graphs=process_graphs).as_response(http_status=200)
+        return ProcessGraphList(
+            process_graphs=process_graphs).as_response(
+            http_status=200)
 
     # no longer supported, replaced by ProcessGraphId
     def post(self):
@@ -65,9 +71,14 @@ class ProcessGraphs(ResourceBase):
             traceback_model = dict(message=str(e_value),
                                    traceback=traceback.format_tb(e_tb),
                                    type=str(e_type))
-            return ErrorSchema(id="1234567890", code=2, message=str(traceback_model)).as_response(http_status=400)
+            return ErrorSchema(
+                id="1234567890",
+                code=2,
+                message=str(traceback_model)).as_response(
+                http_status=400)
 
     def delete(self):
         """Clear the process graph database"""
         self.graph_db.clear()
-        return make_response("All process graphs have been successfully deleted", 204)
+        return make_response(
+            "All process graphs have been successfully deleted", 204)

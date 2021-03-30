@@ -2,12 +2,13 @@
 from random import randint
 import json
 
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+     ProcessGraphNode, ProcessGraph
 
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, \
     PROCESS_DESCRIPTION_DICT, Node, check_node_parents, DataObject
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.models.process_schemas import \
+     Parameter, ProcessDescription, ReturnValue, ProcessExample
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -19,35 +20,52 @@ PROCESS_NAME = "zonal_statistics"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                      "or space-time raster dataset",
-                          schema={"type": "object", "subtype": "raster-cube"},
-                          optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
 
-    p_polygons = Parameter(description="URL to a publicly accessible polygon file readable by OGR",
-                           schema={"type": "string"},
-                           optional=False)
+    p_polygons = Parameter(
+        description="URL to a publicly accessible polygon file readable by OGR",
+        schema={
+            "type": "string"},
+        optional=False)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
-    arguments = {"data": {"from_node": "get_b08_data"},
-                "polygons": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"}
+    arguments = {
+        "data": {
+            "from_node": "get_b08_data"},
+        "polygons": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"zonal_statistics_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "zonal_statistics_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Compute the zonal statistics of a time series using a vector polygon. "
-                                        "The following parameters are computed: "
-                                        "mean, min, max, mean_of_abs, stddev, variance, "
-                                        "coeff_var, sum, null_cells, cells",
-                            summary="Compute the zonal statistics of a time series using a vector polygon.",
-                            parameters={"data": p_data, "polygons": p_polygons},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Compute the zonal statistics of a time series using a vector polygon. "
+        "The following parameters are computed: "
+        "mean, min, max, mean_of_abs, stddev, variance, "
+        "coeff_var, sum, null_cells, cells",
+        summary="Compute the zonal statistics of a time series using a vector polygon.",
+        parameters={
+            "data": p_data,
+            "polygons": p_polygons},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -154,7 +172,8 @@ def get_process_list(node: Node):
         if "polygons" in node.arguments:
             polygons = node.arguments["polygons"]
         else:
-            raise Exception("The vector polygon is missing in the process description")
+            raise Exception(
+                "The vector polygon is missing in the process description")
 
         pc = create_process_chain_entry(input_object=input_object,
                                         polygons=polygons)

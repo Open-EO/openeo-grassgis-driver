@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from random import randint
 import json
 
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+   ProcessGraphNode, ProcessGraph
 
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, \
     PROCESS_DESCRIPTION_DICT, Node, check_node_parents, DataObject
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.models.process_schemas import \
+    Parameter, ProcessDescription, ReturnValue, ProcessExample
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -19,67 +19,83 @@ PROCESS_NAME = "aggregate_spatial"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                          schema={"type": "object", "subtype": "raster-cube"},
-                          optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
 
-    p_geometries = Parameter(description="Geometries as GeoJSON on which the aggregation will be based.",
-                           schema={"type": "object", "subtype": "geojson"},
-                           optional=False)
-    p_reducer = Parameter(description="A reducer to be applied on all values of each geometry.",
-                           schema={"type": "object",
-                                    "subtype": "process-graph",
-                                    "parameters": [
-                                      {
-                                        "name": "data",
-                                        "description": "An array with elements of any type.",
-                                        "schema": {
-                                          "type": "array",
-                                          "items": {
-                                            "description": "Any data type."
-                                          }
-                                        }
-                                      },
-                                      {
-                                        "name": "context",
-                                        "description": "Additional data passed by the user.",
-                                        "schema": {
-                                          "description": "Any data type."
-                                        },
-                                        "optional": "true",
-                                        "default": "null"
-                                      }
-                                    ]
-                                   },
-                           optional=False)
-    p_target_dimension = Parameter(description="The new dimension name to be used for storing the results. Defaults to `result`.",
-                           schema={"type": "string"},
-                           optional=True)
-    p_context = Parameter(description="Additional data to be passed to the reducer.",
-                           schema={"description": "Any data type."},
-                           optional=True)
+    p_geometries = Parameter(
+        description="Geometries as GeoJSON on which the aggregation will be based.",
+        schema={
+            "type": "object",
+            "subtype": "geojson"},
+        optional=False)
+    p_reducer = Parameter(
+        description="A reducer to be applied on all values of each geometry.",
+        schema={
+            "type": "object",
+            "subtype": "process-graph",
+            "parameters": [
+                {
+                    "name": "data",
+                    "description": "An array with elements of any type.",
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "description": "Any data type."}}},
+                {
+                            "name": "context",
+                            "description": "Additional data passed by the user.",
+                            "schema": {
+                                "description": "Any data type."},
+                    "optional": "true",
+                    "default": "null"}]},
+        optional=False)
+    p_target_dimension = Parameter(
+        description="The new dimension name to be used for storing the results. Defaults to `result`.",
+        schema={
+            "type": "string"},
+        optional=True)
+    p_context = Parameter(
+        description="Additional data to be passed to the reducer.",
+        schema={
+            "description": "Any data type."},
+        optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "vector-cube"})
 
     # Example
-    arguments = {"data": {"from_node": "get_b08_data"},
-                "geometries": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"}
+    arguments = {
+        "data": {
+            "from_node": "get_b08_data"},
+        "geometries": "https://storage.googleapis.com/graas-geodata/roi_openeo_use_case_2.geojson"}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"aggregate_spatial_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "aggregate_spatial_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Aggregates statistics for one or more geometries (e.g. zonal statistics for polygons) over the spatial dimensions.",
-                            summary="Zonal statistics for geometries.",
-                            parameters={"data": p_data,
-                                        "geometries": p_geometries,
-                                        "reducer": p_reducer,
-                                        "context": p_context},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Aggregates statistics for one or more geometries (e.g. zonal statistics for polygons) over the spatial dimensions.",
+        summary="Zonal statistics for geometries.",
+        parameters={
+            "data": p_data,
+            "geometries": p_geometries,
+            "reducer": p_reducer,
+            "context": p_context},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -131,11 +147,11 @@ def create_process_chain_entry(input_object: DataObject, geometries: str):
         "module": "v.to.rast",
         "inputs": [{"param": "input",
                     "value": "geometries"},
-                    {"param": "output",
+                   {"param": "output",
                     "value": "geometries"},
-                    {"param": "type",
+                   {"param": "type",
                     "value": "point,line,area"},
-                    {"param": "use",
+                   {"param": "use",
                     "value": "cat"}]
     }
 
@@ -197,7 +213,8 @@ def get_process_list(node: Node):
         if "geometries" in node.arguments:
             geometries = node.arguments["geometries"]
         else:
-            raise Exception("The vector geometries are missing in the process description")
+            raise Exception(
+                "The vector geometries are missing in the process description")
 
         reducer = node.arguments["reducer"]
         # TODO: parse the reducer

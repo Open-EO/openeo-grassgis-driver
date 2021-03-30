@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from openeo_grass_gis_driver.actinia_processing.config import Config as ActiniaConfig
+from openeo_grass_gis_driver.actinia_processing.config import \
+   Config as ActiniaConfig
 from sqlitedict import SqliteDict
 
 __license__ = "Apache License, Version 2.0"
@@ -13,4 +14,7 @@ class ActiniaJobDB(SqliteDict):
     """This is the storage of all actinia jobs that where committed
     """
     def __init__(self):
-        SqliteDict.__init__(self, filename=ActiniaConfig.ACTINIA_JOB_DB, autocommit=True)
+        SqliteDict.__init__(
+            self,
+            filename=ActiniaConfig.ACTINIA_JOB_DB,
+            autocommit=True)

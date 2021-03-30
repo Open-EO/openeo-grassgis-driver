@@ -2,12 +2,14 @@
 from random import randint
 import json
 
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
-
-from openeo_grass_gis_driver.actinia_processing.base import Node, check_node_parents, DataObject, GrassDataType
-from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+     ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.actinia_processing.base import \
+     Node, check_node_parents, DataObject, GrassDataType
+from openeo_grass_gis_driver.actinia_processing.base import \
+     PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.models.process_schemas import \
+     Parameter, ProcessDescription, ReturnValue, ProcessExample
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -20,31 +22,37 @@ PROCESS_NAME = "hants"
 
 
 def create_process_description():
-    p_data = Parameter(description="Any openEO process object that returns raster datasets "
-                                   "or space-time raster dataset",
-                       schema={"type": "object", "subtype": "raster-cube"},
-                       optional=False)
+    p_data = Parameter(
+        description="Any openEO process object that returns raster datasets "
+        "or space-time raster dataset",
+        schema={
+            "type": "object",
+            "subtype": "raster-cube"},
+        optional=False)
     p_nf = Parameter(description="The number of frequencies to use",
-                             schema={"type": "object", "subtype": "integer"},
-                             optional=False)
+                     schema={"type": "object", "subtype": "integer"},
+                     optional=False)
     p_dod = Parameter(description="Degree of over-determination",
-                             schema={"type": "object", "subtype": "integer"},
-                             optional=True)
-    p_fet = Parameter(description="Fit error tolerance when filtering outliers",
-                             schema={"type": "object", "subtype": "float"},
-                             optional=True)
+                      schema={"type": "object", "subtype": "integer"},
+                      optional=True)
+    p_fet = Parameter(
+        description="Fit error tolerance when filtering outliers",
+        schema={
+            "type": "object",
+            "subtype": "float"},
+        optional=True)
     p_rangelo = Parameter(description="Ignore values below this limit",
-                             schema={"type": "object", "subtype": "float"},
-                             optional=True)
+                          schema={"type": "object", "subtype": "float"},
+                          optional=True)
     p_rangehi = Parameter(description="Ignore values above this limit",
-                             schema={"type": "object", "subtype": "float"},
-                             optional=True)
+                          schema={"type": "object", "subtype": "float"},
+                          optional=True)
     p_rejlo = Parameter(description="Reject low outliers",
-                             schema={"type": "object", "subtype": "boolean"},
-                             optional=True)
+                        schema={"type": "object", "subtype": "boolean"},
+                        optional=True)
     p_rejhi = Parameter(description="Reject high outliers",
-                             schema={"type": "object", "subtype": "boolean"},
-                             optional=True)
+                        schema={"type": "object", "subtype": "boolean"},
+                        optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -59,19 +67,33 @@ def create_process_description():
                  "reject_low": "true"
                  }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"hants_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "hants_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Apply Harmonic Analysis of Time-Series (HANTS) "
-                                        "to a space-time raster dataset.",
-                            summary="Apply HANTS to a space-time raster dataset.",
-                            parameters={"data": p_data, "nf": p_nf, "dod": p_dod, "fet": p_fet,
-                                        "range_low": p_rangelo, "range_high": p_rangehi,
-                                        "reject_low": p_rejlo, "reject_high": p_rejhi},
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Apply Harmonic Analysis of Time-Series (HANTS) "
+        "to a space-time raster dataset.",
+        summary="Apply HANTS to a space-time raster dataset.",
+        parameters={
+            "data": p_data,
+            "nf": p_nf,
+            "dod": p_dod,
+            "fet": p_fet,
+            "range_low": p_rangelo,
+            "range_high": p_rangehi,
+            "reject_low": p_rejlo,
+            "reject_high": p_rejhi},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -79,7 +101,16 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_object, nf, dod, fet, range_low, range_high, reject_low, reject_high, output_object):
+def create_process_chain_entry(
+        input_object,
+        nf,
+        dod,
+        fet,
+        range_low,
+        range_high,
+        reject_low,
+        reject_high,
+        output_object):
     """Create a Actinia process description that uses t.rast.hants
     to filter a time series with HANTS.
 
@@ -171,7 +202,9 @@ def get_process_list(node: Node):
             continue
 
         # multiple strds as input ?
-        output_object = DataObject(name=f"{data_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+        output_object = DataObject(
+            name=f"{data_object.name}_{PROCESS_NAME}",
+            datatype=GrassDataType.STRDS)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)
 

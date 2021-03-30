@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from openeo_grass_gis_driver.actinia_processing.base import process_node_to_actinia_process_chain,\
-    PROCESS_DICT, PROCESS_DESCRIPTION_DICT
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import ActiniaInterface
+from openeo_grass_gis_driver.actinia_processing.base import \
+     process_node_to_actinia_process_chain,\
+     PROCESS_DICT, PROCESS_DESCRIPTION_DICT
+from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
+     ActiniaInterface
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -38,7 +40,8 @@ def create_process_chain_entry(input_name, python_file_url, output_name):
     :return: A Actinia process chain description
     """
 
-    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
+    location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(
+        input_name)
     input_name = layer_name
     if mapset is not None:
         input_name = layer_name + "@" + mapset
@@ -71,14 +74,16 @@ def get_process_list(args):
 
     for input_name in input_names:
 
-        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(input_name)
+        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(
+            input_name)
         output_name = "%s_%s" % (layer_name, PROCESS_NAME)
         output_names.append(output_name)
 
         if "python_file_url" in args:
             python_file_url = args["python_file_url"]
         else:
-            raise Exception("Python file is missing in the process description")
+            raise Exception(
+                "Python file is missing in the process description")
 
         pc = create_process_chain_entry(input_name=input_name,
                                         python_file_url=python_file_url,

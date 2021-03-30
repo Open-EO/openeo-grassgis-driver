@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import json
-from random import randint
-from typing import List, Tuple
 
-from openeo_grass_gis_driver.actinia_processing.base import check_node_parents, DataObject, GrassDataType
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
+from openeo_grass_gis_driver.actinia_processing.base import \
+     check_node_parents, DataObject, GrassDataType
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+     ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_schemas import \
+     Parameter, ProcessDescription, ReturnValue, ProcessExample
+from .base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -17,29 +18,30 @@ __email__ = "soerengebbert@googlemail.com"
 # dummy math process
 PROCESS_NAME = "power"
 
+
 def create_process_description():
     p_x = Parameter(description="The numerical base.",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"
                                ]
                        })
     p_y = Parameter(description="The numerical exponent.",
-                       schema={
+                    schema={
                                "type": [
                                  "number",
                                  "null"
                                ]
                        })
 
-    rv = ReturnValue(description="The computed value for `base` raised to the power of `p`.",
-                     schema={
-                             "type": [
-                               "number",
-                               "null"
-                             ],
-                     })
+    rv = ReturnValue(
+        description="The computed value for `base` raised to the power of `p`.",
+        schema={
+            "type": [
+                "number",
+                "null"],
+             })
 
     # Example
     arguments = {
@@ -47,18 +49,26 @@ def create_process_description():
         "y": 2.5
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"power_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "power_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Computes the exponentiation for the base `base` raised to the power of `p`.",
-                            summary="Exponentiation",
-                            parameters={"base": p_x,
-                                        "p": p_y
-                                       },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Computes the exponentiation for the base `base` raised to the power of `p`.",
+        summary="Exponentiation",
+        parameters={
+            "base": p_x,
+            "p": p_y},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -74,7 +84,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
     :return: A Actinia process chain description
     """
 
-    rn = randint(0, 1000000)
+    # rn = randint(0, 1000000)
 
     pc = []
 
@@ -101,7 +111,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

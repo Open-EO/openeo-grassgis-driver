@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import json
-from random import randint
-from typing import List, Tuple
 
-from openeo_grass_gis_driver.actinia_processing.base import check_node_parents, DataObject, GrassDataType
-from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraphNode, ProcessGraph
-from openeo_grass_gis_driver.models.process_schemas import Parameter, ProcessDescription, ReturnValue, ProcessExample
-from .base import process_node_to_actinia_process_chain, PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
+from openeo_grass_gis_driver.actinia_processing.base import \
+     check_node_parents, DataObject, GrassDataType
+from openeo_grass_gis_driver.models.process_graph_schemas import \
+     ProcessGraphNode, ProcessGraph
+from openeo_grass_gis_driver.models.process_schemas import \
+     Parameter, ProcessDescription, ReturnValue, ProcessExample
+from .base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -17,40 +18,38 @@ __email__ = "soerengebbert@googlemail.com"
 # dummy math process
 PROCESS_NAME = "neq"
 
+
 def create_process_description():
     p_x = Parameter(description="First operand.",
-                       schema={
+                    schema={
                                "description": "Any data type is allowed."
                        })
     p_y = Parameter(description="Second operand.",
-                       schema={
+                    schema={
                                "description": "Any data type is allowed."
                        })
-    p_delta = Parameter(description="Only applicable for comparing two numbers.",
-                       schema={
-                             "type": [
-                               "number",
-                               "null"
-                             ],
-                       },
-                       default=None,
-                       optional=True
-                       )
-    p_case = Parameter(description="Only applicable for comparing two strings.",
-                       schema={
-                               "type": "boolean"
-                       },
-                       default=None,
-                       optional=True
-                       )
+    p_delta = Parameter(
+        description="Only applicable for comparing two numbers.",
+        schema={
+            "type": [
+                "number",
+                "null"],
+            },
+        default=None,
+        optional=True)
+    p_case = Parameter(
+        description="Only applicable for comparing two strings.",
+        schema={
+            "type": "boolean"},
+        default=None,
+        optional=True)
 
-    rv = ReturnValue(description="Returns `true` if `x` is *not* equal to `y`, `null` if any operand is `null`, otherwise `false`.",
-                     schema={
-                             "type": [
-                               "boolean",
-                               "null"
-                             ]
-                     })
+    rv = ReturnValue(
+        description="Returns `true` if `x` is *not* equal to `y`, `null` if any operand is `null`, otherwise `false`.",
+        schema={
+            "type": [
+                "boolean",
+                "null"]})
 
     # Example
     arguments = {
@@ -58,20 +57,28 @@ def create_process_description():
         "y": None
     }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
-    graph = ProcessGraph(title="title", description="description", process_graph={"neq_1": node})
-    examples = [ProcessExample(title="Simple example", description="Simple example",
-                               process_graph=graph)]
+    graph = ProcessGraph(
+        title="title",
+        description="description",
+        process_graph={
+            "neq_1": node})
+    examples = [
+        ProcessExample(
+            title="Simple example",
+            description="Simple example",
+            process_graph=graph)]
 
-    pd = ProcessDescription(id=PROCESS_NAME,
-                            description="Compares whether `x` is *not* strictly equal to `y`.",
-                            summary="Not equal to comparison",
-                            parameters={"x": p_x,
-                                        "y": p_y,
-                                        "delta": p_delta,
-                                        "case_sensitive": p_case
-                                       },
-                            returns=rv,
-                            examples=examples)
+    pd = ProcessDescription(
+        id=PROCESS_NAME,
+        description="Compares whether `x` is *not* strictly equal to `y`.",
+        summary="Not equal to comparison",
+        parameters={
+            "x": p_x,
+            "y": p_y,
+            "delta": p_delta,
+            "case_sensitive": p_case},
+        returns=rv,
+        examples=examples)
 
     return json.loads(pd.to_json())
 
@@ -87,7 +94,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
     :return: A Actinia process chain description
     """
 
-    rn = randint(0, 1000000)
+    # rn = randint(0, 1000000)
 
     pc = []
 
@@ -114,7 +121,9 @@ def get_process_list(node: Node):
 
     input_object = list(input_objects)[-1]
 
-    output_object = DataObject(name=f"{input_object.name}_{PROCESS_NAME}", datatype=GrassDataType.STRDS)
+    output_object = DataObject(
+        name=f"{input_object.name}_{PROCESS_NAME}",
+        datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 
     # pc = create_process_chain_entry(input_object, vector_object, output_object)

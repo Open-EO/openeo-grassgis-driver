@@ -74,6 +74,7 @@ class GraphValidationTestCase(TestBase):
             headers=self.auth)
         self.assertEqual(response.status_code, 200)
 
+    # TODO: what to do with these disabled tests ? remove ?
     def no_support_test_6_graph_zonal_statistics(self):
         """Run the validation test
         """

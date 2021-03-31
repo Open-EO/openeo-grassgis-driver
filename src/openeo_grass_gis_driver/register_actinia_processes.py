@@ -23,9 +23,12 @@ def register_processes():
         for module in modules:
             # TODO: add logger
             # print("registering %s" % module['id'])
-            ACTINIA_PROCESS_DESCRIPTION_DICT[module['id']] = module
+            # convert grass module names to openeo process names
+            process = module["id"].replace('.', '_')
+            ACTINIA_PROCESS_DESCRIPTION_DICT[process] = module
 
     # overwrite certain module to collect more information
     status_code, module = iface.list_module('r.slope.aspect')
     if status_code == 200:
-        ACTINIA_PROCESS_DESCRIPTION_DICT[module['id']] = module
+        process = module["id"].replace('.', '_')
+        ACTINIA_PROCESS_DESCRIPTION_DICT[process] = module

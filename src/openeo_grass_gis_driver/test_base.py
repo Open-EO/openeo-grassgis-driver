@@ -27,13 +27,15 @@ class TestBase(unittest.TestCase):
 
     def setUp(self):
         self.app = flask_api.app.test_client()
+        self.prefix = flask_api.prefix
         self.gconf = ActiniaConfig()
         self.gconf.PORT = "443"
         self.auth = Headers()
         auth = bytes(self.gconf.USER + ':' + self.gconf.PASSWORD, "utf-8")
         encodeAuth = base64.b64encode(auth).decode()
         self.auth.add('Authorization', 'Basic ' + encodeAuth)
-        response = self.app.get('/credentials/basic', headers=self.auth)
+        response = self.app.get(
+            self.prefix + '/credentials/basic', headers=self.auth)
         resp_data = json.loads(response.data.decode())
         self.auth.set(
             'Authorization',

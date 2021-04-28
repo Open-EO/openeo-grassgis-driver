@@ -2,6 +2,7 @@
 import unittest
 from flask import json
 from pprint import pprint
+
 from openeo_grass_gis_driver.test_base import TestBase
 
 __license__ = "Apache License, Version 2.0"
@@ -18,7 +19,8 @@ class DataTestCase(TestBase):
 
         :return:
         """
-        response = self.app.get('/collections', headers=self.auth)
+        response = self.app.get(
+            self.prefix + '/collections', headers=self.auth)
         data = json.loads(response.data.decode())
 
         pprint(data)
@@ -41,6 +43,7 @@ class DataTestCase(TestBase):
 
     def test_raster_collections_id_1(self):
         response = self.app.get(
+            self.prefix +
             '/collections/nc_spm_08.landsat.raster.lsat5_1987_10',
             headers=self.auth)
         self.assertEqual(response.status_code, 200)
@@ -51,6 +54,7 @@ class DataTestCase(TestBase):
 
     def test_raster_collections_id_2(self):
         response = self.app.get(
+            self.prefix +
             '/collections/nc_spm_08.PERMANENT.raster.elevation',
             headers=self.auth)
         self.assertEqual(response.status_code, 200)
@@ -61,6 +65,7 @@ class DataTestCase(TestBase):
 
     def test_vector_collections_id_2(self):
         response = self.app.get(
+            self.prefix +
             '/collections/nc_spm_08.PERMANENT.raster.elevation',
             headers=self.auth)
         self.assertEqual(response.status_code, 200)

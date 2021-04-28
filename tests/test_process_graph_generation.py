@@ -64,9 +64,13 @@ class GraphValidationTestCase(TestBase):
 #        self.assertIsNone(pg.node_dict["zonal_statistics_1"].child)
 #        self.assertEqual(pg.node_dict["zonal_statistics_1"],
 #                         pg.node_dict["get_b08_data"].child)
-#        self.assertEqual(pg.node_dict["zonal_statistics_1"].get_parent_by_name("data"), pg.node_dict["get_b08_data"])
+#        self.assertEqual(
+#            pg.node_dict["zonal_statistics_1"].get_parent_by_name("data"),
+#            pg.node_dict["get_b08_data"])
 #        self.assertEqual(1, len(pg.node_dict["zonal_statistics_1"].parents))
-#        self.assertTrue(pg.node_dict["get_b08_data"] in pg.node_dict["zonal_statistics_1"].parents)
+#        self.assertTrue(
+#            pg.node_dict["get_b08_data"]
+#            in pg.node_dict["zonal_statistics_1"].parents)
 
     def test_graph_creation_graph_daterange(self):
 
@@ -80,7 +84,8 @@ class GraphValidationTestCase(TestBase):
 
         self.assertEqual(0, len(pg.node_dict["filter_daterange_1"].children))
         self.assertTrue(
-            pg.node_dict["filter_daterange_1"] in pg.node_dict["get_strds_data"].children)
+            pg.node_dict["filter_daterange_1"]
+            in pg.node_dict["get_strds_data"].children)
         self.assertEqual(
             pg.node_dict["filter_daterange_1"].get_parent_by_name("data"),
             pg.node_dict["get_strds_data"])

@@ -92,8 +92,9 @@ class ActiniaInterfaceTestCase(TestBase):
 
     def test_layer_exists_2_error(self):
         iface = ActiniaInterface(self.gconf)
+        layer_name = "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m_nope"
         status = iface.check_layer_exists(
-            layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m_nope")
+            layer_name=layer_name)
         self.assertFalse(status)
 
     def test_async_persistent_processing(self):

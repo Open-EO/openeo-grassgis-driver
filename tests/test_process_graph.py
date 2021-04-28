@@ -3,6 +3,7 @@ from uuid import uuid4
 import unittest
 import pprint
 from flask import json
+
 from openeo_grass_gis_driver.test_base import TestBase
 from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
     FILTER_BBOX
@@ -25,18 +26,20 @@ class ProcessGraphTestCase(TestBase):
 
     def setUp(self):
         TestBase.setUp(self)
-        response = self.app.delete('/process_graphs', headers=self.auth)
+        response = self.app.delete(
+            self.prefix + '/process_graphs', headers=self.auth)
         self.assertEqual(204, response.status_code)
 
     def test_job_creation_1(self):
         """Run the test in the ephemeral database
         """
-        PROCESS_CHAIN_TEMPLATE["process_graph"] = FILTER_BBOX["process"]["process_graph"]
+        pc = FILTER_BBOX["process"]["process_graph"]
+        PROCESS_CHAIN_TEMPLATE["process_graph"] = pc
 
         process_graph_id = f"user-graph-{str(uuid4())}"
 
         response = self.app.put(
-            f'/process_graphs/{process_graph_id}',
+            f'{self.prefix}/process_graphs/{process_graph_id}',
             data=json.dumps(PROCESS_CHAIN_TEMPLATE),
             content_type="application/json",
             headers=self.auth)
@@ -48,7 +51,8 @@ class ProcessGraphTestCase(TestBase):
         self.assertEqual(200, response.status_code)
         # process_graph_id = response.get_data().decode("utf-8")
 
-        response = self.app.get('/process_graphs', headers=self.auth)
+        response = self.app.get(
+            self.prefix + '/process_graphs', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))
@@ -57,7 +61,7 @@ class ProcessGraphTestCase(TestBase):
         self.assertEqual(process_graph_id, data["processes"][0]["id"])
 
         response = self.app.get(
-            f'/process_graphs/{process_graph_id}',
+            f'{self.prefix}/process_graphs/{process_graph_id}',
             headers=self.auth)
         self.assertEqual(200, response.status_code)
 
@@ -72,11 +76,12 @@ class ProcessGraphTestCase(TestBase):
     def test_job_creation_2(self):
         """Run the test in the ephemeral database
         """
-        PROCESS_CHAIN_TEMPLATE["process_graph"] = FILTER_BBOX["process"]["process_graph"]
+        pc = FILTER_BBOX["process"]["process_graph"]
+        PROCESS_CHAIN_TEMPLATE["process_graph"] = pc
 
         process_graph_id = f"user-graph-{str(uuid4())}"
         response = self.app.put(
-            f'/process_graphs/{process_graph_id}',
+            f'{self.prefix}/process_graphs/{process_graph_id}',
             data=json.dumps(PROCESS_CHAIN_TEMPLATE),
             content_type="application/json",
             headers=self.auth)
@@ -89,7 +94,7 @@ class ProcessGraphTestCase(TestBase):
         # process_graph_id = response.get_data().decode("utf-8")
 
         response = self.app.get(
-            f'/process_graphs/{process_graph_id}',
+            f'{self.prefix}/process_graphs/{process_graph_id}',
             headers=self.auth)
         self.assertEqual(200, response.status_code)
 
@@ -102,16 +107,17 @@ class ProcessGraphTestCase(TestBase):
             data["process_graph"])
 
         response = self.app.delete(
-            f'/process_graphs/{process_graph_id}',
+            f'{self.prefix}/process_graphs/{process_graph_id}',
             headers=self.auth)
         self.assertEqual(204, response.status_code)
 
         response = self.app.get(
-            f'/process_graphs/{process_graph_id}',
+            f'{self.prefix}/process_graphs/{process_graph_id}',
             headers=self.auth)
         self.assertEqual(400, response.status_code)
 
-        response = self.app.get('/process_graphs', headers=self.auth)
+        response = self.app.get(
+            self.prefix + '/process_graphs', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))
@@ -144,7 +150,8 @@ class ProcessGraphTestCase(TestBase):
 #        self.assertEqual(FILTER_BBOX["process_graph"], data["process_graph"])
 #
 #        # Modify graph
-#        PROCESS_CHAIN_TEMPLATE["process_graph"] = ZONAL_STATISTICS["process_graph"]
+#        pc = ZONAL_STATISTICS["process_graph"]
+#        PROCESS_CHAIN_TEMPLATE["process_graph"] = pc
 #
 #        response = self.app.patch(f'/process_graphs/{process_graph_id}',
 #                                  data=json.dumps(PROCESS_CHAIN_TEMPLATE),

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from flask import json
+
 from openeo_grass_gis_driver.test_base import TestBase
 from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
     FILTER_BBOX, NDVI_STRDS, GET_DATA_1, GET_DATA_3, DATERANGE, ACTINIA_PROCESS
@@ -18,6 +19,7 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(FILTER_BBOX),
             content_type="application/json",
@@ -28,6 +30,7 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(NDVI_STRDS),
             content_type="application/json",
@@ -38,6 +41,7 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(GET_DATA_1),
             content_type="application/json",
@@ -48,6 +52,7 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(GET_DATA_3),
             content_type="application/json",
@@ -58,6 +63,7 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(DATERANGE),
             content_type="application/json",
@@ -68,48 +74,9 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(ACTINIA_PROCESS),
-            content_type="application/json",
-            headers=self.auth)
-        self.assertEqual(response.status_code, 200)
-
-    def no_support_test_6_graph_zonal_statistics(self):
-        """Run the validation test
-        """
-        response = self.app.post(
-            '/validation',
-            data=json.dumps(ZONAL_STATISTICS),
-            content_type="application/json",
-            headers=self.auth)
-        self.assertEqual(response.status_code, 200)
-
-    def no_support_test_9_graph_raster_export(self):
-        """Run the validation test
-        """
-        response = self.app.post(
-            '/validation',
-            data=json.dumps(RASTER_EXPORT),
-            content_type="application/json",
-            headers=self.auth)
-        self.assertEqual(response.status_code, 200)
-
-    def no_support_test_10_graph_map_algebra(self):
-        """Run the validation test
-        """
-        response = self.app.post(
-            '/validation',
-            data=json.dumps(MAP_ALGEBRA),
-            content_type="application/json",
-            headers=self.auth)
-        self.assertEqual(response.status_code, 200)
-
-    def no_support_test_11_graph_temporal_algebra(self):
-        """Run the validation test
-        """
-        response = self.app.post(
-            '/validation',
-            data=json.dumps(TEMPORAL_ALGEBRA),
             content_type="application/json",
             headers=self.auth)
         self.assertEqual(response.status_code, 200)

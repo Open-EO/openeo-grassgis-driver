@@ -2,6 +2,7 @@
 import unittest
 from pprint import pprint
 from flask import json
+
 from openeo_grass_gis_driver.test_base import TestBase
 
 __license__ = "Apache License, Version 2.0"
@@ -14,7 +15,7 @@ __email__ = "soerengebbert@googlemail.com"
 class ProcessesTestCase(TestBase):
 
     def test_processes(self):
-        response = self.app.get('/processes', headers=self.auth)
+        response = self.app.get(self.prefix + '/processes', headers=self.auth)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         pprint(data)
@@ -29,13 +30,15 @@ class ProcessesTestCase(TestBase):
 #        pprint(data)
 #
     def test_process_filter_bbox(self):
-        response = self.app.get('/processes/filter_bbox', headers=self.auth)
+        response = self.app.get(
+            self.prefix + '/processes/filter_bbox', headers=self.auth)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         pprint(data)
 
     def test_process_get_data(self):
         response = self.app.get(
+            self.prefix +
             '/processes/load_collection',
             headers=self.auth)
         self.assertEqual(response.status_code, 200)
@@ -43,7 +46,8 @@ class ProcessesTestCase(TestBase):
         pprint(data)
 
     def test_process_NDVI(self):
-        response = self.app.get('/processes/ndvi', headers=self.auth)
+        response = self.app.get(
+            self.prefix + '/processes/ndvi', headers=self.auth)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         pprint(data)

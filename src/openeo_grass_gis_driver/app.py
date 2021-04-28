@@ -4,14 +4,18 @@ from flask import Flask
 from flask_restful import Api
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-__author__ = "Sören Gebbert"
-__copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
-__maintainer__ = "Soeren Gebbert"
-__email__ = "soerengebbert@googlemail.com"
+__license__ = "Apache License, Version 2.0"
+__author__ = "Sören Gebbert, Carmen Tawalika"
+__copyright__ = "Copyright 2018-2021, Sören Gebbert, mundialis"
+__maintainer__ = "mundialis"
+
+API_VERSION = "v1.0"
+# This is the URL prefix that must be used in the tests
+URL_PREFIX = "/api/%s" % API_VERSION
 
 flask_app = Flask(__name__)
 flask_app.wsgi_app = ProxyFix(flask_app.wsgi_app, x_for=1, x_host=1, x_proto=1)
 # as flask CORS lead to unforeseen behaviour in certain cases, we configure
 # headers with nginx and outcomment here.
 # CORS(flask_app, supports_credentials=True)
-flask_api = Api(flask_app)
+flask_api = Api(flask_app, prefix=URL_PREFIX)

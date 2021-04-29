@@ -320,7 +320,7 @@ class ActiniaInterface(object):
 
         return r.status_code, data
 
-    def list_module(self, module) -> Tuple[int, dict]:
+    def list_module(self, module: str) -> Tuple[int, dict]:
         url = "%(base)s/modules/%(module)s" % {
                  "base": self.base_url, "module": module}
         r = requests.get(url=url, auth=self.auth)

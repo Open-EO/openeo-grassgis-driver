@@ -10,6 +10,7 @@ from openeo_grass_gis_driver.actinia_processing.config import \
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
+from openeo_grass_gis_driver.models.job_schemas import JobInformation
 from openeo_grass_gis_driver.jobs import check_job
 from openeo_grass_gis_driver.authentication import ResourceBase
 

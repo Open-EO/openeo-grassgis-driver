@@ -93,7 +93,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_object: DataObject, vector_object,
-                               inside, output_object: DataObject):
+                               mask_value, inside, output_object: DataObject):
     """Create a Actinia command of the process chain
 
     :param input_object:
@@ -199,7 +199,7 @@ def get_process_list(node: Node):
             inside = True
 
     input_objects = node.get_parent_by_name(parent_name="data").output_objects
-    vector_objects = node.arguments["mask"]
+    vector_object = node.arguments["mask"]
 
     if not input_objects:
         raise Exception("Process %s requires an input strds" % PROCESS_NAME)
@@ -212,7 +212,7 @@ def get_process_list(node: Node):
     output_objects.append(output_object)
 
     pc = create_process_chain_entry(
-        input_object, vector_object, inside, output_object)
+        input_object, vector_object, mask_value, inside, output_object)
     process_list.extend(pc)
 
     return output_objects, process_list

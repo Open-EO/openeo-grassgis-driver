@@ -136,12 +136,12 @@ def get_process_list(node: Node):
             PROCESS_NAME)
 
     input_objects = node.get_parent_by_name(parent_name="data").output_objects
-    vector_objects = node.arguments["polygons"]
+    vector_object = node.arguments["polygons"]
 
     if not input_objects:
         raise Exception("Process %s requires an input strds" % PROCESS_NAME)
 
-    if not vector_objects:
+    if not vector_object:
         raise Exception("Process %s requires an input vector" % PROCESS_NAME)
 
     input_object = list(input_objects)[-1]

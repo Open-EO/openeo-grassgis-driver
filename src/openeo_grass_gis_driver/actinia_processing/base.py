@@ -310,8 +310,10 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
 
     output_objects = []
 
-    # GRASS module name
-    module_name = node.process_id
+    # openeo process name and GRASS module name
+    process_name = node.process_id
+    # get module name as returned by actinia
+    module_name = ACTINIA_PROCESS_DESCRIPTION_DICT[process_name]["id"]
 
     # get module description from actinia
     # to find out which parameters are input and which are output
@@ -321,10 +323,8 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
     if status_code != 200:
         raise Exception("Unsupported actinia process '%s'" % module_name)
 
-    # openeo-like process name
     rn = randint(0, 1000000)
 
-    process_name = module_name.replace(".", "_")
     actinia_id = "%s_%i" % (process_name, rn)
 
     # create an actinia process chain entry of the form
@@ -351,7 +351,7 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
 
     pc = {}
     pc["id"] = actinia_id
-    pc["module"] = node.process_id
+    pc["module"] = module_name
     pc["inputs"] = []
     pc["flags"] = None
 

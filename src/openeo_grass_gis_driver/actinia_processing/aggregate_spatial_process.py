@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from random import randint
 import json
 
 from openeo_grass_gis_driver.models.process_graph_schemas import \
@@ -93,6 +94,7 @@ def create_process_description():
             "data": p_data,
             "geometries": p_geometries,
             "reducer": p_reducer,
+            "target_dimension": p_target_dimension,
             "context": p_context},
         returns=rv,
         examples=examples)
@@ -185,6 +187,7 @@ def create_process_chain_entry(input_object: DataObject, geometries: str):
     pc.append(importer)
     pc.append(g_region_1)
     pc.append(g_region_2)
+    pc.append(v_to_rast_1)
     pc.append(r_mask_1)
     pc.append(t_rast_univar)
     pc.append(r_mask_2)
@@ -216,8 +219,8 @@ def get_process_list(node: Node):
             raise Exception(
                 "The vector geometries are missing in the process description")
 
-        reducer = node.arguments["reducer"]
-        # TODO: parse the reducer
+        # TODO: support a reducer
+        # reducer = node.arguments["reducer"]
 
         pc = create_process_chain_entry(input_object=input_object,
                                         geometries=geometries)

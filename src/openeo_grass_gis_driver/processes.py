@@ -2,7 +2,7 @@
 from flask_restful import Resource
 from flask import make_response, jsonify
 from openeo_grass_gis_driver.actinia_processing.base import \
-    ACTINIA_PROCESS_DESCRIPTION_DICT, PROCESS_DESCRIPTION_DICT
+    ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT, PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -26,8 +26,8 @@ class Processes(Resource):
         for key in PROCESS_DESCRIPTION_DICT:
             pd = PROCESS_DESCRIPTION_DICT[key]
             pd_list.append(pd)
-        for key in ACTINIA_PROCESS_DESCRIPTION_DICT:
-            pd = ACTINIA_PROCESS_DESCRIPTION_DICT[key]
+        for key in ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT:
+            pd = ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[key]
             pd_list.append(pd)
 
         response = dict(processes=pd_list, links=[])

@@ -12,7 +12,8 @@ __maintainer__ = "mundialis"
 
 class ActiniaInterface(object):
     """
-    This is the interface class to the actinia REST service that uses GRASS GIS as backend
+    This is the interface class to the actinia REST service that uses GRASS GIS
+    as backend
     """
 
     PROCESS_LOCATION = {}
@@ -24,7 +25,7 @@ class ActiniaInterface(object):
 
         self.host = config.HOST
         self.port = config.PORT
-        self.base_url = "%(host)s:%(port)s/latest" % {
+        self.base_url = "%(host)s:%(port)s/api/v1" % {
                            "host": self.host, "port": self.port}
         self.auth = (config.USER, config.PASSWORD)
         self.user = config.USER
@@ -35,15 +36,21 @@ class ActiniaInterface(object):
 
     @staticmethod
     def layer_def_to_components(
-            layer: str) -> Tuple[Optional[str], Optional[str], Optional[str], str]:
-        """Convert the name of a layer in the openeo framework into GRASS GIS definitions
+            layer: str) -> Tuple[Optional[str], Optional[str],
+                                 Optional[str], str]:
+        """Convert the name of a layer in the openeo framework into GRASS GIS
+        definitions
 
-        location.mapset.datatype.map_name -> (location, mapset, datatype, layer)
+        location.mapset.datatype.map_name ->
+        (location, mapset, datatype, layer)
 
-        Return (None, None, None, map_name) if no location/mapset information was found
+        Return (None, None, None, map_name) if no location/mapset information
+        was found
 
-        :param layer: The name of the map_name in the form location.mapset.map_name
-        :return: (location, mapset, datatype, map_name) or (None, None, None, map_name)
+        :param layer: The name of the map_name in the form
+        location.mapset.map_name
+        :return: (location, mapset, datatype, map_name) or
+        (None, None, None, map_name)
         """
 
         if layer.count(".") < 3:
@@ -58,17 +65,20 @@ class ActiniaInterface(object):
 
     @staticmethod
     def layer_def_to_grass_map_name(layer: str) -> str:
-        """Convert the name of a layer in the openeo framework into GRASS GIS map name with optional mapset
+        """Convert the name of a layer in the openeo framework into GRASS GIS
+        map name with optional mapset
 
         location.mapset.datatype.map_name -> map_name@mapset
 
         Return layer if no location/mapset information was found
 
-        :param layer: The name of the layer in the form location.mapset.datatype.map_name
+        :param layer: The name of the layer in the form
+        location.mapset.datatype.map_name
         :return: map_name@mapset or map_name
         """
 
-        location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(
+        AI = ActiniaInterface
+        location, mapset, datatype, layer_name = AI.layer_def_to_components(
             layer)
         if mapset is not None:
             layer_name = layer_name + "@" + mapset
@@ -190,13 +200,17 @@ class ActiniaInterface(object):
         return self._send_get_request(url)
 
     def list_raster(self, location: str, mapset: str) -> Tuple[int, dict]:
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/raster_layers" % {
-                 "base": self.base_url, "location": location, "mapset": mapset}
+        url = ("%(base)s/locations/%(location)s/mapsets/%(mapset)s"
+               "/raster_layers" % {
+                   "base": self.base_url,
+                   "location": location, "mapset": mapset})
         return self._send_get_request(url)
 
     def list_vector(self, location: str, mapset: str) -> Tuple[int, dict]:
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/vector_layers" % {
-                 "base": self.base_url, "location": location, "mapset": mapset}
+        url = ("%(base)s/locations/%(location)s/mapsets/%(mapset)s"
+               "/vector_layers" % {
+                   "base": self.base_url,
+                   "location": location, "mapset": mapset})
         return self._send_get_request(url)
 
     def list_strds(self, location: str, mapset: str) -> Tuple[int, dict]:
@@ -205,23 +219,23 @@ class ActiniaInterface(object):
         return self._send_get_request(url)
 
     def layer_info(self, layer_name: str) -> Tuple[int, dict]:
-        """Return informations about the requested layer, that can be of type raster, vector or strds
+        """Return informations about the requested layer, that can be of type
+        raster, vector or strds
 
         :param layer_name:
         :return:
         """
-        location, mapset, datatype, layer = ActiniaInterface.layer_def_to_components(
+        AI = ActiniaInterface
+        location, mapset, datatype, layer = AI.layer_def_to_components(
             layer_name)
         if datatype == "raster":
             datatype = "raster_layers"
         if datatype == "vector":
             datatype = "vector_layers"
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/%(dtype)s/%(layer)s" % {
-            "base": self.base_url,
-            "location": location,
-            "mapset": mapset,
-            "dtype": datatype,
-            "layer": layer}
+        url = ("%(base)s/locations/%(location)s/mapsets/%(mapset)s/%(dtype)s"
+               "/%(layer)s" % {"base": self.base_url, "location": location,
+                               "mapset": mapset, "dtype": datatype,
+                               "layer": layer})
         return self._send_get_request(url)
 
     def get_resource(self, url: str) -> Tuple[int, dict]:
@@ -256,8 +270,10 @@ class ActiniaInterface(object):
         return True
 
     def async_persistent_processing(
-            self, location: str, mapset: str, process_chain: dict) -> Tuple[int, dict]:
-        """Send a process chain to the Actinia backend to be run asynchronously in a persistent database
+            self, location: str, mapset: str,
+            process_chain: dict) -> Tuple[int, dict]:
+        """Send a process chain to the Actinia backend to be run asynchronously
+        in a persistent database
 
         :param location: The location in which to process
         :param mapset: The new mapset to generate
@@ -265,13 +281,16 @@ class ActiniaInterface(object):
         :return: Status code and the json data (status, json)
         """
 
-        url = "%(base)s/locations/%(location)s/mapsets/%(mapset)s/processing_async" % {
-                 "base": self.base_url, "location": location, "mapset": mapset}
+        url = ("%(base)s/locations/%(location)s/mapsets/%(mapset)s"
+               "/processing_async" % {
+                   "base": self.base_url, "location": location,
+                   "mapset": mapset})
         return self._send_post_request(url=url, process_chain=process_chain)
 
     def async_ephemeral_processing(
             self, location: str, process_chain: dict) -> Tuple[int, dict]:
-        """Send a process chain to the Actinia backend to be run asynchronously in a ephemeral database
+        """Send a process chain to the Actinia backend to be run asynchronously
+        in a ephemeral database
 
         :param location: The location in which to process
         :param process_chain: The process chain that must be executed
@@ -291,13 +310,14 @@ class ActiniaInterface(object):
         :return: Status code and the json data (status, json)
         """
 
-        url = "%(base)s/locations/%(location)s/process_chain_validation_sync" % {
-                 "base": self.base_url, "location": location}
+        url = ("%(base)s/locations/%(location)s/process_chain_validation_sync"
+               % {"base": self.base_url, "location": location})
         return self._send_post_request(url=url, process_chain=process_chain)
 
     def async_ephemeral_processing_export(
             self, location: str, process_chain: dict) -> Tuple[int, dict]:
-        """Send a process chain to the Actinia backend to be run asynchronously in a ephemeral database
+        """Send a process chain to the Actinia backend to be run asynchronously
+        in a ephemeral database
         with export capabilities
 
         :param location: The location in which to process
@@ -310,7 +330,14 @@ class ActiniaInterface(object):
         return self._send_post_request(url=url, process_chain=process_chain)
 
     def list_modules(self) -> Tuple[int, dict]:
-        url = "%(base)s/modules" % {"base": self.base_url}
+        # Request raster modules only because requesting all modules
+        # would take too long.
+        url = "%(base)s/modules?family=r&record=full" % {"base": self.base_url}
+        # if short startup time is required for development,
+        # add additional filter:
+        # url = ("%(base)s/modules?tag=slope&record=full" % {
+        #       "base": self.base_url})
+
         r = requests.get(url=url, auth=self.auth)
         data = r.text
 

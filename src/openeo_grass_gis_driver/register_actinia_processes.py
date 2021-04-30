@@ -23,6 +23,7 @@ def register_processes():
     status_code, modules = iface.list_modules()
 
     if status_code == 200:
+        # TODO: add logger
         print("Registering modules...")
         for module in modules:
             # convert grass module names to openeo process names
@@ -47,4 +48,5 @@ def register_processes():
                 module['returns'] = {}
                 ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process] = module
 
+        # TODO: add logger
         print("... successfully registered modules!")

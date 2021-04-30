@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>The OpenEO GRASS GIS driver &#8212; openeo_grass_gis_driver 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
@@ -35,7 +36,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="the-openeo-grass-gis-driver">
+  <section id="the-openeo-grass-gis-driver">
 <h1>The OpenEO GRASS GIS driver<a class="headerlink" href="#the-openeo-grass-gis-driver" title="Permalink to this headline">¶</a></h1>
 <p>The OpenEO GRASS GIS driver implements the openEO Core API interface for the GRASS GIS as a Service
 (Actinia Core; available from <a class="reference external" href="https://github.com/mundialis/actinia_core">https://github.com/mundialis/actinia_core</a>) software solution for parallel,
@@ -59,7 +60,7 @@ that were defined by the development group for the first prototype:</p>
 <p><a class="reference external" href="https://open-eo.github.io/openeo-api/v/0.4.0/examples-poc/">https://open-eo.github.io/openeo-api/v/0.4.0/examples-poc/</a></p>
 <p>Documentation reference page: <a class="reference external" href="https://open-eo.github.io/openeo-grassgis-driver/">https://open-eo.github.io/openeo-grassgis-driver/</a></p>
 </div></blockquote>
-<div class="section" id="installation">
+<section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>An active internet connection is required. All requests to the openEO GRASS GIS driver will be send to the <strong>openeo.mundialis.de</strong> server and processed on the <strong>actinia.mundialis.de</strong> backend.</p>
 <ol class="arabic">
@@ -135,9 +136,9 @@ curl <span class="si">${</span><span class="nv">AUTH</span><span class="si">}</s
 </div></blockquote>
 </li>
 </ol>
-</div>
-</div>
-<div class="section" id="the-openeo-use-cases-attention-below-requires-further-updates-to-reflect-api-v0-4">
+</section>
+</section>
+<section id="the-openeo-use-cases-attention-below-requires-further-updates-to-reflect-api-v0-4">
 <h1>The openEO use cases - ATTENTION - below requires further updates to reflect API v0.4<a class="headerlink" href="#the-openeo-use-cases-attention-below-requires-further-updates-to-reflect-api-v0-4" title="Permalink to this headline">¶</a></h1>
 <p>First list all available data in the actinia database, the list was shortened, since aver 120 raster layer are
 in the database:</p>
@@ -1693,11 +1694,11 @@ curl <span class="si">${</span><span class="nv">AUTH</span><span class="si">}</s
 </pre></div>
 </div>
 </div></blockquote>
-<div class="section" id="openeo-use-case-1">
+<section id="openeo-use-case-1">
 <h2>openEO use case 1<a class="headerlink" href="#openeo-use-case-1" title="Permalink to this headline">¶</a></h2>
 <p>Use case one can be addressed in different ways using the openEO GRASS GIS driver wrapper. There are <strong>POST</strong> and <strong>PUT</strong>
 calls for job creation that reflects the concept of persistent and ephemeral processing in actinia databases.</p>
-<div class="section" id="persistent-database-approach">
+<section id="persistent-database-approach">
 <h3>Persistent database approach<a class="headerlink" href="#persistent-database-approach" title="Permalink to this headline">¶</a></h3>
 <p>First, we use the <strong>PUT</strong> API call to solve use case 1 and store the result in the persistent database.</p>
 <p>The following commands show the openEO use case 1 API calls and process graph creation.
@@ -2267,8 +2268,8 @@ rime series and the resulting NDVI raster layer:</p>
 </pre></div>
 </div>
 </div></blockquote>
-</div>
-<div class="section" id="ephemeral-database-approach">
+</section>
+<section id="ephemeral-database-approach">
 <h3>Ephemeral database approach<a class="headerlink" href="#ephemeral-database-approach" title="Permalink to this headline">¶</a></h3>
 <p>The second approach to use case 1 is to use ephemeral processing with the specification of an export process
 to store the final NDVI raster layer into a cloud storage.</p>
@@ -2618,9 +2619,9 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
 <blockquote>
 <div><img alt="_images/NDVI_minimum_use_case_1.png" src="_images/NDVI_minimum_use_case_1.png" />
 </div></blockquote>
-</div>
-</div>
-<div class="section" id="openeo-use-case-2">
+</section>
+</section>
+<section id="openeo-use-case-2">
 <h2>openEO use case 2<a class="headerlink" href="#openeo-use-case-2" title="Permalink to this headline">¶</a></h2>
 <p>We modified use case two to process the previously created NDVI time series. The user defined function will
 aggregate time by summing all values and produces a single raster layer.
@@ -2916,8 +2917,8 @@ curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PO
 <blockquote>
 <div><img alt="_images/NDVI_reduce_time_use_case_2.png" src="_images/NDVI_reduce_time_use_case_2.png" />
 </div></blockquote>
-</div>
-<div class="section" id="openeo-use-case-3">
+</section>
+<section id="openeo-use-case-3">
 <h2>openEO use case 3<a class="headerlink" href="#openeo-use-case-3" title="Permalink to this headline">¶</a></h2>
 <p>The zonal statistics is based on the NDVI time series that was computed in the first use case and a polygon
 that is publicly available as GeoJSON file in the google cloud storage.</p>
@@ -3349,8 +3350,8 @@ S2A_B08_filter_daterange_NDVI_extract_00007</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="contents">
+</section>
+<section id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
@@ -3362,16 +3363,16 @@ S2A_B08_filter_daterange_NDVI_extract_00007</p></td>
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="indices-and-tables">
+</section>
+<section id="indices-and-tables">
 <h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>

@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from flask import make_response, jsonify
+
 from openeo_grass_gis_driver.app import flask_api
 from openeo_grass_gis_driver.authentication import \
      Authentication, OIDCAuthentication
 from openeo_grass_gis_driver.authentication import UserInfo
 from openeo_grass_gis_driver.capabilities import \
-     Capabilities, ServiceTypes, Services
+     Capabilities, ServiceTypes, Services, CAPABILITIES
 from openeo_grass_gis_driver.collections import Collections
 from openeo_grass_gis_driver.collection_information import \
      CollectionInformationResource
@@ -24,18 +26,35 @@ from openeo_grass_gis_driver.udf import Udf
 from openeo_grass_gis_driver.well_known import WellKnown
 
 __license__ = "Apache License, Version 2.0"
-__author__ = "Sören Gebbert"
-__copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
-__maintainer__ = "Soeren Gebbert"
-__email__ = "soerengebbert@googlemail.com"
+__author__ = "Sören Gebbert, Carmen Tawalika"
+__copyright__ = "Copyright 2018-2021, Sören Gebbert, mundialis GmbH & Co. KG"
+__maintainer__ = "mundialis"
+
+
+def add_discovery_endpoints():
+    """ Add endpoints to "app" instead of flask_api to bypass URL_PREFIX for
+    basic discovery endpoints
+    """
+
+    app = flask_api.app
+
+    @app.route('/')
+    def index():
+        return make_response(jsonify(CAPABILITIES), 200)
+
+    @app.route('/.well-known/openeo')
+    def well_known():
+        return WellKnown.get(flask_api)
 
 
 def create_endpoints():
-    """Create all endpoints for the openEO Core API  wrapper
+    """Create all endpoints for the openEO Core API wrapper
     """
+
+    add_discovery_endpoints()
+
     # Capabilities
     flask_api.add_resource(Capabilities, '/')
-    flask_api.add_resource(WellKnown, '/.well-known/openeo')
     flask_api.add_resource(OutputFormats, '/file_formats')
     # /conformance
     flask_api.add_resource(Udf, '/udf_runtimes')

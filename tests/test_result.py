@@ -33,6 +33,7 @@ class PreviewTestCase(TestBase):
         """Test the filter box process
         """
         response = self.app.post(
+            self.prefix +
             '/result',
             data=json.dumps(FILTER_BBOX),
             content_type="application/json",
@@ -49,8 +50,10 @@ class PreviewTestCase(TestBase):
         """
 
         fbox = FILTER_BBOX
-        fbox["process"]["process_graph"]["get_data_1"]["arguments"]["id"] = "nc_spm_08.PERMANENT.raster.elevation_nonon"
+        aid = "nc_spm_08.PERMANENT.raster.elevation_nonon"
+        fbox["process"]["process_graph"]["get_data_1"]["arguments"]["id"] = aid
         response = self.app.post(
+            self.prefix +
             '/result',
             data=json.dumps(fbox),
             content_type="application/json",
@@ -65,6 +68,7 @@ class PreviewTestCase(TestBase):
         """Test the get data process to get raster data
         """
         response = self.app.post(
+            self.prefix +
             '/result',
             data=json.dumps(GET_DATA_1),
             content_type="application/json",
@@ -79,6 +83,7 @@ class PreviewTestCase(TestBase):
         """Test the get data process to get strds data
         """
         response = self.app.post(
+            self.prefix +
             '/result',
             data=json.dumps(GET_DATA_3),
             content_type="application/json",
@@ -93,6 +98,7 @@ class PreviewTestCase(TestBase):
         """Run the daterange process
         """
         response = self.app.post(
+            self.prefix +
             '/result',
             data=json.dumps(DATERANGE),
             content_type="application/json",

@@ -2,6 +2,7 @@
 import unittest
 import pprint
 from flask import json
+
 from openeo_grass_gis_driver.test_base import TestBase
 from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
     FILTER_BBOX, NDVI_STRDS, ACTINIA_PROCESS
@@ -24,7 +25,7 @@ class JobsTestCase(TestBase):
 
     def setUp(self):
         TestBase.setUp(self)
-        response = self.app.delete('/jobs', headers=self.auth)
+        response = self.app.delete(self.prefix + '/jobs', headers=self.auth)
         self.assertEqual(204, response.status_code)
 
     def test_job_creation_1(self):
@@ -33,6 +34,7 @@ class JobsTestCase(TestBase):
         JOB_TEMPLATE["process"] = FILTER_BBOX["process"]
 
         response = self.app.post(
+            self.prefix +
             '/jobs',
             data=json.dumps(JOB_TEMPLATE),
             content_type="application/json",
@@ -40,7 +42,7 @@ class JobsTestCase(TestBase):
         self.assertEqual(201, response.status_code)
         job_id = response.get_data().decode("utf-8")
 
-        response = self.app.get('/jobs', headers=self.auth)
+        response = self.app.get(self.prefix + '/jobs', headers=self.auth)
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
         self.assertEqual(200, response.status_code)
@@ -50,7 +52,8 @@ class JobsTestCase(TestBase):
 
         self.assertEqual(job_id, data["jobs"][0]["id"])
 
-        response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.get(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))
@@ -64,6 +67,7 @@ class JobsTestCase(TestBase):
         JOB_TEMPLATE["process"] = NDVI_STRDS["process"]
 
         response = self.app.post(
+            self.prefix +
             '/jobs',
             data=json.dumps(JOB_TEMPLATE),
             content_type="application/json",
@@ -71,14 +75,16 @@ class JobsTestCase(TestBase):
         self.assertEqual(201, response.status_code)
         job_id = response.get_data().decode("utf-8")
 
-        response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.get(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
         data = json.loads(response.get_data().decode("utf-8"))
         pprint.pprint(data)
         self.assertEqual(job_id, data["id"])
 
-        response = self.app.get(f'/jobs/{job_id}' + "_nope", headers=self.auth)
+        response = self.app.get(
+            f'{self.prefix}/jobs/{job_id}' + "_nope", headers=self.auth)
         self.assertEqual(404, response.status_code)
 
     def test_job_creation_deletion_1(self):
@@ -87,6 +93,7 @@ class JobsTestCase(TestBase):
         JOB_TEMPLATE["process"] = NDVI_STRDS["process"]
 
         response = self.app.post(
+            self.prefix +
             '/jobs',
             data=json.dumps(JOB_TEMPLATE),
             content_type="application/json",
@@ -94,16 +101,20 @@ class JobsTestCase(TestBase):
         self.assertEqual(201, response.status_code)
         job_id = response.get_data().decode("utf-8")
 
-        response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.get(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
-        response = self.app.delete(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.delete(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         self.assertEqual(204, response.status_code)
 
-        response = self.app.delete(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.delete(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         self.assertEqual(404, response.status_code)
 
-        response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.get(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         self.assertEqual(404, response.status_code)
 
     def test_actinia_process(self):
@@ -112,6 +123,7 @@ class JobsTestCase(TestBase):
         JOB_TEMPLATE["process"] = ACTINIA_PROCESS["process"]
 
         response = self.app.post(
+            self.prefix +
             '/jobs',
             data=json.dumps(JOB_TEMPLATE),
             content_type="application/json",
@@ -119,16 +131,20 @@ class JobsTestCase(TestBase):
         self.assertEqual(201, response.status_code)
         job_id = response.get_data().decode("utf-8")
 
-        response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.get(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         self.assertEqual(200, response.status_code)
 
-        response = self.app.delete(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.delete(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         self.assertEqual(204, response.status_code)
 
-        response = self.app.delete(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.delete(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         self.assertEqual(404, response.status_code)
 
-        response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.get(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         self.assertEqual(404, response.status_code)
 
 
@@ -136,7 +152,7 @@ class JobsTestResultsCase(TestBase):
 
     def setUp(self):
         TestBase.setUp(self)
-        response = self.app.delete('/jobs', headers=self.auth)
+        response = self.app.delete(self.prefix + '/jobs', headers=self.auth)
         self.assertEqual(204, response.status_code)
 
     def test_job_creation_and_processing_filter_box(self):
@@ -145,6 +161,7 @@ class JobsTestResultsCase(TestBase):
         JOB_TEMPLATE["process"] = FILTER_BBOX["process"]
 
         response = self.app.post(
+            self.prefix +
             '/jobs',
             data=json.dumps(JOB_TEMPLATE),
             content_type="application/json",
@@ -153,19 +170,22 @@ class JobsTestResultsCase(TestBase):
         job_id = response.get_data().decode("utf-8")
 
         # Get job information
-        response = self.app.get(f'/jobs/{job_id}/results', headers=self.auth)
+        response = self.app.get(
+            f'{self.prefix}/jobs/{job_id}/results', headers=self.auth)
         self.assertEqual(200, response.status_code)
         data = response.get_data().decode("utf-8")
         pprint.pprint(data)
 
         # Start the job
-        response = self.app.post(f'/jobs/{job_id}/results', headers=self.auth)
+        response = self.app.post(
+            f'{self.prefix}/jobs/{job_id}/results', headers=self.auth)
         data = response.get_data().decode("utf-8")
         pprint.pprint(data)
         self.assertEqual(202, response.status_code)
 
         # get job information
-        response = self.app.get(f'/jobs/{job_id}/results', headers=self.auth)
+        response = self.app.get(
+            f'{self.prefix}/jobs/{job_id}/results', headers=self.auth)
         data = response.get_data().decode("utf-8")
         pprint.pprint(data)
         self.assertEqual(200, response.status_code)
@@ -224,6 +244,7 @@ class JobsTestResultsCase(TestBase):
         JOB_TEMPLATE["process"] = FILTER_BBOX["process"]
 
         response = self.app.post(
+            self.prefix +
             '/jobs',
             data=json.dumps(JOB_TEMPLATE),
             content_type="application/json",
@@ -233,7 +254,8 @@ class JobsTestResultsCase(TestBase):
         print(job_id)
 
         # Get job information
-        response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.get(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         data = response.get_data().decode("utf-8")
         print(data)
         self.assertEqual(200, response.status_code)
@@ -241,14 +263,15 @@ class JobsTestResultsCase(TestBase):
         JOB_TEMPLATE["process"] = NDVI_STRDS["process"]
 
         response = self.app.patch(
-            f'/jobs/{job_id}',
+            f'{self.prefix}/jobs/{job_id}',
             data=json.dumps(JOB_TEMPLATE),
             content_type="application/json",
             headers=self.auth)
         self.assertEqual(204, response.status_code)
 
         # Get job information
-        response = self.app.get(f'/jobs/{job_id}', headers=self.auth)
+        response = self.app.get(
+            f'{self.prefix}/jobs/{job_id}', headers=self.auth)
         data = response.get_data().decode("utf-8")
         print(data)
         self.assertEqual(200, response.status_code)

@@ -139,7 +139,9 @@ class ProcessDefinitionTestCase(TestBase):
 #        output_names, pc = g.to_actinia_process_list()
 #        pprint([str(o) for o in output_names])
 #        pprint(pc)
-#        self.assertTrue("nc_spm_08.PERMANENT.raster.elevation" in [o.full_name() for o in output_names])
+#        self.assertTrue(
+#            "nc_spm_08.PERMANENT.raster.elevation"
+#             in [o.full_name() for o in output_names])
 #        self.assertEqual(len(pc), 3)
 #
 #    def test_rgb_raster_export(self):
@@ -148,9 +150,15 @@ class ProcessDefinitionTestCase(TestBase):
 #        output_names, pc = g.to_actinia_process_list()
 #        pprint([str(o) for o in output_names])
 #        pprint(pc)
-#        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_10" in [o.full_name() for o in output_names])
-#        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_20" in [o.full_name() for o in output_names])
-#        self.assertTrue("nc_spm_08.landsat.raster.lsat7_2000_30" in [o.full_name() for o in output_names])
+#        self.assertTrue(
+#            "nc_spm_08.landsat.raster.lsat7_2000_10"
+#            in [o.full_name() for o in output_names])
+#        self.assertTrue(
+#            "nc_spm_08.landsat.raster.lsat7_2000_20"
+#             in [o.full_name() for o in output_names])
+#        self.assertTrue(
+#            "nc_spm_08.landsat.raster.lsat7_2000_30"
+#             in [o.full_name() for o in output_names])
 #        self.assertEqual(len(pc), 8)
 #
 #    def test_zonal_statistics(self):
@@ -159,7 +167,9 @@ class ProcessDefinitionTestCase(TestBase):
 #        output_names, pc = g.to_actinia_process_list()
 #        pprint([str(o) for o in output_names])
 #        pprint(pc)
-#        self.assertTrue('None.None.strds.LST_Day_monthly_load_collection' in [o.full_name() for o in output_names])
+#        self.assertTrue(
+#            'None.None.strds.LST_Day_monthly_load_collection'
+#             in [o.full_name() for o in output_names])
 #        self.assertEqual(len(pc), 10)
 
     def test_openeo_usecase_1(self):

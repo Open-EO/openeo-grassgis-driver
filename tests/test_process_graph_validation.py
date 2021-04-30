@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from flask import json
+
 from openeo_grass_gis_driver.test_base import TestBase
 from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
     FILTER_BBOX, NDVI_STRDS, GET_DATA_1, GET_DATA_3, DATERANGE, ACTINIA_PROCESS
@@ -18,6 +19,7 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(FILTER_BBOX),
             content_type="application/json",
@@ -28,6 +30,7 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(NDVI_STRDS),
             content_type="application/json",
@@ -38,6 +41,7 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(GET_DATA_1),
             content_type="application/json",
@@ -48,6 +52,7 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(GET_DATA_3),
             content_type="application/json",
@@ -58,6 +63,7 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(DATERANGE),
             content_type="application/json",
@@ -68,6 +74,7 @@ class GraphValidationTestCase(TestBase):
         """Run the validation test
         """
         response = self.app.post(
+            self.prefix +
             '/validation',
             data=json.dumps(ACTINIA_PROCESS),
             content_type="application/json",

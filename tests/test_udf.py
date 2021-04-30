@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from flask import json
+
 from openeo_grass_gis_driver.test_base import TestBase
 from openeo_grass_gis_driver.udf import SUPPORTED_UDF
 from openeo_grass_gis_driver.udf_lang_udf_type import python_udfs
@@ -15,7 +16,7 @@ __email__ = "soerengebbert@googlemail.com"
 class UdfTestCase(TestBase):
 
     def otest_udf(self):
-        response = self.app.get('/udf', headers=self.auth)
+        response = self.app.get(self.prefix + '/udf', headers=self.auth)
         data = json.loads(response.data.decode())
         print(data)
 
@@ -23,6 +24,7 @@ class UdfTestCase(TestBase):
 
     def otest_udf_lang(self):
         response = self.app.get(
+            self.prefix +
             '/udf/python/udf_reduce_time',
             headers=self.auth)
         data = json.loads(response.data.decode())

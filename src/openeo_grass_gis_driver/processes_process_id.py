@@ -4,7 +4,7 @@ from flask_restful import Resource
 from openeo_grass_gis_driver.actinia_processing.base import \
      PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.actinia_processing.base import \
-    ACTINIA_PROCESS_DESCRIPTION_DICT
+    ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
      ActiniaInterface
 
@@ -27,9 +27,10 @@ class ProcessesProcessId(Resource):
                 jsonify(
                     PROCESS_DESCRIPTION_DICT[process_id]),
                 200)
-        elif process_id in ACTINIA_PROCESS_DESCRIPTION_DICT:
+        elif process_id in ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT:
             iface = ActiniaInterface()
-            module_name = ACTINIA_PROCESS_DESCRIPTION_DICT[process_id]["id"]
+            module = ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process_id]
+            module_name = module["id"]
             status_code, module = iface.list_module(module_name)
             if status_code == 200:
                 return make_response(jsonify(module), 200)

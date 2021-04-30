@@ -1,22 +1,14 @@
 [flake8]
 
-# ignore =
-    E501 line too long (85 > 79 characters)
-    F821 undefined name 'vector_object'
-    F841 local variable 'rn' is assigned to but never used
-
-    # ignored by default
-    E121 continuation line under-indented for hanging indent
-    E123 closing bracket does not match indentation of opening bracket's line
-    E126 continuation line over-indented for hanging indent
-    W504 line break after binary operator
-
-
 # W605 invalid escape sequence '\-'
 # F401 'module' imported but unused
+# E501 line too long (85 > 79 characters)
 
 per-file-ignores =
     ./src/openeo_grass_gis_driver/models/job_schemas.py: W605
     ./src/openeo_grass_gis_driver/models/collection_schemas.py: W605
     ./src/openeo_grass_gis_driver/models/service_schemas.py: W605
     ./src/openeo_grass_gis_driver/actinia_processing/__init__.py: F401
+    ./src/openeo_grass_gis_driver/utils/process_graph_examples_v03.py: E501
+    ./src/openeo_grass_gis_driver/utils/process_graph_examples_v04.py: E501
+    ./src/openeo_grass_gis_driver/utils/process_graph_examples_v10.py: E501

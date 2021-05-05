@@ -28,6 +28,18 @@ def register_processes():
         for module in modules:
             # convert grass module names to openeo process names
             process = module["id"].replace('.', '_')
+            if "parameters" in module:
+                for item in module["parameters"]:
+                    if "subtype" in item["schema"]:
+                        if item["schema"]["subtype"] in ("cell", "strds"):
+                            item["schema"]["type"] = "object"
+                            item["schema"]["subtype"] = "raster-cube"
+            if "returns" in module:
+                for item in module["returns"]:
+                    if "subtype" in item["schema"]:
+                        if item["schema"]["subtype"] in ("cell", "strds"):
+                            item["schema"]["type"] = "object"
+                            item["schema"]["subtype"] = "raster-cube"
             ACTINIA_PROCESS_DESCRIPTION_DICT[process] = module
 
             # create "pseudo" modules which comply to openeo
@@ -37,6 +49,8 @@ def register_processes():
                 # create "pseudo" module for every output:
                 for returns in module['returns']:
                     pm = dict(module)
+                    # TODO: do not change the id, otherwise it breaks
+                    # iface.list_module(pm['id'])
                     pm['id'] = "%s_%s" % (
                         module['id'], returns['name'])
                     pm['returns'] = returns

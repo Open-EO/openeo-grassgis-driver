@@ -31,8 +31,22 @@ class ProcessesProcessId(Resource):
             iface = ActiniaInterface()
             module = ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process_id]
             module_name = module["id"]
+            # note that this will list all outputs of a module, not the
+            # selected output of the pseudo module
             status_code, module = iface.list_module(module_name)
             if status_code == 200:
+                if "parameters" in module:
+                    for item in module["parameters"]:
+                        if "subtype" in item["schema"]:
+                            if item["schema"]["subtype"] in ("cell", "strds"):
+                                item["schema"]["type"] = "object"
+                                item["schema"]["subtype"] = "raster-cube"
+                if "returns" in module:
+                    for item in module["returns"]:
+                        if "subtype" in item["schema"]:
+                            if item["schema"]["subtype"] in ("cell", "strds"):
+                                item["schema"]["type"] = "object"
+                                item["schema"]["subtype"] = "raster-cube"
                 return make_response(jsonify(module), 200)
 
         return make_response(

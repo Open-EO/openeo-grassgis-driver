@@ -49,12 +49,9 @@ def register_processes():
                 # create "pseudo" module for every output:
                 for returns in module['returns']:
                     pm = dict(module)
-                    # TODO: do not change the id, otherwise it breaks
-                    # iface.list_module(pm['id'])
-                    pm['id'] = "%s_%s" % (
-                        module['id'], returns['name'])
                     pm['returns'] = returns
-                    process = pm["id"].replace('.', '_')
+                    process = "%s_%s" % (
+                        pm['id'].replace('.', '_'), returns['name'])
                     ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process] = pm
 
             else:

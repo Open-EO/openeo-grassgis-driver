@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask_restful import Resource
-from flask import make_response, jsonify
+from flask import make_response, jsonify, request
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -159,13 +159,13 @@ CAPABILITIES = {
     ],
     "links": [
         {
-            "href": "https://openeo.mundialis.de/.well-known/openeo",
+            "href": "https://openeo.example.de/.well-known/openeo",
             "rel": "version-history",
             "type": "application/json",
             "title": "List of supported openEO versions"
         },
         {
-            "href": "https://openeo.mundialis.de/api/v1.0/collections",
+            "href": "https://openeo.example.de/api/v1.0/collections",
             "rel": "data",
             "type": "application/json",
             "title": "List of Datasets"
@@ -203,9 +203,31 @@ CAPABILITIES = {
 """
 
 
+def replace_links_in_capabilities():
+    host_url = request.host_url.rstrip('/')
+    split_url = host_url.split('/')
+    if host_url.startswith('http'):
+        new_url = "%s//%s" % (split_url[0], split_url[2])
+    else:
+        new_url = split_url[0]
+
+    for i in CAPABILITIES['links']:
+        sample_url = i['href']
+        split_sample = sample_url.split('/')
+        if sample_url.startswith('http'):
+            sample_url = "%s//%s" % (split_sample[0], split_sample[2])
+        else:
+            sample_url = split_sample[0]
+        i['href'] = i['href'].replace(sample_url, new_url)
+    return CAPABILITIES
+
+
 class Capabilities(Resource):
 
     def get(self, ):
+        # links need to be replaced here because host_url
+        # is only available during a request
+        CAPABILITIES = replace_links_in_capabilities()
         return make_response(jsonify(CAPABILITIES), 200)
 
 

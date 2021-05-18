@@ -43,12 +43,12 @@ class Configfile:
         """
 
         config = configparser.ConfigParser()
+        print("Loading config files: " + str(CONFIG_FILES) + " ...")
         config.read(CONFIG_FILES)
 
         if len(config) <= 1:
             print("Could not find any config file, using default values.")
             return
-        print("Loading config files: " + str(CONFIG_FILES) + " ...")
 
         with open(GENERATED_CONFIG, 'w') as configfile:
             config.write(configfile)

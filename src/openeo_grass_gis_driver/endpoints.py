@@ -6,7 +6,8 @@ from openeo_grass_gis_driver.authentication import \
      Authentication, OIDCAuthentication
 from openeo_grass_gis_driver.authentication import UserInfo
 from openeo_grass_gis_driver.capabilities import \
-     Capabilities, ServiceTypes, Services, CAPABILITIES
+     Capabilities, ServiceTypes, Services, CAPABILITIES, \
+     replace_links_in_capabilities
 from openeo_grass_gis_driver.collections import Collections
 from openeo_grass_gis_driver.collection_information import \
      CollectionInformationResource
@@ -40,6 +41,7 @@ def add_discovery_endpoints():
 
     @app.route('/')
     def index():
+        CAPABILITIES = replace_links_in_capabilities()
         return make_response(jsonify(CAPABILITIES), 200)
 
     @app.route('/.well-known/openeo')

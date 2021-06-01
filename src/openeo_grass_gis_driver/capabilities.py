@@ -2,17 +2,18 @@
 from flask_restful import Resource
 from flask import make_response, jsonify, request
 
+from openeo_grass_gis_driver import __version__
+
 __license__ = "Apache License, Version 2.0"
-__author__ = "Sören Gebbert"
-__copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
-__maintainer__ = "Soeren Gebbert"
-__email__ = "soerengebbert@googlemail.com"
+__author__ = "Sören Gebbert, Carmen Tawalika"
+__copyright__ = "Copyright 2018-2021, Sören Gebbert, mundialis"
+__maintainer__ = "mundialis"
 
 
 # https://open-eo.github.io/openeo-api/#operation/capabilities
 CAPABILITIES = {
     "api_version": "1.0.1",
-    "backend_version": "0.2.0",
+    "backend_version": __version__,
     "stac_version": "0.9.0",
     "id": "grass-gis-driver",
     "title": "GRASS GIS Driver",

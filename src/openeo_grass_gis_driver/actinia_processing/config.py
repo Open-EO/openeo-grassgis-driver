@@ -53,9 +53,12 @@ class Configfile:
             print("Could not find any config file, using default values.")
             return
 
-        with open(GENERATED_CONFIG, 'w') as configfile:
-            config.write(configfile)
-        print("Configuration written to " + GENERATED_CONFIG)
+        # commented out due to
+        # OSError: [Errno 30] Read-only file system
+        # TODO: is there a better solution to avoid this?
+        # with open(GENERATED_CONFIG, 'w') as configfile:
+        #     config.write(configfile)
+        # print("Configuration written to " + GENERATED_CONFIG)
 
         # CONFIG
         if config.has_section("ACTINIA"):

@@ -11,7 +11,10 @@ __maintainer__ = "mundialis"
 
 # config can be overwritten by mounting *.ini files into folders inside
 # the config folder.
-DEFAULT_CONFIG_PATH = "config"
+if os.environ.get('DEFAULT_CONFIG_PATH'):
+    DEFAULT_CONFIG_PATH = os.environ['DEFAULT_CONFIG_PATH']
+else:
+    DEFAULT_CONFIG_PATH = "/etc/default/openeo-grassgis-driver"
 CONFIG_FILES = [str(f) for f in Path(
     DEFAULT_CONFIG_PATH).glob('**/*.ini') if f.is_file()]
 GENERATED_CONFIG = DEFAULT_CONFIG_PATH + '/openeo-grassgis-driver.cfg'

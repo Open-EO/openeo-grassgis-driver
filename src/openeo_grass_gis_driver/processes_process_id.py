@@ -4,7 +4,8 @@ from flask_restful import Resource
 from openeo_grass_gis_driver.actinia_processing.base import \
      PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.actinia_processing.base import \
-    ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT
+    ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT, \
+    OPENEO_ACTINIA_ID_DICT
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
      ActiniaInterface
 
@@ -30,7 +31,8 @@ class ProcessesProcessId(Resource):
         elif process_id in ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT:
             iface = ActiniaInterface()
             module = ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process_id]
-            module_name = module["id"]
+            # get GRASS name for the openeo-like name
+            module_name = OPENEO_ACTINIA_ID_DICT[module["id"]]
             # note that this will list all outputs of a module, not the
             # selected output of the pseudo module
             status_code, module = iface.list_module(module_name)

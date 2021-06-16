@@ -2,8 +2,8 @@
 from openeo_grass_gis_driver.actinia_processing.config import Config \
     as ActiniaConfig
 from openeo_grass_gis_driver.actinia_processing.base import \
-    ACTINIA_PROCESS_DESCRIPTION_DICT, \
-    ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT
+    ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT, \
+    OPENEO_ACTINIA_ID_DICT
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
     ActiniaInterface
 
@@ -28,6 +28,7 @@ def register_processes():
         for module in modules:
             # convert grass module names to openeo process names
             process = module["id"].replace('.', '_')
+            actiniaid = module["id"]
             if "parameters" in module:
                 for item in module["parameters"]:
                     if "subtype" in item["schema"]:
@@ -40,7 +41,6 @@ def register_processes():
                         if item["schema"]["subtype"] in ("cell", "strds"):
                             item["schema"]["type"] = "object"
                             item["schema"]["subtype"] = "raster-cube"
-            ACTINIA_PROCESS_DESCRIPTION_DICT[process] = module
 
             # create "pseudo" modules which comply to openeo
             if ('returns' in module and
@@ -52,11 +52,15 @@ def register_processes():
                     pm['returns'] = returns
                     process = "%s_%s" % (
                         pm['id'].replace('.', '_'), returns['name'])
+                    pm['id'] = process
                     ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process] = pm
+                    OPENEO_ACTINIA_ID_DICT[process] = actiniaid
 
             else:
                 # if no output, assign empty object
                 module['returns'] = {}
+                module["id"] = process
+                OPENEO_ACTINIA_ID_DICT[process] = actiniaid
                 ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process] = module
 
         # TODO: add logger

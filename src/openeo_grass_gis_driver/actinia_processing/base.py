@@ -10,8 +10,13 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
 
 from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 
-ACTINIA_PROCESS_DESCRIPTION_DICT = {}
+# actinia process descriptions converted to openeo API:
+# pseudo modules, one for each output,
+# if actinia modules can produce several outputs
 ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT = {}
+# mapping of openeo process ids to actinia process ids
+OPENEO_ACTINIA_ID_DICT = {}
+# standard openeo process descriptions
 PROCESS_DESCRIPTION_DICT = {}
 PROCESS_DICT = {}
 
@@ -19,8 +24,7 @@ PROCESS_DICT = {}
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
 __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
-__maintainer__ = "Soeren Gebbert"
-__email__ = "soerengebbert@googlemail.com"
+__maintainer__ = "mundialis"
 
 
 ###############################################################################
@@ -322,7 +326,7 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
     # openeo process name and GRASS module name
     process_name = node.process_id
     # get module name as returned by actinia
-    module_name = ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process_name]["id"]
+    module_name = OPENEO_ACTINIA_ID_DICT[process_name]
 
     # get module description from actinia
     # to find out which parameters are input and which are output

@@ -67,7 +67,10 @@ class Configfile:
             if config.has_option("ACTINIA", "PORT"):
                 ACTINIA.PORT = config.get("ACTINIA", "PORT")
             if config.has_option("ACTINIA", "LOCATIONS"):
-                ACTINIA.LOCATIONS = config.get("ACTINIA", "LOCATIONS")
+                locations = config.get("ACTINIA", "LOCATIONS")
+                # keep config values consistent, convert string to array here
+                ACTINIA.LOCATIONS = [
+                    i.strip('" ') for i in locations.strip('[]').split(',')]
             if config.has_option("ACTINIA", "USER"):
                 ACTINIA.USER = config.get("ACTINIA", "USER")
             if config.has_option("ACTINIA", "PASSWORD"):

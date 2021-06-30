@@ -19,7 +19,7 @@ def register_processes():
     iface = ActiniaInterface()
     iface.set_auth(ActiniaConfig.USER, ActiniaConfig.PASSWORD)
     # TODO: add logger
-    print("Requesting modules from actinia...")
+    print("Requesting modules from %s..." % ActiniaConfig.HOST)
     status_code, modules = iface.list_modules()
 
     if status_code == 200:

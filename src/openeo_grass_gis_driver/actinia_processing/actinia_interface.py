@@ -330,14 +330,7 @@ class ActiniaInterface(object):
         return self._send_post_request(url=url, process_chain=process_chain)
 
     def list_modules(self) -> Tuple[int, dict]:
-        # Request raster modules only because requesting all modules
-        # would take too long.
-        url = "%(base)s/modules?family=r&record=full" % {"base": self.base_url}
-        # if short startup time is required for development,
-        # add additional filter:
-        # url = ("%(base)s/modules?tag=slope&record=full" % {
-        #       "base": self.base_url})
-
+        url = "%(base)s/modules?record=full" % {"base": self.base_url}
         r = requests.get(url=url, auth=self.auth)
         data = r.text
 

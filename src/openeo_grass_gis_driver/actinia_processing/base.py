@@ -392,15 +392,15 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
             # check schema subtype of parameter and compare with
             # datatype of data_object
             if ao["schema"]["subtype"] == "cell" and \
-               data_object.datatype != GrassDataType.RASTER:
+                    data_object.datatype != GrassDataType.RASTER:
                 raise Exception(
                     "Wrong input data type, expecting 'cell'")
             elif ao["schema"]["subtype"] == "strds" and \
-               data_object.datatype != GrassDataType.STRDS:
+                    data_object.datatype != GrassDataType.STRDS:
                 raise Exception(
                     "Wrong input data type, expecting 'strds'")
             elif ao["schema"]["subtype"] == "vector" and \
-               data_object.datatype != GrassDataType.VECTOR:
+                    data_object.datatype != GrassDataType.VECTOR:
                 raise Exception(
                     "Wrong input data type, expecting 'vector'")
         elif ao["schema"]["type"] == "boolean":

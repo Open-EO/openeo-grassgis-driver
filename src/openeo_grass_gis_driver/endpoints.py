@@ -6,7 +6,7 @@ from openeo_grass_gis_driver.authentication import \
      Authentication, OIDCAuthentication
 from openeo_grass_gis_driver.authentication import UserInfo
 from openeo_grass_gis_driver.capabilities import \
-     Capabilities, ServiceTypes, Services, CAPABILITIES, \
+     Capabilities, ServiceTypes, Services, \
      replace_links_in_capabilities
 from openeo_grass_gis_driver.collections import Collections
 from openeo_grass_gis_driver.collection_information import \

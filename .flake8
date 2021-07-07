@@ -5,6 +5,7 @@
 # E501 line too long (85 > 79 characters)
 
 per-file-ignores =
+    ./docs/conf.py
     ./src/openeo_grass_gis_driver/actinia_processing/*.py: E501
     ./src/openeo_grass_gis_driver/actinia_processing/__init__.py: F401
     ./src/openeo_grass_gis_driver/models/*.py: E501

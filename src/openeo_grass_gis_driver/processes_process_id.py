@@ -31,8 +31,12 @@ class ProcessesProcessId(Resource):
         elif process_id in ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT:
             iface = ActiniaInterface()
             module = ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process_id]
+
+            """ no longer needed because the description in
+                ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT is complete
+
             # get GRASS name for the openeo-like name
-            module_name = OPENEO_ACTINIA_ID_DICT[module["id"]]
+            module_name = OPENEO_ACTINIA_ID_DICT[module["id"]]["id"]
             # note that this will list all outputs of a module, not the
             # selected output of the pseudo module
             status_code, module = iface.list_module(module_name)
@@ -49,7 +53,9 @@ class ProcessesProcessId(Resource):
                             if item["schema"]["subtype"] in ("cell", "strds"):
                                 item["schema"]["type"] = "object"
                                 item["schema"]["subtype"] = "raster-cube"
-                return make_response(jsonify(module), 200)
+            """
+
+            return make_response(jsonify(module), 200)
 
         return make_response(
             jsonify({"description": "This process does not exist!"}), 400)

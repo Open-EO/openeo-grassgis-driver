@@ -54,13 +54,13 @@ def register_processes():
                         pm['id'].replace('.', '_'), returns['name'])
                     pm['id'] = process
                     ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process] = pm
-                    OPENEO_ACTINIA_ID_DICT[process] = actiniaid
-
+                    OPENEO_ACTINIA_ID_DICT[process] = {"id": actiniaid,
+                                                       "returns": returns['name']}
             else:
                 # if no output, assign empty object
                 module['returns'] = {}
                 module["id"] = process
-                OPENEO_ACTINIA_ID_DICT[process] = actiniaid
+                OPENEO_ACTINIA_ID_DICT[process] = {"id": actiniaid}
                 ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process] = module
 
         # TODO: add logger

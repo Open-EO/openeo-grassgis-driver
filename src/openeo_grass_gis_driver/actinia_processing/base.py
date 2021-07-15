@@ -326,7 +326,10 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
     # openeo process name and GRASS module name
     process_name = node.process_id
     # get module name as returned by actinia
-    module_name = OPENEO_ACTINIA_ID_DICT[process_name]
+    module_name = OPENEO_ACTINIA_ID_DICT[process_name]["id"]
+    openeo_returns = None
+    if "returns" in OPENEO_ACTINIA_ID_DICT[process_name]:
+        openeo_returns = OPENEO_ACTINIA_ID_DICT[process_name]["returns"]
 
     # get module description from actinia
     # to find out which parameters are input and which are output
@@ -427,19 +430,14 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
             module_name)
 
     # output parameters
-    if "returns" in module:
-        for key in node.arguments.keys():
-            # a suggested method to allow openeo users to select certain
-            # outputs if a module can generate several outputs:
-            # put a dummy entry in "arguments"
-
-            # find actinia option in "returns" of the
-            # actinia module description
-            ao = None
+    if "returns" in module and openeo_returns is not None:
+        # find openeo_returns in "returns" of the
+        # actinia module description
+        for item in module["returns"]:
             # not very elegant
-            for item in module["returns"]:
-                if item["name"] == key:
-                    ao = item
+            ao = None
+            if item["name"] == openeo_returns:
+                ao = item
             if ao is None:
                 continue
             datatype = None

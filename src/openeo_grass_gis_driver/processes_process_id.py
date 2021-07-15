@@ -4,10 +4,7 @@ from flask_restful import Resource
 from openeo_grass_gis_driver.actinia_processing.base import \
      PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.actinia_processing.base import \
-    ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT, \
-    OPENEO_ACTINIA_ID_DICT
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
-     ActiniaInterface
+    ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -29,31 +26,9 @@ class ProcessesProcessId(Resource):
                     PROCESS_DESCRIPTION_DICT[process_id]),
                 200)
         elif process_id in ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT:
-            iface = ActiniaInterface()
+            # the description in ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT
+            # must be complete and correct
             module = ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process_id]
-
-            """ no longer needed because the description in
-                ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT is complete
-
-            # get GRASS name for the openeo-like name
-            module_name = OPENEO_ACTINIA_ID_DICT[module["id"]]["id"]
-            # note that this will list all outputs of a module, not the
-            # selected output of the pseudo module
-            status_code, module = iface.list_module(module_name)
-            if status_code == 200:
-                if "parameters" in module:
-                    for item in module["parameters"]:
-                        if "subtype" in item["schema"]:
-                            if item["schema"]["subtype"] in ("cell", "strds"):
-                                item["schema"]["type"] = "object"
-                                item["schema"]["subtype"] = "raster-cube"
-                if "returns" in module:
-                    for item in module["returns"]:
-                        if "subtype" in item["schema"]:
-                            if item["schema"]["subtype"] in ("cell", "strds"):
-                                item["schema"]["type"] = "object"
-                                item["schema"]["subtype"] = "raster-cube"
-            """
 
             return make_response(jsonify(module), 200)
 

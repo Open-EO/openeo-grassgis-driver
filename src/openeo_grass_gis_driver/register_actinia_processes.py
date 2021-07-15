@@ -54,8 +54,10 @@ def register_processes():
                         pm['id'].replace('.', '_'), returns['name'])
                     pm['id'] = process
                     ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process] = pm
-                    OPENEO_ACTINIA_ID_DICT[process] = {"id": actiniaid,
-                                                       "returns": returns['name']}
+                    OPENEO_ACTINIA_ID_DICT[process] = {
+                        "id": actiniaid,
+                        "returns": returns["name"]
+                    }
             else:
                 # if no output, assign empty object
                 module['returns'] = {}

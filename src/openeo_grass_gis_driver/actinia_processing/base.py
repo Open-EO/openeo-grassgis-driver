@@ -433,10 +433,11 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
     if "returns" in module and openeo_returns is not None:
         # find openeo_returns in "returns" of the
         # actinia module description
+        key = openeo_returns
         for item in module["returns"]:
             # not very elegant
             ao = None
-            if item["name"] == openeo_returns:
+            if item["name"] == key:
                 ao = item
             if ao is None:
                 continue
@@ -449,11 +450,11 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
                 datatype = GrassDataType.STRDS
 
             if datatype is not None:
-                # note that key is added to the output name
+                # note that key is already added to the process name
                 # in order to distinguish between different outputs
                 # of the same module
                 output_object = DataObject(
-                    name=f"{data_object.name}_{process_name}_{key}",
+                    name=f"{data_object.name}_{process_name}",
                     datatype=datatype)
                 param = {"param": key,
                          "value": output_object.grass_name()}

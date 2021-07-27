@@ -25,9 +25,10 @@ class DataTestCase(TestBase):
 
         pprint(data)
 
-        dsets = ["nc_spm_08.landsat.strds.lsat5_1987"]
-               # "nc_spm_08.PERMANENT.vector.lakes",
-
+        dsets = [
+            "nc_spm_08.landsat.strds.lsat5_1987"
+            # "nc_spm_08.PERMANENT.vector.lakes"
+        ]
         data_id_list = []
 
         for entry in data["collections"]:

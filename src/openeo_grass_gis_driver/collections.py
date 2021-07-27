@@ -88,6 +88,5 @@ class Collections(Resource):
                     #                       location, mapset)))
                     #     COLLECTIONS_LIST.append(ds)
 
-
         c = Collection(collections=COLLECTIONS_LIST)
         return c.as_response(http_status=200)

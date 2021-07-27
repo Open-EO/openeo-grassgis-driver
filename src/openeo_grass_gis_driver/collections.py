@@ -68,45 +68,25 @@ class Collections(Resource):
                                           location, mapset)))
                         COLLECTIONS_LIST.append(ds)
 
-                    # List raster maps from the GRASS location
-                    status_code, raster_data = self.iface.list_raster(
-                        location=location, mapset=mapset)
-                    if status_code != 200:
-                        return make_response(jsonify(
-                            {"description": "An internal error occurred "
-                             "while catching raster layers!"}, 400))
+                    # # List vector maps from the GRASS location
+                    # status_code, vector_data = self.iface.list_vector(
+                    #     location=location, mapset=mapset)
+                    # if status_code != 200:
+                    #     return make_response(jsonify(
+                    #         {"description": "An internal error occurred "
+                    #          "while catching vector layers!"}, 400))
 
-                    for entry in raster_data:
-                        raster_id = ("%s.%s.raster.%s" % (
-                            location, mapset, entry))
-                        ds = CollectionEntry(
-                            id=raster_id,
-                            title="Raster dataset",
-                            license="proprietary",
-                            description=("Raster dataset GRASS GIS location/"
-                                         "mapset path: /%s/%s" % (
-                                          location, mapset)))
-                        COLLECTIONS_LIST.append(ds)
-
-                    # List vector maps from the GRASS location
-                    status_code, vector_data = self.iface.list_vector(
-                        location=location, mapset=mapset)
-                    if status_code != 200:
-                        return make_response(jsonify(
-                            {"description": "An internal error occurred "
-                             "while catching vector layers!"}, 400))
-
-                    for entry in vector_data:
-                        vector_id = ("%s.%s.vector.%s" % (
-                            location, mapset, entry))
-                        ds = CollectionEntry(
-                            id=vector_id,
-                            title="Vector dataset",
-                            license="proprietary",
-                            description=("Raster Vector GRASS GIS location "
-                                         "mapset path: /%s/%s" % (
-                                          location, mapset)))
-                        COLLECTIONS_LIST.append(ds)
+                    # for entry in vector_data:
+                    #     vector_id = ("%s.%s.vector.%s" % (
+                    #         location, mapset, entry))
+                    #     ds = CollectionEntry(
+                    #         id=vector_id,
+                    #         title="Vector dataset",
+                    #         license="proprietary",
+                    #         description=("Raster Vector GRASS GIS location "
+                    #                      "mapset path: /%s/%s" % (
+                    #                       location, mapset)))
+                    #     COLLECTIONS_LIST.append(ds)
 
         c = Collection(collections=COLLECTIONS_LIST)
         return c.as_response(http_status=200)

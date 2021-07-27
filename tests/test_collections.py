@@ -25,9 +25,7 @@ class DataTestCase(TestBase):
 
         pprint(data)
 
-        dsets = ["nc_spm_08.landsat.raster.lsat5_1987_10",
-                 "nc_spm_08.PERMANENT.vector.lakes",
-                 "nc_spm_08.PERMANENT.raster.elevation"]
+        dsets = ["nc_spm_08.landsat.strds.lsat5_1987"]
 
         data_id_list = []
 
@@ -44,36 +42,13 @@ class DataTestCase(TestBase):
     def test_raster_collections_id_1(self):
         response = self.app.get(
             self.prefix +
-            '/collections/nc_spm_08.landsat.raster.lsat5_1987_10',
+            '/collections/nc_spm_08.landsat.strds.lsat5_1987',
             headers=self.auth)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode())
         pprint(data)
 
-        self.assertEqual(data["id"], "nc_spm_08.landsat.raster.lsat5_1987_10")
-
-    def test_raster_collections_id_2(self):
-        response = self.app.get(
-            self.prefix +
-            '/collections/nc_spm_08.PERMANENT.raster.elevation',
-            headers=self.auth)
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.data.decode())
-        pprint(data)
-
-        self.assertEqual(data["id"], "nc_spm_08.PERMANENT.raster.elevation")
-
-    def test_vector_collections_id_2(self):
-        response = self.app.get(
-            self.prefix +
-            '/collections/nc_spm_08.PERMANENT.raster.elevation',
-            headers=self.auth)
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.data.decode())
-        pprint(data)
-
-        self.assertEqual(data["id"], "nc_spm_08.PERMANENT.raster.elevation")
-
+        self.assertEqual(data["id"], "nc_spm_08.landsat.strds.lsat5_1987")
 
 if __name__ == "__main__":
     unittest.main()

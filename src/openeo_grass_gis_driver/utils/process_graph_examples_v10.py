@@ -100,6 +100,51 @@ GET_DATA_3 = {
     }
 }
 
+APPLY_1 = {
+    "title": "Get a raster-cube, apply a simple math operation",
+    "description": "This process graph is the source for three different layer: raster, vector and strds",
+    "process": {
+        "process_graph": {
+            "get_strds_data": {
+                "process_id": "load_collection",
+                "arguments": {
+                    "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
+                    "spatial_extent": {
+                        "west": -448265.535885,
+                        "east": 1550934.464115,
+                        "north": 760180.124115,
+                        "south": -415819.875885,
+                        "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
+                    },
+                    "temporal_extent": [
+                        "2015-01-01",
+                        "2017-01-01"
+                    ],
+                }
+            },
+            "apply1": {
+                "process_id": "apply",
+                "arguments": {
+                "data": {
+                    "from_node": "get_strds_data"},
+                    "process": {
+                        "process_graph": {
+                            "divide1": {
+                                "process_id": "divide",
+                                "arguments": {
+                                     "x": {"from_argument": "data"},
+                                     "y": 100
+                                 },
+                                 "result": True
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 # bbox_from_raster no longer exists
 """
 BBOX_FROM_RASTER = {

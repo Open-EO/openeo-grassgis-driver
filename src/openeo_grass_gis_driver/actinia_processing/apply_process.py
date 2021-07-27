@@ -18,15 +18,22 @@ PROCESS_NAME = "apply"
 # translate openeo operators to r.mapcalc operators
 OPERATOR_DICT = {
     'sum': '+',
+    'add': '+',
     'subtract': '-',
     'multiply': '*',
     'product': '*',
-    'divide': '/'
+    'divide': '/',
+    'eq': '==',
+    'neq': '!=',
+    'gt': '>',
+    'gte': '>=',
+    'lt': '<',
+    'lte': '<=',
+    'and': '&&'
 }
 
 # translate openeo functions to r.mapcalc functions
 FN_DICT = {
-    'abs': 'abs',
     'ln': 'log',
     'power': 'pow'
 }
@@ -98,6 +105,8 @@ def create_process_chain_entry(input_object: DataObject, formula,
     rn = randint(0, 1000000)
 
     # t.rast.mapcalc
+    
+    formula = formula.replace('data', input_object.grass_name())
 
     pc = {"id": "t_rast_mapcalc_%i" % rn,
           "module": "t.rast.mapcalc",
@@ -123,37 +132,40 @@ def construct_tree(obj):
 
     for name, config in obj.items():
         node = nodes[name]
+        args = list()
         if "data" in config['arguments']:
-            args = config['arguments']['data']
+            args = append(config['arguments']['data'])
         else:
-            args = list()
             if "x" in config['arguments']:
                 args.append(config['arguments']['x'])
             if "y" in config['arguments']:
                 args.append(config['arguments']['y'])
-        if isinstance(args, list):
-            for arg in args:
-                if isinstance(arg, dict):
+        for arg in args:
+            # input data can be 
+            # literal values
+            # results of another node in this process graph
+            # input data to the parent process, here 'apply'
+            if isinstance(arg, dict):
+                if 'from_node' in arg:
                     ref_name = arg['from_node']
                     node['children'].append(nodes[ref_name])
-                else:
-                    node['children'].append({'type': 'literal', 'value': arg})
+                elif 'from_argument' in arg:
+                    node['type'] = 'inputdata'
+            else:
+                node['children'].append({'type': 'literal', 'value': arg})
+
+        if config['process_id'] == 'array_element':
+            node['type'] = 'inputdata'
+            node['index'] = config['arguments']['index']
+        else:
             node['operator'] = config['process_id']
             operators.append(node['operator'])
-        else:
-            if config['process_id'] == 'array_element':
-                node['type'] = 'inputdata'
-                node['index'] = config['arguments']['index']
-            else:
-                node['operator'] = config['process_id']
-                operators.append(node['operator'])
-                node['children'] = []
+
         if "result" in config and config['result'] is True:
             root = node
     return root, operators
 
 
-# use only for dimension "bands"
 def serialize_tree(tree):
     if tree['type'] == 'node':
         operator = tree['operator']
@@ -169,13 +181,16 @@ def serialize_tree(tree):
             results = []
             for node in tree['children']:
                 results.append(serialize_tree(node))
-            # TODO: normalized_difference(x, y) -> (x - y) / (x + y)
+            # normalized_difference(x, y) -> (x - y) / (x + y)
+            if operator == "normalized_difference":
+                return "((%s - %s) / (%s + %s))" % (
+                    results[0], results[1], results[0], results[1])
             return operator + '(' + (', ').join(results) + ')'
             # return operator
     if tree['type'] == 'literal':
         return str(tree['value'])
     if tree['type'] == 'inputdata':
-        return 'data[' + str(tree['index']) + ']'
+        return 'data'
 
 
 def get_process_list(node: Node):
@@ -193,7 +208,7 @@ def get_process_list(node: Node):
     formula = None
     output_datatype = GrassDataType.RASTER
     formula = serialize_tree(tree)
-    # print (formula)
+    print (formula)
     output_datatype = GrassDataType.STRDS
 
     input_objects, process_list = check_node_parents(node=node)

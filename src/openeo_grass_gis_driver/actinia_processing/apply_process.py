@@ -115,6 +115,11 @@ def create_process_chain_entry(input_object: DataObject, formula,
                      {"param": "input",
                       "value": "%(input)s" % {"input": input_object.grass_name()}},
                      {"param": "output",
+                      "value": output_object.grass_name()},
+                     # the basename will always replace any individual
+                     # raster map names from the input STRDS,
+                     # but some basename is required.
+                     {"param": "basename",
                       "value": output_object.grass_name()}]}
 
     return pc

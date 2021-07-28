@@ -105,7 +105,7 @@ def create_process_chain_entry(input_object: DataObject, formula,
     rn = randint(0, 1000000)
 
     # t.rast.mapcalc
-    
+
     formula = formula.replace('data', input_object.grass_name())
 
     pc = {"id": "t_rast_mapcalc_%i" % rn,
@@ -134,14 +134,14 @@ def construct_tree(obj):
         node = nodes[name]
         args = list()
         if "data" in config['arguments']:
-            args = append(config['arguments']['data'])
+            args.append(config['arguments']['data'])
         else:
             if "x" in config['arguments']:
                 args.append(config['arguments']['x'])
             if "y" in config['arguments']:
                 args.append(config['arguments']['y'])
         for arg in args:
-            # input data can be 
+            # input data can be
             # literal values
             # results of another node in this process graph
             # input data to the parent process, here 'apply'
@@ -150,7 +150,7 @@ def construct_tree(obj):
                     ref_name = arg['from_node']
                     node['children'].append(nodes[ref_name])
                 elif 'from_argument' in arg:
-                    node['type'] = 'inputdata'
+                    node['children'].append({'type': 'inputdata'})
             else:
                 node['children'].append({'type': 'literal', 'value': arg})
 
@@ -208,7 +208,7 @@ def get_process_list(node: Node):
     formula = None
     output_datatype = GrassDataType.RASTER
     formula = serialize_tree(tree)
-    print (formula)
+    # print(formula)
     output_datatype = GrassDataType.STRDS
 
     input_objects, process_list = check_node_parents(node=node)

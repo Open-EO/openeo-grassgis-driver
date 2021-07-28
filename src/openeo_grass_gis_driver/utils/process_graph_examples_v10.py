@@ -119,14 +119,15 @@ APPLY_1 = {
                     "temporal_extent": [
                         "2015-01-01",
                         "2017-01-01"
-                    ],
+                    ]
                 }
             },
             "apply1": {
                 "process_id": "apply",
                 "arguments": {
-                "data": {
-                    "from_node": "get_strds_data"},
+                    "data": {
+                        "from_node": "get_strds_data"
+                    },
                     "process": {
                         "process_graph": {
                             "divide1": {
@@ -134,8 +135,8 @@ APPLY_1 = {
                                 "arguments": {
                                      "x": {"from_argument": "data"},
                                      "y": 100
-                                 },
-                                 "result": True
+                                },
+                                "result": True
                             }
                         }
                     }

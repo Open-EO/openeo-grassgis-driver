@@ -1,9 +1,9 @@
 name: Docker build
 
 on:
-￼ push:
-￼   paths-ignore: ['docs/**']
-￼   branches: [ master, gha-docker ]
+  push:
+    paths-ignore: ['docs/**']
+    branches: [ master, gha-docker ]
 
 jobs:
   docker:

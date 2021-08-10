@@ -1,9 +1,21 @@
+# type=ref,event=branch # on push, tag = main
+# type=ref,event=tag # on push tag, tag = 1.2.3
+# type=sha # tag = sha-ad132f5
+# # type=semver,pattern={{raw}} # tag = <tag>
+# # type=semver,pattern={{version}} # tag = 1.2.3
+# # type=semver,pattern={{major}}.{{minor}} # tag = 1.2
+# # type=semver,pattern={{major}} # tag = 1
+# latest=auto # takes care of tag latest
+
 name: Docker build
 
 on:
   push:
-    paths-ignore: ['docs/**']
     branches: [ master, gha-docker ]
+    tags: [ '*.*.*' ]
+    paths-ignore: ['docs/**']
+  release:
+    types: [published, created]
 
 jobs:
   docker:
@@ -13,6 +25,19 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
+      -
+        name: Docker metadata
+        # https://github.com/marketplace/actions/docker-metadata-action
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: mmacata/openeo-grassgis-driver
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha
+          flavor: |
+            latest=auto
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -27,13 +52,14 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN  }}
       -
         name: Build and push
+        # https://github.com/marketplace/actions/build-and-push-docker-images
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          push: false
-          tags: mmacata/openeo-grassgis-driver:latest
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          context: .
           file: docker/Dockerfile
-          no-cache: false
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

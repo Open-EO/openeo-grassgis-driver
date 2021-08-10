@@ -7,6 +7,7 @@
 # # type=semver,pattern={{major}} # tag = 1
 # latest=auto # takes care of tag latest
 
+
 name: Docker build
 
 on:

@@ -8,7 +8,7 @@ name: Docker build and push
 
 on:
   push:
-    branches: [master, gha-docker]
+    branches: [master]
     tags: ['*.*.*']
     paths-ignore: ['docs/**']
   release:

@@ -4,7 +4,8 @@ from flask import json
 
 from openeo_grass_gis_driver.test_base import TestBase
 from openeo_grass_gis_driver.utils.process_graph_examples_v10 import \
-    FILTER_BBOX, NDVI_STRDS, GET_DATA_1, GET_DATA_3, DATERANGE, ACTINIA_PROCESS
+    FILTER_BBOX, NDVI_STRDS, GET_DATA_1, GET_DATA_3, DATERANGE,\
+    APPLY_1, ACTINIA_PROCESS
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"
@@ -70,7 +71,18 @@ class GraphValidationTestCase(TestBase):
             headers=self.auth)
         self.assertEqual(response.status_code, 200)
 
-    def test_6_graph_actiniamodule(self):
+    def test_6_graph_apply(self):
+        """Run the validation test
+        """
+        response = self.app.post(
+            self.prefix +
+            '/validation',
+            data=json.dumps(APPLY_1),
+            content_type="application/json",
+            headers=self.auth)
+        self.assertEqual(response.status_code, 200)
+
+    def test_7_graph_actiniamodule(self):
         """Run the validation test
         """
         response = self.app.post(

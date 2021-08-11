@@ -1,59 +1,47 @@
-# type=ref,event=branch # on push, tag = main
+# https://github.com/marketplace/actions/build-and-push-docker-images
+# https://github.com/marketplace/actions/docker-metadata-action
 # type=ref,event=tag # on push tag, tag = 1.2.3
 # type=sha # tag = sha-ad132f5
-# # type=semver,pattern={{raw}} # tag = <tag>
-# # type=semver,pattern={{version}} # tag = 1.2.3
-# # type=semver,pattern={{major}}.{{minor}} # tag = 1.2
-# # type=semver,pattern={{major}} # tag = 1
 # latest=auto # takes care of tag latest
 
-
-name: Docker build
+name: Docker build and push
 
 on:
   push:
-    branches: [ master, gha-docker ]
-    tags: [ '*.*.*' ]
+    branches: [master, gha-docker]
+    tags: ['*.*.*']
     paths-ignore: ['docs/**']
   release:
     types: [published, created]
 
 jobs:
   docker:
-    name: docker build
+    name: docker build and push
     runs-on: ubuntu-latest
+
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Docker metadata
-        # https://github.com/marketplace/actions/docker-metadata-action
+      - name: Create image and tag names
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: mmacata/openeo-grassgis-driver
+          images: mundialis/openeo-grassgis-driver
           tags: |
-            type=ref,event=branch
             type=ref,event=tag
             type=sha
           flavor: |
             latest=auto
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      -
-        name: Login to DockerHub
+      - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN  }}
-      -
-        name: Build and push
-        # https://github.com/marketplace/actions/build-and-push-docker-images
+      - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
@@ -61,6 +49,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           context: .
           file: docker/Dockerfile
-      -
-        name: Image digest
+      - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

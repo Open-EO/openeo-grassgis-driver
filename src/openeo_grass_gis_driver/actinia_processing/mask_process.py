@@ -103,12 +103,13 @@ def create_process_chain_entry(
         pc = {"id": "t_rast_mapcalc_%i" % rn,
               "module": "t.rast.mapcalc",
               "inputs": [{"param": "expression",
-                         "value": "%(result)s = if(isnull(%(mask_name)s), "
-                                  "%(raw)s, null())" % {"result": output_object.grass_name(),
-                                                        "mask_name": mask_object.grass_name(),
+                         "value": "if(isnull(%(mask_name)s), "
+                                  "%(raw)s, null())" % {"mask_name": mask_object.grass_name(),
                                                         "raw": input_object.grass_name()}},
+                         {"param": "input",
+                          "value": "%(input)s" % {"input": input_object.grass_name()}},
                          {"param": "basename",
-                         "value": "masked"},
+                         "value": output_object.grass_name()},
                          {"param": "output",
                          "value": output_object.grass_name()},
                          ]}
@@ -116,13 +117,14 @@ def create_process_chain_entry(
         pc = {"id": "t_rast_mapcalc_%i" % rn,
               "module": "t.rast.mapcalc",
               "inputs": [{"param": "expression",
-                         "value": "%(result)s = if(isnull(%(mask_name)s), "
-                                  "%(raw)s, %(mask_value)s)" % {"result": output_object.grass_name(),
-                                                                "mask_name": mask_object.grass_name(),
+                         "value": "if(isnull(%(mask_name)s), "
+                                  "%(raw)s, %(mask_value)s)" % {"mask_name": mask_object.grass_name(),
                                                                 "raw": input_object.grass_name(),
                                                                 "mask_value": mask_value}},
+                         {"param": "input",
+                          "value": "%(input)s" % {"input": input_object.grass_name()}},
                          {"param": "basename",
-                         "value": "masked"},
+                         "value": output_object.grass_name()},
                          {"param": "output",
                          "value": output_object.grass_name()},
                          ]}

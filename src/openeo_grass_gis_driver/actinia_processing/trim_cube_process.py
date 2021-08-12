@@ -75,14 +75,14 @@ def create_process_chain_entry(input_object: DataObject,
     rn = randint(0, 1000000)
 
     pc = {"id": "t_rast_algebra_%i" % rn,
-           "module": "t.rast.algebra",
-           "inputs": [{"param": "expression",
-                       "value": "%(result)s = 1 * %(input)s" %
-                       {"result": output_object.grass_name(),
-                        "input": input_object.grass_name()}},
-                      {"param": "basename",
-                       "value": "trim"},
-                      ]}
+          "module": "t.rast.algebra",
+          "inputs": [{"param": "expression",
+                      "value": "%(result)s = 1 * %(input)s" %
+                      {"result": output_object.grass_name(),
+                       "input": input_object.grass_name()}},
+                     {"param": "basename",
+                      "value": "trim"},
+                     ]}
 
     return pc
 

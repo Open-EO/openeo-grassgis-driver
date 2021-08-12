@@ -323,7 +323,7 @@ def get_process_list(node: Node):
         node.as_dict()['arguments']['reducer']['process_graph'])
     # print (operators)
     formula = None
-    output_datatype = GrassDataType.RASTER
+    output_datatype = GrassDataType.STRDS
     if dimtype == 'bands':
         formula = serialize_tree(tree)
         # print (formula)

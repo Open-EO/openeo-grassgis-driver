@@ -130,6 +130,7 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
     # implement openeo / STAC like dimensions in GRASS ?
 
     rn = randint(0, 1000000)
+    pc = []
 
     if dimtype == 'temporal':
         # t.rast.series
@@ -158,15 +159,31 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
                 'Unsupported method <%s> for temporal reduction.' %
                 (method))
 
-        # TODO: quantiles with openeo options probabilites (list of values between 0 and 1
+        # TODO: quantiles with openeo options probabilites
+        # (list of values between 0 and 1)
         # q as number of intervals to calculate quantiles for
 
-        pc = {"id": "t_rast_series_%i" % rn,
-              "module": "t.rast.series",
-              "inputs": [{"param": "input", "value": input_object.grass_name()},
-                         {"param": "method", "value": method},
-                         {"param": "output", "value": output_object.grass_name()}],
-              "flags": "t"}
+        series = {"id": "t_rast_series_%i" % rn,
+                  "module": "t.rast.series",
+                  "inputs": [{"param": "input",
+                              "value": input_object.grass_name()},
+                             {"param": "method", "value": method},
+                             {"param": "output",
+                              "value": output_object.grass_name()}],
+                  "flags": "t"}
+        pc.append(series)
+        r2strds = {"id": "t_rast2strds_%i" % rn,
+                   "module": "t.rast2strds",
+                   "inputs": [{"param": "strds",
+                               "value": input_object.grass_name()},
+                              {"param": "raster",
+                               "value": output_object.grass_name()},
+                              {"param": "bandname",
+                               "value": method},
+                              {"param": "output",
+                               "value": output_object.grass_name()}],
+                   "flags": "t"}
+        pc.append(r2strds)
 
     elif dimtype == 'bands':
         # t.rast.mapcalc
@@ -176,16 +193,17 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
         # with <index> being a number, 0 for first band
         # the order of bands is obtained from g.bands
 
-        pc = {"id": "t_rast_bandcalc_%i" % rn,
-              "module": "t.rast.bandcalc",
-              "inputs": [{"param": "expression",
+        pc = [{"id": "t_rast_bandcalc_%i" % rn,
+               "module": "t.rast.bandcalc",
+               "inputs": [{"param": "expression",
                           "value": "%(formula)s" % {"formula": formula}},
-                         {"param": "input",
-                          "value": "%(input)s" % {"input": input_object.grass_name()}},
-                         {"param": "basename",
-                          "value": "reduce"},
-                         {"param": "output",
-                          "value": output_object.grass_name()}]}
+                          {"param": "input",
+                           "value": "%(input)s" %
+                           {"input": input_object.grass_name()}},
+                          {"param": "basename",
+                           "value": "reduce"},
+                          {"param": "output",
+                           "value": output_object.grass_name()}]}]
 
     return pc
 
@@ -331,7 +349,7 @@ def get_process_list(node: Node):
                                         formula,
                                         operators,
                                         output_object)
-        process_list.append(pc)
+        process_list.extend(pc)
 
     return output_objects, process_list
 

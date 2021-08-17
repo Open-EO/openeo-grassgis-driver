@@ -124,6 +124,7 @@ def get_process_list(node: Node):
         output_objects.append(data_object)
         node.add_output(data_object)
 
+    # dummy process, does nothing
     # pc = create_process_chain_entry(input_object, output_object)
     # process_list.append(pc)
 

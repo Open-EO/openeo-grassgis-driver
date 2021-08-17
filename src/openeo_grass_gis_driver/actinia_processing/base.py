@@ -2,6 +2,7 @@
 from enum import Enum
 from typing import Set, Dict, Optional, Tuple, Union
 from random import randint
+import uuid
 
 # This is the process dictionary that is used to store all processes of
 # the Actinia wrapper
@@ -454,7 +455,7 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
                 # in order to distinguish between different outputs
                 # of the same module
                 output_object = DataObject(
-                    name=f"{data_object.name}_{process_name}",
+                    name=create_ouput_name(data_object.name, process_name),
                     datatype=datatype)
                 param = {"param": key,
                          "value": output_object.grass_name()}
@@ -477,3 +478,16 @@ def check_node_parents(node: Node) -> Tuple[list, list]:
         input_objects.extend(i)
 
     return input_objects, process_list
+
+
+def create_ouput_name(input: str, process_name: str):
+    new_uuid = uuid.uuid4().hex
+
+    # names must start with a letter
+    if input.find("uuid") == 0 and "_" in input:
+        insuffix = input.split("_", 1)[1]
+        output = f"uuid{new_uuid}_{insuffix}_{process_name}"
+    else:
+        output = f"uuid{new_uuid}_{input}_{process_name}"
+
+    return output

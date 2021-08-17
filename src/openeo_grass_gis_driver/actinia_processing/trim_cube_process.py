@@ -3,7 +3,8 @@ import json
 from random import randint
 
 from openeo_grass_gis_driver.actinia_processing.base import \
-     check_node_parents, DataObject, GrassDataType
+     check_node_parents, DataObject, GrassDataType, \
+     create_ouput_name
 from openeo_grass_gis_driver.models.process_graph_schemas import \
      ProcessGraphNode, ProcessGraph
 from openeo_grass_gis_driver.models.process_schemas import \
@@ -108,7 +109,7 @@ def get_process_list(node: Node):
     input_object = list(input_objects)[-1]
 
     output_object = DataObject(
-        name=f"{input_object.name}_{PROCESS_NAME}",
+        name=create_ouput_name(input_object.name, PROCESS_NAME),
         datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 

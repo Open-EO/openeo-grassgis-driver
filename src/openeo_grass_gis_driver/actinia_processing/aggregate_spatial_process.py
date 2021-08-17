@@ -4,7 +4,6 @@ import json
 
 from openeo_grass_gis_driver.models.process_graph_schemas import \
    ProcessGraphNode, ProcessGraph
-
 from openeo_grass_gis_driver.actinia_processing.base import PROCESS_DICT, \
     PROCESS_DESCRIPTION_DICT, Node, check_node_parents, DataObject
 from openeo_grass_gis_driver.models.process_schemas import \

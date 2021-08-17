@@ -4,10 +4,10 @@ import json
 
 from openeo_grass_gis_driver.models.process_graph_schemas import \
      ProcessGraph, ProcessGraphNode
-
 from openeo_grass_gis_driver.actinia_processing.base import \
      PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
-     check_node_parents, DataObject, GrassDataType
+     check_node_parents, DataObject, GrassDataType, \
+     create_ouput_name
 from openeo_grass_gis_driver.models.process_schemas import \
      Parameter, ProcessDescription, ReturnValue, ProcessExample
 
@@ -183,7 +183,7 @@ def get_process_list(node: Node):
     output_objects.extend(list(blue_input_objects))
 
     output_object = DataObject(
-        name=f"{red_strds.name}_{PROCESS_NAME}",
+        name=create_ouput_name(red_strds.name, PROCESS_NAME),
         datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
     node.add_output(output_object=output_object)

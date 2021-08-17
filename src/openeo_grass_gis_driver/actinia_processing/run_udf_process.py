@@ -4,7 +4,8 @@ from openeo_grass_gis_driver.models.process_graph_schemas import \
      ProcessGraphNode, ProcessGraph
 
 from openeo_grass_gis_driver.actinia_processing.base import \
-     Node, check_node_parents, DataObject, GrassDataType
+     Node, check_node_parents, DataObject, GrassDataType, \
+     create_ouput_name
 from openeo_grass_gis_driver.actinia_processing.base import \
      PROCESS_DICT, PROCESS_DESCRIPTION_DICT
 from openeo_grass_gis_driver.models.process_schemas import \
@@ -144,8 +145,8 @@ def create_process_chain_entry(input_object, python_file_url,
 
 
 def get_process_list(node: Node):
-    """Analyse the process description and return the Actinia process chain and the name of the processing result layer
-    which is a single raster layer
+    """Analyse the process description and return the Actinia process chain
+    and the name of the processing result layer which is a single raster layer
 
     :param args: The process description
     :return: (output_names, actinia_process_list)
@@ -168,7 +169,7 @@ def get_process_list(node: Node):
     for input_object in input_objects:
 
         output_object = DataObject(
-            name=f"{input_object.name}_{PROCESS_NAME}",
+            name=create_ouput_name(input_object.name, PROCESS_NAME),
             datatype=GrassDataType.STRDS)
         output_objects.append(output_object)
 

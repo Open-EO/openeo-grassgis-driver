@@ -2,7 +2,7 @@
 from openeo_grass_gis_driver.actinia_processing.base import \
      process_node_to_actinia_process_chain,\
      PROCESS_DICT, PROCESS_DESCRIPTION_DICT, \
-     create_ouput_name
+     create_output_name
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
      ActiniaInterface
 
@@ -77,7 +77,7 @@ def get_process_list(args):
 
         location, mapset, datatype, layer_name = ActiniaInterface.layer_def_to_components(
             input_name)
-        output_name = create_ouput_name(layer_name, PROCESS_NAME)
+        output_name = create_output_name(layer_name, PROCESS_NAME)
         output_names.append(output_name)
 
         if "python_file_url" in args:

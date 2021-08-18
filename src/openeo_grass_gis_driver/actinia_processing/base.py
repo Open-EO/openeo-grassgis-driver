@@ -455,7 +455,7 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
                 # in order to distinguish between different outputs
                 # of the same module
                 output_object = DataObject(
-                    name=create_ouput_name(data_object.name, process_name),
+                    name=create_output_name(data_object.name, process_name),
                     datatype=datatype)
                 param = {"param": key,
                          "value": output_object.grass_name()}
@@ -480,7 +480,7 @@ def check_node_parents(node: Node) -> Tuple[list, list]:
     return input_objects, process_list
 
 
-def create_ouput_name(input: str, process_name: str):
+def create_output_name(input: str, process_name: str):
     new_uuid = uuid.uuid4().hex
 
     # names must start with a letter

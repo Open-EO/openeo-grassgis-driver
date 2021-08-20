@@ -55,7 +55,8 @@ class Collections(Resource):
                     if status_code != 200:
                         return make_response(jsonify(
                             {"description": "An internal error occurred "
-                             "while catching strds layers!"}, 400))
+                             "while catching strds layers for mapset %s "
+                             "in location %s !" % (mapset, location)}, 400))
 
                     for entry in strds_data:
                         strds_id = "%s.%s.strds.%s" % (location, mapset, entry)

@@ -12,7 +12,7 @@ on:
     tags: ['*.*.*']
     paths-ignore: ['docs/**']
   release:
-    types: [published, created]
+    types: [published]
 
 jobs:
   docker:

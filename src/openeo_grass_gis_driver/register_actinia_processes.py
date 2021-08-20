@@ -67,3 +67,6 @@ def register_processes():
 
         # TODO: add logger
         print("... successfully registered modules!")
+
+    else:
+        print('... error registering modules!')

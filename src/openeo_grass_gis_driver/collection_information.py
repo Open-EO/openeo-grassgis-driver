@@ -167,6 +167,8 @@ class CollectionInformationResource(Resource):
             "axis": "x"
         },
         }
+        platform = "unknown"
+        instrument = "unknown"
         if datatype.lower() == "strds":
             title = "Space time raster dataset"
 
@@ -214,6 +216,28 @@ class CollectionInformationResource(Resource):
                     # waiting for GRASS GIS
                     bands.append(EOBands(name=bandname, common_name=bandname))
 
+                # get platform and sensor
+                # see
+                # https://github.com/radiantearth/stac-spec/blob/master/item-spec/common-metadata.md#platform
+                # https://github.com/radiantearth/stac-spec/blob/master/item-spec/common-metadata.md#instruments
+                if "_" in bandlist[0]:
+                    sensor_abbr = bandlist[0].split('_')[0]
+                    if sensor_abbr == "L5":
+                        platform = "landsat-5"
+                        instrument = "tm, mss"
+                    elif sensor_abbr == "L7":
+                        platform = "landsat-7"
+                        instrument = "etm+"
+                    elif sensor_abbr == "L8":
+                        platform = "landsat-8"
+                        instrument = "oli, trs"
+                    elif sensor_abbr == "S1":
+                        platform = "sentinel-1"
+                        instrument = "c-sar"
+                    elif sensor_abbr == "S2":
+                        platform = "sentinel-2"
+                        instrument = "msi"
+
         if datatype.lower() == "vector":
             title = "Vector dataset"
 
@@ -224,8 +248,8 @@ class CollectionInformationResource(Resource):
         coordinate_transform_extent_to_EPSG_4326(crs=crs, extent=extent)
 
         # GRASS / actinia do not yet report platform and instrument
-        properties = (CollectionProperties(eo_platform="unknown",
-                                           eo_instrument="unknown",
+        properties = (CollectionProperties(eo_platform=platform,
+                                           eo_instrument=instrument,
                                            eo_bands=bands))
 
         ci = CollectionInformation(id=name, title=title,

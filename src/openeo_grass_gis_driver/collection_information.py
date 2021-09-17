@@ -167,6 +167,8 @@ class CollectionInformationResource(Resource):
             "axis": "x"
         },
         }
+        platform = "unknown"
+        instrument = "unknown"
         if datatype.lower() == "strds":
             title = "Space time raster dataset"
 
@@ -204,47 +206,37 @@ class CollectionInformationResource(Resource):
                         layer_data["north"])), temporal=(
                             start_time, end_time))
 
-            # TODO: band_names must be in layer_data coming from actinia
-            if "number_of_bands" in layer_data:
-                if layer_data["number_of_bands"] == "13":
-                    bands.append(EOBands(name="S2_1", common_name="coastal"))
-                    bands.append(EOBands(name="S2_2", common_name="blue"))
-                    bands.append(EOBands(name="S2_3", common_name="green"))
-                    bands.append(EOBands(name="S2_4", common_name="red"))
-                    bands.append(EOBands(name="S2_5", common_name="rededge1"))
-                    bands.append(EOBands(name="S2_6", common_name="rededge2"))
-                    bands.append(EOBands(name="S2_7", common_name="rededge3"))
-                    bands.append(EOBands(name="S2_8", common_name="nir"))
-                    bands.append(EOBands(name="S2_8A", common_name="nir08"))
-                    bands.append(EOBands(name="S2_9", common_name="nir09"))
-                    bands.append(EOBands(name="S2_10", common_name="cirrus"))
-                    bands.append(EOBands(name="S2_11", common_name="swir16"))
-                    bands.append(EOBands(name="S2_12", common_name="swir22"))
-                    bands.append(EOBands(name="S2_AOT", common_name="aot"))
-                    bands.append(EOBands(name="S2_SCL", common_name="scl"))
-                    bands.append(EOBands(name="S2_TCI", common_name="tci"))
-                    bands.append(EOBands(name="S2_wvp", common_name="wvp"))
+            if "band_names" in layer_data:
+                bandlist = layer_data["band_names"].split(',')
+                dimensions['bands'] = {"type": "bands",
+                                       "values": bandlist
+                                       }
+                for bandname in bandlist:
+                    # not so nice, better use different name and common_name
+                    # waiting for GRASS GIS
+                    bands.append(EOBands(name=bandname, common_name=bandname))
 
-                    dimensions['bands'] = {"type": "bands",
-                                           "values": ["coastal",
-                                                      "blue",
-                                                      "green",
-                                                      "red",
-                                                      "rededge1",
-                                                      "rededge2",
-                                                      "rededge3",
-                                                      "nir",
-                                                      "nir08",
-                                                      "nir09",
-                                                      "cirrus",
-                                                      "swir16",
-                                                      "swir22",
-                                                      "aot",
-                                                      "scl",
-                                                      "tci",
-                                                      "wvp"
-                                                      ]
-                                           }
+                # get platform and sensor
+                # see
+                # https://github.com/radiantearth/stac-spec/blob/master/item-spec/common-metadata.md#platform
+                # https://github.com/radiantearth/stac-spec/blob/master/item-spec/common-metadata.md#instruments
+                if "_" in bandlist[0]:
+                    sensor_abbr = bandlist[0].split('_')[0]
+                    if sensor_abbr == "L5":
+                        platform = "landsat-5"
+                        instrument = "tm, mss"
+                    elif sensor_abbr == "L7":
+                        platform = "landsat-7"
+                        instrument = "etm+"
+                    elif sensor_abbr == "L8":
+                        platform = "landsat-8"
+                        instrument = "oli, trs"
+                    elif sensor_abbr == "S1":
+                        platform = "sentinel-1"
+                        instrument = "c-sar"
+                    elif sensor_abbr == "S2":
+                        platform = "sentinel-2"
+                        instrument = "msi"
 
         if datatype.lower() == "vector":
             title = "Vector dataset"
@@ -255,8 +247,9 @@ class CollectionInformationResource(Resource):
 
         coordinate_transform_extent_to_EPSG_4326(crs=crs, extent=extent)
 
-        properties = (CollectionProperties(eo_platform="Sentinel-2",
-                                           eo_instrument="Sentinel-2",
+        # GRASS / actinia do not yet report platform and instrument
+        properties = (CollectionProperties(eo_platform=platform,
+                                           eo_instrument=instrument,
                                            eo_bands=bands))
 
         ci = CollectionInformation(id=name, title=title,

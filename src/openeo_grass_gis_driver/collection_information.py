@@ -88,9 +88,11 @@ def coordinate_transform_extent_to_EPSG_4326(
 
     source = osr.SpatialReference()
     source.ImportFromWkt(crs)
+    source.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
 
     target = osr.SpatialReference()
     target.ImportFromEPSG(4326)
+    target.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
 
     transform = osr.CoordinateTransformation(source, target)
 

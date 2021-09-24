@@ -34,13 +34,21 @@ def create_process_description():
             "type": "string",
             "default": "GTiff"},
         optional=True)
+    p_options = Parameter(
+        description="The file format parameters to be used to create the file(s).",
+        schema={
+            "type": "object",
+            "subtype": "output-format-options",
+            "default": {}},
+        optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
 
     # Example
     arguments = {"data": {"from_node": "get_b08_data"},
-                 "format": "GTiff"}
+                 "format": "GTiff",
+                 "options": {"COMPRESS": "DEFLATE"}}
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(
         title="title",
@@ -59,7 +67,8 @@ def create_process_description():
         summary="Exports raster map layers using the region specified upstream.",
         parameters={
             "data": p_data,
-            "format": p_format},
+            "format": p_format,
+            "options": p_options},
         returns=rv,
         examples=examples)
 
@@ -69,7 +78,7 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_object: DataObject):
+def create_process_chain_entry(input_object: DataObject, options: dict):
     """Create a Actinia command of the process chain that computes the regional statistics based on a
     strds and a polygon.
 
@@ -83,6 +92,13 @@ def create_process_chain_entry(input_object: DataObject):
     output_format = "GTiff"
     if input_object.is_vector():
         output_format = "GML"
+
+    # the actinia exporter currently does not support GDAL creation options
+    # parameter options is ignored
+    options_list = list()
+    for key in options:
+        optstr = ("%s=%s" % (key, options[key]))
+        options_list.append(optstr)
 
     exporter = {"id": "save_result_%i" % rn,
                 "module": "exporter",
@@ -107,12 +123,17 @@ def get_process_list(node: Node):
     input_objects, process_list = check_node_parents(node=node)
     output_objects = []
 
+    options = {}
+    if "options" in node.arguments:
+        options = node.arguments["options"]
+
     # Pipe the inputs to the outputs
     for input_object in node.get_parent_by_name("data").output_objects:
         output_objects.append(input_object)
         node.add_output(output_object=input_object)
 
-        pc = create_process_chain_entry(input_object=input_object)
+        pc = create_process_chain_entry(input_object=input_object,
+                                        options=options)
         process_list.extend(pc)
 
     return output_objects, process_list

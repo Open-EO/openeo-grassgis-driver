@@ -182,8 +182,8 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
                               {"param": "bandname",
                                "value": method},
                               {"param": "output",
-                               "value": output_object.grass_name()}],
-                   "flags": "t"}
+                               "value": output_object.grass_name()}]
+                   }
         pc.append(r2strds)
 
     elif dimtype == 'bands':

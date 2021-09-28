@@ -30,13 +30,15 @@ OPERATOR_DICT = {
     'gte': '>=',
     'lt': '<',
     'lte': '<=',
-    'and': '&&'
+    'and': '&&',
+    'or': '||'
 }
 
 # translate openeo functions to r.mapcalc functions
 FN_DICT = {
     'ln': 'log',
-    'power': 'pow'
+    'power': 'pow',
+    'absolute': 'abs'
 }
 
 

@@ -16,6 +16,7 @@ __license__ = "Apache License, Version 2.0"
 
 PROCESS_NAME = "reduce_dimension"
 
+# translate openeo operators to r.mapcalc operators
 OPERATOR_DICT = {
     'sum': '+',
     'add': '+',
@@ -30,6 +31,14 @@ OPERATOR_DICT = {
     'lt': '<',
     'lte': '<=',
     'and': '&&'
+    'or': '||'
+}
+
+# translate openeo functions to r.mapcalc functions
+FN_DICT = {
+    'ln': 'log',
+    'power': 'pow',
+    'absolute': 'abs'
 }
 
 
@@ -287,6 +296,8 @@ def serialize_tree(tree):
                 results.append(serialize_tree(node))
             return '(' + (' ' + operator + ' ').join(results) + ')'
         else:
+            if operator in FN_DICT:
+                operator = FN_DICT[tree['operator']]
             results = []
             for node in tree['children']:
                 results.append(serialize_tree(node))

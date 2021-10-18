@@ -157,7 +157,7 @@ def construct_tree(obj):
                 if 'from_node' in arg:
                     ref_name = arg['from_node']
                     node['children'].append(nodes[ref_name])
-                elif 'from_argument' in arg:
+                elif 'from_parameter' in arg:
                     node['children'].append({'type': 'inputdata'})
             else:
                 node['children'].append({'type': 'literal', 'value': arg})

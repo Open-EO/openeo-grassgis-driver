@@ -5,5 +5,7 @@ Flask-RESTful==0.3.8
 sqlitedict==1.7.0
 gunicorn
 
+
 # needed to build documentation
+docutils==0.16
 Sphinx==3.4.3

@@ -337,7 +337,7 @@ def process_node_to_actinia_process_chain(node: Node) -> Tuple[list, list]:
 
 def openeo_to_actinia(node: Node) -> Tuple[list, list]:
     """Generic translator of openeo to actinia for actinia modules that
-       have been translated to openeo processes with 
+       have been translated to openeo processes with
        register_processes()
 
     :param node: The process node

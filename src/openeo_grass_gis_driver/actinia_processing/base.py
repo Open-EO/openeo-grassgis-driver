@@ -17,6 +17,27 @@ from openeo_grass_gis_driver.models.process_graph_schemas import ProcessGraph
 ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT = {}
 # mapping of openeo process ids to actinia process ids
 OPENEO_ACTINIA_ID_DICT = {}
+# list of t.* GRASS modules needing special treatment because of a
+# basename option (basename for new raster maps) required together with
+# the name of the output strds
+T_BASENAME_MODULES_LIST = [
+    "t.rast3d.algebra",
+    "t.rast3d.extract",
+    "t.rast3d.mapcalc",
+    "t.rast.accdetect",
+    "t.rast.accumulate",
+    "t.rast.aggregate.ds",
+    "t.rast.aggregate",
+    "t.rast.algebra",
+    "t.rast.contour",
+    "t.rast.extract",
+    "t.rast.gapfill",
+    "t.rast.import",
+    "t.rast.mapcalc",
+    "t.rast.neighbors",
+    "t.rast.ndvi",
+    "t.rast.to.vect",
+]
 # standard openeo process descriptions
 PROCESS_DESCRIPTION_DICT = {}
 PROCESS_DICT = {}
@@ -315,7 +336,9 @@ def process_node_to_actinia_process_chain(node: Node) -> Tuple[list, list]:
 
 
 def openeo_to_actinia(node: Node) -> Tuple[list, list]:
-    """Generic translator of openeo to actinia
+    """Generic translator of openeo to actinia for actinia modules that
+       have been translated to openeo processes with 
+       register_processes()
 
     :param node: The process node
     :return: (output_objects, actinia_process_list)
@@ -462,6 +485,10 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
                 pc["inputs"].append(param)
                 output_objects.append(output_object)
                 node.add_output(output_object=output_object)
+        if module_name in T_BASENAME_MODULES_LIST:
+            param = {"param": "basename",
+                     "value": output_object.grass_name()}
+            pc["inputs"].append(param)
 
     process_list.append(pc)
 

@@ -810,32 +810,33 @@ OPENEO_EXAMPLE_1 = {
 }
 
 ACTINIA_PROCESS = {
-    "title": "Get a raster layer",
-    "description": "This process is the source for a raster layer",
+    "title": "test actinia modules",
+    "description": "test t.rast.series",
     "process": {
         "process_graph": {
-            "get_elevation_data": {
+            "get_strds_1": {
                 "process_id": "load_collection",
                 "arguments": {
-                    "id": "nc_spm_08.PERMANENT.raster.elevation",
+                    "id": "nc_spm_08.modis_lst.strds.LST_Day_monthly",
                     "spatial_extent": {
-                        "west": 630000,
-                        "east": 645000,
-                        "north": 228500,
-                        "south": 215000,
+                        "west": -448265,
+                        "east": 1550934,
+                        "north": 760180,
+                        "south": -415819,
                         "crs": "+proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.22 +y_0=0 +no_defs +a=6378137 +rf=298.257222101 +towgs84=0.000,0.000,0.000 +type=crs  +to_meter=1"
                     },
                     "temporal_extent": [
-                        "2018-01-01",
-                        "2019-01-01"
+                        "2016-06-01",
+                        "2017-01-01"
                     ]
                 }
             },
-            "compute_slope": {
-                "process_id": "r_slope_aspect_slope",
+            "t_rast_series_1": {
+                "result": True,
+                "process_id": "t_rast_series_output",
                 "arguments": {
-                    "elevation": {"from_node": "get_elevation_data"},
-                    "e": True
+                    "input": {"from_node": "get_strds_1"},
+                    "method": "average"
                 }
             }
         }

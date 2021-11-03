@@ -17,6 +17,7 @@ per-file-ignores =
     ./src/openeo_grass_gis_driver/jobs_job_id_estimate.py: E501
     ./src/openeo_grass_gis_driver/jobs_job_id_logs.py: E501
     ./src/openeo_grass_gis_driver/jobs_job_id_results.py: E501
+    ./src/openeo_grass_gis_driver/register_actinia_processes.py: E501
     ./src/openeo_grass_gis_driver/udf.py: E501
     ./src/openeo_grass_gis_driver/udf_lang_udf_type.py: E501
     ./src/openeo_grass_gis_driver/utils/process_graph_examples_v03.py: E501

@@ -46,6 +46,8 @@ from . import logic_or_process
 from . import logic_xor_process
 
 # math processes
+from . import math_processes
+
 from . import math_abs_process
 from . import math_add_process
 from . import math_clip_process

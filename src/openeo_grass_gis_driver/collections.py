@@ -7,6 +7,8 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
 from openeo_grass_gis_driver.actinia_processing.config import Config
 from openeo_grass_gis_driver.models.collection_schemas import \
      Collection, CollectionEntry
+# from openeo_grass_gis_driver.utils.logging import log
+
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert, Carmen Tawalika"
@@ -88,6 +90,34 @@ class Collections(Resource):
                     #                      "mapset path: /%s/%s" % (
                     #                       location, mapset)))
                     #     COLLECTIONS_LIST.append(ds)
+
+            # Additionally check for STAC collections registered in actinia
+            status_code, stac_collections = self.iface.get_stac_collections()
+            if status_code != 200:
+                # log.warning("Couldn't get STAC collections from actinia")
+                stac_collections = []
+
+            for i in stac_collections['collections']:
+                try:
+                    title = i['title']
+                except Exception:
+                    title = i['id']
+                try:
+                    license = i['license']
+                except Exception:
+                    license = "proprietary"
+                try:
+                    description = i['description']
+                except Exception:
+                    description = "STAC collection registered in actinia"
+
+                ds = CollectionEntry(
+                    id=i['id'],
+                    title=title,
+                    license=license,
+                    description=description
+                )
+                COLLECTIONS_LIST.append(ds)
 
         c = Collection(collections=COLLECTIONS_LIST)
         return c.as_response(http_status=200)

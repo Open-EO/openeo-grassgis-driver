@@ -716,7 +716,7 @@ class CollectionEntry(JsonableObject):
                 },
                 "y": {
                 "type": "spatial",
-                "axis": "x"
+                "axis": "y"
                 },
                 }
         self.cube___dimensions = dimensions

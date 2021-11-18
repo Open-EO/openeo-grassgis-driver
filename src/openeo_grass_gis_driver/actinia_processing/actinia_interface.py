@@ -358,3 +358,26 @@ class ActiniaInterface(object):
             data = ret
 
         return r.status_code, data
+
+    def get_stac_collections(self) -> Tuple[int, dict]:
+        url = "%(base)s/stac/collections" % {
+                 "base": self.base_url}
+        r = requests.get(url=url, auth=self.auth)
+        data = r.text
+
+        if r.status_code == 200:
+            data = r.json()
+
+        return r.status_code, data
+
+    def get_stac_collection(self, name: str) -> Tuple[int, dict]:
+        url = "%(base)s/stac/collections/%(name)s" % {
+                 "base": self.base_url,
+                 "name": name}
+        r = requests.get(url=url, auth=self.auth)
+        data = r.text
+
+        if r.status_code == 200:
+            data = r.json()
+
+        return r.status_code, data

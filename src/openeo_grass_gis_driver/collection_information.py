@@ -123,6 +123,25 @@ class CollectionInformationResource(Resource):
         location, mapset, datatype, layer = self.iface.layer_def_to_components(
             name)
 
+        if location == "stac":
+            status_code, collection = self.iface.get_stac_collection(name=name)
+            if status_code != 200:
+                return make_response(
+                    jsonify(
+                        {
+                            "id": "12345678",
+                            "code": "Internal",
+                            "message": "Server error: %s" %
+                            (name),
+                            "links": {}}),
+                    500)
+
+            # Not using CollectionInformation model here for now
+            # as valid STAC collections comply.
+            # Using it here might omit some properties
+            # which are not modelled in this backend (e.g. assets)
+            return make_response(collection, 200)
+
         status_code, layer_data = self.iface.layer_info(layer_name=name)
         if status_code != 200:
             return make_response(
@@ -166,7 +185,7 @@ class CollectionInformationResource(Resource):
         },
             "y": {
             "type": "spatial",
-            "axis": "x"
+            "axis": "y"
         },
         }
         platform = "unknown"

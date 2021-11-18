@@ -82,7 +82,7 @@ def create_process_chain_entry(input_object: DataObject,
                       {"result": output_object.grass_name(),
                        "input": input_object.grass_name()}},
                      {"param": "basename",
-                      "value": "trim"},
+                      "value": output_object.grass_name()},
                      ]}
 
     return pc

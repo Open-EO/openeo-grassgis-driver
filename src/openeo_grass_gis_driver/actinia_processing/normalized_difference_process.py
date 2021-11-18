@@ -94,7 +94,7 @@ def create_process_chain_entry(
                      "value": "%(band1)s,%(band2)s" % {"band1": band1_time_series.grass_name(),
                                                        "band2": band2_time_series.grass_name()}},
                     {"param": "basename",
-                     "value": "nd"},
+                     "value": output_time_series.grass_name()},
                     {"param": "output",
                      "value": output_time_series.grass_name()}]},
         {"id": "t_rast_color_%i" % rn,

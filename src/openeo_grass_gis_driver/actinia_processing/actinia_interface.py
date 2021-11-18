@@ -378,6 +378,6 @@ class ActiniaInterface(object):
         data = r.text
 
         if r.status_code == 200:
-            ret = r.json()
+            data = r.json()
 
         return r.status_code, data

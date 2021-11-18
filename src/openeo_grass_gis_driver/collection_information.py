@@ -139,7 +139,7 @@ class CollectionInformationResource(Resource):
             # Not using CollectionInformation model here for now
             # as valid STAC collections comply.
             # Using it here might omit some properties
-            # which are not modeled in this backend (e.g. assets)
+            # which are not modelled in this backend (e.g. assets)
             return make_response(collection, 200)
 
         status_code, layer_data = self.iface.layer_info(layer_name=name)

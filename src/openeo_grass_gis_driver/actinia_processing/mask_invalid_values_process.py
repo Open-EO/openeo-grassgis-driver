@@ -114,7 +114,7 @@ def create_process_chain_entry(
                                                                         "min": str(vmin),
                                                                         "max": str(vmax)}},
                      {"param": "basename",
-                     "value": "masked_invalid"},
+                     "value": output_object.grass_name()},
                      {"param": "output",
                      "value": output_object.grass_name()},
                      ]}

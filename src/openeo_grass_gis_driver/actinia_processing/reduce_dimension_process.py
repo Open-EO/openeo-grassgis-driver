@@ -211,7 +211,7 @@ def create_process_chain_entry(input_object: DataObject, dimtype, formula,
                            "value": "%(input)s" %
                            {"input": input_object.grass_name()}},
                           {"param": "basename",
-                           "value": "reduce"},
+                           "value": output_object.grass_name()},
                           {"param": "output",
                            "value": output_object.grass_name()}]}]
 

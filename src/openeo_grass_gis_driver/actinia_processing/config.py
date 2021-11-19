@@ -3,6 +3,8 @@ import os
 import configparser
 from pathlib import Path
 
+from openeo_grass_gis_driver.utils.logging import log
+
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert, Carmen Tawalika"
 __copyright__ = "Copyright 2018-2021, Sören Gebbert, mundialis"
@@ -46,11 +48,11 @@ class Configfile:
         """
 
         config = configparser.ConfigParser()
-        print("Loading config files: " + str(CONFIG_FILES) + " ...")
+        log.info("Loading config files: " + str(CONFIG_FILES) + " ...")
         config.read(CONFIG_FILES)
 
         if len(config) <= 1:
-            print("Could not find any config file, using default values.")
+            log.debug("Could not find any config file, using default values.")
             return
 
         # commented out due to

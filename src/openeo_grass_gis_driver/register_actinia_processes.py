@@ -86,4 +86,4 @@ def register_processes():
         log.info("... successfully registered modules!")
 
     else:
-        log.info('... error registering modules!')
+        log.error('... error registering modules!')

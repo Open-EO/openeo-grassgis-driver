@@ -7,6 +7,7 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
 from openeo_grass_gis_driver.actinia_processing.config import Config
 from openeo_grass_gis_driver.models.collection_schemas import \
      Collection, CollectionEntry
+from openeo_grass_gis_driver.utils.logging import log
 
 
 __license__ = "Apache License, Version 2.0"
@@ -93,6 +94,7 @@ class Collections(Resource):
             # Additionally check for STAC collections registered in actinia
             status_code, stac_collections = self.iface.get_stac_collections()
             if status_code != 200:
+                log.warning("Couldn't get STAC collections from actinia")
                 stac_collections = []
 
             for i in stac_collections['collections']:

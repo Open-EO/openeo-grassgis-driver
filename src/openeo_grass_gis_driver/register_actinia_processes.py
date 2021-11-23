@@ -7,6 +7,7 @@ from openeo_grass_gis_driver.actinia_processing.base import \
     T_BASENAME_MODULES_LIST
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
     ActiniaInterface
+from openeo_grass_gis_driver.utils.logging import log
 
 
 __license__ = "Apache License, Version 2.0"
@@ -19,13 +20,10 @@ def register_processes():
 
     iface = ActiniaInterface()
     iface.set_auth(ActiniaConfig.USER, ActiniaConfig.PASSWORD)
-    # TODO: add logger
-    print("Requesting modules from %s..." % ActiniaConfig.HOST)
+    log.info("Requesting modules from %s..." % ActiniaConfig.HOST)
     status_code, modules = iface.list_modules()
 
     if status_code == 200:
-        # TODO: add logger
-        print("Registering modules...")
         for module in modules:
             # convert grass module names to openeo process names
             # special treatment for GRASS modules in
@@ -85,8 +83,7 @@ def register_processes():
                 OPENEO_ACTINIA_ID_DICT[process] = {"id": actiniaid}
                 ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT[process] = module
 
-        # TODO: add logger
-        print("... successfully registered modules!")
+        log.info("... successfully registered modules!")
 
     else:
-        print('... error registering modules!')
+        log.error('... error registering modules!')

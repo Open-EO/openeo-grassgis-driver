@@ -39,6 +39,12 @@ def create_process_description():
             "type": "string",
             "subtype": "band-name"},
         optional=True)
+    p_target = Parameter(
+        description="The new band name to be used for the computed values.",
+        schema={
+            "type": "string",
+            "subtype": "band-name"},
+        optional=True)
 
     rv = ReturnValue(description="Processed EO data.",
                      schema={"type": "object", "subtype": "raster-cube"})
@@ -72,7 +78,8 @@ def create_process_description():
         parameters={
             "data": p_data,
             "nir": p_nir,
-            "red": p_red},
+            "red": p_red,
+            "target_band": p_target},
         returns=rv,
         examples=examples)
 
@@ -83,7 +90,7 @@ PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
 def create_process_chain_entry(input_time_series: DataObject,
-                               nir_band, red_band,
+                               nir_band, red_band, target_band,
                                output_time_series: DataObject):
     """Create a Actinia process description that uses t.rast.ndvi to create the NDVI time series
 
@@ -93,24 +100,48 @@ def create_process_chain_entry(input_time_series: DataObject,
     """
     rn = randint(0, 1000000)
 
-    # TODO: adjust t.rast.ndvi to accept nir band and red band names
-    #       pass nir_band and red_band to t.rast.ndvi
-
-    pc = [
-        {"id": "t_rast_ndvi_%i" % rn,
-         "module": "t.rast.ndvi",
-         "inputs": [{"param": "input",
-                     "value": "%(input)s" % {"input": input_time_series.grass_name()}},
-                    {"param": "basename",
-                     "value": output_time_series.grass_name()},
-                    {"param": "output",
-                     "value": output_time_series.grass_name()}]},
-        {"id": "t_rast_color_%i" % rn,
-         "module": "t.rast.colors",
-         "inputs": [{"param": "input",
-                     "value": output_time_series.grass_name()},
-                    {"param": "color",
-                     "value": "ndvi"}]}]
+    if target_band is not None:
+        pc = [
+            {"id": "t_rast_ndvi_%i" % rn,
+             "module": "t.rast.ndvi",
+             "inputs": [{"param": "input",
+                         "value": "%(input)s" % {"input": input_time_series.grass_name()}},
+                        {"param": "red",
+                         "value": red_band},
+                        {"param": "nir",
+                         "value": nir_band},
+                        {"param": "target",
+                         "value": target_band},
+                        {"param": "basename",
+                         "value": output_time_series.grass_name()},
+                        {"param": "output",
+                         "value": output_time_series.grass_name()}]},
+            {"id": "t_rast_color_%i" % rn,
+             "module": "t.rast.colors",
+             "inputs": [{"param": "input",
+                         "value": output_time_series.grass_name()},
+                        {"param": "color",
+                         "value": "ndvi"}]}]
+    else:
+        pc = [
+            {"id": "t_rast_ndvi_%i" % rn,
+             "module": "t.rast.ndvi",
+             "inputs": [{"param": "input",
+                         "value": "%(input)s" % {"input": input_time_series.grass_name()}},
+                        {"param": "red",
+                         "value": red_band},
+                        {"param": "nir",
+                         "value": nir_band},
+                        {"param": "basename",
+                         "value": output_time_series.grass_name()},
+                        {"param": "output",
+                         "value": output_time_series.grass_name()}]},
+            {"id": "t_rast_color_%i" % rn,
+             "module": "t.rast.colors",
+             "inputs": [{"param": "input",
+                         "value": output_time_series.grass_name()},
+                        {"param": "color",
+                         "value": "ndvi"}]}]
 
     return pc
 
@@ -130,8 +161,8 @@ def get_process_list(node: Node):
 
     input_strds = list(input_objects)[-1]
 
-    nir_band = None
-    red_band = None
+    nir_band = "nir"
+    red_band = "red"
     if "nir" in node.arguments and \
        node.arguments["nir"] is not None and \
        node.arguments["nir"] != "null":
@@ -139,18 +170,29 @@ def get_process_list(node: Node):
     if "red" in node.arguments and \
        node.arguments["red"] is not None and \
        node.arguments["red"] != "null":
-        nir_band = node.arguments["red"]
+        red_band = node.arguments["red"]
+
+    target_band = None
+    if "target_band" in node.arguments and \
+       node.arguments["target_band"] is not None and \
+       node.arguments["target_band"] != "null":
+        target_band = node.arguments["target_band"]
 
     output_objects.extend(list(input_objects))
 
     output_object = DataObject(
         name=create_output_name(input_strds.name, PROCESS_NAME),
         datatype=GrassDataType.STRDS)
-    output_objects.append(output_object)
-    node.add_output(output_object=output_object)
+    if target_band is None:
+        output_objects.append(output_object)
+        node.add_output(output_object=output_object)
+    else:
+        # if target band is given, extend the input strds
+        output_objects.append(input_strds)
+        node.add_output(output_object=input_strds)
 
     pc = create_process_chain_entry(
-        input_strds, nir_band, red_band, output_object)
+        input_strds, nir_band, red_band, target_band, output_object)
     process_list.extend(pc)
 
     return output_objects, process_list

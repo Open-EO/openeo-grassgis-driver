@@ -29,6 +29,7 @@ T_BASENAME_MODULES_LIST = [
     "t.rast.aggregate.ds",
     "t.rast.aggregate",
     "t.rast.algebra",
+    "t.rast.bandcalc",
     "t.rast.contour",
     "t.rast.extract",
     "t.rast.gapfill",
@@ -36,6 +37,7 @@ T_BASENAME_MODULES_LIST = [
     "t.rast.mapcalc",
     "t.rast.neighbors",
     "t.rast.ndvi",
+    "t.rast.resample",
     "t.rast.to.vect",
 ]
 # standard openeo process descriptions

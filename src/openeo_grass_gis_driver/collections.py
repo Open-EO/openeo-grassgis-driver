@@ -97,27 +97,30 @@ class Collections(Resource):
                 log.warning("Couldn't get STAC collections from actinia")
                 stac_collections = []
 
-            for i in stac_collections['collections']:
-                try:
-                    title = i['title']
-                except Exception:
-                    title = i['id']
-                try:
-                    license = i['license']
-                except Exception:
-                    license = "proprietary"
-                try:
-                    description = i['description']
-                except Exception:
-                    description = "STAC collection registered in actinia"
+            if (type(stac_collections) is list and
+                    len(stac_collections) > 0):
 
-                ds = CollectionEntry(
-                    id=i['id'],
-                    title=title,
-                    license=license,
-                    description=description
-                )
-                COLLECTIONS_LIST.append(ds)
+                for i in stac_collections['collections']:
+                    try:
+                        title = i['title']
+                    except Exception:
+                        title = i['id']
+                    try:
+                        license = i['license']
+                    except Exception:
+                        license = "proprietary"
+                    try:
+                        description = i['description']
+                    except Exception:
+                        description = "STAC collection registered in actinia"
+
+                    ds = CollectionEntry(
+                        id=i['id'],
+                        title=title,
+                        license=license,
+                        description=description
+                    )
+                    COLLECTIONS_LIST.append(ds)
 
         c = Collection(collections=COLLECTIONS_LIST)
         return c.as_response(http_status=200)

@@ -28,6 +28,7 @@ class ACTINIA:
     LOCATIONS = ["nc_spm_08", "utm32n", "latlong_wgs84"]
     USER = "openeo"
     PASSWORD = "EeMob0la"
+    VERSION = "v2"
     # The database file that stores the graphs
     GRAPH_DB = "%s/.graph_db_file.sqlite" % os.environ["HOME"]
     # The database file that stores the jobs
@@ -77,6 +78,8 @@ class Configfile:
                 ACTINIA.USER = config.get("ACTINIA", "USER")
             if config.has_option("ACTINIA", "PASSWORD"):
                 ACTINIA.PASSWORD = config.get("ACTINIA", "PASSWORD")
+            if config.has_option("ACTINIA", "VERSION"):
+                ACTINIA.VERSION = config.get("ACTINIA", "VERSION")
             if config.has_option("ACTINIA", "GRAPH_DB"):
                 ACTINIA.GRAPH_DB = config.get("ACTINIA", "GRAPH_DB")
             if config.has_option("ACTINIA", "TOKEN_DB"):

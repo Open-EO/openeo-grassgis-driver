@@ -41,6 +41,4 @@ docs/_build/*
 cover/*
 MANIFEST
 
-.vscode
 venv
-

@@ -25,8 +25,10 @@ class ActiniaInterface(object):
 
         self.host = config.HOST
         self.port = config.PORT
-        self.base_url = "%(host)s:%(port)s/api/v1" % {
-                           "host": self.host, "port": self.port}
+        self.version = config.VERSION
+        self.base_url = "%(host)s:%(port)s/api/%(version)s" % {
+                           "host": self.host, "port": self.port,
+                           "version": self.version}
         self.auth = (config.USER, config.PASSWORD)
         self.user = config.USER
 

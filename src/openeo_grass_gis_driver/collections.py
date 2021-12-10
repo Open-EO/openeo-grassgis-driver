@@ -97,8 +97,8 @@ class Collections(Resource):
                 log.warning("Couldn't get STAC collections from actinia")
                 stac_collections = []
 
-            if (type(stac_collections) is list and
-                    len(stac_collections) > 0):
+            if ('collections' in stac_collections and
+                    type(stac_collections['collections']) is list):
 
                 for i in stac_collections['collections']:
                     try:

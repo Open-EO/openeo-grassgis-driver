@@ -317,7 +317,7 @@ def create_process_chain_entry(input_object: DataObject,
                 wherestring = wherestring + " AND "
         if bands:
             wherestring = wherestring + \
-                "semantic_labels in ('%(band_names)s')" % {"band_names": ("', '").join(bands)}
+                "semantic_label in ('%(band_names)s')" % {"band_names": ("', '").join(bands)}
 
         pc_strdsfilter = {
             "id": "t_rast_extract_%i" %

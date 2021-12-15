@@ -227,8 +227,8 @@ class CollectionInformationResource(Resource):
                         layer_data["north"])), temporal=(
                             start_time, end_time))
 
-            if "band_names" in layer_data:
-                bandlist = layer_data["band_names"].split(',')
+            if "semantic_labels" in layer_data:
+                bandlist = layer_data["semantic_labels"].split(',')
                 dimensions['bands'] = {"type": "bands",
                                        "values": bandlist
                                        }

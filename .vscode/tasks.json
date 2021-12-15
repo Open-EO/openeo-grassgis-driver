@@ -22,20 +22,25 @@
 				"args": [
 					"run",
 					"--no-debugger",
-					// "--no-reload",
 					"--host",
 					"0.0.0.0",
 					"--port",
 					"5000"
 				],
 				"module": "flask"
-				// "file": "dev.py"
 			},
 			"dockerRun": {
 				"remove": true,
-				// network host is needed when connecting to a local actinia
-				// while not using docker-compose network
-				"network": "host",
+				// When connecting to a local actinia, the following network
+				// can be used. The network must exist before and can be
+				// created with vscode debugger inside actinia_core.
+				// "network": "docker_actinia-dev",
+				"ports": [
+				  {
+					"containerPort": 5000,
+					"hostPort": 5000
+				  }
+				],
 				"volumes": [{
 					"localPath": "${workspaceFolder}",
 					"containerPath": "/src/openeo_grass_gis_driver",

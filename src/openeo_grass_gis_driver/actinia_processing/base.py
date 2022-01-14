@@ -321,7 +321,7 @@ def process_node_to_actinia_process_chain(node: Node) -> Tuple[list, list]:
     process_list = []
     output_object_list = []
 
-    if node.processed == True:
+    if node.processed is True:
         return output_object_list, process_list
 
     if node.process_id in PROCESS_DICT:

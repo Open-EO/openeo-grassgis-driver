@@ -156,10 +156,10 @@ def get_process_list(node: Node):
             PROCESS_NAME)
 
     if not cube1_objects:
-        raise Exception("Process %s requires two input strds's" % PROCESS_NAME)
+        raise Exception("Process %s requires two input strds's, cube1 is missing" % PROCESS_NAME)
 
     if not cube2_objects:
-        raise Exception("Process %s requires two input strds's" % PROCESS_NAME)
+        raise Exception("Process %s requires two input strds's, cube2 is missing" % PROCESS_NAME)
 
     cube1_object = list(cube1_objects)[-1]
     cube2_object = list(cube2_objects)[-1]

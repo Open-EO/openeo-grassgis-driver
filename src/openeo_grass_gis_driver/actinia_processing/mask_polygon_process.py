@@ -131,7 +131,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
                                    {"param": "type", "value": "area"},
                                    {"param": "use", "value": "val"},
                                    ]},
-                       {"id": "r:mapcalc_%i" % rn,
+                       {"id": "r_mapcalc_%i" % rn,
                         "module": "r.mapcalc",
                         "inputs": [{"param": "expression",
                                     "value": "polymask = if(isnull(polymask_inv), 1, null())"}

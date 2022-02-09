@@ -327,7 +327,7 @@ def create_process_chain_entry(input_object: DataObject,
                     "param": "where", "value": wherestring}, {
                     "param": "output", "value": output_object.grass_name()}, {
                         "param": "expression", "value": "1.0 * %s" %
-                        input_object.grass_name()}, {
+                        input_object.name}, {
                             "param": "basename", "value": output_object.grass_name()}, {
                                 "param": "suffix", "value": "num"}]}
 

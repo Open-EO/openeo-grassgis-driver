@@ -142,7 +142,7 @@ def create__process_chain_entry(
                      {"param": "where", "value": "start_time >= '%(start)s' "
                       "AND start_time <= '%(end)s'" % {"start": start_time, "end": end_time}},
                      {"param": "output", "value": output_object.grass_name()},
-                     {"param": "expression", "value": "1.0 * %s" % input_object.grass_name()},
+                     {"param": "expression", "value": "1.0 * %s" % input_object.name},
                      {"param": "basename", "value": output_object.grass_name()},
                      {"param": "suffix", "value": "num"}]}
 

@@ -321,6 +321,9 @@ def process_node_to_actinia_process_chain(node: Node) -> Tuple[list, list]:
     process_list = []
     output_object_list = []
 
+    if node.processed is True:
+        return output_object_list, process_list
+
     if node.process_id in PROCESS_DICT:
         outputs, processes = PROCESS_DICT[node.process_id](node)
     elif node.process_id in ACTINIA_OPENEO_PROCESS_DESCRIPTION_DICT:
@@ -432,6 +435,10 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
                     data_object.datatype != GrassDataType.VECTOR:
                 raise Exception(
                     "Wrong input data type, expecting 'vector'")
+
+            param = {"param": key,
+                     "value": data_object.grass_name()}
+            pc["inputs"].append(param)
         elif ao["schema"]["type"] == "boolean":
             # flag
             if node.arguments[key] is True:
@@ -443,7 +450,7 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
             # option answer, treat as string
             value = node.arguments[key]
             param = {"param": key,
-                     "value": value}
+                     "value": str(value)}
             pc["inputs"].append(param)
 
     if pc["flags"] is None:

@@ -165,7 +165,7 @@ def get_process_list(node: Node):
     cube2_object = list(cube2_objects)[-1]
 
     output_object = DataObject(
-        name=create_output_name(cube1_object.name, PROCESS_NAME),
+        name=create_output_name(cube1_object.name, node),
         datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
     node.add_output(output_object=output_object)

@@ -113,7 +113,7 @@ def create_process_chain_entry(input_time_series: DataObject,
                         {"param": "target",
                          "value": target_band},
                         {"param": "basename",
-                         "value": output_time_series.grass_name()},
+                         "value": output_time_series.name},
                         {"param": "output",
                          "value": output_time_series.grass_name()}]},
             {"id": "t_rast_color_%i" % rn,
@@ -133,7 +133,7 @@ def create_process_chain_entry(input_time_series: DataObject,
                         {"param": "nir",
                          "value": nir_band},
                         {"param": "basename",
-                         "value": output_time_series.grass_name()},
+                         "value": output_time_series.name},
                         {"param": "output",
                          "value": output_time_series.grass_name()}]},
             {"id": "t_rast_color_%i" % rn,
@@ -181,7 +181,7 @@ def get_process_list(node: Node):
     output_objects.extend(list(input_objects))
 
     output_object = DataObject(
-        name=create_output_name(input_strds.name, PROCESS_NAME),
+        name=create_output_name(input_strds.name, node),
         datatype=GrassDataType.STRDS)
     if target_band is None:
         output_objects.append(output_object)

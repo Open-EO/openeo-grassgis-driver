@@ -114,7 +114,7 @@ def create_process_chain_entry(
                                                                         "min": str(vmin),
                                                                         "max": str(vmax)}},
                      {"param": "basename",
-                     "value": output_object.grass_name()},
+                     "value": output_object.name},
                      {"param": "output",
                      "value": output_object.grass_name()},
                      ]}
@@ -145,7 +145,7 @@ def get_process_list(node: Node) -> Tuple[list, list]:
     for data_object in input_objects:
 
         output_object = DataObject(
-            name=create_output_name(data_object.name, PROCESS_NAME),
+            name=create_output_name(data_object.name, node),
             datatype=GrassDataType.STRDS)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)

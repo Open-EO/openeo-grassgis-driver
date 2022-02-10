@@ -320,16 +320,20 @@ def create_process_chain_entry(input_object: DataObject,
                 "semantic_label in ('%(band_names)s')" % {"band_names": ("', '").join(bands)}
 
         pc_strdsfilter = {
-            "id": "t_rast_extract_%i" %
-            rn, "module": "t.rast.extract", "inputs": [
-                {
-                    "param": "input", "value": input_object.grass_name()}, {
-                    "param": "where", "value": wherestring}, {
-                    "param": "output", "value": output_object.grass_name()}, {
-                        "param": "expression", "value": "1.0 * %s" %
-                        input_object.name}, {
-                            "param": "basename", "value": output_object.grass_name()}, {
-                                "param": "suffix", "value": "num"}]}
+            "id": "t_rast_extract_%i" % rn,
+            "module": "t.rast.extract",
+            "inputs": [{"param": "input",
+                        "value": input_object.grass_name()},
+                       {"param": "where",
+                        "value": wherestring},
+                       {"param": "output",
+                        "value": output_object.grass_name()},
+                       {"param": "expression",
+                        "value": "1.0 * %s" % input_object.name},
+                       {"param": "basename",
+                        "value": output_object.name},
+                       {"param": "suffix",
+                        "value": "num"}]}
 
         pc.append(pc_strdsfilter)
 
@@ -365,7 +369,7 @@ def get_process_list(node: Node):
     if input_object.is_strds() and \
        (temporal_extent is not None or bands is not None):
         output_object = DataObject(
-            name=create_output_name(input_object.name, PROCESS_NAME),
+            name=create_output_name(input_object.name, node),
             datatype=input_object.datatype)
     else:
         output_object = input_object

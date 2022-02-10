@@ -143,7 +143,7 @@ def create__process_chain_entry(
                       "AND start_time <= '%(end)s'" % {"start": start_time, "end": end_time}},
                      {"param": "output", "value": output_object.grass_name()},
                      {"param": "expression", "value": "1.0 * %s" % input_object.name},
-                     {"param": "basename", "value": output_object.grass_name()},
+                     {"param": "basename", "value": output_object.name},
                      {"param": "suffix", "value": "num"}]}
 
     return pc
@@ -169,7 +169,7 @@ def get_process_list(node: Node):
             continue
 
         output_object = DataObject(
-            name=create_output_name(data_object.name, PROCESS_NAME),
+            name=create_output_name(data_object.name, node),
             datatype=GrassDataType.STRDS)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)

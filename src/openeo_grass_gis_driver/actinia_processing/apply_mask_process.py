@@ -137,7 +137,7 @@ def get_process_list(node: Node):
             mask_object = node.get_parent_by_name("mask").output_objects[i]
 
         output_object = DataObject(
-            name=create_output_name(input_object.name, PROCESS_NAME),
+            name=create_output_name(input_object.name, node),
             datatype=GrassDataType.RASTER)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)

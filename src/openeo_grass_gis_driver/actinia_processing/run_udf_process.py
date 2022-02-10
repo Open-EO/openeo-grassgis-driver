@@ -169,7 +169,7 @@ def get_process_list(node: Node):
     for input_object in input_objects:
 
         output_object = DataObject(
-            name=create_output_name(input_object.name, PROCESS_NAME),
+            name=create_output_name(input_object.name, node),
             datatype=GrassDataType.STRDS)
         output_objects.append(output_object)
 

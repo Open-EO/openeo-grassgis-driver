@@ -113,7 +113,8 @@ def create_process_chain_entry(
                      "value": output_object.grass_name()},
                      {"param": "mask_value",
                      "value": mask_value},
-                     ]}
+                     ],
+          "flags": "i"}
 
     return pc
 

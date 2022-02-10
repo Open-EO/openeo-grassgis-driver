@@ -123,7 +123,7 @@ def create_process_chain_entry(input_object: DataObject, formula,
                      # raster map names from the input STRDS,
                      # but some basename is required.
                      {"param": "basename",
-                      "value": output_object.grass_name()}]}
+                      "value": output_object.name}]}
 
     return pc
 
@@ -225,7 +225,7 @@ def get_process_list(node: Node):
     for input_object in node.get_parent_by_name("data").output_objects:
 
         output_object = DataObject(
-            name=create_output_name(input_object.name, PROCESS_NAME),
+            name=create_output_name(input_object.name, node),
             datatype=output_datatype)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)

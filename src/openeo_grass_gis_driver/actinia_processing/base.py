@@ -35,6 +35,7 @@ T_BASENAME_MODULES_LIST = [
     "t.rast.gapfill",
     "t.rast.import",
     "t.rast.mapcalc",
+    "t.rast.mask",
     "t.rast.neighbors",
     "t.rast.ndvi",
     "t.rast.resample",
@@ -487,7 +488,7 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
                 # in order to distinguish between different outputs
                 # of the same module
                 output_object = DataObject(
-                    name=create_output_name(data_object.name, process_name),
+                    name=create_output_name(data_object.name, node),
                     datatype=datatype)
                 param = {"param": key,
                          "value": output_object.grass_name()}
@@ -496,7 +497,7 @@ def openeo_to_actinia(node: Node) -> Tuple[list, list]:
                 node.add_output(output_object=output_object)
         if module_name in T_BASENAME_MODULES_LIST:
             param = {"param": "basename",
-                     "value": output_object.grass_name()}
+                     "value": output_object.name}
             pc["inputs"].append(param)
 
     process_list.append(pc)
@@ -516,9 +517,18 @@ def check_node_parents(node: Node) -> Tuple[list, list]:
     return input_objects, process_list
 
 
-def create_output_name(input: str, process_name: str):
+def create_output_name(input: str, node: Node):
     new_uuid = uuid.uuid4().hex
 
+    # shorter version: only uuid + node id
+    node_id = node.id.lower().replace(' ', '_')
+    output = f"uuid{new_uuid}_{node_id}"
+
+    return output
+
+    # replace uuid, append process_name
+    # names can get very long
+    process_name = node.process_id
     # names must start with a letter
     if input.find("uuid") == 0 and "_" in input:
         insuffix = input.split("_", 1)[1]

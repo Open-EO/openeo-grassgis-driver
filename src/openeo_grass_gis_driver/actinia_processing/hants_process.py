@@ -204,7 +204,7 @@ def get_process_list(node: Node):
 
         # multiple strds as input ?
         output_object = DataObject(
-            name=create_output_name(data_object.name, PROCESS_NAME),
+            name=create_output_name(data_object.name, node),
             datatype=GrassDataType.STRDS)
         output_objects.append(output_object)
         node.add_output(output_object=output_object)

@@ -147,7 +147,7 @@ def create_process_chain_entry(input_object: DataObject, vector_object,
                                                      "mask_name": "polymask",
                                                      "raw": input_object.grass_name()}},
                               {"param": "basename",
-                               "value": output_object.grass_name()},
+                               "value": output_object.name},
                               {"param": "output",
                                "value": output_object.grass_name()},
                               ]}
@@ -208,7 +208,7 @@ def get_process_list(node: Node):
     input_object = list(input_objects)[-1]
 
     output_object = DataObject(
-        name=create_output_name(input_object.name, PROCESS_NAME),
+        name=create_output_name(input_object.name, node),
         datatype=GrassDataType.STRDS)
     output_objects.append(output_object)
 

@@ -103,7 +103,9 @@ def create_process_chain_entry(
     if mask_value == "null":
         mask_value = "null()"
 
-    pc = {"id": "t_rast_mask_%i" % rn,
+    pc = []
+
+    p = {"id": "t_rast_mask_%i" % rn,
           "module": "t.rast.mask",
           "inputs": [{"param": "input",
                       "value": input_object.grass_name()},
@@ -117,6 +119,16 @@ def create_process_chain_entry(
                      "value": mask_value},
                      ],
           "flags": "i"}
+
+    pc.append(p)
+
+    p = {"id": "t_info_%i" % rn,
+          "module": "t.info",
+          "inputs": [{"param": "input", "value": output_object.grass_name()},
+                     {"param": "type", "value": "strds"}],
+          "flags": 'g'}
+
+    pc.append(p)
 
     return pc
 
@@ -161,7 +173,7 @@ def get_process_list(node: Node) -> Tuple[list, list]:
         mask_object,
         mask_value,
         output_object)
-    process_list.append(pc)
+    process_list.extend(pc)
 
     return output_objects, process_list
 

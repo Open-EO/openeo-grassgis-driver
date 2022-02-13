@@ -112,9 +112,10 @@ def create__process_chain_entry(
     # bbox
     rn = randint(0, 1000000)
 
+    pc = []
     # source can be null
     if source:
-        pc = {
+        p = {
             "id": "t_rast_renamebands_%i" %
             rn, "module": "t.rast.renamebands", "inputs": [
                 {
@@ -123,11 +124,21 @@ def create__process_chain_entry(
                     "param": "source", "value": (',').join(source)}, {
                         "param": "output", "value": output_object.grass_name()}]}
     else:
-        pc = {"id": "t_rast_renamebands_%i" % rn,
+        p = {"id": "t_rast_renamebands_%i" % rn,
               "module": "t.rast.renamebands",
               "inputs": [{"param": "input", "value": input_object.grass_name()},
                          {"param": "target", "value": (',').join(target)},
                          {"param": "output", "value": output_object.grass_name()}]}
+
+    pc.append(p)
+
+    p = {"id": "t_info_%i" % rn,
+          "module": "t.info",
+          "inputs": [{"param": "input", "value": output_object.grass_name()},
+                     {"param": "type", "value": "strds"}],
+          "flags": 'g'}
+
+    pc.append(p)
 
     return pc
 
@@ -189,7 +200,7 @@ def get_process_list(node: Node):
                                          target=target,
                                          source=source,
                                          output_object=output_object)
-        process_list.append(pc)
+        process_list.extend(pc)
 
     return output_objects, process_list
 

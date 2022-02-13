@@ -111,8 +111,8 @@ def create_process_chain_entry(input_object: DataObject, formula,
 
     formula = formula.replace('data', input_object.grass_name())
 
-    pc = {"id": "t_rast_mapcalc_%i" % rn,
-          "module": "t.rast.mapcalc",
+    pc = {"id": "t_rast_oeapply_%i" % rn,
+          "module": "t.rast.oeapply",
           "inputs": [{"param": "expression",
                       "value": "%(formula)s" % {"formula": formula}},
                      {"param": "input",

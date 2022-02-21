@@ -106,27 +106,26 @@ def create_process_chain_entry(
     pc = []
 
     p = {"id": "t_rast_mask_%i" % rn,
-          "module": "t.rast.mask",
-          "inputs": [{"param": "input",
-                      "value": input_object.grass_name()},
-                     {"param": "mask",
+         "module": "t.rast.mask",
+         "inputs": [{"param": "input",
+                     "value": input_object.grass_name()},
+                    {"param": "mask",
                      "value": mask_object.grass_name()},
-                     {"param": "basename",
+                    {"param": "basename",
                      "value": output_object.name},
-                     {"param": "output",
+                    {"param": "output",
                      "value": output_object.grass_name()},
-                     {"param": "value",
-                     "value": mask_value},
-                     ],
-          "flags": "i"}
+                    {"param": "value",
+                     "value": mask_value}],
+         "flags": "i"}
 
     pc.append(p)
 
     p = {"id": "t_info_%i" % rn,
-          "module": "t.info",
-          "inputs": [{"param": "input", "value": output_object.grass_name()},
-                     {"param": "type", "value": "strds"}],
-          "flags": 'g'}
+         "module": "t.info",
+         "inputs": [{"param": "input", "value": output_object.grass_name()},
+                    {"param": "type", "value": "strds"}],
+         "flags": 'g'}
 
     pc.append(p)
 

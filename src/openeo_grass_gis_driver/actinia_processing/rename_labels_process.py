@@ -112,31 +112,32 @@ def create__process_chain_entry(
     # bbox
     rn = randint(0, 1000000)
 
+    # TODO: do not create a new STRDS
+    #       only update labels in the input STRDS ?
+
     pc = []
     # source can be null
     if source:
-        p = {
-            "id": "t_rast_renamebands_%i" %
-            rn, "module": "t.rast.renamebands", "inputs": [
-                {
-                    "param": "input", "value": input_object.grass_name()}, {
-                    "param": "target", "value": (',').join(target)}, {
-                    "param": "source", "value": (',').join(source)}, {
-                        "param": "output", "value": output_object.grass_name()}]}
+        p = {"id": "t_rast_renamelabels_%i" % rn,
+             "module": "t.rast.renamelabels",
+             "inputs": [{"param": "input", "value": input_object.grass_name()},
+                        {"param": "new", "value": (',').join(target)},
+                        {"param": "old", "value": (',').join(source)},
+                        {"param": "output", "value": output_object.grass_name()}]}
     else:
-        p = {"id": "t_rast_renamebands_%i" % rn,
-              "module": "t.rast.renamebands",
-              "inputs": [{"param": "input", "value": input_object.grass_name()},
-                         {"param": "target", "value": (',').join(target)},
-                         {"param": "output", "value": output_object.grass_name()}]}
+        p = {"id": "t_rast_renamelabels_%i" % rn,
+             "module": "t.rast.renamelabels",
+             "inputs": [{"param": "input", "value": input_object.grass_name()},
+                        {"param": "new", "value": (',').join(target)},
+                        {"param": "output", "value": output_object.grass_name()}]}
 
     pc.append(p)
 
     p = {"id": "t_info_%i" % rn,
-          "module": "t.info",
-          "inputs": [{"param": "input", "value": output_object.grass_name()},
-                     {"param": "type", "value": "strds"}],
-          "flags": 'g'}
+         "module": "t.info",
+         "inputs": [{"param": "input", "value": output_object.grass_name()},
+                    {"param": "type", "value": "strds"}],
+         "flags": 'g'}
 
     pc.append(p)
 

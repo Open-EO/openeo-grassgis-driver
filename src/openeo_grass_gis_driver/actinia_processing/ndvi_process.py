@@ -115,13 +115,7 @@ def create_process_chain_entry(input_time_series: DataObject,
                         {"param": "basename",
                          "value": output_time_series.name},
                         {"param": "output",
-                         "value": output_time_series.grass_name()}]},
-            {"id": "t_rast_color_%i" % rn,
-             "module": "t.rast.colors",
-             "inputs": [{"param": "input",
-                         "value": output_time_series.grass_name()},
-                        {"param": "color",
-                         "value": "ndvi"}]}]
+                         "value": output_time_series.grass_name()}]}]
     else:
         pc = [
             {"id": "t_rast_ndvi_%i" % rn,
@@ -142,6 +136,21 @@ def create_process_chain_entry(input_time_series: DataObject,
                          "value": output_time_series.grass_name()},
                         {"param": "color",
                          "value": "ndvi"}]}]
+
+    if target_band is not None:
+        p = {"id": "t_info_%i" % rn,
+             "module": "t.info",
+             "inputs": [{"param": "input", "value": input_time_series.grass_name()},
+                        {"param": "type", "value": "strds"}],
+             "flags": 'g'}
+    else:
+        p = {"id": "t_info_%i" % rn,
+             "module": "t.info",
+             "inputs": [{"param": "input", "value": output_time_series.grass_name()},
+                        {"param": "type", "value": "strds"}],
+             "flags": 'g'}
+
+    pc.append(p)
 
     return pc
 

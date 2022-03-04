@@ -111,19 +111,30 @@ def create_process_chain_entry(input_object: DataObject, formula,
 
     formula = formula.replace('data', input_object.grass_name())
 
-    pc = {"id": "t_rast_mapcalc_%i" % rn,
-          "module": "t.rast.mapcalc",
-          "inputs": [{"param": "expression",
-                      "value": "%(formula)s" % {"formula": formula}},
-                     {"param": "input",
-                      "value": "%(input)s" % {"input": input_object.grass_name()}},
-                     {"param": "output",
-                      "value": output_object.grass_name()},
-                     # the basename will always replace any individual
-                     # raster map names from the input STRDS,
-                     # but some basename is required.
-                     {"param": "basename",
-                      "value": output_object.name}]}
+    pc = []
+    p = {"id": "t_rast_oeapply_%i" % rn,
+         "module": "t.rast.oeapply",
+         "inputs": [{"param": "expression",
+                     "value": "%(formula)s" % {"formula": formula}},
+                    {"param": "input",
+                     "value": "%(input)s" % {"input": input_object.grass_name()}},
+                    {"param": "output",
+                     "value": output_object.grass_name()},
+                    # the basename will always replace any individual
+                    # raster map names from the input STRDS,
+                    # but some basename is required.
+                    {"param": "basename",
+                     "value": output_object.name}]}
+
+    pc.append(p)
+
+    p = {"id": "t_info_%i" % rn,
+         "module": "t.info",
+         "inputs": [{"param": "input", "value": output_object.grass_name()},
+                    {"param": "type", "value": "strds"}],
+         "flags": 'g'}
+
+    pc.append(p)
 
     return pc
 
@@ -234,7 +245,7 @@ def get_process_list(node: Node):
                                         formula,
                                         operators,
                                         output_object)
-        process_list.append(pc)
+        process_list.extend(pc)
 
     return output_objects, process_list
 

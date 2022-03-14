@@ -1,14 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
-
-from openeo_grass_gis_driver.actinia_processing.base import \
-     check_node_parents, DataObject, GrassDataType, \
-     create_output_name
-from openeo_grass_gis_driver.models.process_graph_schemas import \
-     ProcessGraphNode, ProcessGraph
-from openeo_grass_gis_driver.models.process_schemas import \
-     Parameter, ProcessDescription, ReturnValue, ProcessExample
-from .base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
+from .base import PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -64,7 +55,7 @@ PROCESS_DESCRIPTION_DICT["array_contains"] = {
         ],
         "value": 2
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
@@ -75,7 +66,7 @@ PROCESS_DESCRIPTION_DICT["array_contains"] = {
         ],
         "value": "b"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
@@ -86,18 +77,18 @@ PROCESS_DESCRIPTION_DICT["array_contains"] = {
         ],
         "value": "2"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "data": [
           1,
           2,
-          null
+          "null"
         ],
-        "value": null
+        "value": "null"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
@@ -116,7 +107,7 @@ PROCESS_DESCRIPTION_DICT["array_contains"] = {
           2
         ]
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
@@ -132,7 +123,7 @@ PROCESS_DESCRIPTION_DICT["array_contains"] = {
         ],
         "value": 2
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
@@ -148,7 +139,7 @@ PROCESS_DESCRIPTION_DICT["array_contains"] = {
           "a": "b"
         }
       },
-      "returns": false
+      "returns": False
     }
   ],
   "links": [
@@ -186,7 +177,7 @@ PROCESS_DESCRIPTION_DICT["array_contains"] = {
           "from_node": "is_nodata"
         }
       },
-      "result": true
+      "result": True
     }
   }
 }
@@ -261,8 +252,8 @@ PROCESS_DESCRIPTION_DICT["between"] = {
       "schema": {
         "type": "boolean"
       },
-      "default": false,
-      "optional": true
+      "default": False,
+      "optional": True
     }
   ],
   "returns": {
@@ -277,11 +268,11 @@ PROCESS_DESCRIPTION_DICT["between"] = {
   "examples": [
     {
       "arguments": {
-        "x": null,
+        "x": "null",
         "min": 0,
         "max": 1
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
@@ -289,16 +280,16 @@ PROCESS_DESCRIPTION_DICT["between"] = {
         "min": 0,
         "max": 1
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": 1,
         "min": 0,
         "max": 1,
-        "exclude_max": true
+        "exclude_max": True
       },
-      "returns": false
+      "returns": False
     },
     {
       "description": "Swapped bounds (min is greater than max) MUST always return `false`.",
@@ -307,7 +298,7 @@ PROCESS_DESCRIPTION_DICT["between"] = {
         "min": 1,
         "max": 0
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
@@ -315,7 +306,7 @@ PROCESS_DESCRIPTION_DICT["between"] = {
         "min": -1,
         "max": 0
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
@@ -323,7 +314,7 @@ PROCESS_DESCRIPTION_DICT["between"] = {
         "min": "01:00:00+01:00",
         "max": "01:00:00Z"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
@@ -331,7 +322,7 @@ PROCESS_DESCRIPTION_DICT["between"] = {
         "min": "2018-01-01T00:00:00Z",
         "max": "2018-12-31T23:59:59Z"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
@@ -339,7 +330,7 @@ PROCESS_DESCRIPTION_DICT["between"] = {
         "min": "2018-01-01",
         "max": "2020-01-01"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
@@ -347,16 +338,16 @@ PROCESS_DESCRIPTION_DICT["between"] = {
         "min": "2018-01-01",
         "max": "2018-12-31"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "2018-12-31T17:22:45Z",
         "min": "2018-01-01",
         "max": "2018-12-31",
-        "exclude_max": true
+        "exclude_max": True
       },
-      "returns": false
+      "returns": False
     }
   ],
   "process_graph": {
@@ -417,7 +408,7 @@ PROCESS_DESCRIPTION_DICT["between"] = {
           "from_node": "if"
         }
       },
-      "result": true
+      "result": True
     }
   }
 }
@@ -455,8 +446,8 @@ PROCESS_DESCRIPTION_DICT["eq"] = {
           "null"
         ]
       },
-      "default": null,
-      "optional": true
+      "default": "null",
+      "optional": True
     },
     {
       "name": "case_sensitive",
@@ -464,8 +455,8 @@ PROCESS_DESCRIPTION_DICT["eq"] = {
       "schema": {
         "type": "boolean"
       },
-      "default": true,
-      "optional": true
+      "default": True,
+      "optional": True
     }
   ],
   "returns": {
@@ -481,37 +472,37 @@ PROCESS_DESCRIPTION_DICT["eq"] = {
     {
       "arguments": {
         "x": 1,
-        "y": null
+        "y": "null"
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
-        "x": null,
-        "y": null
+        "x": "null",
+        "y": "null"
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
         "x": 1,
         "y": 1
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": 1,
         "y": "1"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": 0,
-        "y": false
+        "y": False
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
@@ -519,7 +510,7 @@ PROCESS_DESCRIPTION_DICT["eq"] = {
         "y": 1,
         "delta": 0.01
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
@@ -527,7 +518,7 @@ PROCESS_DESCRIPTION_DICT["eq"] = {
         "y": -1.001,
         "delta": 0.01
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
@@ -535,37 +526,37 @@ PROCESS_DESCRIPTION_DICT["eq"] = {
         "y": 110,
         "delta": 10
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "Test",
         "y": "test"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": "Test",
         "y": "test",
-        "case_sensitive": false
+        "case_sensitive": False
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "Ä",
         "y": "ä",
-        "case_sensitive": false
+        "case_sensitive": False
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "00:00:00+00:00",
         "y": "00:00:00Z"
       },
-      "returns": true
+      "returns": True
     },
     {
       "description": "`y` is not a valid date-time representation and therefore will be treated as a string so that the provided values are not equal.",
@@ -573,7 +564,7 @@ PROCESS_DESCRIPTION_DICT["eq"] = {
         "x": "2018-01-01T12:00:00Z",
         "y": "2018-01-01T12:00:00"
       },
-      "returns": false
+      "returns": False
     },
     {
       "description": "01:00 in the time zone +1 is equal to 00:00 in UTC.",
@@ -581,7 +572,7 @@ PROCESS_DESCRIPTION_DICT["eq"] = {
         "x": "2018-01-01T00:00:00Z",
         "y": "2018-01-01T01:00:00+01:00"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
@@ -596,7 +587,7 @@ PROCESS_DESCRIPTION_DICT["eq"] = {
           3
         ]
       },
-      "returns": false
+      "returns": False
     }
   ]
 }
@@ -638,65 +629,65 @@ PROCESS_DESCRIPTION_DICT["gt"] = {
     {
       "arguments": {
         "x": 1,
-        "y": null
+        "y": "null"
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
         "x": 0,
         "y": 0
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": 2,
         "y": 1
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": -0.5,
         "y": -0.6
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "00:00:00Z",
         "y": "00:00:00+01:00"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "1950-01-01T00:00:00Z",
         "y": "2018-01-01T12:00:00Z"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": "2018-01-01T12:00:00+00:00",
         "y": "2018-01-01T12:00:00Z"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
-        "x": true,
+        "x": True,
         "y": 0
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
-        "x": true,
-        "y": false
+        "x": True,
+        "y": False
       },
-      "returns": false
+      "returns": False
     }
   ]
 }
@@ -738,58 +729,58 @@ PROCESS_DESCRIPTION_DICT["gte"] = {
     {
       "arguments": {
         "x": 1,
-        "y": null
+        "y": "null"
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
         "x": 0,
         "y": 0
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": 1,
         "y": 2
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": -0.5,
         "y": -0.6
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "00:00:00Z",
         "y": "00:00:00+01:00"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "1950-01-01T00:00:00Z",
         "y": "2018-01-01T12:00:00Z"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": "2018-01-01T12:00:00+00:00",
         "y": "2018-01-01T12:00:00Z"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
-        "x": true,
-        "y": false
+        "x": True,
+        "y": False
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
@@ -804,7 +795,7 @@ PROCESS_DESCRIPTION_DICT["gte"] = {
           3
         ]
       },
-      "returns": false
+      "returns": False
     }
   ],
   "process_graph": {
@@ -840,7 +831,7 @@ PROCESS_DESCRIPTION_DICT["gte"] = {
           "from_node": "eq"
         }
       },
-      "result": true
+      "result": True
     }
   }
 }
@@ -879,8 +870,8 @@ PROCESS_DESCRIPTION_DICT["if"] = {
       "schema": {
         "description": "Any data type is allowed."
       },
-      "default": null,
-      "optional": true
+      "default": "null",
+      "optional": True
     }
   ],
   "returns": {
@@ -892,7 +883,7 @@ PROCESS_DESCRIPTION_DICT["if"] = {
   "examples": [
     {
       "arguments": {
-        "value": true,
+        "value": True,
         "accept": "A",
         "reject": "B"
       },
@@ -900,7 +891,7 @@ PROCESS_DESCRIPTION_DICT["if"] = {
     },
     {
       "arguments": {
-        "value": null,
+        "value": "null",
         "accept": "A",
         "reject": "B"
       },
@@ -908,7 +899,7 @@ PROCESS_DESCRIPTION_DICT["if"] = {
     },
     {
       "arguments": {
-        "value": false,
+        "value": False,
         "accept": [
           1,
           2,
@@ -928,17 +919,17 @@ PROCESS_DESCRIPTION_DICT["if"] = {
     },
     {
       "arguments": {
-        "value": true,
+        "value": True,
         "accept": 123
       },
       "returns": 123
     },
     {
       "arguments": {
-        "value": false,
+        "value": False,
         "accept": 1
       },
-      "returns": null
+      "returns": "null"
     }
   ]
 }
@@ -972,19 +963,19 @@ PROCESS_DESCRIPTION_DICT["is_nan"] = {
       "arguments": {
         "x": 1
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": "Test"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
-        "x": null
+        "x": "null"
       },
-      "returns": true
+      "returns": True
     }
   ],
   "links": [
@@ -1029,28 +1020,28 @@ PROCESS_DESCRIPTION_DICT["is_nodata"] = {
       "arguments": {
         "x": 1
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": "Test"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
-        "x": null
+        "x": "null"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": [
-          null,
-          null
+          "null",
+          "null"
         ]
       },
-      "returns": false
+      "returns": False
     }
   ]
 }
@@ -1083,28 +1074,28 @@ PROCESS_DESCRIPTION_DICT["is_valid"] = {
       "arguments": {
         "x": 1
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "Test"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
-        "x": null
+        "x": "null"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": [
-          null,
-          null
+          "null",
+          "null"
         ]
       },
-      "returns": true
+      "returns": True
     }
   ],
   "links": [
@@ -1153,65 +1144,65 @@ PROCESS_DESCRIPTION_DICT["lt"] = {
     {
       "arguments": {
         "x": 1,
-        "y": null
+        "y": "null"
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
         "x": 0,
         "y": 0
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": 1,
         "y": 2
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": -0.5,
         "y": -0.6
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": "00:00:00+01:00",
         "y": "00:00:00Z"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "1950-01-01T00:00:00Z",
         "y": "2018-01-01T12:00:00Z"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "2018-01-01T12:00:00+00:00",
         "y": "2018-01-01T12:00:00Z"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": 0,
-        "y": true
+        "y": True
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
-        "x": false,
-        "y": true
+        "x": False,
+        "y": True
       },
-      "returns": false
+      "returns": False
     }
   ]
 }
@@ -1253,58 +1244,58 @@ PROCESS_DESCRIPTION_DICT["lte"] = {
     {
       "arguments": {
         "x": 1,
-        "y": null
+        "y": "null"
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
         "x": 0,
         "y": 0
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": 1,
         "y": 2
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": -0.5,
         "y": -0.6
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": "00:00:00+01:00",
         "y": "00:00:00Z"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "1950-01-01T00:00:00Z",
         "y": "2018-01-01T12:00:00Z"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "2018-01-01T12:00:00+00:00",
         "y": "2018-01-01T12:00:00Z"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
-        "x": false,
-        "y": true
+        "x": False,
+        "y": True
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
@@ -1319,7 +1310,7 @@ PROCESS_DESCRIPTION_DICT["lte"] = {
           3
         ]
       },
-      "returns": false
+      "returns": False
     }
   ],
   "process_graph": {
@@ -1355,7 +1346,7 @@ PROCESS_DESCRIPTION_DICT["lte"] = {
           "from_node": "eq"
         }
       },
-      "result": true
+      "result": True
     }
   }
 }
@@ -1393,8 +1384,8 @@ PROCESS_DESCRIPTION_DICT["neq"] = {
           "null"
         ]
       },
-      "default": null,
-      "optional": true
+      "default": "null",
+      "optional": True
     },
     {
       "name": "case_sensitive",
@@ -1402,8 +1393,8 @@ PROCESS_DESCRIPTION_DICT["neq"] = {
       "schema": {
         "type": "boolean"
       },
-      "default": true,
-      "optional": true
+      "default": True,
+      "optional": True
     }
   ],
   "returns": {
@@ -1419,30 +1410,30 @@ PROCESS_DESCRIPTION_DICT["neq"] = {
     {
       "arguments": {
         "x": 1,
-        "y": null
+        "y": "null"
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
         "x": 1,
         "y": 1
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": 1,
         "y": "1"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": 0,
-        "y": false
+        "y": False
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
@@ -1450,7 +1441,7 @@ PROCESS_DESCRIPTION_DICT["neq"] = {
         "y": 1,
         "delta": 0.01
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
@@ -1458,7 +1449,7 @@ PROCESS_DESCRIPTION_DICT["neq"] = {
         "y": -1.001,
         "delta": 0.01
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
@@ -1466,37 +1457,37 @@ PROCESS_DESCRIPTION_DICT["neq"] = {
         "y": 110,
         "delta": 10
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": "Test",
         "y": "test"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "x": "Test",
         "y": "test",
-        "case_sensitive": false
+        "case_sensitive": False
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": "Ä",
         "y": "ä",
-        "case_sensitive": false
+        "case_sensitive": False
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "x": "00:00:00+00:00",
         "y": "00:00:00Z"
       },
-      "returns": false
+      "returns": False
     },
     {
       "description": "`y` is not a valid date-time representation and therefore will be treated as a string so that the provided values are not equal.",
@@ -1504,7 +1495,7 @@ PROCESS_DESCRIPTION_DICT["neq"] = {
         "x": "2018-01-01T12:00:00Z",
         "y": "2018-01-01T12:00:00"
       },
-      "returns": true
+      "returns": True
     },
     {
       "description": "01:00 in the time zone +1 is equal to 00:00 in UTC.",
@@ -1512,7 +1503,7 @@ PROCESS_DESCRIPTION_DICT["neq"] = {
         "x": "2018-01-01T00:00:00Z",
         "y": "2018-01-01T01:00:00+01:00"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
@@ -1527,7 +1518,7 @@ PROCESS_DESCRIPTION_DICT["neq"] = {
           3
         ]
       },
-      "returns": false
+      "returns": False
     }
   ],
   "process_graph": {
@@ -1555,7 +1546,7 @@ PROCESS_DESCRIPTION_DICT["neq"] = {
           "from_node": "eq"
         }
       },
-      "result": true
+      "result": True
     }
   }
 }

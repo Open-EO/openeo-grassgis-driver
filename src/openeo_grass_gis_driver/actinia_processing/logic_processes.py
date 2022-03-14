@@ -1,14 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
-
-from openeo_grass_gis_driver.actinia_processing.base import \
-     check_node_parents, DataObject, GrassDataType, \
-     create_output_name
-from openeo_grass_gis_driver.models.process_graph_schemas import \
-     ProcessGraphNode, ProcessGraph
-from openeo_grass_gis_driver.models.process_schemas import \
-     Parameter, ProcessDescription, ReturnValue, ProcessExample
-from .base import PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node
+from .base import PROCESS_DESCRIPTION_DICT
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -48,8 +39,8 @@ PROCESS_DESCRIPTION_DICT["all"] = {
       "schema": {
         "type": "boolean"
       },
-      "default": true,
-      "optional": true
+      "default": True,
+      "optional": True
     }
   ],
   "returns": {
@@ -65,92 +56,92 @@ PROCESS_DESCRIPTION_DICT["all"] = {
     {
       "arguments": {
         "data": [
-          false,
-          null
+          False,
+          "null"
         ]
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "data": [
-          true,
-          null
+          True,
+          "null"
         ]
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "data": [
-          false,
-          null
+          False,
+          "null"
         ],
-        "ignore_nodata": false
+        "ignore_nodata": False
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "data": [
-          true,
-          null
+          True,
+          "null"
         ],
-        "ignore_nodata": false
+        "ignore_nodata": False
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
         "data": [
-          true,
-          false,
-          true,
-          false
+          True,
+          False,
+          True,
+          False
         ]
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "data": [
-          true,
-          false
+          True,
+          False
         ]
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "data": [
-          true,
-          true
+          True,
+          True
         ]
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "data": [
-          true
+          True
         ]
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "data": [
-          null
+          "null"
         ],
-        "ignore_nodata": false
+        "ignore_nodata": False
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
         "data": []
       },
-      "returns": null
+      "returns": "null"
     }
   ]
 }
@@ -197,38 +188,38 @@ PROCESS_DESCRIPTION_DICT["and"] = {
   "examples": [
     {
       "arguments": {
-        "x": true,
-        "y": true
+        "x": True,
+        "y": True
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
-        "x": true,
-        "y": false
+        "x": True,
+        "y": False
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
-        "x": false,
-        "y": false
+        "x": False,
+        "y": False
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
-        "x": false,
-        "y": null
+        "x": False,
+        "y": "null"
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
-        "x": true,
-        "y": null
+        "x": True,
+        "y": "null"
       },
-      "returns": null
+      "returns": "null"
     }
   ],
   "process_graph": {
@@ -243,9 +234,9 @@ PROCESS_DESCRIPTION_DICT["and"] = {
             "from_parameter": "y"
           }
         ],
-        "ignore_nodata": false
+        "ignore_nodata": False
       },
-      "result": true
+      "result": True
     }
   }
 }
@@ -279,8 +270,8 @@ PROCESS_DESCRIPTION_DICT["any"] = {
       "schema": {
         "type": "boolean"
       },
-      "default": true,
-      "optional": true
+      "default": True,
+      "optional": True
     }
   ],
   "returns": {
@@ -296,92 +287,92 @@ PROCESS_DESCRIPTION_DICT["any"] = {
     {
       "arguments": {
         "data": [
-          false,
-          null
+          False,
+          "null"
         ]
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "data": [
-          true,
-          null
+          True,
+          "null"
         ]
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "data": [
-          false,
-          null
+          False,
+          "null"
         ],
-        "ignore_nodata": false
+        "ignore_nodata": False
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
         "data": [
-          true,
-          null
+          True,
+          "null"
         ],
-        "ignore_nodata": false
+        "ignore_nodata": False
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "data": [
-          true,
-          false,
-          true,
-          false
+          True,
+          False,
+          True,
+          False
         ]
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "data": [
-          true,
-          false
+          True,
+          False
         ]
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "data": [
-          false,
-          false
+          False,
+          False
         ]
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
         "data": [
-          true
+          True
         ]
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
         "data": [
-          null
+          "null"
         ],
-        "ignore_nodata": false
+        "ignore_nodata": False
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
         "data": []
       },
-      "returns": null
+      "returns": "null"
     }
   ]
 }
@@ -418,21 +409,21 @@ PROCESS_DESCRIPTION_DICT["not"] = {
   "examples": [
     {
       "arguments": {
-        "x": null
+        "x": "null"
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
-        "x": false
+        "x": False
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
-        "x": true
+        "x": True
       },
-      "returns": false
+      "returns": False
     }
   ]
 }
@@ -479,38 +470,38 @@ PROCESS_DESCRIPTION_DICT["or"] = {
   "examples": [
     {
       "arguments": {
-        "x": true,
-        "y": true
+        "x": True,
+        "y": True
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
-        "x": false,
-        "y": false
+        "x": False,
+        "y": False
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
-        "x": true,
-        "y": null
+        "x": True,
+        "y": "null"
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
-        "x": null,
-        "y": true
+        "x": "null",
+        "y": True
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
-        "x": false,
-        "y": null
+        "x": False,
+        "y": "null"
       },
-      "returns": null
+      "returns": "null"
     }
   ],
   "process_graph": {
@@ -525,9 +516,9 @@ PROCESS_DESCRIPTION_DICT["or"] = {
             "from_parameter": "y"
           }
         ],
-        "ignore_nodata": false
+        "ignore_nodata": False
       },
-      "result": true
+      "result": True
     }
   }
 }
@@ -574,38 +565,38 @@ PROCESS_DESCRIPTION_DICT["xor"] = {
   "examples": [
     {
       "arguments": {
-        "x": true,
-        "y": true
+        "x": True,
+        "y": True
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
-        "x": false,
-        "y": false
+        "x": False,
+        "y": False
       },
-      "returns": false
+      "returns": False
     },
     {
       "arguments": {
-        "x": true,
-        "y": false
+        "x": True,
+        "y": False
       },
-      "returns": true
+      "returns": True
     },
     {
       "arguments": {
-        "x": true,
-        "y": null
+        "x": True,
+        "y": "null"
       },
-      "returns": null
+      "returns": "null"
     },
     {
       "arguments": {
-        "x": false,
-        "y": null
+        "x": False,
+        "y": "null"
       },
-      "returns": null
+      "returns": "null"
     }
   ],
   "process_graph": {
@@ -657,7 +648,7 @@ PROCESS_DESCRIPTION_DICT["xor"] = {
           "from_node": "and2"
         }
       },
-      "result": true
+      "result": True
     }
   }
 }

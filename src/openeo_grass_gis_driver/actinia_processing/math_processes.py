@@ -204,6 +204,346 @@ PROCESS_DESCRIPTION_DICT["add"] = {
 }
 
 
+PROCESS_DESCRIPTION_DICT["arccos"] = {
+  "id": "arccos",
+  "summary": "Inverse cosine",
+  "description": "Computes the arc cosine of `x`. The arc cosine is the inverse function of the cosine so that *`arccos(cos(x)) = x`*.\n\nWorks on radians only.\nThe no-data value `null` is passed through and therefore gets propagated.",
+  "categories": [
+    "math > trigonometric"
+  ],
+  "parameters": [
+    {
+      "name": "x",
+      "description": "A number.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    }
+  ],
+  "returns": {
+    "description": "The computed angle in radians.",
+    "schema": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "arguments": {
+        "x": 1
+      },
+      "returns": 0
+    }
+  ],
+  "links": [
+    {
+      "rel": "about",
+      "href": "http://mathworld.wolfram.com/InverseCosine.html",
+      "title": "Inverse cosine explained by Wolfram MathWorld"
+    }
+  ]
+}
+
+
+PROCESS_DESCRIPTION_DICT["arcosh"] = {
+  "id": "arcosh",
+  "summary": "Inverse hyperbolic cosine",
+  "description": "Computes the inverse hyperbolic cosine of `x`. It is the inverse function of the hyperbolic cosine so that *`arcosh(cosh(x)) = x`*.\n\nWorks on radians only.\nThe no-data value `null` is passed through and therefore gets propagated.",
+  "categories": [
+    "math > trigonometric"
+  ],
+  "parameters": [
+    {
+      "name": "x",
+      "description": "A number.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    }
+  ],
+  "returns": {
+    "description": "The computed angle in radians.",
+    "schema": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "arguments": {
+        "x": 1
+      },
+      "returns": 0
+    }
+  ],
+  "links": [
+    {
+      "rel": "about",
+      "href": "http://mathworld.wolfram.com/InverseHyperbolicCosine.html",
+      "title": "Inverse hyperbolic cosine explained by Wolfram MathWorld"
+    }
+  ]
+}
+
+
+PROCESS_DESCRIPTION_DICT["arcsin"] = {
+  "id": "arcsin",
+  "summary": "Inverse sine",
+  "description": "Computes the arc sine of `x`. The arc sine is the inverse function of the sine so that *`arcsin(sin(x)) = x`*.\n\nWorks on radians only.\nThe no-data value `null` is passed through and therefore gets propagated.",
+  "categories": [
+    "math > trigonometric"
+  ],
+  "parameters": [
+    {
+      "name": "x",
+      "description": "A number.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    }
+  ],
+  "returns": {
+    "description": "The computed angle in radians.",
+    "schema": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "arguments": {
+        "x": 0
+      },
+      "returns": 0
+    }
+  ],
+  "links": [
+    {
+      "rel": "about",
+      "href": "http://mathworld.wolfram.com/InverseSine.html",
+      "title": "Inverse sine explained by Wolfram MathWorld"
+    }
+  ]
+}
+
+
+PROCESS_DESCRIPTION_DICT["arctan"] = {
+  "id": "arctan",
+  "summary": "Inverse tangent",
+  "description": "Computes the arc tangent of `x`. The arc tangent is the inverse function of the tangent so that *`arctan(tan(x)) = x`*.\n\nWorks on radians only.\nThe no-data value `null` is passed through and therefore gets propagated.",
+  "categories": [
+    "math > trigonometric"
+  ],
+  "parameters": [
+    {
+      "name": "x",
+      "description": "A number.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    }
+  ],
+  "returns": {
+    "description": "The computed angle in radians.",
+    "schema": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "arguments": {
+        "x": 0
+      },
+      "returns": 0
+    }
+  ],
+  "links": [
+    {
+      "rel": "about",
+      "href": "http://mathworld.wolfram.com/InverseTangent.html",
+      "title": "Inverse tangent explained by Wolfram MathWorld"
+    }
+  ]
+}
+
+
+PROCESS_DESCRIPTION_DICT["arctan2"] = {
+  "id": "arctan2",
+  "summary": "Inverse tangent of two numbers",
+  "description": "Computes the arc tangent of two numbers `x` and `y`. It is similar to calculating the arc tangent of *`y / x`*, except that the signs of both arguments are used to determine the quadrant of the result.\n\nWorks on radians only.\nThe no-data value `null` is passed through and therefore gets propagated if any of the arguments is `null`.",
+  "categories": [
+    "math > trigonometric"
+  ],
+  "parameters": [
+    {
+      "name": "y",
+      "description": "A number to be used as the dividend.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    },
+    {
+      "name": "x",
+      "description": "A number to be used as the divisor.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    }
+  ],
+  "returns": {
+    "description": "The computed angle in radians.",
+    "schema": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "arguments": {
+        "y": 0,
+        "x": 0
+      },
+      "returns": 0
+    },
+    {
+      "arguments": {
+        "y": "null",
+        "x": 1.5
+      },
+      "returns": "null"
+    }
+  ],
+  "links": [
+    {
+      "rel": "about",
+      "href": "https://en.wikipedia.org/wiki/Atan2",
+      "title": "Two-argument inverse tangent explained by Wikipedia"
+    }
+  ]
+}
+
+
+PROCESS_DESCRIPTION_DICT["arsinh"] = {
+  "id": "arsinh",
+  "summary": "Inverse hyperbolic sine",
+  "description": "Computes the inverse hyperbolic sine of `x`. It is the inverse function of the hyperbolic sine so that *`arsinh(sinh(x)) = x`*.\n\nWorks on radians only.\nThe no-data value `null` is passed through and therefore gets propagated.",
+  "categories": [
+    "math > trigonometric"
+  ],
+  "parameters": [
+    {
+      "name": "x",
+      "description": "A number.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    }
+  ],
+  "returns": {
+    "description": "The computed angle in radians.",
+    "schema": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "arguments": {
+        "x": 0
+      },
+      "returns": 0
+    }
+  ],
+  "links": [
+    {
+      "rel": "about",
+      "href": "http://mathworld.wolfram.com/InverseHyperbolicSine.html",
+      "title": "Inverse hyperbolic sine explained by Wolfram MathWorld"
+    }
+  ]
+}
+
+
+PROCESS_DESCRIPTION_DICT["artanh"] = {
+  "id": "artanh",
+  "summary": "Inverse hyperbolic tangent",
+  "description": "Computes the inverse hyperbolic tangent of `x`. It is the inverse function of the hyperbolic tangent so that *`artanh(tanh(x)) = x`*.\n\nWorks on radians only.\nThe no-data value `null` is passed through and therefore gets propagated.",
+  "categories": [
+    "math > trigonometric"
+  ],
+  "parameters": [
+    {
+      "name": "x",
+      "description": "A number.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    }
+  ],
+  "returns": {
+    "description": "The computed angle in radians.",
+    "schema": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "arguments": {
+        "x": 0
+      },
+      "returns": 0
+    }
+  ],
+  "links": [
+    {
+      "rel": "about",
+      "href": "http://mathworld.wolfram.com/InverseHyperbolicTangent.html",
+      "title": "Inverse hyperbolic tangent explained by Wolfram MathWorld"
+    }
+  ]
+}
+
+
 PROCESS_DESCRIPTION_DICT["ceil"] = {
   "id": "ceil",
   "summary": "Round fractions up",
@@ -419,6 +759,52 @@ PROCESS_DESCRIPTION_DICT["cos"] = {
             "title": "Cosine explained by Wolfram MathWorld"
         }
     ]
+}
+
+
+PROCESS_DESCRIPTION_DICT["cosh"] = {
+  "id": "cosh",
+  "summary": "Hyperbolic cosine",
+  "description": "Computes the hyperbolic cosine of `x`.\n\nWorks on radians only.\nThe no-data value `null` is passed through and therefore gets propagated.",
+  "categories": [
+    "math > trigonometric"
+  ],
+  "parameters": [
+    {
+      "name": "x",
+      "description": "An angle in radians.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    }
+  ],
+  "returns": {
+    "description": "The computed hyperbolic cosine of `x`.",
+    "schema": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "arguments": {
+        "x": 0
+      },
+      "returns": 1
+    }
+  ],
+  "links": [
+    {
+      "rel": "about",
+      "href": "http://mathworld.wolfram.com/HyperbolicCosine.html",
+      "title": "Hyperbolic cosine explained by Wolfram MathWorld"
+    }
+  ]
 }
 
 
@@ -1579,6 +1965,31 @@ PROCESS_DESCRIPTION_DICT["multiply"] = {
 }
 
 
+PROCESS_DESCRIPTION_DICT["pi"] = {
+  "id": "pi",
+  "summary": "Pi (π)",
+  "description": "The real number Pi (π) is a mathematical constant that is the ratio of the circumference of a circle to its diameter. The numerical value is approximately *3.14159*.",
+  "categories": [
+    "math > constants",
+    "math > trigonometric"
+  ],
+  "parameters": [],
+  "returns": {
+    "description": "The numerical value of Pi.",
+    "schema": {
+      "type": "number"
+    }
+  },
+  "links": [
+    {
+      "rel": "about",
+      "href": "http://mathworld.wolfram.com/Pi.html",
+      "title": "Mathematical constant Pi explained by Wolfram MathWorld"
+    }
+  ]
+}
+
+
 PROCESS_DESCRIPTION_DICT["power"] = {
   "id": "power",
   "summary": "Exponentiation",
@@ -2329,6 +2740,52 @@ PROCESS_DESCRIPTION_DICT["sin"] = {
 }
 
 
+PROCESS_DESCRIPTION_DICT["sinh"] = {
+  "id": "sinh",
+  "summary": "Hyperbolic sine",
+  "description": "Computes the hyperbolic sine of `x`.\n\nWorks on radians only.\nThe no-data value `null` is passed through and therefore gets propagated.",
+  "categories": [
+    "math > trigonometric"
+  ],
+  "parameters": [
+    {
+      "name": "x",
+      "description": "An angle in radians.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    }
+  ],
+  "returns": {
+    "description": "The computed hyperbolic sine of `x`.",
+    "schema": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "arguments": {
+        "x": 0
+      },
+      "returns": 0
+    }
+  ],
+  "links": [
+    {
+      "rel": "about",
+      "href": "http://mathworld.wolfram.com/HyperbolicSine.html",
+      "title": "Hyperbolic sine explained by Wolfram MathWorld"
+    }
+  ]
+}
+
+
 PROCESS_DESCRIPTION_DICT["sqrt"] = {
   "id": "sqrt",
   "summary": "Square root",
@@ -2587,6 +3044,98 @@ PROCESS_DESCRIPTION_DICT["sum"] = {
       "rel": "about",
       "href": "https://ieeexplore.ieee.org/document/8766229",
       "title": "IEEE Standard 754-2019 for Floating-Point Arithmetic"
+    }
+  ]
+}
+
+
+PROCESS_DESCRIPTION_DICT["tan"] = {
+  "id": "tan",
+  "summary": "Tangent",
+  "description": "Computes the tangent of `x`. The tangent is defined to be the sine of x divided by the cosine of x.\n\nWorks on radians only.\nThe no-data value `null` is passed through and therefore gets propagated.",
+  "categories": [
+    "math > trigonometric"
+  ],
+  "parameters": [
+    {
+      "name": "x",
+      "description": "An angle in radians.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    }
+  ],
+  "returns": {
+    "description": "The computed tangent of `x`.",
+    "schema": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "arguments": {
+        "x": 0
+      },
+      "returns": 0
+    }
+  ],
+  "links": [
+    {
+      "rel": "about",
+      "href": "http://mathworld.wolfram.com/Tangent.html",
+      "title": "Tangent explained by Wolfram MathWorld"
+    }
+  ]
+}
+
+
+PROCESS_DESCRIPTION_DICT["tanh"] = {
+  "id": "tanh",
+  "summary": "Hyperbolic tangent",
+  "description": "Computes the hyperbolic tangent of `x`. The tangent is defined to be the hyperbolic sine of x divided by the hyperbolic cosine of x.\n\nWorks on radians only.\nThe no-data value `null` is passed through and therefore gets propagated.",
+  "categories": [
+    "math > trigonometric"
+  ],
+  "parameters": [
+    {
+      "name": "x",
+      "description": "An angle in radians.",
+      "schema": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    }
+  ],
+  "returns": {
+    "description": "The computed hyperbolic tangent of `x`.",
+    "schema": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "arguments": {
+        "x": 0
+      },
+      "returns": 0
+    }
+  ],
+  "links": [
+    {
+      "rel": "about",
+      "href": "http://mathworld.wolfram.com/HyperbolicTangent.html",
+      "title": "Hyperbolic tangent explained by Wolfram MathWorld"
     }
   ]
 }

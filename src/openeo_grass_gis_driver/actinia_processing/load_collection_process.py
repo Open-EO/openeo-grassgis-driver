@@ -245,13 +245,51 @@ def create_process_chain_entry(input_object: DataObject,
 
     if input_object.is_raster():
         importer = {"id": "r_info_%i" % rn, "module": "r.info", "inputs": [
-            {"param": "map", "value": input_object.grass_name()}, ], "flags": "g"}
+            {"param": "map", "value": input_object.grass_name()}, ],
+            "flags": "g"}
+
     elif input_object.is_vector():
         importer = {"id": "v_info_%i" % rn, "module": "v.info", "inputs": [
-            {"param": "map", "value": input_object.grass_name()}, ], "flags": "g"}
+            {"param": "map", "value": input_object.grass_name()}, ],
+            "flags": "g"}
+
     elif input_object.is_strds():
         importer = {"id": "t_info_%i" % rn, "module": "t.info", "inputs": [
-            {"param": "input", "value": input_object.grass_name()}, ], "flags": "g"}
+            {"param": "input", "value": input_object.grass_name()}, ],
+            "flags": "g"}
+
+    elif input_object.is_rastercube():
+        # create name from full name
+        strd_name = create_output_name(input_object.full_name())
+        # Define the import process of the STAC collection
+        stac_input_importer = {
+                "id": "importer_1",
+                "module": "importer",
+                "inputs": [{
+                    "import_descr": {
+                        "source": input_object.full_name(),
+                        "type": "stac"
+                    },
+                    "param": "map",
+                    "value": strd_name
+                }]
+            }
+        param_import = _get_stac_importer(stac_input_importer, spatial_extent,
+                                          temporal_extent, bands, rn)
+        stac_importchain = {
+                "id": "importer_1",
+                "module": "importer",
+                "inputs": [param_import]
+            }
+
+        pc.append(stac_importchain)
+
+        importer = {
+            "id": "t_info_%i" % rn,
+            "module": "t.info",
+            "inputs": [strd_name],
+            "flags": "g"
+        }
     else:
         raise Exception("Unsupported datatype")
 
@@ -280,9 +318,10 @@ def create_process_chain_entry(input_object: DataObject,
                         "param": "s", "value": str(south)}, {
                         "param": "e", "value": str(east)}, {
                         "param": "w", "value": str(west)}, {
-                            "param": "crs", "value": str(crs)}, {
-                                "param": "raster", "value": input_object.grass_name()}, ]}
-        elif input_object.is_strds():
+                        "param": "crs", "value": str(crs)}, {
+                        "param": "raster", "value": input_object.grass_name()},
+                    ]}
+        elif input_object.is_strds() or input_object.is_rastercube():
             region_bbox = {
                 "id": "g_region_bbox_%i" %
                 rn, "module": "g.region.bbox", "inputs": [
@@ -291,8 +330,10 @@ def create_process_chain_entry(input_object: DataObject,
                         "param": "s", "value": str(south)}, {
                         "param": "e", "value": str(east)}, {
                         "param": "w", "value": str(west)}, {
-                            "param": "crs", "value": str(crs)}, {
-                                "param": "strds", "value": input_object.grass_name()}, ]}
+                        "param": "crs", "value": str(crs)}, {
+                        "param": "strds", "value": input_object.grass_name()},
+                        ]
+                    }
         else:
             region_bbox = {"id": "g_region_bbox_%i" % rn,
                            "module": "g.region.bbox",
@@ -340,8 +381,40 @@ def create_process_chain_entry(input_object: DataObject,
     return pc
 
 
+def _get_stac_importer(stac_input_importer, spatial_extent=None,
+                       temporal_extent=None, bands=None, rn=None):
+    if spatial_extent is not None and temporal_extent is not None:
+        # STAC Spatial Filtering
+        north = spatial_extent["north"]
+        south = spatial_extent["south"]
+        west = spatial_extent["west"]
+        east = spatial_extent["east"]
+        extent = stac_input_importer["import_descr"]["extent"] = {}
+        extent["spatial"] = {
+            "bbox": [[north, west, south, east]]
+        }
+
+        # STAC Temporal Filtering
+        start_time = temporal_extent[0].replace('T', ' ')
+        end_time = temporal_extent[1].replace('T', ' ')
+        extent["temporal"] = {
+            "interval": [[start_time, end_time]]
+        }
+
+        # TODO Check band format
+        if bands is not None:
+            stac_input_importer["import_descr"]["semantic_label"] = bands
+
+        return stac_input_importer
+    else:
+        raise Exception(
+                "STAC collections require spatio-temporal filtering"
+        )
+
+
 def get_process_list(node: Node):
-    """Analyse the process description and return the Actinia process chain and the name of the processing result
+    """Analyse the process description and return the Actinia process 
+       chain and the name of the processing result
 
     :param node: The process node
     :return: (output_objects, actinia_process_list)

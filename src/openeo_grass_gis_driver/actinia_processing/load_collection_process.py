@@ -407,7 +407,7 @@ def _get_stac_importer(stac_input_importer, spatial_extent=None,
 
 
 def get_process_list(node: Node):
-    """Analyse the process description and return the Actinia process 
+    """Analyse the process description and return the Actinia process
        chain and the name of the processing result
 
     :param node: The process node

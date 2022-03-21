@@ -259,21 +259,18 @@ def create_process_chain_entry(input_object: DataObject,
             "flags": "g"}
 
     elif input_object.is_rastercube():
-        # create name from full name
-        strd_name = create_output_name(input_object.full_name())
+        instance_id = input_object.instance
+        collection_id = f"stac.{instance_id}.rastercube.{input_object.name}"
+        stdr_name = (output_object.grass_name()).replace('@', '_')
         # Define the import process of the STAC collection
         stac_input_importer = {
-                "id": "importer_1",
-                "module": "importer",
-                "inputs": [{
                     "import_descr": {
-                        "source": input_object.full_name(),
+                        "source": collection_id,
                         "type": "stac"
                     },
                     "param": "map",
-                    "value": strd_name
-                }]
-            }
+                    "value": stdr_name
+                }
         param_import = _get_stac_importer(stac_input_importer, spatial_extent,
                                           temporal_extent, bands, rn)
         stac_importchain = {
@@ -284,12 +281,9 @@ def create_process_chain_entry(input_object: DataObject,
 
         pc.append(stac_importchain)
 
-        importer = {
-            "id": "t_info_%i" % rn,
-            "module": "t.info",
-            "inputs": [strd_name],
-            "flags": "g"
-        }
+        importer = {"id": "t_info_%i" % rn, "module": "t.info", "inputs": [
+            {"param": "input", "value": stdr_name}, ],
+            "flags": "g"}
     else:
         raise Exception("Unsupported datatype")
 
@@ -331,7 +325,7 @@ def create_process_chain_entry(input_object: DataObject,
                         "param": "e", "value": str(east)}, {
                         "param": "w", "value": str(west)}, {
                         "param": "crs", "value": str(crs)}, {
-                        "param": "strds", "value": input_object.grass_name()},
+                        "param": "strds", "value": stdr_name},
                         ]
                     }
         else:

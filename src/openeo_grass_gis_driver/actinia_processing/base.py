@@ -75,12 +75,14 @@ class DataObject:
             name: str,
             datatype: GrassDataType,
             mapset: str = None,
-            location: str = None):
+            location: str = None,
+            instance: str = None):
 
         self.name = name
         self.datatype = datatype
         self.mapset = mapset
         self.location = location
+        self.instance = instance
 
     def __str__(self):
         re = f"{self.location}.{self.mapset}.{self.datatype.value}.{self.name}"
@@ -118,8 +120,9 @@ class DataObject:
             return DataObject(
                 name=layer_name,
                 datatype=GrassDataType.rastercube,
-                mapset=mapset,
-                location="latlong_wgs84")
+                mapset="PERMANENT",
+                location="latlong_wgs84",
+                instance=mapset)
 
         raise Exception(f"Unsupported object type <{datatype}>")
 

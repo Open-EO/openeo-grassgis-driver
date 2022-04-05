@@ -325,7 +325,7 @@ def create_process_chain_entry(input_object: DataObject,
                         "param": "e", "value": str(east)}, {
                         "param": "w", "value": str(west)}, {
                         "param": "crs", "value": str(crs)}, {
-                        "param": "strds", "value": stdr_name},
+                        "param": "strds", "value": strds_name},
                         ]
                     }
         else:

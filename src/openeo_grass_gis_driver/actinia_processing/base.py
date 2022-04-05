@@ -81,6 +81,7 @@ class DataObject:
         self.datatype = datatype
         self.mapset = mapset
         self.location = location
+
     def __str__(self):
         re = f"{self.location}.{self.mapset}.{self.datatype.value}.{self.name}"
         return re

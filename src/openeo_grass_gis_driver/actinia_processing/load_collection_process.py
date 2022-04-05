@@ -258,10 +258,10 @@ def create_process_chain_entry(input_object: DataObject,
             {"param": "input", "value": input_object.grass_name()}, ],
             "flags": "g"}
 
-    elif input_object.is_rastercube():
+    elif input_object.is_stac():
         instance_id = input_object.instance
         collection_id = f"stac.{instance_id}.rastercube.{input_object.name}"
-        stdr_name = (output_object.grass_name()).replace('@', '_')
+        strds_name = (output_object.grass_name()).replace('@', '_')
         # Define the import process of the STAC collection
         stac_input_importer = {
                     "import_descr": {
@@ -269,7 +269,7 @@ def create_process_chain_entry(input_object: DataObject,
                         "type": "stac"
                     },
                     "param": "map",
-                    "value": stdr_name
+                    "value": strds_name
                 }
         param_import = _get_stac_importer(stac_input_importer, spatial_extent,
                                           temporal_extent, bands, rn)
@@ -282,7 +282,7 @@ def create_process_chain_entry(input_object: DataObject,
         pc.append(stac_importchain)
 
         importer = {"id": "t_info_%i" % rn, "module": "t.info", "inputs": [
-            {"param": "input", "value": stdr_name}, ],
+            {"param": "input", "value": strds_name}, ],
             "flags": "g"}
     else:
         raise Exception("Unsupported datatype")
@@ -315,7 +315,7 @@ def create_process_chain_entry(input_object: DataObject,
                         "param": "crs", "value": str(crs)}, {
                         "param": "raster", "value": input_object.grass_name()},
                     ]}
-        elif input_object.is_strds() or input_object.is_rastercube():
+        elif input_object.is_strds() or input_object.is_stac():
             region_bbox = {
                 "id": "g_region_bbox_%i" %
                 rn, "module": "g.region.bbox", "inputs": [

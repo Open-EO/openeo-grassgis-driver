@@ -62,7 +62,7 @@ class GrassDataType(Enum):
     RASTER = "raster"
     VECTOR = "vector"
     STRDS = "strds"
-    rastercube = "rastercube"
+    STAC = "rastercube"
 
 
 class DataObject:
@@ -75,8 +75,7 @@ class DataObject:
             name: str,
             datatype: GrassDataType,
             mapset: str = None,
-            location: str = None,
-            instance: str = None):
+            location: str = None):
 
         self.name = name
         self.datatype = datatype
@@ -116,10 +115,10 @@ class DataObject:
                 datatype=GrassDataType.STRDS,
                 mapset=mapset,
                 location=location)
-        elif GrassDataType.rastercube.value == datatype:
+        elif GrassDataType.STAC.value == datatype:
             return DataObject(
                 name=layer_name,
-                datatype=GrassDataType.rastercube,
+                datatype=GrassDataType.STAC,
                 mapset="PERMANENT",
                 location="latlong_wgs84",
                 instance=mapset)
@@ -147,9 +146,9 @@ class DataObject:
 
         return self.datatype == GrassDataType.VECTOR
 
-    def is_rastercube(self):
+    def is_stac(self):
 
-        return self.datatype == GrassDataType.rastercube
+        return self.datatype == GrassDataType.STAC
 
 
 class Node:

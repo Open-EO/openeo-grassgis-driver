@@ -259,7 +259,7 @@ def create_process_chain_entry(input_object: DataObject,
             "flags": "g"}
 
     elif input_object.is_stac():
-        instance_id = input_object.instance
+        instance_id = input_object.mapset
         collection_id = f"stac.{instance_id}.rastercube.{input_object.name}"
         strds_name = (output_object.grass_name()).replace('@', '_')
         # Define the import process of the STAC collection
@@ -435,6 +435,10 @@ def get_process_list(node: Node):
 
     if input_object.is_strds() and \
        (temporal_extent is not None or bands is not None):
+        output_object = DataObject(
+            name=create_output_name(input_object.name, node),
+            datatype=input_object.datatype)
+    elif input_object.is_stac():
         output_object = DataObject(
             name=create_output_name(input_object.name, node),
             datatype=input_object.datatype)

@@ -118,9 +118,8 @@ class DataObject:
             return DataObject(
                 name=layer_name,
                 datatype=GrassDataType.STAC,
-                mapset="PERMANENT",
-                location="latlong_wgs84",
-                instance=mapset)
+                mapset=mapset,
+                location="latlong_wgs84")
 
         raise Exception(f"Unsupported object type <{datatype}>")
 

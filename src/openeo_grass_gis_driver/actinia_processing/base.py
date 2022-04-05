@@ -62,6 +62,7 @@ class GrassDataType(Enum):
     RASTER = "raster"
     VECTOR = "vector"
     STRDS = "strds"
+    STAC = "rastercube"
 
 
 class DataObject:
@@ -113,6 +114,13 @@ class DataObject:
                 datatype=GrassDataType.STRDS,
                 mapset=mapset,
                 location=location)
+        elif GrassDataType.STAC.value == datatype:
+            return DataObject(
+                name=layer_name,
+                datatype=GrassDataType.STAC,
+                mapset="PERMANENT",
+                location="latlong_wgs84",
+                instance=mapset)
 
         raise Exception(f"Unsupported object type <{datatype}>")
 
@@ -136,6 +144,10 @@ class DataObject:
     def is_vector(self):
 
         return self.datatype == GrassDataType.VECTOR
+
+    def is_stac(self):
+
+        return self.datatype == GrassDataType.STAC
 
 
 class Node:

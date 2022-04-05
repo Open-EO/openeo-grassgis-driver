@@ -51,9 +51,10 @@ class Result(ResourceBase):
             location = ActiniaInterface.PROCESS_LOCATION.keys()
             location = list(location)[0]
 
-            process_chain = dict(list=process_list, version="1")
+            if location == "stac":
+                location = "latlong_wgs84"
 
-            # pprint.pprint(process_chain)
+            process_chain = dict(list=process_list, version="1")
 
             status, response = self.iface.async_ephemeral_processing_export(
                 location=location, process_chain=process_chain)

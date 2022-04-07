@@ -7,4 +7,5 @@ gunicorn
 
 
 # needed to build documentation
+docutils>=0.16
 Sphinx>=3.4.3

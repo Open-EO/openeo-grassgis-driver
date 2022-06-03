@@ -38,8 +38,60 @@ class JobsJobId(ResourceBase):
 
         if job_id in self.job_db:
             job: JobInformation = self.job_db[job_id]
+
+            job.stac_version = CAPABILITIES['stac_version']
+            job.type = "Feature"
+            job.geometry = "json:null"
+            job.properties = dict()
+            job.properties['datetime'] = None
+            job.assets = dict()
+            job.links = []
+
+            # Check for the actinia id to get the latest actinia job
+            # information
+            if job_id in self.actinia_job_db:
+                actinia_id = self.actinia_job_db[job_id]
+                code, job_info = self.iface.resource_info(
+                    resource_id=actinia_id)
+
+                if code == 200:
+                    # Add the actinia information to the openeo job
+                    if job.additional_info != job_info:
+                        job.additional_info = job_info
+                        job.updated = job_info["datetime"].replace(
+                            " ", "T").replace(
+                            "'", "").replace(
+                            '"', '')
+                        if job_info["status"] == "finished":
+                            job.status = "finished"
+                        if job_info["status"] == "error":
+                            job.status = "error"
+                        if job_info["status"] == "accepted":
+                            job.status = "queued"
+                        if job_info["status"] == "terminated":
+                            job.status = "canceled"
+                        if job_info["status"] == "running":
+                            job.status = "running"
+
+                        # Store the updated job in the database
+                        self.job_db[job_id] = job
+                else:
+                    if job.additional_info != job_info:
+                        job.additional_info = job_info
+                        self.job_db[job_id] = job
+
+                if (job.additional_info['urls'] and
+                        "resources" in job.additional_info['urls']):
+                    resource_links = job.additional_info['urls']['resources']
+
+                    if job.links is None:
+                        job.links = []
+
+                    for link in resource_links:
+                        eo_link = EoLink(href=link)
+                        job.links.append(eo_link)
+
             return job.as_response(http_status=200)
-            # return make_response(job.to_json(), 200)
         else:
             return ErrorSchema(
                 id="123456678",
@@ -88,6 +140,11 @@ class JobsJobId(ResourceBase):
         """
 
         if job_id in self.job_db:
+            if job_id in self.actinia_job_db:
+                actinia_id = self.actinia_job_db[job_id]
+                code, job_info = self.iface.delete_resource(
+                    resource_id=actinia_id)
+
             del self.job_db[job_id]
             return make_response("The job has been successfully deleted", 204)
         else:

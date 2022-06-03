@@ -197,6 +197,13 @@ class JobsJobIdResults(ResourceBase):
                 actinia_id = self.actinia_job_db[job_id]
                 code, job_info = self.iface.delete_resource(
                     resource_id=actinia_id)
+                del self.actinia_job_db[job_id]
+            
+            job: JobInformation = self.job_db[job_id]
+            job.status = "cancelled"
+            job.updated = str(datetime.now().isoformat())
+
+            self.job_db[job_id] = job
 
             return make_response(
                 "The job has been successfully cancelled", 204)

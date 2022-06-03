@@ -3,6 +3,7 @@ import traceback
 from uuid import uuid4
 import sys
 from flask import make_response, request
+from openeo_grass_gis_driver.capabilities import CAPABILITIES
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
      ActiniaInterface
 from openeo_grass_gis_driver.actinia_processing.config import \
@@ -13,6 +14,7 @@ from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.models.job_schemas import JobInformation
 from openeo_grass_gis_driver.jobs import check_job
 from openeo_grass_gis_driver.authentication import ResourceBase
+from openeo_grass_gis_driver.models.schema_base import EoLink
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Sören Gebbert"

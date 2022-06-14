@@ -181,11 +181,15 @@ class CollectionInformationResource(Resource):
         bands = []
         dimensions = {"x": {
             "type": "spatial",
-            "axis": "x"
+            "axis": "x",
+            "extent": [layer_data["west"], layer_data["east"]],
+            "reference_system": mapset_info["projection"]
         },
             "y": {
             "type": "spatial",
-            "axis": "y"
+            "axis": "y",
+            "extent": [layer_data["south"], layer_data["north"]],
+            "reference_system": mapset_info["projection"]
         },
         }
         platform = "unknown"

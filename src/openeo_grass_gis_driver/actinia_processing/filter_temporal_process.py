@@ -128,23 +128,30 @@ def create__process_chain_entry(
     """
 
     start_time = start_time.replace('T', ' ')
-    end_time = end_time.replace('T', ' ')
-
-    # Get info about the time series to extract its resolution settings and
-    # bbox
     rn = randint(0, 1000000)
 
-    # end_time can be null, and we can not find out if end_time is set because
-    # the input does not exist yet
-    pc = {"id": "t_rast_extract_%i" % rn,
-          "module": "t.rast.extract",
-          "inputs": [{"param": "input", "value": input_object.grass_name()},
-                     {"param": "where", "value": "start_time >= '%(start)s' "
-                      "AND start_time <= '%(end)s'" % {"start": start_time, "end": end_time}},
-                     {"param": "output", "value": output_object.grass_name()},
-                     {"param": "expression", "value": "1.0 * %s" % input_object.name},
-                     {"param": "basename", "value": output_object.name},
-                     {"param": "suffix", "value": "num"}]}
+    # end_time can be null, use only start_time for filtering
+    if end_time and len(end_time) > 0:
+        end_time = end_time.replace('T', ' ')
+
+        pc = {"id": "t_rast_extract_%i" % rn,
+              "module": "t.rast.extract",
+              "inputs": [{"param": "input", "value": input_object.grass_name()},
+                         {"param": "where", "value": "start_time >= '%(start)s' "
+                          "AND start_time < '%(end)s'" % {"start": start_time, "end": end_time}},
+                         {"param": "output", "value": output_object.grass_name()},
+                         {"param": "expression", "value": "1.0 * %s" % input_object.name},
+                         {"param": "basename", "value": output_object.name},
+                         {"param": "suffix", "value": "num"}]}
+    else:
+        pc = {"id": "t_rast_extract_%i" % rn,
+              "module": "t.rast.extract",
+              "inputs": [{"param": "input", "value": input_object.grass_name()},
+                         {"param": "where", "value": "start_time >= '%(start)s'" % {"start": start_time}},
+                         {"param": "output", "value": output_object.grass_name()},
+                         {"param": "expression", "value": "1.0 * %s" % input_object.name},
+                         {"param": "basename", "value": output_object.name},
+                         {"param": "suffix", "value": "num"}]}
 
     return pc
 

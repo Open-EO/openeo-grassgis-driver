@@ -28,7 +28,7 @@ class ACTINIA:
     LOCATIONS = ["nc_spm_08", "utm32n", "latlong_wgs84"]
     USER = "openeo"
     PASSWORD = "EeMob0la"
-    VERSION = "v2"
+    VERSION = "v3"
     # The database file that stores the graphs
     GRAPH_DB = "%s/.graph_db_file.sqlite" % os.environ["HOME"]
     # The database file that stores the jobs

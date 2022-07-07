@@ -10,6 +10,8 @@ from openeo_grass_gis_driver.actinia_processing.config import \
      Config as ActiniaConfig
 from openeo_grass_gis_driver.process_graph_db import GraphDB
 from openeo_grass_gis_driver.job_db import JobDB
+from openeo_grass_gis_driver.actinia_processing.actinia_job_db import \
+     ActiniaJobDB
 from openeo_grass_gis_driver.models.error_schemas import ErrorSchema
 from openeo_grass_gis_driver.models.job_schemas import JobInformation
 from openeo_grass_gis_driver.jobs import check_job
@@ -31,6 +33,7 @@ class JobsJobId(ResourceBase):
         self.iface.set_auth(ActiniaConfig.USER, ActiniaConfig.PASSWORD)
         self.db = GraphDB()
         self.job_db = JobDB()
+        self.actinia_job_db = ActiniaJobDB()
 
     def get(self, job_id):
         """Return information about a single job

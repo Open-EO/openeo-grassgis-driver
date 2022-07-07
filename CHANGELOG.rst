@@ -2,9 +2,21 @@
 Changelog
 =========
 
+Version 2.3.8 - 2022-07-07
+==========================
+## Fixed
+
+* fix endpoint /jobs/{jobid} by @metzm in https://github.com/Open-EO/openeo-grassgis-driver/pull/149
+
+**Full Changelog**: https://github.com/Open-EO/openeo-grassgis-driver/compare/2.3.7...2.3.8
+
+generated with `gh api repos/Open-EO/openeo-grassgis-driver/releases/generate-notes -f tag_name=2.3.8 -f target_commitish=main -q .body` 
+
+
 Version 2.3.7 - 2022-07-06
 ==========================
 ## Changed
+
 * update to actinia v3 by @metzm in https://github.com/Open-EO/openeo-grassgis-driver/pull/148
 
 **Full Changelog**: https://github.com/Open-EO/openeo-grassgis-driver/compare/2.3.6...2.3.7
@@ -14,7 +26,9 @@ generated with `gh api repos/Open-EO/openeo-grassgis-driver/releases/generate-no
 
 Version 2.3.6 - 2022-06-20
 ==========================
- - Fix: fix temporal filter, fix extents by @metzm in https://github.com/Open-EO/openeo-grassgis-driver/pull/147
+## Fixed
+ 
+* fix temporal filter, fix extents by @metzm in https://github.com/Open-EO/openeo-grassgis-driver/pull/147
 
 
 **Full Changelog**: https://github.com/Open-EO/openeo-grassgis-driver/compare/2.3.5...2.3.6

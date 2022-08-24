@@ -123,16 +123,16 @@ class ProcessDefinitionTestCase(TestBase):
         output_names, pc = g.to_actinia_process_list()
         pprint([str(o) for o in output_names])
         pprint(pc)
-        self.assertEqual(len(pc), 5)
+        self.assertEqual(len(pc), 6)
         self.assertTrue(pc[0]["module"] == "t.info")
         self.assertTrue(pc[1]["module"] == "g.region.bbox")
         self.assertTrue(pc[2]["module"] == "t.rast.extract")
         self.assertTrue(pc[3]["module"] == "t.rast.ndvi")
         self.assertTrue(pc[4]["module"] == "t.rast.colors")
-        strlen = len("lsat5_1987_load_collection_ndvi")
+        strlen = len("_ndvi_1")
         # first part of name is uuid<uuid>_
         self.assertTrue(
-            "lsat5_1987_load_collection_ndvi" in [
+            "_ndvi_1" in [
                 o.name[-strlen:] for o in output_names])
 
 #    def test_raster_export(self):
@@ -180,7 +180,7 @@ class ProcessDefinitionTestCase(TestBase):
         output_names, pc = g.to_actinia_process_list()
         pprint([str(o) for o in output_names])
         pprint(pc)
-        self.assertEqual(len(pc), 9)
+        self.assertEqual(len(pc), 10)
 
 
 if __name__ == "__main__":

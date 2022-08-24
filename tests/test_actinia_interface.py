@@ -40,7 +40,7 @@ class ActiniaInterfaceTestCase(TestBase):
     def test_list_strds(self):
         iface = ActiniaInterface(self.gconf)
         status, layers = iface.list_strds(
-            location="latlong_wgs84", mapset="modis_ndvi_global")
+            location="nc_spm_08", mapset="landsat")
         pprint(layers)
 
         self.assertEqual(status, 200)
@@ -49,7 +49,7 @@ class ActiniaInterfaceTestCase(TestBase):
     def test_strds_info(self):
         iface = ActiniaInterface(self.gconf)
         status, info = iface.layer_info(
-            layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m")
+            layer_name="nc_spm_08.landsat.strds.lsat5_1987")
         pprint(info)
 
         self.assertEqual(status, 200)
@@ -64,7 +64,7 @@ class ActiniaInterfaceTestCase(TestBase):
     def test_mapset_info(self):
         iface = ActiniaInterface(self.gconf)
         status, info = iface.mapset_info(
-            location="latlong_wgs84", mapset="modis_ndvi_global")
+            location="nc_spm_08", mapset="PERMANENT")
         pprint(info)
 
         self.assertEqual(status, 200)
@@ -73,7 +73,7 @@ class ActiniaInterfaceTestCase(TestBase):
 
     def test_list_mapsets(self):
         iface = ActiniaInterface(self.gconf)
-        status, mapsets = iface.list_mapsets(location="latlong_wgs84")
+        status, mapsets = iface.list_mapsets(location="nc_spm_08")
         pprint(mapsets)
 
         self.assertEqual(status, 200)
@@ -81,18 +81,18 @@ class ActiniaInterfaceTestCase(TestBase):
     def test_layer_exists_1(self):
         iface = ActiniaInterface(self.gconf)
         status = iface.check_layer_exists(
-            layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m")
+            layer_name="nc_spm_08.landsat.raster.lsat5_1987_10")
         self.assertTrue(status)
 
     def test_layer_exists_2(self):
         iface = ActiniaInterface(self.gconf)
         status = iface.check_layer_exists(
-            layer_name="latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m")
+            layer_name="nc_spm_08.landsat.strds.lsat5_1987")
         self.assertTrue(status)
 
     def test_layer_exists_2_error(self):
         iface = ActiniaInterface(self.gconf)
-        layer_name = "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m_nope"
+        layer_name = "nc_spm_08.landsat.strds.lsat5_1987_nope"
         status = iface.check_layer_exists(
             layer_name=layer_name)
         self.assertFalse(status)

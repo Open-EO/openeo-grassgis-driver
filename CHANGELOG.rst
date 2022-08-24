@@ -2,6 +2,17 @@
 Changelog
 =========
 
+Version 2.3.9 - 2022-08-24
+==========================
+### Fixed
+
+* fix tests by @metzm in https://github.com/Open-EO/openeo-grassgis-driver/pull/150
+
+**Full Changelog**: https://github.com/Open-EO/openeo-grassgis-driver/compare/2.3.8...2.3.9
+
+generated with `gh api repos/Open-EO/openeo-grassgis-driver/releases/generate-notes -f tag_name="2.3.9" -f target_commitish=main -q .body` 
+
+
 Version 2.3.8 - 2022-07-07
 ==========================
 ## Fixed

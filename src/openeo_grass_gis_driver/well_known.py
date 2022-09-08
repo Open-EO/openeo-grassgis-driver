@@ -22,7 +22,7 @@ class WellKnown(Resource):
 
     def get(self):
 
-        url = '%s%s/' % (request.host_url.strip('/'), URL_PREFIX)
+        url = '%s%s/' % (request.root_url.strip('/'), URL_PREFIX)
 
         version_list = list()
         version_list.append({"url": url,

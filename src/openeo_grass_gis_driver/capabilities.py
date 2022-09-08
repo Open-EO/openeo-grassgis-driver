@@ -205,12 +205,7 @@ CAPABILITIES = {
 
 
 def replace_links_in_capabilities():
-    host_url = request.host_url.rstrip('/')
-    split_url = host_url.split('/')
-    if host_url.startswith('http'):
-        new_url = "%s//%s" % (split_url[0], split_url[2])
-    else:
-        new_url = split_url[0]
+    new_url = request.root_url.rstrip('/')
 
     for i in CAPABILITIES['links']:
         sample_url = i['href']
@@ -226,7 +221,7 @@ def replace_links_in_capabilities():
 class Capabilities(Resource):
 
     def get(self, ):
-        # links need to be replaced here because host_url
+        # links need to be replaced here because root_url
         # is only available during a request
         CAPABILITIES = replace_links_in_capabilities()
         return make_response(jsonify(CAPABILITIES), 200)

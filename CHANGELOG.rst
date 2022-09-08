@@ -2,6 +2,18 @@
 Changelog
 =========
 
+
+Version 2.4.0 - 2022-09-08
+==========================
+### Added
+
+* support nginx with access path by @metzm in https://github.com/Open-EO/openeo-grassgis-driver/pull/151
+
+**Full Changelog**: https://github.com/Open-EO/openeo-grassgis-driver/compare/2.3.9...2.4.0
+
+generated with `gh api repos/Open-EO/openeo-grassgis-driver/releases/generate-notes -f tag_name="2.4.0" -f target_commitish=main -q .body`
+
+
 Version 2.3.9 - 2022-08-24
 ==========================
 ### Fixed

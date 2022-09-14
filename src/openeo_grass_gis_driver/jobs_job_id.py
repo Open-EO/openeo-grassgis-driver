@@ -81,8 +81,22 @@ class JobsJobId(ResourceBase):
                         # Store the updated job in the database
                         self.job_db[job_id] = job
                 else:
+                    # actinia code must be 400
+                    # actinia response contains only status and message
                     if job.additional_info != job_info:
                         job.additional_info = job_info
+                        if job_info["status"] == "finished":
+                            job.status = "finished"
+                        if job_info["status"] == "error":
+                            job.status = "error"
+                        if job_info["status"] == "accepted":
+                            job.status = "queued"
+                        if job_info["status"] == "terminated":
+                            job.status = "canceled"
+                        if job_info["status"] == "running":
+                            job.status = "running"
+
+                        # Store the updated job in the database
                         self.job_db[job_id] = job
 
                 if (job.additional_info['urls'] and

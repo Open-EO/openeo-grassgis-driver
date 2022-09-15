@@ -80,8 +80,7 @@ class JobsJobId(ResourceBase):
 
                         # Store the updated job in the database
                         self.job_db[job_id] = job
-                else:
-                    # actinia code must be 400
+                elif code == 400:
                     # actinia response contains only status and message
                     if job.additional_info != job_info:
                         job.additional_info = job_info
@@ -98,6 +97,15 @@ class JobsJobId(ResourceBase):
 
                         # Store the updated job in the database
                         self.job_db[job_id] = job
+                else:
+                    # other 4xx errors
+                    if job.additional_info != job_info:
+                        job.additional_info = job_info
+
+                    job.status = "error"
+
+                    # Store the updated job in the database
+                    self.job_db[job_id] = job
 
                 if (job.additional_info['urls'] and
                         "resources" in job.additional_info['urls']):

@@ -19,7 +19,7 @@ __copyright__ = "Copyright 2018, Sören Gebbert, mundialis"
 __maintainer__ = "Soeren Gebbert"
 __email__ = "soerengebbert@googlemail.com"
 
-PROCESS_NAME = "resample_spatial"
+PROCESS_NAME = "resample_cube_spatial"
 
 
 def create_process_description():

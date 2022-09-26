@@ -3,6 +3,17 @@ Changelog
 =========
 
 
+Version 2.4.1 - 2022-09-26
+==========================
+### Fixed
+* update job status in case of actinia error by @metzm in https://github.com/Open-EO/openeo-grassgis-driver/pull/152
+* Rename resample_spatial to resample_cube_spatial by @metzm in https://github.com/Open-EO/openeo-grassgis-driver/pull/153
+
+**Full Changelog**: https://github.com/Open-EO/openeo-grassgis-driver/compare/2.4.0...2.4.1
+
+generated with `gh api repos/Open-EO/openeo-grassgis-driver/releases/generate-notes -f tag_name="2.4.1" -f target_commitish=main -q .body` 
+
+
 Version 2.4.0 - 2022-09-08
 ==========================
 ### Added

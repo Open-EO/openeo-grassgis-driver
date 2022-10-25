@@ -356,8 +356,8 @@ def create_process_chain_entry(
             # TODO: get root path from link in collection information ?
 
             importer = {
-                "id": "t_in_eolab_%i" % rn,
-                "module": "t.in.eolab",
+                "id": "t_in_eoarchive_%i" % rn,
+                "module": "t.in.eoarchive",
                 "inputs": [
                     {"param": "collection", "value": input_object.name()},
                     {"param": "start", "value": temporal_extent[0].split("T")[0]},

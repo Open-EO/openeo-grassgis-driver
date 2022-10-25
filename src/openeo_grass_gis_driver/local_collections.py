@@ -6,6 +6,9 @@ from pathlib import Path
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import (
     ActiniaInterface,
 )
+from openeo_grass_gis_driver.actinia_processing.base import (
+    GrassDataType,
+)
 from openeo_grass_gis_driver.actinia_processing.config import Config
 
 
@@ -13,6 +16,18 @@ __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
 __copyright__ = "Copyright 2018-2022, mundialis"
 __maintainer__ = "mundialis"
+
+
+def _create_collection_from_file(jsonfile):
+    if not os.path.exists(jsonfile):
+        return None
+
+    with open(jsonfile) as f:
+        collection = json.load(f)
+        name = jsonfile.split("/")[-1][:-5]
+        collection["id"] = f"local.eoarchive.{GrassDataType.EXTERN.value}.{name}"
+
+    return collection
 
 
 def get_local_collections():
@@ -25,26 +40,21 @@ def get_local_collections():
     # get list of all json files at given path
     local_collections_path = Config.LOCAL_COLLECTIONS
     local_collections_files = Path(local_collections_path).glob("**/*.json")
-    jsonfiles = [
-        str(f) for f in local_collections_files if f.is_file()
-    ]
+    jsonfiles = [str(f) for f in local_collections_files if f.is_file()]
 
     collections = {}
     collections["collections"] = []
 
     for j in jsonfiles:
-        with open(j) as f:
-            collection = json.load(f)
-            name = j.split("/")[-1][:-5]
-            collection["id"] = "local.mapset.gdallocal.%s" % name
-            collections["collections"].append(collection)
+        collection = _create_collection_from_file(j)
+        collections["collections"].append(collection)
 
     return collections
 
 
 def get_local_collection(name):
-    """Get a local collection by name: read all local json files at configured
-    path
+    """Get a local collection by name: read corresponding local
+    json file at configured path
 
     return: collection
     """
@@ -55,15 +65,10 @@ def get_local_collection(name):
     if location != "local":
         return None
 
+    del iface.PROCESS_LOCATION[location]
+
     local_collections_path = Config.LOCAL_COLLECTIONS
     jsonfile = os.path.join(local_collections_path, "%s.json" % layer)
-
-    if not os.path.exists(jsonfile):
-        return None
-
-    with open(jsonfile) as f:
-        collection = json.load(f)
-        name = jsonfile.split("/")[-1][:-5]
-        collection["id"] = "local.mapset.gdallocal.%s" % name
+    collection = _create_collection_from_file(jsonfile)
 
     return collection

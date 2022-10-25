@@ -124,7 +124,7 @@ class Collections(Resource):
                     )
                     COLLECTIONS_LIST.append(ds)
 
-            # Additionally check for local collections registered in the openEO driver
+            # Additionally check for local collections registered here
             local_collections = get_local_collections()
 
             if ('collections' in local_collections and

@@ -24,8 +24,9 @@ def get_local_collections():
 
     # get list of all json files at given path
     local_collections_path = Config.LOCAL_COLLECTIONS
+    local_collections_files = Path(local_collections_path).glob("**/*.json")
     jsonfiles = [
-        str(f) for f in Path(local_collections_path).glob("**/*.json") if f.is_file()
+        str(f) for f in local_collections_files if f.is_file()
     ]
 
     collections = {}

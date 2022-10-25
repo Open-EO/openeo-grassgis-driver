@@ -2,10 +2,6 @@
 import os
 import json
 from pathlib import Path
-
-from openeo_grass_gis_driver.actinia_processing.actinia_interface import (
-    ActiniaInterface,
-)
 from openeo_grass_gis_driver.actinia_processing.base import (
     GrassDataType,
 )
@@ -59,13 +55,10 @@ def get_local_collection(name):
     return: collection
     """
 
-    iface = ActiniaInterface()
-    location, mapset, datatype, layer = iface.layer_def_to_components(name)
+    location, mapset, datatype, layer = name.split(".", 3)
 
     if location != "local":
         return None
-
-    del iface.PROCESS_LOCATION[location]
 
     local_collections_path = Config.LOCAL_COLLECTIONS
     jsonfile = os.path.join(local_collections_path, "%s.json" % layer)

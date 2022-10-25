@@ -11,7 +11,7 @@ from openeo_grass_gis_driver.actinia_processing.config import Config
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
-__copyright__ = "Copyright 2018-2021, mundialis"
+__copyright__ = "Copyright 2018-2022, mundialis"
 __maintainer__ = "mundialis"
 
 

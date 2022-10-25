@@ -11,6 +11,7 @@ from openeo_grass_gis_driver.actinia_processing.base import (
     PROCESS_DESCRIPTION_DICT,
     Node,
     check_node_parents,
+    GrassDataType,
     DataObject,
     create_output_name,
 )
@@ -483,12 +484,12 @@ def get_process_list(node: Node):
     elif input_object.is_stac():
         output_object = DataObject(
             name=create_output_name(input_object.name, node),
-            datatype=input_object.datatype,
+            datatype=GrassDataType.STRDS,
         )
     elif input_object.is_local():
         output_object = DataObject(
             name=create_output_name(input_object.name, node),
-            datatype=input_object.datatype,
+            datatype=GrassDataType.STRDS,
         )
     else:
         output_object = input_object

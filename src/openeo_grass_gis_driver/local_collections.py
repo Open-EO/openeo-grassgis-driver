@@ -33,16 +33,17 @@ def get_local_collections():
     ]
 
     collections = {}
-    collections['collections'] = []
+    collections["collections"] = []
 
     for j in jsonfiles:
-        with f as open(j):
+        with open(j) as f:
             collection = json.load(f)
-            name = j..split("/")[-1][:-5]
-            collection['id'] = "local.mapset.gdallocal.%s" % name
-            collections['collections'].append(collection)
+            name = j.split("/")[-1][:-5]
+            collection["id"] = "local.mapset.gdallocal.%s" % name
+            collections["collections"].append(collection)
 
     return collections
+
 
 def get_local_collection(name):
     """Get a local collection by name: read all local json files at configured
@@ -50,23 +51,22 @@ def get_local_collection(name):
 
     return: collection
     """
-    
+
     iface = ActiniaInterface()
-    location, mapset, datatype, layer = self.iface.layer_def_to_components(
-            name)
+    location, mapset, datatype, layer = self.iface.layer_def_to_components(name)
 
     if location != "local":
         return None
-    
+
     local_collections_path = Config.LOCAL_COLLECTIONS
     jsonfile = os.path.join(local_collections_path, "%.json" % layer)
-    
+
     if not os.path_exists(jsonfile):
         return None
 
-        with f as open(j):
+        with open(j) as f:
             collection = json.load(f)
-            name = j..split("/")[-1][:-5]
-            collection['id'] = "local.mapset.gdallocal.%s" % name
+            name = j.split("/")[-1][:-5]
+            collection["id"] = "local.mapset.gdallocal.%s" % name
 
     return collection

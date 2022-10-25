@@ -12,7 +12,6 @@ per-file-ignores =
     ./src/openeo_grass_gis_driver/models/collection_schemas.py: W605, E501
     ./src/openeo_grass_gis_driver/models/job_schemas.py: W605, E501
     ./src/openeo_grass_gis_driver/models/service_schemas.py: W605
-    ./src/openeo_grass_gis_driver/collection_information.py: E501
     ./src/openeo_grass_gis_driver/local_collections.py: E501
     ./src/openeo_grass_gis_driver/jobs_job_id.py: E501
     ./src/openeo_grass_gis_driver/jobs_job_id_estimate.py: E501

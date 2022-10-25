@@ -7,6 +7,8 @@ from openeo_grass_gis_driver.actinia_processing.actinia_interface import \
 from openeo_grass_gis_driver.actinia_processing.config import Config
 from openeo_grass_gis_driver.models.collection_schemas import \
      Collection, CollectionEntry
+from openeo_grass_gis_driver.local_collections import \
+     get_local_collections
 from openeo_grass_gis_driver.utils.logging import log
 
 
@@ -113,6 +115,34 @@ class Collections(Resource):
                         description = i['description']
                     except Exception:
                         description = "STAC collection registered in actinia"
+
+                    ds = CollectionEntry(
+                        id=i['id'],
+                        title=title,
+                        license=license,
+                        description=description
+                    )
+                    COLLECTIONS_LIST.append(ds)
+
+            # Additionally check for local collections registered in the openEO driver
+            local_collections = get_local_collections()
+
+            if ('collections' in local_collections and
+                    type(local_collections['collections']) is list):
+
+                for i in local_collections['collections']:
+                    try:
+                        title = i['title']
+                    except Exception:
+                        title = i['id']
+                    try:
+                        license = i['license']
+                    except Exception:
+                        license = "proprietary"
+                    try:
+                        description = i['description']
+                    except Exception:
+                        description = "local collection registered in the openEO backend"
 
                     ds = CollectionEntry(
                         id=i['id'],

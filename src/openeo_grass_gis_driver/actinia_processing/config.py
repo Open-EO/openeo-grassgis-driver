@@ -37,6 +37,8 @@ class ACTINIA:
     # The database file that stores the actinia jobs
     ACTINIA_JOB_DB = "%s/.actinia_job_db_file.sqlite" % os.environ["HOME"]
     SECRET_KEY = "jaNguzeef4seiv5shahchimoo8teiLah"
+    # path to json files with collection definitions
+    LOCAL_COLLECTIONS = "%s/.openeo_local_collections" % os.environ["HOME"]
 
 
 class Configfile:

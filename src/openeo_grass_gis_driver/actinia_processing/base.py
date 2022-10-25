@@ -63,6 +63,7 @@ class GrassDataType(Enum):
     VECTOR = "vector"
     STRDS = "strds"
     STAC = "rastercube"
+    LOCAL = "gdallocal"
 
 
 class DataObject:
@@ -115,6 +116,18 @@ class DataObject:
                 mapset=mapset,
                 location=location)
         elif GrassDataType.STAC.value == datatype:
+            # location = "stac"
+            del AI.PROCESS_LOCATION[location]
+            AI.PROCESS_LOCATION["latlong_wgs84"] = "latlong_wgs84"
+            return DataObject(
+                name=layer_name,
+                datatype=GrassDataType.STAC,
+                mapset=mapset,
+                location="latlong_wgs84")
+        elif GrassDataType.LOCAL.value == datatype:
+            # location = "local"
+            del AI.PROCESS_LOCATION[location]
+            AI.PROCESS_LOCATION["latlong_wgs84"] = "latlong_wgs84"
             return DataObject(
                 name=layer_name,
                 datatype=GrassDataType.STAC,
@@ -147,6 +160,10 @@ class DataObject:
     def is_stac(self):
 
         return self.datatype == GrassDataType.STAC
+
+    def is_local(self):
+
+        return self.datatype == GrassDataType.LOCAL
 
 
 class Node:

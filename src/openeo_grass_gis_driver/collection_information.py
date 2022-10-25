@@ -7,6 +7,8 @@ from openeo_grass_gis_driver.models.collection_schemas import \
      CollectionInformation, CollectionExtent
 from openeo_grass_gis_driver.models.collection_schemas import \
      CollectionProperties, EOBands
+from openeo_grass_gis_driver.local_collections import \
+     get_local_collection
 from osgeo import osr, ogr
 
 __license__ = "Apache License, Version 2.0"
@@ -119,10 +121,30 @@ class CollectionInformationResource(Resource):
 
     def get(self, name):
 
-        # List strds maps from the GRASS location
         location, mapset, datatype, layer = self.iface.layer_def_to_components(
             name)
 
+        # local collection registered in the openEO backend
+        if location == "local":
+            collection = get_local_collection(name=name)
+            if collection is None:
+                return make_response(
+                    jsonify(
+                        {
+                            "id": "12345678",
+                            "code": "CollectionNotFound",
+                            "message": "Collection '%s' does not exist." %
+                            (name),
+                            "links": {}}),
+                    500)
+
+            # Not using CollectionInformation model here for now
+            # as valid STAC collections comply.
+            # Using it here might omit some properties
+            # which are not modelled in this backend (e.g. assets)
+            return make_response(collection, 200)
+
+        # STAC collection registered in actinia
         if location == "stac":
             status_code, collection = self.iface.get_stac_collection(name=name)
             if status_code != 200:
@@ -142,6 +164,7 @@ class CollectionInformationResource(Resource):
             # which are not modelled in this backend (e.g. assets)
             return make_response(collection, 200)
 
+        # List strds maps from the GRASS location
         status_code, layer_data = self.iface.layer_info(layer_name=name)
         if status_code != 200:
             return make_response(

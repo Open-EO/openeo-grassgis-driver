@@ -142,7 +142,7 @@ class Collections(Resource):
                     try:
                         description = i['description']
                     except Exception:
-                        description = "local collection registered in the openEO backend"
+                        description = "local collection registered here"
 
                     ds = CollectionEntry(
                         id=i['id'],

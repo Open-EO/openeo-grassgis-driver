@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
-from flask_restful import Resource
-from flask import make_response, jsonify, request
+import os
+import json
+from pathlib import Path
 
 from openeo_grass_gis_driver.actinia_processing.actinia_interface import (
     ActiniaInterface,
 )
 from openeo_grass_gis_driver.actinia_processing.config import Config
-from openeo_grass_gis_driver.models.collection_schemas import (
-    Collection,
-    CollectionEntry,
-)
-from openeo_grass_gis_driver.utils.logging import log
 
 
 __license__ = "Apache License, Version 2.0"
@@ -53,13 +49,13 @@ def get_local_collection(name):
     """
 
     iface = ActiniaInterface()
-    location, mapset, datatype, layer = self.iface.layer_def_to_components(name)
+    location, mapset, datatype, layer = iface.layer_def_to_components(name)
 
     if location != "local":
         return None
 
     local_collections_path = Config.LOCAL_COLLECTIONS
-    jsonfile = os.path.join(local_collections_path, "%.json" % layer)
+    jsonfile = os.path.join(local_collections_path, "%s.json" % layer)
 
     if not os.path_exists(jsonfile):
         return None

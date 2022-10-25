@@ -64,9 +64,9 @@ def get_local_collection(name):
     if not os.path_exists(jsonfile):
         return None
 
-        with open(j) as f:
-            collection = json.load(f)
-            name = j.split("/")[-1][:-5]
-            collection["id"] = "local.mapset.gdallocal.%s" % name
+    with open(jsonfile) as f:
+        collection = json.load(f)
+        name = jsonfile.split("/")[-1][:-5]
+        collection["id"] = "local.mapset.gdallocal.%s" % name
 
     return collection

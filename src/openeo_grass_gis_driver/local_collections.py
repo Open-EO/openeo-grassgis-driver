@@ -57,7 +57,7 @@ def get_local_collection(name):
     local_collections_path = Config.LOCAL_COLLECTIONS
     jsonfile = os.path.join(local_collections_path, "%s.json" % layer)
 
-    if not os.path_exists(jsonfile):
+    if not os.path.exists(jsonfile):
         return None
 
     with open(jsonfile) as f:

@@ -2,13 +2,25 @@
 from random import randint
 import json
 
-from openeo_grass_gis_driver.models.process_graph_schemas import \
-     ProcessGraph, ProcessGraphNode
-from openeo_grass_gis_driver.actinia_processing.base import \
-     PROCESS_DICT, PROCESS_DESCRIPTION_DICT, Node, \
-     check_node_parents, DataObject, create_output_name
-from openeo_grass_gis_driver.models.process_schemas import \
-     Parameter, ProcessDescription, ReturnValue, ProcessExample
+from openeo_grass_gis_driver.models.process_graph_schemas import (
+    ProcessGraph,
+    ProcessGraphNode,
+)
+from openeo_grass_gis_driver.actinia_processing.base import (
+    PROCESS_DICT,
+    PROCESS_DESCRIPTION_DICT,
+    Node,
+    check_node_parents,
+    GrassDataType,
+    DataObject,
+    create_output_name,
+)
+from openeo_grass_gis_driver.models.process_schemas import (
+    Parameter,
+    ProcessDescription,
+    ReturnValue,
+    ProcessExample,
+)
 
 __license__ = "Apache License, Version 2.0"
 __author__ = "Markus Metz"
@@ -32,134 +44,101 @@ def create_process_description():
             "examples": [
                 "nc_spm_08.landsat.raster.lsat5_1987_10",
                 "nc_spm_08.PERMANENT.vector.lakes",
-                "ECAD.PERMANENT.strds.temperature_1950_2017_yearly"]})
-    p_spatial = Parameter(description="Limits the data to load from the collection to the specified bounding box or polygons.\n\n"
-                          "The coordinate reference system of the bounding box must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
-                          schema=[{
-                           "title": "Bounding Box",
-                           "type": "object",
-                           "subtype": "bounding-box",
-                           "required": [
-                                  "west",
-                                  "south",
-                                  "east",
-                                  "north"
-                                  ],
-                           "properties": {
-                                  "west": {
-                                    "description": "West (lower left corner, coordinate axis 1).",
-                                    "type": "number"
-                                  },
-                                  "south": {
-                                    "description": "South (lower left corner, coordinate axis 2).",
-                                    "type": "number"
-                                  },
-                                  "east": {
-                                    "description": "East (upper right corner, coordinate axis 1).",
-                                    "type": "number"
-                                  },
-                                  "north": {
-                                    "description": "North (upper right corner, coordinate axis 2).",
-                                    "type": "number"
-                                  },
-                                  "base": {
-                                    "description": "Base (optional, lower left corner, coordinate axis 3).",
-                                    "type": [
-                                      "number",
-                                      "null"
-                                    ],
-                                    "default": "null"
-                                  },
-                                  "height": {
-                                    "description": "Height (optional, upper right corner, coordinate axis 3).",
-                                    "type": [
-                                      "number",
-                                      "null"
-                                    ],
-                                    "default": "null"
-                                  },
-                                  "crs": {
-                                    "description": "Coordinate reference system of the extent, specified as as [EPSG code](http://www.epsg-registry.org/), [WKT2 (ISO 19162) string](http://docs.opengeospatial.org/is/18-010r7/18-010r7.html) or [PROJ definition (deprecated)](https://proj.org/usage/quickstart.html). Defaults to `4326` (EPSG code 4326) unless the client explicitly requests a different coordinate reference system.",
-                                    "schema": {
-                                      "anyOf": [
-                                        {
-                                          "title": "EPSG Code",
-                                          "type": "integer",
-                                          "subtype": "epsg-code",
-                                          "examples": [
-                                            7099
-                                          ]
-                                        },
-                                        {
-                                          "title": "WKT2",
-                                          "type": "string",
-                                          "subtype": "wkt2-definition"
-                                        },
-                                        {
-                                          "title": "PROJ definition",
-                                          "type": "string",
-                                          "subtype": "proj-definition",
-                                          "deprecated": "true"
-                                        }
-                                      ],
-                                      "default": 4326
-                                    }
-                                  }
-                                }
-                           },
-                           {
-                           "title": "GeoJSON",
-                           "type": "object",
-                           "subtype": "geojson"
-                           }
-                          ],
-                          optional=False)
-    p_temporal = Parameter(description="Limits the data to load from the collection to the specified left-closed temporal interval. Applies to all temporal dimensions if there are multiple of them. Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.",
-                           schema={"type": "array",
-                                   "subtype": "temporal-interval",
-                                   "minItems": 2,
-                                   "maxItems": 2,
-                                   "items": {
-                                     "anyOf": [{
-                                      "type": "string",
-                                      "format": "date-time",
-                                      "subtype": "date-time"
-                                      },
-                                      {
-                                      "type": "string",
-                                      "format": "date",
-                                      "subtype": "date"
-                                      },
-                                      {
-                                      "type": "string",
-                                      "subtype": "time"
-                                      },
-                                      {
-                                      "type": "null"
-                                      }
-                                      ]
-                                      },
-                                   "examples": [
-                                      [
-                                        "2015-01-01",
-                                        "2016-01-01"
-                                      ],
-                                      [
-                                        "12:00:00Z",
-                                        "24:00:00Z"
-                                      ]
-                                   ]
-                                   },
-                           optional=False)
+                "ECAD.PERMANENT.strds.temperature_1950_2017_yearly",
+            ],
+        },
+    )
+    p_spatial = Parameter(
+        description="Limits the data to load from the collection to the specified bounding box or polygons.\n\n"
+        "The coordinate reference system of the bounding box must be specified as [EPSG](http://www.epsg.org) code or [PROJ](https://proj4.org) definition.",
+        schema=[
+            {
+                "title": "Bounding Box",
+                "type": "object",
+                "subtype": "bounding-box",
+                "required": ["west", "south", "east", "north"],
+                "properties": {
+                    "west": {
+                        "description": "West (lower left corner, coordinate axis 1).",
+                        "type": "number",
+                    },
+                    "south": {
+                        "description": "South (lower left corner, coordinate axis 2).",
+                        "type": "number",
+                    },
+                    "east": {
+                        "description": "East (upper right corner, coordinate axis 1).",
+                        "type": "number",
+                    },
+                    "north": {
+                        "description": "North (upper right corner, coordinate axis 2).",
+                        "type": "number",
+                    },
+                    "base": {
+                        "description": "Base (optional, lower left corner, coordinate axis 3).",
+                        "type": ["number", "null"],
+                        "default": "null",
+                    },
+                    "height": {
+                        "description": "Height (optional, upper right corner, coordinate axis 3).",
+                        "type": ["number", "null"],
+                        "default": "null",
+                    },
+                    "crs": {
+                        "description": "Coordinate reference system of the extent, specified as as [EPSG code](http://www.epsg-registry.org/), [WKT2 (ISO 19162) string](http://docs.opengeospatial.org/is/18-010r7/18-010r7.html) or [PROJ definition (deprecated)](https://proj.org/usage/quickstart.html). Defaults to `4326` (EPSG code 4326) unless the client explicitly requests a different coordinate reference system.",
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "title": "EPSG Code",
+                                    "type": "integer",
+                                    "subtype": "epsg-code",
+                                    "examples": [7099],
+                                },
+                                {
+                                    "title": "WKT2",
+                                    "type": "string",
+                                    "subtype": "wkt2-definition",
+                                },
+                                {
+                                    "title": "PROJ definition",
+                                    "type": "string",
+                                    "subtype": "proj-definition",
+                                    "deprecated": "true",
+                                },
+                            ],
+                            "default": 4326,
+                        },
+                    },
+                },
+            },
+            {"title": "GeoJSON", "type": "object", "subtype": "geojson"},
+        ],
+        optional=False,
+    )
+    p_temporal = Parameter(
+        description="Limits the data to load from the collection to the specified left-closed temporal interval. Applies to all temporal dimensions if there are multiple of them. Left-closed temporal interval, i.e. an array with exactly two elements:\n\n1. The first element is the start of the date and/or time interval. The specified instance in time is **included** in the interval.\n2. The second element is the end of the date and/or time interval. The specified instance in time is **excluded** from the interval.\n\nThe specified temporal strings follow [RFC 3339](https://tools.ietf.org/html/rfc3339). Although [RFC 3339 prohibits the hour to be '24'](https://tools.ietf.org/html/rfc3339#section-5.7), **this process allows the value '24' for the hour** of an end time in order to make it possible that left-closed time intervals can fully cover the day.\n\nAlso supports open intervals by setting one of the boundaries to `null`, but never both.",
+        schema={
+            "type": "array",
+            "subtype": "temporal-interval",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+                "anyOf": [
+                    {"type": "string", "format": "date-time", "subtype": "date-time"},
+                    {"type": "string", "format": "date", "subtype": "date"},
+                    {"type": "string", "subtype": "time"},
+                    {"type": "null"},
+                ]
+            },
+            "examples": [["2015-01-01", "2016-01-01"], ["12:00:00Z", "24:00:00Z"]],
+        },
+        optional=False,
+    )
 
     p_bands = Parameter(
         description="Only adds the specified bands into the data cube so that bands that don't match the list of band names are not available. Applies to all dimensions of type `bands` if there are multiple of them.\n\nThe order of the specified array defines the order of the bands in the data cube.",
-        schema=[
-            {
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "subtype": "band-name"}}])
+        schema=[{"type": "array", "items": {"type": "string", "subtype": "band-name"}}],
+    )
     p_properties = Parameter(
         description="Limits the data by metadata properties to include only data in the data cube which all given expressions return `true` for (AND operation).\n\nSpecify key-value-pairs with the keys being the name of the metadata property, which can be retrieved with the openEO Data Discovery for Collections. The values must be expressions to be evaluated against the collection metadata, see the example.\n\n**Note:** Back-ends may not pass the actual value to the expressions, but pass a proprietary index or a placeholder so that they can use the expressions to query against another data source. So debugging on the callback parameter `value` may lead to unexpected results.",
         experimental=True,
@@ -174,36 +153,36 @@ def create_process_description():
                         {
                             "name": "value",
                             "description": "The property value to be checked against.",
-                            "schema": {
-                             "description": "Any data type."}}]}}])
+                            "schema": {"description": "Any data type."},
+                        }
+                    ],
+                },
+            }
+        ],
+    )
 
-    rv = ReturnValue(description="Processed EO data.",
-                     schema={"type": "object", "subtype": "raster-cube"})
+    rv = ReturnValue(
+        description="Processed EO data.",
+        schema={"type": "object", "subtype": "raster-cube"},
+    )
 
     # Example
-    arguments = {"id": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m",
-                 "spatial_extent": {
-                     "west": 16.1,
-                     "east": 16.6,
-                     "north": 48.6,
-                     "south": 47.2
-                     },
-                 "temporal_extent": [
-                     "2018-01-01",
-                     "2019-01-01"
-                 ],
-                 }
+    arguments = {
+        "id": "latlong_wgs84.modis_ndvi_global.strds.ndvi_16_5600m",
+        "spatial_extent": {"west": 16.1, "east": 16.6, "north": 48.6, "south": 47.2},
+        "temporal_extent": ["2018-01-01", "2019-01-01"],
+    }
     node = ProcessGraphNode(process_id=PROCESS_NAME, arguments=arguments)
     graph = ProcessGraph(
         title="title",
         description="description",
-        process_graph={
-            "load_strds_collection": node})
+        process_graph={"load_strds_collection": node},
+    )
     examples = [
         ProcessExample(
-            title="Simple example",
-            description="Simple example",
-            process_graph=graph)]
+            title="Simple example", description="Simple example", process_graph=graph
+        )
+    ]
 
     pd = ProcessDescription(
         id=PROCESS_NAME,
@@ -215,9 +194,11 @@ def create_process_description():
             "spatial_extent": p_spatial,
             "temporal_extent": p_temporal,
             "bands": p_bands,
-            "properties": p_properties},
+            "properties": p_properties,
+        },
         returns=rv,
-        examples=examples)
+        examples=examples,
+    )
 
     return json.loads(pd.to_json())
 
@@ -225,11 +206,13 @@ def create_process_description():
 PROCESS_DESCRIPTION_DICT[PROCESS_NAME] = create_process_description()
 
 
-def create_process_chain_entry(input_object: DataObject,
-                               spatial_extent,
-                               temporal_extent,
-                               bands,
-                               output_object: DataObject):
+def create_process_chain_entry(
+    input_object: DataObject,
+    spatial_extent,
+    temporal_extent,
+    bands,
+    output_object: DataObject,
+):
     """Create a Actinia process description that r.info, v.info, or t.info.
 
     :param input_object: The input object name
@@ -243,51 +226,71 @@ def create_process_chain_entry(input_object: DataObject,
 
     pc = []
 
+    importer = None
     if input_object.is_raster():
-        importer = {"id": "r_info_%i" % rn, "module": "r.info", "inputs": [
-            {"param": "map", "value": input_object.grass_name()}, ],
-            "flags": "g"}
+        importer = {
+            "id": "r_info_%i" % rn,
+            "module": "r.info",
+            "inputs": [
+                {"param": "map", "value": input_object.grass_name()},
+            ],
+            "flags": "g",
+        }
 
     elif input_object.is_vector():
-        importer = {"id": "v_info_%i" % rn, "module": "v.info", "inputs": [
-            {"param": "map", "value": input_object.grass_name()}, ],
-            "flags": "g"}
+        importer = {
+            "id": "v_info_%i" % rn,
+            "module": "v.info",
+            "inputs": [
+                {"param": "map", "value": input_object.grass_name()},
+            ],
+            "flags": "g",
+        }
 
     elif input_object.is_strds():
-        importer = {"id": "t_info_%i" % rn, "module": "t.info", "inputs": [
-            {"param": "input", "value": input_object.grass_name()}, ],
-            "flags": "g"}
+        importer = {
+            "id": "t_info_%i" % rn,
+            "module": "t.info",
+            "inputs": [
+                {"param": "input", "value": input_object.grass_name()},
+            ],
+            "flags": "g",
+        }
 
     elif input_object.is_stac():
         instance_id = input_object.mapset
         collection_id = f"stac.{instance_id}.rastercube.{input_object.name}"
-        strds_name = (output_object.grass_name()).replace('@', '_')
+        strds_name = (output_object.grass_name()).replace("@", "_")
         # Define the import process of the STAC collection
         stac_input_importer = {
-                    "import_descr": {
-                        "source": collection_id,
-                        "type": "stac"
-                    },
-                    "param": "map",
-                    "value": strds_name
-                }
-        param_import = _get_stac_importer(stac_input_importer, spatial_extent,
-                                          temporal_extent, bands, rn)
+            "import_descr": {"source": collection_id, "type": "stac"},
+            "param": "map",
+            "value": strds_name,
+        }
+        param_import = _get_stac_importer(
+            stac_input_importer, spatial_extent, temporal_extent, bands, rn
+        )
         stac_importchain = {
-                "id": "importer_1",
-                "module": "importer",
-                "inputs": [param_import]
-            }
+            "id": "importer_1",
+            "module": "importer",
+            "inputs": [param_import],
+        }
 
         pc.append(stac_importchain)
 
-        importer = {"id": "t_info_%i" % rn, "module": "t.info", "inputs": [
-            {"param": "input", "value": strds_name}, ],
-            "flags": "g"}
+        importer = {
+            "id": "t_info_%i" % rn,
+            "module": "t.info",
+            "inputs": [
+                {"param": "input", "value": strds_name},
+            ],
+            "flags": "g",
+        }
     else:
         raise Exception("Unsupported datatype")
 
-    pc.append(importer)
+    if importer:
+        pc.append(importer)
 
     # TODO: spatial extent can also be a GeoJSON object
     if spatial_extent is not None:
@@ -305,81 +308,124 @@ def create_process_chain_entry(input_object: DataObject,
 
         if input_object.is_raster():
             region_bbox = {
-                "id": "g_region_bbox_%i" %
-                rn, "module": "g.region.bbox", "inputs": [
-                    {
-                        "param": "n", "value": str(north)}, {
-                        "param": "s", "value": str(south)}, {
-                        "param": "e", "value": str(east)}, {
-                        "param": "w", "value": str(west)}, {
-                        "param": "crs", "value": str(crs)}, {
-                        "param": "raster", "value": input_object.grass_name()},
-                    ]}
+                "id": "g_region_bbox_%i" % rn,
+                "module": "g.region.bbox",
+                "inputs": [
+                    {"param": "n", "value": str(north)},
+                    {"param": "s", "value": str(south)},
+                    {"param": "e", "value": str(east)},
+                    {"param": "w", "value": str(west)},
+                    {"param": "crs", "value": str(crs)},
+                    {"param": "raster", "value": input_object.grass_name()},
+                ],
+            }
         elif input_object.is_strds() or input_object.is_stac():
             region_bbox = {
-                "id": "g_region_bbox_%i" %
-                rn, "module": "g.region.bbox", "inputs": [
-                    {
-                        "param": "n", "value": str(north)}, {
-                        "param": "s", "value": str(south)}, {
-                        "param": "e", "value": str(east)}, {
-                        "param": "w", "value": str(west)}, {
-                        "param": "crs", "value": str(crs)}, {
-                        "param": "strds", "value": input_object.grass_name()},
-                        ]
-                    }
+                "id": "g_region_bbox_%i" % rn,
+                "module": "g.region.bbox",
+                "inputs": [
+                    {"param": "n", "value": str(north)},
+                    {"param": "s", "value": str(south)},
+                    {"param": "e", "value": str(east)},
+                    {"param": "w", "value": str(west)},
+                    {"param": "crs", "value": str(crs)},
+                    {"param": "strds", "value": input_object.grass_name()},
+                ],
+            }
         else:
-            region_bbox = {"id": "g_region_bbox_%i" % rn,
-                           "module": "g.region.bbox",
-                           "inputs": [{"param": "n", "value": str(north)},
-                                      {"param": "s", "value": str(south)},
-                                      {"param": "e", "value": str(east)},
-                                      {"param": "w", "value": str(west)},
-                                      {"param": "crs", "value": str(crs)}, ]}
+            region_bbox = {
+                "id": "g_region_bbox_%i" % rn,
+                "module": "g.region.bbox",
+                "inputs": [
+                    {"param": "n", "value": str(north)},
+                    {"param": "s", "value": str(south)},
+                    {"param": "e", "value": str(east)},
+                    {"param": "w", "value": str(west)},
+                    {"param": "crs", "value": str(crs)},
+                ],
+            }
 
         pc.append(region_bbox)
 
-    if input_object.is_strds() and \
-       (temporal_extent is not None or bands is not None):
+        # local files to be imported with GDAL
+        # 1. use region as above
+        # 2. import with temporal filter
+        # 3. set region resolution from newly created strds
+        if input_object.is_local():
+            strds_name = (output_object.grass_name()).replace("@", "_")
+
+            # TODO: get root path from link in collection information ?
+
+            importer = {
+                "id": "t_in_eoarchive_%i" % rn,
+                "module": "t.in.eoarchive",
+                "inputs": [
+                    {"param": "collection", "value": input_object.name()},
+                    {"param": "start", "value": temporal_extent[0].split("T")[0]},
+                    {"param": "end", "value": temporal_extent[1].split("T")[0]},
+                    {"param": "bands", "value": ("', '").join(bands)},
+                    {"param": "output", "value": output_object.grass_name()},
+                ],
+            }
+
+            pc.append(importer)
+
+            region_bbox = {
+                "id": "g_region_bbox_%i" % rn,
+                "module": "g.region.bbox",
+                "inputs": [
+                    {"param": "n", "value": str(north)},
+                    {"param": "s", "value": str(south)},
+                    {"param": "e", "value": str(east)},
+                    {"param": "w", "value": str(west)},
+                    {"param": "crs", "value": str(crs)},
+                    {"param": "strds", "value": input_object.grass_name()},
+                ],
+            }
+
+            pc.append(region_bbox)
+
+    if input_object.is_strds() and (temporal_extent is not None or bands is not None):
         wherestring = ""
         if temporal_extent:
-            start_time = temporal_extent[0].replace('T', ' ')
+            start_time = temporal_extent[0].replace("T", " ")
             if len(temporal_extent) > 1:
-                end_time = temporal_extent[1].replace('T', ' ')
+                end_time = temporal_extent[1].replace("T", " ")
                 wherestring = "start_time >= '%(start)s' AND start_time < '%(end)s'" % {
-                                                "start": start_time, "end": end_time}
+                    "start": start_time,
+                    "end": end_time,
+                }
             # end_time can be null, use only start_time for filtering
             else:
                 wherestring = "start_time >= '%(start)s'" % {"start": start_time}
             if bands:
                 wherestring = wherestring + " AND "
         if bands:
-            wherestring = wherestring + \
-                "semantic_label in ('%(band_names)s')" % {"band_names": ("', '").join(bands)}
+            wherestring = wherestring + "semantic_label in ('%(band_names)s')" % {
+                "band_names": ("', '").join(bands)
+            }
 
         pc_strdsfilter = {
             "id": "t_rast_extract_%i" % rn,
             "module": "t.rast.extract",
-            "inputs": [{"param": "input",
-                        "value": input_object.grass_name()},
-                       {"param": "where",
-                        "value": wherestring},
-                       {"param": "output",
-                        "value": output_object.grass_name()},
-                       {"param": "expression",
-                        "value": "1.0 * %s" % input_object.name},
-                       {"param": "basename",
-                        "value": output_object.name},
-                       {"param": "suffix",
-                        "value": "num"}]}
+            "inputs": [
+                {"param": "input", "value": input_object.grass_name()},
+                {"param": "where", "value": wherestring},
+                {"param": "output", "value": output_object.grass_name()},
+                {"param": "expression", "value": "1.0 * %s" % input_object.name},
+                {"param": "basename", "value": output_object.name},
+                {"param": "suffix", "value": "num"},
+            ],
+        }
 
         pc.append(pc_strdsfilter)
 
     return pc
 
 
-def _get_stac_importer(stac_input_importer, spatial_extent=None,
-                       temporal_extent=None, bands=None, rn=None):
+def _get_stac_importer(
+    stac_input_importer, spatial_extent=None, temporal_extent=None, bands=None, rn=None
+):
     if spatial_extent is not None and temporal_extent is not None:
         # STAC Spatial Filtering
         north = spatial_extent["north"]
@@ -387,16 +433,12 @@ def _get_stac_importer(stac_input_importer, spatial_extent=None,
         west = spatial_extent["west"]
         east = spatial_extent["east"]
         extent = stac_input_importer["import_descr"]["extent"] = {}
-        extent["spatial"] = {
-            "bbox": [[north, west, south, east]]
-        }
+        extent["spatial"] = {"bbox": [[north, west, south, east]]}
 
         # STAC Temporal Filtering
-        start_time = temporal_extent[0].replace('T', ' ')
-        end_time = temporal_extent[1].replace('T', ' ')
-        extent["temporal"] = {
-            "interval": [[start_time, end_time]]
-        }
+        start_time = temporal_extent[0].replace("T", " ")
+        end_time = temporal_extent[1].replace("T", " ")
+        extent["temporal"] = {"interval": [[start_time, end_time]]}
 
         # TODO Check band format
         if bands is not None:
@@ -404,9 +446,7 @@ def _get_stac_importer(stac_input_importer, spatial_extent=None,
 
         return stac_input_importer
     else:
-        raise Exception(
-                "STAC collections require spatio-temporal filtering"
-        )
+        raise Exception("STAC collections require spatio-temporal filtering")
 
 
 def get_process_list(node: Node):
@@ -436,26 +476,30 @@ def get_process_list(node: Node):
     if "bands" in node.arguments:
         bands = node.arguments["bands"]
 
-    if input_object.is_strds() and \
-       (temporal_extent is not None or bands is not None):
+    if input_object.is_strds() and (temporal_extent is not None or bands is not None):
         output_object = DataObject(
             name=create_output_name(input_object.name, node),
-            datatype=input_object.datatype)
+            datatype=input_object.datatype,
+        )
     elif input_object.is_stac():
         output_object = DataObject(
             name=create_output_name(input_object.name, node),
-            datatype=input_object.datatype)
+            datatype=GrassDataType.STRDS,
+        )
+    elif input_object.is_local():
+        output_object = DataObject(
+            name=create_output_name(input_object.name, node),
+            datatype=GrassDataType.STRDS,
+        )
     else:
         output_object = input_object
 
     output_objects.append(output_object)
     node.add_output(output_object)
 
-    pc = create_process_chain_entry(input_object,
-                                    spatial_extent,
-                                    temporal_extent,
-                                    bands,
-                                    output_object)
+    pc = create_process_chain_entry(
+        input_object, spatial_extent, temporal_extent, bands, output_object
+    )
     process_list.extend(pc)
 
     return output_objects, process_list

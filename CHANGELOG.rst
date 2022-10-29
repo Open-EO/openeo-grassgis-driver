@@ -3,6 +3,16 @@ Changelog
 =========
 
 
+Version 2.5.0 - 2022-10-29
+==========================
+### Added
+* add support for local external collections by @metzm in https://github.com/Open-EO/openeo-grassgis-driver/pull/154
+
+**Full Changelog**: https://github.com/Open-EO/openeo-grassgis-driver/compare/2.4.1...2.5.0
+
+generated with `gh api repos/Open-EO/openeo-grassgis-driver/releases/generate-notes -f tag_name="2.5.0" -f target_commitish=main -q .body`
+
+
 Version 2.4.1 - 2022-09-26
 ==========================
 ### Fixed

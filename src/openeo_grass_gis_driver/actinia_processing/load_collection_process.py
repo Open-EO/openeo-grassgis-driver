@@ -363,7 +363,7 @@ def create_process_chain_entry(
                 {"param": "output", "value": output_object.grass_name()},
             ]
             if bands:
-                inputs.append({"param": "bands", "value": ("', '").join(bands)})
+                inputs.append({"param": "bands", "value": (",").join(bands)})
 
             importer = {
                 "id": "t_in_eoarchive_%i" % rn,

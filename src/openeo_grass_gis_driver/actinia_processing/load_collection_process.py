@@ -360,7 +360,7 @@ def create_process_chain_entry(
                 "id": "t_in_eoarchive_%i" % rn,
                 "module": "t.in.eoarchive",
                 "inputs": [
-                    {"param": "collection", "value": input_object.name()},
+                    {"param": "collection", "value": input_object.name},
                     {"param": "start", "value": temporal_extent[0].split("T")[0]},
                     {"param": "end", "value": temporal_extent[1].split("T")[0]},
                     {"param": "bands", "value": ("', '").join(bands)},
@@ -379,7 +379,7 @@ def create_process_chain_entry(
                     {"param": "e", "value": str(east)},
                     {"param": "w", "value": str(west)},
                     {"param": "crs", "value": str(crs)},
-                    {"param": "strds", "value": input_object.grass_name()},
+                    {"param": "strds", "value": output_object.grass_name()},
                 ],
             }
 

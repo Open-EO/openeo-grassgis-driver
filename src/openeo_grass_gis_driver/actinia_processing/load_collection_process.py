@@ -356,16 +356,19 @@ def create_process_chain_entry(
 
             # TODO: get root path from link in collection information ?
 
+            inputs = [
+                {"param": "collection", "value": input_object.name},
+                {"param": "start", "value": temporal_extent[0].split("T")[0]},
+                {"param": "end", "value": temporal_extent[1].split("T")[0]},
+                {"param": "output", "value": output_object.grass_name()},
+            ]
+            if bands:
+                inputs.append({"param": "bands", "value": ("', '").join(bands)})
+
             importer = {
                 "id": "t_in_eoarchive_%i" % rn,
                 "module": "t.in.eoarchive",
-                "inputs": [
-                    {"param": "collection", "value": input_object.name},
-                    {"param": "start", "value": temporal_extent[0].split("T")[0]},
-                    {"param": "end", "value": temporal_extent[1].split("T")[0]},
-                    {"param": "bands", "value": ("', '").join(bands)},
-                    {"param": "output", "value": output_object.grass_name()},
-                ],
+                "inputs": inputs,
             }
 
             pc.append(importer)

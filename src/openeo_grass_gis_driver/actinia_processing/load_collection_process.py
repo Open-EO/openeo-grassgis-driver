@@ -286,7 +286,7 @@ def create_process_chain_entry(
             ],
             "flags": "g",
         }
-    else:
+    elif input_object.is_local() is False:
         raise Exception("Unsupported datatype")
 
     if importer:

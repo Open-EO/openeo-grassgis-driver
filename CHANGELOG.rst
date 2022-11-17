@@ -3,6 +3,16 @@ Changelog
 =========
 
 
+Version 2.5.1 - 2022-11-17
+==========================
+### Fixed
+* fix pc entry creation for load_collection by @metzm in https://github.com/Open-EO/openeo-grassgis-driver/pull/155
+
+**Full Changelog**: https://github.com/Open-EO/openeo-grassgis-driver/compare/2.5.0...2.5.1
+
+generated with `gh api repos/Open-EO/openeo-grassgis-driver/releases/generate-notes -f tag_name="2.5.1" -f target_commitish=main -q .body` 
+
+
 Version 2.5.0 - 2022-10-29
 ==========================
 ### Added

@@ -3,6 +3,16 @@ Changelog
 =========
 
 
+Version 2.5.3 - 2022-12-12
+==========================
+### Fixed
+* fix replacement value in mask and mask_polygon by @metzm in https://github.com/Open-EO/openeo-grassgis-driver/pull/158
+
+**Full Changelog**: https://github.com/Open-EO/openeo-grassgis-driver/compare/2.5.2...2.5.3
+
+generated with `gh api repos/Open-EO/openeo-grassgis-driver/releases/generate-notes -f tag_name="2.5.3" -f target_commitish=main -q .body` 
+
+
 Version 2.5.2 - 2022-12-09
 ==========================
 ### Fixed

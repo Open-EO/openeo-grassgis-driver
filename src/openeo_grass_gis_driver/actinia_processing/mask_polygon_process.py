@@ -48,7 +48,7 @@ def create_process_description():
     )
     p_value = Parameter(
         description="The value used to replace non-zero and `true` values with",
-        schema={"type": "object", "subtype": "string"},
+        schema={"type": ["number", "boolean", "string", "null"]},
         optional=True,
     )
     p_inside = Parameter(

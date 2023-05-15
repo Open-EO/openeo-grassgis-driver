@@ -3,7 +3,7 @@ The OpenEO GRASS GIS driver
 ===========================
 
 The OpenEO GRASS GIS driver implements the openEO Core API interface for the GRASS GIS as a Service
-(Actinia Core; available from https://github.com/mundialis/actinia_core) software solution for parallel,
+(Actinia Core; available from https://github.com/actinia-org/actinia-core) software solution for parallel,
 large scale geodata processing.
 
 It is a highly scalable REST interface to process geodata with the GRASS GIS in a distributed environment.

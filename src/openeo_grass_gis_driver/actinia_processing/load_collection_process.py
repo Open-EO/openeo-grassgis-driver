@@ -436,7 +436,7 @@ def _get_stac_importer(
         west = spatial_extent["west"]
         east = spatial_extent["east"]
         extent = stac_input_importer["import_descr"]["extent"] = {}
-        extent["spatial"] = {"bbox": [[north, west, south, east]]}
+        extent["spatial"] = {"bbox": [[west, south, east, north]]}
 
         # STAC Temporal Filtering
         start_time = temporal_extent[0].replace("T", " ")

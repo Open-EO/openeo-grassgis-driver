@@ -159,7 +159,7 @@ class ActiniaInterface(object):
 
         if r.status_code == 200:
             ret = r.json()
-            data = ret["locations"]
+            data = ret["projects"]
 
         return r.status_code, data
 
